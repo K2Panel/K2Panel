@@ -37,11 +37,11 @@ jobs:
     
     - name: Check code formatting with Black
       run: |
-        black --check --diff --color . --extend-exclude="/(pyenv|BTPanel|class|class_v2|data|install|logs|mod|plugin)/"
+        black --check --diff --color . --extend-exclude="/(pyenv|BTPanel|\.pythonlibs|\.cache|\.local|\.git|class_v2|data|install|logs|mod|plugin|class/filesModel/(downModel|gzModel|logsModel|rarModel|searchModel|sizeModel|uploadModel|zipModel)|class/logsModel/ftpModel|class/monitorModel/process_managementModel|class/acme_v2)\.py$/"
     
     - name: Check import sorting with isort
       run: |
-        isort --check-only --diff . --skip-glob="pyenv/*" --skip-glob="BTPanel/*" --skip-glob="class/*" --skip-glob="class_v2/*" --skip-glob="data/*" --skip-glob="install/*" --skip-glob="logs/*" --skip-glob="mod/*" --skip-glob="plugin/*"
+        isort --check-only --diff . --skip-glob="pyenv/*" --skip-glob="BTPanel/*" --skip-glob=".pythonlibs/*" --skip-glob=".cache/*" --skip-glob=".local/*" --skip-glob="class_v2/*" --skip-glob="data/*" --skip-glob="install/*" --skip-glob="logs/*" --skip-glob="mod/*" --skip-glob="plugin/*" --skip-glob="class/filesModel/*Model.py" --skip-glob="class/logsModel/ftpModel.py" --skip-glob="class/monitorModel/process_managementModel.py" --skip-glob="class/acme_v2.py"
   
   format:
     name: Auto-format (on main only)
@@ -66,11 +66,11 @@ jobs:
     
     - name: Auto-format with Black
       run: |
-        black . --extend-exclude="/(pyenv|BTPanel|class|class_v2|data|install|logs|mod|plugin)/"
+        black . --extend-exclude="/(pyenv|BTPanel|\.pythonlibs|\.cache|\.local|\.git|class_v2|data|install|logs|mod|plugin|class/filesModel/(downModel|gzModel|logsModel|rarModel|searchModel|sizeModel|uploadModel|zipModel)|class/logsModel/ftpModel|class/monitorModel/process_managementModel|class/acme_v2)\.py$/"
     
     - name: Auto-sort imports with isort
       run: |
-        isort . --skip-glob="pyenv/*" --skip-glob="BTPanel/*" --skip-glob="class/*" --skip-glob="class_v2/*" --skip-glob="data/*" --skip-glob="install/*" --skip-glob="logs/*" --skip-glob="mod/*" --skip-glob="plugin/*"
+        isort . --skip-glob="pyenv/*" --skip-glob="BTPanel/*" --skip-glob=".pythonlibs/*" --skip-glob=".cache/*" --skip-glob=".local/*" --skip-glob="class_v2/*" --skip-glob="data/*" --skip-glob="install/*" --skip-glob="logs/*" --skip-glob="mod/*" --skip-glob="plugin/*" --skip-glob="class/filesModel/*Model.py" --skip-glob="class/logsModel/ftpModel.py" --skip-glob="class/monitorModel/process_managementModel.py" --skip-glob="class/acme_v2.py"
     
     - name: Commit changes
       run: |
