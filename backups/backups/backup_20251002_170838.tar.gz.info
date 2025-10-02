@@ -1,0 +1,9 @@
+Format: v2
+Backup Name: backup_20251002_170838.tar.gz
+Created: 2025-10-02 17:08:38
+Environment: development
+Database Type: sqlite
+SHA256: 61921014e06c78e83fdad1e0d3ba4d4ed16451891efdd7e3435504e31a153ffd
+HMAC-SHA256: 5c7bbb1e2ae8c91629ecb6105f28dc23fc209b38dbb2ae72b84f6aa2a5233807
+Size: 255.00 B
+Algorithm: SHA-256
