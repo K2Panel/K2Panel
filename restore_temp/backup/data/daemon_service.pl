@@ -1,1 +1,0 @@
-["mysql", "redis", "pure-ftpd"]
