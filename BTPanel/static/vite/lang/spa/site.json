@@ -249,7 +249,7 @@
 			"index_24": "Cuando no especifica un sitio predeterminado SSL, si usa HTTPS para acceder a un sitio que no tiene habilitado SSL, accederá directamente a un sitio que tiene habilitado SSL.",
 			"index_25": "En la validación de DNS, proporcionamos tres API DNS automatizadas y proporcionamos modo manual.",
 			"index_26": "El certificado se puede renovar automáticamente utilizando la API DNS. En modo manual, el certificado debe volver a aplicarse después de que expire el certificado.",
-			"index_27": "Antes de usar la API [AAPANEL DNS Cloud Resolution], debe confirmar que el DNS de dominio para el que desea solicitar el certificado SSL es [Resolución de la nube].",
+			"index_27": "Antes de usar la API [K2PANEL DNS Cloud Resolution], debe confirmar que el DNS de dominio para el que desea solicitar el certificado SSL es [Resolución de la nube].",
 			"index_28": "Antes de usar la API [DNSPOD/ALI Cloud DNS], debe establecer la tecla API de la interfaz correspondiente en la ventana emergente.",
 			"index_29": "Nombre de dominio",
 			"index_30": "Marca",
@@ -260,7 +260,7 @@
 			"index_35": "Certificado de formato PEM = Certificado de nombre de dominio .Crt + Certificado root (root_bundle) .Crt",
 			"index_36": "Cuando no se especifica el sitio predeterminado SSL, un sitio sin SSL usará HTTPS para acceder al sitio con SSL habilitado",
 			"index_37": "Otro certificado",
-			"index_38": "Certificado de AAPANEL",
+			"index_38": "Certificado de K2PANEL",
 			"index_39": "Guardar como plantilla",
 			"index_40": "Consejos",
 			"index_41": "Consejos: El sitio carece de certificado SSL, el acceso puede ser arriesgado.",
@@ -405,7 +405,7 @@
 			"index_110": "Los datos de registro analizados contienen solicitudes interceptadas",
 			"index_111": "De manera predeterminada, se muestran los últimos datos de escaneo (si no, haga clic en Registro de registro)",
 			"index_112": "Si el archivo de registro es demasiado grande, el escaneo puede llevar mucho tiempo, sea paciente",
-			"index_113": "AAPANEL WAF",
+			"index_113": "K2PANEL WAF",
 			"index_114": "puede bloquear efectivamente tales ataques",
 			"index_115": "Escaneo, progreso de escaneo ...",
 			"Limit": {
@@ -602,7 +602,7 @@
 			"index_21": "Reemplazar a, puede estar en blanco"
 		},
 		"RulesError": {
-			"index_1": "Ejemplo: aapanel.com",
+			"index_1": "Ejemplo: k2panel.com",
 			"index_2": "El nombre del subdirectorio no puede estar vacío",
 			"index_3": "El título del sitio de WordPress no puede estar vacío",
 			"index_4": "Seleccione el idioma",
@@ -669,7 +669,7 @@
 			"index_12": "Caso insensible",
 			"index_13": "Solo reemplace el primero",
 			"index_14": "Expresión regular",
-			"index_15": "Efecto predeterminado: reemplace todo 'http://www.aapanel.com' con 'https://www.aapanel.com'.",
+			"index_15": "Efecto predeterminado: reemplace todo 'http://www.k2panel.com' con 'https://www.k2panel.com'.",
 			"index_16": "Global WebSocket está habilitado y no se permite deshabilitar individualmente",
 			"index_17": "Eliminar proyecto de proxy inverso",
 			"index_18": "Reemplace todas las palabras clave coincidentes"

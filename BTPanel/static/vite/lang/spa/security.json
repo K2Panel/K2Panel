@@ -76,7 +76,7 @@
 				"form_5": "Especificar IP",
 				"form_6": "Ingrese la IP especificada, múltiples IPS deben separarse por \",\" o descansos de línea. p.ej. 192.168.1.1, 192.168.1.2",
 				"form_7": "Especificar dominio",
-				"form_8": "Ingrese el dominio especificado. p.ej. www.aapanel.com",
+				"form_8": "Ingrese el dominio especificado. p.ej. www.k2panel.com",
 				"form_9": "Estrategia",
 				"form_10": "Dirección",
 				"form_11": "Observaciones",
@@ -315,7 +315,7 @@
 			"Index_10": "Registros de operación"
 		},
 		"Conf": {
-			"Index_1": "protección de la fuerza bruta de aapanel",
+			"Index_1": "protección de la fuerza bruta de k2panel",
 			"Index_2": "Su dirección IP actual [{0}] no está en la lista blanca",
 			"Index_3": "Agregar a la lista blanca",
 			"Index_4": "Se recomienda encender la característica antiviolencia. Será mejor asegurar el servidor. ¿Quieres continuar?",

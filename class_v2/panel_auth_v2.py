@@ -1,10 +1,10 @@
 # coding: utf-8
 # -------------------------------------------------------------------
-# aaPanel
+# K2Panel
 # -------------------------------------------------------------------
-# Copyright (c) 2015-2019 aaPanel(www.aapanel.com) All rights reserved.
+# Copyright (c) 2015-2019 K2Panel(www.k2panel.com) All rights reserved.
 # -------------------------------------------------------------------
-# Author: hwliang <hwl@aapanel.com>
+# Author: hwliang <hwl@k2panel.com>
 # -------------------------------------------------------------------
 
 # ------------------------------
@@ -94,7 +94,7 @@ class panelAuth:
                 return data
             data=data['message']
             if not data:
-                return public.return_message(-1, 0, public.lang("Please log in to your aaPanel account on the panel first!"))
+                return public.return_message(-1, 0, public.lang("Please log in to your K2Panel account on the panel first!"))
             if not data['success']:
                 return public.return_message(-1, 0,data['msg'])
             # if len(data['res']) == 6:
@@ -866,7 +866,7 @@ class panelAuth:
 
             data = data['message']
             if not data:
-                return public.return_message(-1, 0, public.lang("Please log in to your aaPanel account on the panel first!"))
+                return public.return_message(-1, 0, public.lang("Please log in to your K2Panel account on the panel first!"))
             if not data['success']:
                 # public.print_log('1')
                 return public.return_message(-1, 0,data['msg'])

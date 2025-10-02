@@ -55,7 +55,7 @@ class SubPanelApi:
         #     "proxied": 0不代理 , 1 代理,
         #     "priority": 10, 邮件参数, 按需要传入
         # }
-        sys_name = "Sub aaPanel"
+        sys_name = "Sub K2Panel"
         body["domain_name"] = root
         p = DnsDomainProvider.objects.filter(domains__contains=root).first()
         if p:

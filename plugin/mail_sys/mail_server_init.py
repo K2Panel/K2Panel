@@ -1,12 +1,12 @@
 #!/usr/bin/python
 #coding: utf-8
 # +-------------------------------------------------------------------
-# | aaPanel
+# | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2099 aaPanel(www.aapanel.com) All rights reserved.
+# | Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: wzjie <wzj@aapanel.com>
-# | Author: zhwen <zhw@aapanel.com>
+# | Author: wzjie <wzj@k2panel.com>
+# | Author: zhwen <zhw@k2panel.com>
 # +-------------------------------------------------------------------
 
 # +--------------------------------------------------------------------
@@ -17,7 +17,7 @@ sys.path.append("class/")
 import public
 main_cf = "/etc/postfix/main.cf"
 # download_url = public.get_url()
-download_url = "http://node.aapanel.com"
+download_url = "http://node.k2panel.com"
 
 
 def get_postconf():
@@ -114,7 +114,7 @@ class mail_server_init:
         self.write_logs('|-Checking system key directory permissions...')
         if self._check_syssafe():
             self.write_logs('|-Check system key directory permissions: failed')
-            return public.returnMsg(False, 'Please close the aapanel system reinforcement first')
+            return public.returnMsg(False, 'Please close the k2panel system reinforcement first')
         self.write_logs('|-Initializing...')
         if not self.prepare_work():
             return public.returnMsg(False, 'Preparation failed')
@@ -145,7 +145,7 @@ class mail_server_init:
             return public.returnMsg(True,'success')
         return public.returnMsg(False, "Your hostname ({}) is invalid, and must be set to a fully qualified domain"
                                        " name before initialization mail server. You can update your hostname by "
-                                       "running 'hostnamectl set-hostname --static mail.aapanel.com'".format(hostname))
+                                       "running 'hostnamectl set-hostname --static mail.k2panel.com'".format(hostname))
 
     def M(self, table_name):
         import db

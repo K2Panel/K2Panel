@@ -1,10 +1,10 @@
 #coding: utf-8
 #-------------------------------------------------------------------
-# aaPanel
+# K2Panel
 #-------------------------------------------------------------------
-# Copyright (c) 2015-2099 aaPanel(www.aapanel.com) All rights reserved.
+# Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
 #-------------------------------------------------------------------
-# Author: cjxin <cjxin@aapanel.com>
+# Author: cjxin <cjxin@k2panel.com>
 #-------------------------------------------------------------------
 
 # 免费IP库
@@ -57,7 +57,7 @@ class main(safeBase):
             # data["serverid"]=self.user_info["serverid"]
             data["serverid"] = self.user_info["server_id"]
             #如果不是我们的用户，那么不返回数据
-            res = public.httpPost('https://wafapi2.aapanel.com/api/ip/info',data)
+            res = public.httpPost('https://wafapi2.k2panel.com/api/ip/info',data)
             res = json.loads(res)
             data = self.get_ip_area_cache()
             for key in res:

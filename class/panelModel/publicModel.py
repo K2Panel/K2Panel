@@ -1,10 +1,10 @@
 # coding: utf-8
 # -------------------------------------------------------------------
-# aaPanel
+# K2Panel
 # -------------------------------------------------------------------
-# Copyright (c) 2015-2099 aaPanel(www.aapanel.com) All rights reserved.
+# Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
 # -------------------------------------------------------------------
-# Author: cjxin <cjxin@aapanel.com>
+# Author: cjxin <cjxin@k2panel.com>
 # -------------------------------------------------------------------
 
 # 备份
@@ -36,7 +36,7 @@ class main(panelBase):
             res = cache.get(skey)
             if res: return res
 
-            res = public.httpPost('https://wafapi2.aapanel.com/Api/getUpdateLogs?type=Linux',{})
+            res = public.httpPost('https://wafapi2.k2panel.com/Api/getUpdateLogs?type=Linux',{})
 
             start_index = res.find('(') + 1
             end_index = res.rfind(')')

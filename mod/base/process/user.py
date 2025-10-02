@@ -1,8 +1,8 @@
 # coding: utf-8
 # -------------------------------------------------------------------
-# aapanel
+# k2panel
 # -------------------------------------------------------------------
-# Copyright (c) 2015-2099 aapanel(http://www.aapanel.com) All rights reserved.
+# Copyright (c) 2015-2099 k2panel(http://www.k2panel.com) All rights reserved.
 # -------------------------------------------------------------------
 # Author: sww <sww@bt.cn>
 # -------------------------------------------------------------------
@@ -64,7 +64,7 @@ class RealUser:
         :param ps: 备注
         :return: str
         """
-        userPs = {'www': 'aaPanel', 'root': '超级管理员', 'mysql': '用于运行MySQL的用户',
+        userPs = {'www': 'K2Panel', 'root': '超级管理员', 'mysql': '用于运行MySQL的用户',
                   'mongo': '用于运行MongoDB的用户',
                   'git': 'git用户', 'mail': 'mail', 'nginx': '第三方nginx用户', 'postfix': 'postfix邮局用户',
                   'lp': '打印服务帐号',

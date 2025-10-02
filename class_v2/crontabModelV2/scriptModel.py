@@ -1,10 +1,10 @@
 #coding: utf-8
 #-------------------------------------------------------------------
-# aapanel
+# k2panel
 #-------------------------------------------------------------------
-# Copyright (c) 2015-2099 aapanel(http://aapanel.com All rights reserved.
+# Copyright (c) 2015-2099 k2panel(http://k2panel.com All rights reserved.
 #-------------------------------------------------------------------
-# Author: hwliang <hwl@aapanel.com>
+# Author: hwliang <hwl@k2panel.com>
 #-------------------------------------------------------------------
 
 #------------------------------
@@ -253,7 +253,7 @@ class main(crontabBase):
         if not script_id: return public.return_message(-1,0,public.lang('Script ID cannot be empty'))
         script_info = self._sql.table('scripts').where('script_id=?',(script_id,)).find()
         if not script_info: return public.return_message(-1,0,public.lang('The specified script does not exist'))
-        if script_info['is_baota'] == 1: return public.return_message(-1,0,public.lang('The built-in script of aapanel cannot be deleted'))
+        if script_info['is_baota'] == 1: return public.return_message(-1,0,public.lang('The built-in script of k2panel cannot be deleted'))
         trigger_name = self._sql.table('trigger').where('script_id=?',(script_id,)).getField('name')
         if trigger_name:
             return public.return_message(-1,0,public.lang('This script is currently being used by task [{}], please delete the task first!',(trigger_name)))

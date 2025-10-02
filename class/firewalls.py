@@ -1,10 +1,10 @@
 #coding: utf-8
 # +-------------------------------------------------------------------
-# | aaPanel x3
+# | K2Panel x3
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2016 aaPanel(www.aapanel.com) All rights reserved.
+# | Copyright (c) 2015-2016 K2Panel(www.k2panel.com) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: hwliang <hwl@aapanel.com>
+# | Author: hwliang <hwl@k2panel.com>
 # +-------------------------------------------------------------------
 import sys,os,public,re,firewalld,time
 

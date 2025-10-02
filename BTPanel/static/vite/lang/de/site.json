@@ -602,7 +602,7 @@
 			"index_21": "Ersetzen, kann leer sein"
 		},
 		"RulesError": {
-			"index_1": "Beispiel: aapanel.com",
+			"index_1": "Beispiel: k2panel.com",
 			"index_2": "Der Unterverzeichnisname kann nicht leer sein",
 			"index_3": "WordPress Site -Titel kann nicht leer sein",
 			"index_4": "Bitte wählen Sie die Sprache aus",
@@ -669,7 +669,7 @@
 			"index_12": "Fall unempfindlich",
 			"index_13": "Ersetzen Sie nur den ersten",
 			"index_14": "Regelmäßiger Ausdruck",
-			"index_15": "Standardffekt: Ersetzen Sie alle 'http://www.aapanel.com' durch 'https://www.aapanel.com'.",
+			"index_15": "Standardffekt: Ersetzen Sie alle 'http://www.k2panel.com' durch 'https://www.k2panel.com'.",
 			"index_16": "Global WebSocket sind aktiviert und dürfen nicht einzeln deaktiviert werden",
 			"index_17": "Reverse Proxy -Projekt löschen",
 			"index_18": "Ersetzen Sie alle übereinstimmenden Schlüsselwörter"

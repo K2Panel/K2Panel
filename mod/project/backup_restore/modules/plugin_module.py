@@ -1,8 +1,8 @@
 # coding: utf-8
 # -------------------------------------------------------------------
-# aapanel
+# k2panel
 # -------------------------------------------------------------------
-# Copyright (c) 2015-2099 aapanel(http://www.aapanel.com) All rights reserved.
+# Copyright (c) 2015-2099 k2panel(http://www.k2panel.com) All rights reserved.
 # -------------------------------------------------------------------
 # Author: miku <miku@bt.cn>
 # -------------------------------------------------------------------
@@ -243,7 +243,7 @@ class PluginModule(BaseUtil, ConfigManager):
         """
         self.print_log("====================================================", "restore")
         self.print_log(public.lang("Start restoring plugin data"), "restore")
-        self.print_log(public.lang("If the migrated machine is not bound to a aapanel user and upgraded to Professional version, plugin restoration failures may occur"), "restore")
+        self.print_log(public.lang("If the migrated machine is not bound to a k2panel user and upgraded to Professional version, plugin restoration failures may occur"), "restore")
 
         restore_data = self.get_restore_data_list(timestamp)
         plugin_info = restore_data['data_list']['plugin']

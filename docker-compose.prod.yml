@@ -1,5 +1,5 @@
 # ==============================================================================
-# Docker Compose Configuration for aaPanel - Production VPS Deployment
+# Docker Compose Configuration for K2Panel - Production VPS Deployment
 # ==============================================================================
 # This file uses pre-built images from GitHub Container Registry
 # For use in VPS deployment via CI/CD
@@ -21,7 +21,7 @@ services:
   app:
     # استخدام الصورة المبنية من ghcr.io
     image: ${REGISTRY:-ghcr.io}/${IMAGE_NAME}:${IMAGE_TAG:-latest}
-    container_name: aapanel_app
+    container_name: k2panel_app
     
     # Port mapping
     ports:
@@ -48,7 +48,7 @@ services:
     
     # Network
     networks:
-      - aapanel_network
+      - k2panel_network
     
     # Restart policy
     restart: always
@@ -66,7 +66,7 @@ services:
   # ============================================================================
   postgres:
     image: postgres:15-alpine
-    container_name: aapanel_postgres
+    container_name: k2panel_postgres
     
     # Environment file
     env_file:
@@ -79,14 +79,14 @@ services:
     
     # Network
     networks:
-      - aapanel_network
+      - k2panel_network
     
     # Restart policy
     restart: always
     
     # Health check
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-aapanel_user} -d $${POSTGRES_DB:-production_db}"]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-k2panel_user} -d $${POSTGRES_DB:-production_db}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -97,7 +97,7 @@ services:
   # ============================================================================
   redis:
     image: redis:7-alpine
-    container_name: aapanel_redis
+    container_name: k2panel_redis
     
     # Additional commands
     command: >
@@ -114,7 +114,7 @@ services:
     
     # Network
     networks:
-      - aapanel_network
+      - k2panel_network
     
     # Restart policy
     restart: always
@@ -134,30 +134,30 @@ volumes:
   # PostgreSQL data
   postgres_data:
     driver: local
-    name: aapanel_postgres_data
+    name: k2panel_postgres_data
   
   # Redis data
   redis_data:
     driver: local
-    name: aapanel_redis_data
+    name: k2panel_redis_data
   
   # Application data
   app_data:
     driver: local
-    name: aapanel_app_data
+    name: k2panel_app_data
   
   # Application logs
   app_logs:
     driver: local
-    name: aapanel_app_logs
+    name: k2panel_app_logs
 
 # ==============================================================================
 # Networks
 # ==============================================================================
 networks:
-  aapanel_network:
+  k2panel_network:
     driver: bridge
-    name: aapanel_network
+    name: k2panel_network
 
 # ==============================================================================
 # Important Notes

@@ -1,11 +1,11 @@
 #!/usr/bin/python
 # coding: utf-8
 # -------------------------------------------------------------------
-# aaPanel
+# K2Panel
 # -------------------------------------------------------------------
-# Copyright (c) 2015-2099 aaPanel(www.aapanel.com) All rights reserved.
+# Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
 # -------------------------------------------------------------------
-# Author: lkq <lkq@aapanel.com>
+# Author: lkq <lkq@k2panel.com>
 # -------------------------------------------------------------------
 # Time: 2022-08-10
 # -------------------------------------------------------------------
@@ -29,7 +29,7 @@ def check_run():
     '''
         @name Mysql 弱口令检测
         @time 2022-08-12
-        @author lkq@aapanel.com
+        @author lkq@k2panel.com
     '''
     pass_info = public.ReadFile("/www/server/panel/config/weak_pass.txt")
     if not pass_info: return True, 'Risk-free'

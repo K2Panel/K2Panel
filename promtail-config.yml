@@ -84,12 +84,12 @@ scrape_configs:
   # ============================================================================
   # Application Logs - سجلات التطبيق
   # ============================================================================
-  - job_name: aapanel_app
+  - job_name: k2panel_app
     static_configs:
       - targets:
           - localhost
         labels:
-          job: aapanel
+          job: k2panel
           app: btpanel
           __path__: /app/logs/*.log
     

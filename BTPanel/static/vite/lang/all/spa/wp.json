@@ -127,7 +127,7 @@
 	"d2130bfe4a6c602ca6fdd4a137236e63": "Caché fastcgi",
 	"5f5508e46593e22a73f81ed30c002ff8": "Hay más características en desarrollo, esperando sus comentarios",
 	"eeceac1af4e7620894d6d2083921bb73": "Comprar ahora",
-	"d85814c3fe72a83324f056b19ba8c8c0": "Iniciar cuenta de AAPANEL",
+	"d85814c3fe72a83324f056b19ba8c8c0": "Iniciar cuenta de K2PANEL",
 	"31cf51bbff9f33797f45eb4ceb62b4fe": "Crear conjunto",
 	"ff0d2dfb95c823b2bed5fe5d02213c9a": "Seleccionar sitios web",
 	"bb38096ab39160dc20d44f3ea6b44507": "Complementos",
@@ -155,7 +155,7 @@
 	"128f3bdccd196fa168607120a8a592c4": "Token de seguridad",
 	"6797ce65dd9affb5a3860a88ac982f1f": "Ingrese el token de conexión",
 	"40fed749e915f23b7f46fa2e7253effd": "Cómo agregar el sitio web con la clave de seguridad, siga los siguientes pasos",
-	"6ea81bcd6dc8e20da85bec8ff46889dc": "kit de herramientas WP de AAPANEL",
+	"6ea81bcd6dc8e20da85bec8ff46889dc": "kit de herramientas WP de K2PANEL",
 	"8d8a9cd49fca97733b796a802904db26": "Subir complemento en su sitio web",
 	"eff58001241ce2cfa14c2f983fa45904": "Active el complemento en su sitio web",
 	"79a56d5e72b1c957fbae436cc9c5baae": "Haga clic en Ver enlace Clave de seguridad en su sitio web /wp-admin/plugins.php Página",
@@ -190,6 +190,6 @@
 	"99041f90bbbbc42c7f9eec3e7dce25a5": "Escaneo, por favor espere ...",
 	"c863dfbe15f5b9cbcec2d12871d8bb10": "Detectar rápidamente vulnerabilidades, riesgos potenciales y archivos modificados manualmente en complementos y temas de WordPress",
 	"c9bf00d6ab370b9c6468616d51e8eb35": "Agregar sitio",
-	"cb1018823a7e2fd265971cb2502e62f9": "kit de herramientas WP de AAPANEL",
+	"cb1018823a7e2fd265971cb2502e62f9": "kit de herramientas WP de K2PANEL",
 	"8f0c1fe13a6c5acb059a1de0118d9e6b": "Esto reinstalará los archivos principales de WordPress sin perder el contenido del sitio. Se recomienda que haga una copia de seguridad de su sitio web antes de reinstalar."
 }

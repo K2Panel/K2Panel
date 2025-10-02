@@ -49,7 +49,7 @@
       "accountState-721844-12": "Expired",
       "accountState-721844-13": "Expiration Date",
       "accountState-721844-14": "Remarks",
-      "accountState-721844-15": "Login Sub aaPanel",
+      "accountState-721844-15": "Login Sub K2Panel",
       "accountState-721844-16": "Edit",
       "accountState-721844-17": "Delete",
       "accountState-721844-18": "Creating user, please wait...",
@@ -79,7 +79,7 @@
       "account_533924-6": "Disable",
       "account_533924-7": "Quota",
       "account_533924-8": "Available sub-users: ",
-      "account_533924-9": "aaPanel Pro edition can only add up to {0} account！",
+      "account_533924-9": "K2Panel Pro edition can only add up to {0} account！",
       "account_533924-10": "Number of account",
       "account_533924-11": "If the API is not enabled or 127.0.0.1 is not added to the API whitelist, the sub-panel post office will be unusable.",
       "account_533924-12": "One-click whitening"
@@ -138,10 +138,10 @@
       "disk_810348-13": "Enabling disk quota, please wait..."
     },
     "Install": {
-      "index_1": "aaPanel Sub Account - Multiple users",
+      "index_1": "K2Panel Sub Account - Multiple users",
       "index_2": "Resource quota",
       "index_3": "Separate user area",
-      "index_4": "As simple as aaPanel",
+      "index_4": "As simple as K2Panel",
       "index_5": "Installation Log",
       "index_6": "Installing, please wait...",
       "index_7": "Web Server: {0}, please adjust the current Web Server to {1}, please backup the related data before adjustment.",

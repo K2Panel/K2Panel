@@ -1,7 +1,7 @@
 #!/bin/bash
 #coding: utf-8
 # +-------------------------------------------------------------------
-# | aaPanel - Blue-Green Traffic Switch Script
+# | K2Panel - Blue-Green Traffic Switch Script
 # +-------------------------------------------------------------------
 # | Switches traffic between Blue and Green environments
 # +-------------------------------------------------------------------
@@ -18,8 +18,8 @@ NC='\033[0m'
 # المتغيرات
 TARGET_ENV="${1:-blue}"
 TARGET_PORT="${2:-5001}"
-NGINX_CONFIG="/etc/nginx/sites-available/aapanel"
-NGINX_ENABLED="/etc/nginx/sites-enabled/aapanel"
+NGINX_CONFIG="/etc/nginx/sites-available/k2panel"
+NGINX_ENABLED="/etc/nginx/sites-enabled/k2panel"
 ACTIVE_ENV_FILE=".active_environment"
 
 # دوال المساعدة

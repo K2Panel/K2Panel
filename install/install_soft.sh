@@ -2,7 +2,7 @@
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 
-serverUrl=https://node.aapanel.com/install
+serverUrl=https://node.k2panel.com/install
 mtype=$1
 actionType=$2
 name=$3
@@ -32,7 +32,7 @@ if [ "$actionType" == 'install' ];then
 	bash lib.sh
 fi
 
-sed -i 's/download\.bt\.cn/node\.aapanel\.com/g' $name.sh
+sed -i 's/download\.bt\.cn/node\.k2panel\.com/g' $name.sh
 
 bash $name.sh $actionType $version
 

@@ -1,5 +1,5 @@
 # ==============================================================================
-# Docker Compose Configuration for aaPanel - Production Environment
+# Docker Compose Configuration for K2Panel - Production Environment
 # ==============================================================================
 # يوفر هذا الملف إعدادات الإنتاج الكاملة مع PostgreSQL و Redis
 # This file provides complete production setup with PostgreSQL and Redis
@@ -28,7 +28,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: aapanel_app
+    container_name: k2panel_app
     
     # المنفذ - Port mapping
     ports:
@@ -55,7 +55,7 @@ services:
     
     # الشبكة - Network
     networks:
-      - aapanel_network
+      - k2panel_network
     
     # سياسة إعادة التشغيل - Restart policy
     restart: always
@@ -73,7 +73,7 @@ services:
   # ============================================================================
   postgres:
     image: postgres:15-alpine
-    container_name: aapanel_postgres
+    container_name: k2panel_postgres
     
     # استخدام ملف البيئة - Use environment file
     env_file:
@@ -92,14 +92,14 @@ services:
     
     # الشبكة - Network
     networks:
-      - aapanel_network
+      - k2panel_network
     
     # سياسة إعادة التشغيل - Restart policy
     restart: always
     
     # فحص الصحة - Health check
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-aapanel_user} -d $${POSTGRES_DB:-production_db}"]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-k2panel_user} -d $${POSTGRES_DB:-production_db}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -110,7 +110,7 @@ services:
   # ============================================================================
   redis:
     image: redis:7-alpine
-    container_name: aapanel_redis
+    container_name: k2panel_redis
     
     # أوامر إضافية - Additional commands
     command: >
@@ -131,7 +131,7 @@ services:
     
     # الشبكة - Network
     networks:
-      - aapanel_network
+      - k2panel_network
     
     # سياسة إعادة التشغيل - Restart policy
     restart: always
@@ -149,7 +149,7 @@ services:
   # ============================================================================
   prometheus:
     image: prom/prometheus:v2.48.0
-    container_name: aapanel_prometheus
+    container_name: k2panel_prometheus
     
     # أوامر إضافية - Additional commands
     command:
@@ -180,7 +180,7 @@ services:
     
     # الشبكة - Network
     networks:
-      - aapanel_network
+      - k2panel_network
     
     # سياسة إعادة التشغيل - Restart policy
     restart: always
@@ -198,7 +198,7 @@ services:
   # ============================================================================
   grafana:
     image: grafana/grafana:10.2.2
-    container_name: aapanel_grafana
+    container_name: k2panel_grafana
     
     # متغيرات البيئة - Environment variables
     environment:
@@ -225,7 +225,7 @@ services:
       # بيانات Grafana الدائمة - Persistent Grafana data
       - grafana_data:/var/lib/grafana
       # Dashboards التلقائية - Auto-provisioned dashboards
-      - ./grafana-dashboard-aapanel.json:/var/lib/grafana/dashboards/aapanel.json:ro
+      - ./grafana-dashboard-k2panel.json:/var/lib/grafana/dashboards/k2panel.json:ro
       # Datasources provisioning - Prometheus & Loki
       - ./grafana-datasource.yml:/etc/grafana/provisioning/datasources/prometheus.yml:ro
       - ./grafana-loki-datasource.yml:/etc/grafana/provisioning/datasources/loki.yml:ro
@@ -239,7 +239,7 @@ services:
     
     # الشبكة - Network
     networks:
-      - aapanel_network
+      - k2panel_network
     
     # سياسة إعادة التشغيل - Restart policy
     restart: always
@@ -257,7 +257,7 @@ services:
   # ============================================================================
   alertmanager:
     image: prom/alertmanager:latest
-    container_name: aapanel_alertmanager
+    container_name: k2panel_alertmanager
     
     # أوامر إضافية - Additional commands
     command:
@@ -283,7 +283,7 @@ services:
     
     # الشبكة - Network
     networks:
-      - aapanel_network
+      - k2panel_network
     
     # سياسة إعادة التشغيل - Restart policy
     restart: always
@@ -301,7 +301,7 @@ services:
   # ============================================================================
   loki:
     image: grafana/loki:2.9.0
-    container_name: aapanel_loki
+    container_name: k2panel_loki
     
     # Loki is internal-only for security. Access via Grafana.
     # No external port binding - accessible only within Docker network
@@ -318,7 +318,7 @@ services:
     
     # الشبكة - Network
     networks:
-      - aapanel_network
+      - k2panel_network
     
     # سياسة إعادة التشغيل - Restart policy
     restart: unless-stopped
@@ -336,7 +336,7 @@ services:
   # ============================================================================
   promtail:
     image: grafana/promtail:2.9.0
-    container_name: aapanel_promtail
+    container_name: k2panel_promtail
     
     # الأحجام - Volumes
     volumes:
@@ -363,7 +363,7 @@ services:
     
     # الشبكة - Network
     networks:
-      - aapanel_network
+      - k2panel_network
     
     # سياسة إعادة التشغيل - Restart policy
     restart: unless-stopped
@@ -375,55 +375,55 @@ volumes:
   # بيانات PostgreSQL - PostgreSQL data
   postgres_data:
     driver: local
-    name: aapanel_postgres_data
+    name: k2panel_postgres_data
   
   # بيانات Redis - Redis data
   redis_data:
     driver: local
-    name: aapanel_redis_data
+    name: k2panel_redis_data
   
   # بيانات التطبيق - Application data
   app_data:
     driver: local
-    name: aapanel_app_data
+    name: k2panel_app_data
   
   # سجلات التطبيق - Application logs
   app_logs:
     driver: local
-    name: aapanel_app_logs
+    name: k2panel_app_logs
   
   # بيانات Prometheus - Prometheus data
   prometheus_data:
     driver: local
-    name: aapanel_prometheus_data
+    name: k2panel_prometheus_data
   
   # بيانات Grafana - Grafana data
   grafana_data:
     driver: local
-    name: aapanel_grafana_data
+    name: k2panel_grafana_data
   
   # بيانات Alertmanager - Alertmanager data
   alertmanager_data:
     driver: local
-    name: aapanel_alertmanager_data
+    name: k2panel_alertmanager_data
   
   # بيانات Loki - Loki data
   loki_data:
     driver: local
-    name: aapanel_loki_data
+    name: k2panel_loki_data
   
   # Promtail positions - Promtail positions file
   promtail_positions:
     driver: local
-    name: aapanel_promtail_positions
+    name: k2panel_promtail_positions
 
 # ==============================================================================
 # الشبكات - Networks
 # ==============================================================================
 networks:
-  aapanel_network:
+  k2panel_network:
     driver: bridge
-    name: aapanel_network
+    name: k2panel_network
 
 # ==============================================================================
 # ملاحظات مهمة - Important Notes
@@ -437,7 +437,7 @@ networks:
 # 2. البيانات الدائمة - Persistent Data:
 #    - جميع البيانات محفوظة في volumes منفصلة
 #    - لحذف البيانات: docker-compose down -v
-#    - لعمل نسخة احتياطية: docker run --rm -v aapanel_postgres_data:/data -v $(pwd):/backup alpine tar czf /backup/backup.tar.gz /data
+#    - لعمل نسخة احتياطية: docker run --rm -v k2panel_postgres_data:/data -v $(pwd):/backup alpine tar czf /backup/backup.tar.gz /data
 #
 # 3. الأداء - Performance:
 #    - Redis مُعَد بـ 256MB ذاكرة كحد أقصى
@@ -457,7 +457,7 @@ networks:
 #
 # 6. Prometheus & Grafana:
 #    - Prometheus يجمع المقاييس من /health/metrics كل 10 ثوانٍ
-#    - Grafana dashboards محمّلة تلقائياً من grafana-dashboard-aapanel.json
+#    - Grafana dashboards محمّلة تلقائياً من grafana-dashboard-k2panel.json
 #    - لتغيير admin password: قم بتعيين GRAFANA_ADMIN_PASSWORD في .env
 #    - البيانات محفوظة في prometheus_data و grafana_data volumes
 #

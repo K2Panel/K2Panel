@@ -1,10 +1,10 @@
 #coding: utf-8
 #-------------------------------------------------------------------
-# aaPanel
+# K2Panel
 #-------------------------------------------------------------------
-# Copyright (c) 2015-2099 aaPanel(www.aapanel.com) All rights reserved.
+# Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
 #-------------------------------------------------------------------
-# Author: hwliang <hwl@aapanel.com>
+# Author: hwliang <hwl@k2panel.com>
 #-------------------------------------------------------------------
 import public
 import os
@@ -266,7 +266,7 @@ class panelPlugin:
         try:
             token = panelAuth.panelAuth().create_serverid(None)['token']
         except:
-            # return public.returnMsg(False, public.lang("Please log in as aaPanel account first"))
+            # return public.returnMsg(False, public.lang("Please log in as K2Panel account first"))
             token = None
         if 'download' in pluginInfo['versions'][0]:
             tmp_path = '/www/server/panel/temp'
@@ -435,7 +435,7 @@ class panelPlugin:
         if force > 0:
             public.ExecShell('rm -f /tmp/bmac_*')
             public.run_thread(self.getCloudPHPExt)
-            # 专业版和企业版到期提醒，aaPanel目前没有先注释
+            # 专业版和企业版到期提醒，K2Panel目前没有先注释
             # self.expire_msg(softList)
 
         try:
@@ -2139,7 +2139,7 @@ class panelPlugin:
     def getCloudPlugin(self,get):
         if session.get('getCloudPlugin') and get != None: return public.return_msg_gettext(True,'Your plugin list is already the latest version {}!',("-1",))
         import json
-        if not session.get('download_url'): session['download_url'] = 'http://node.aapanel.com'
+        if not session.get('download_url'): session['download_url'] = 'http://node.k2panel.com'
 
         #获取列表
         try:
@@ -2646,7 +2646,7 @@ class panelPlugin:
 
             plugin_data_info['size'] = public.get_path_size(s_tmp_path)
             if not 'author' in plugin_data_info:
-                plugin_data_info['author'] = 'aapanel'
+                plugin_data_info['author'] = 'k2panel'
             if not 'home' in plugin_data_info:
                 plugin_data_info['home'] = '{}'.format(public.OfficialApiBase())
 

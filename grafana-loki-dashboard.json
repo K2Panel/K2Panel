@@ -554,7 +554,7 @@
   "refresh": "10s",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": ["logs", "loki", "aapanel"],
+  "tags": ["logs", "loki", "k2panel"],
   "templating": {
     "list": [
       {
@@ -613,8 +613,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "aaPanel Logs - Loki Dashboard",
-  "uid": "aapanel-loki-logs",
+  "title": "K2Panel Logs - Loki Dashboard",
+  "uid": "k2panel-loki-logs",
   "version": 1,
   "weekStart": ""
 }

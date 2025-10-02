@@ -249,7 +249,7 @@
       "index_24": "当您未指定 SSL 默认站点时，如果使用 HTTPS 访问未启用 SSL 的站点，则将直接访问已启用 SSL 的站点。",
       "index_25": "在 DNS 验证中，我们提供三个自动化 DNS API，并提供手动模式。",
       "index_26": "证书可以通过使用 DNS API 自动续订。在手动模式下，证书到期后需要重新申请。",
-      "index_27": "在使用 [aaPanel DNS 云解析] API 之前，您需要确认要申请 SSL 证书的域名 DNS 是 [云解析]。",
+      "index_27": "在使用 [K2Panel DNS 云解析] API 之前，您需要确认要申请 SSL 证书的域名 DNS 是 [云解析]。",
       "index_28": "在使用 [DNSPOD/阿里云 DNS] API 之前，您需要在弹出窗口中设置相应接口的 API 密钥。",
       "index_29": "域名",
       "index_30": "品牌",
@@ -405,7 +405,7 @@
       "index_110": "分析的日志数据包含被拦截的请求",
       "index_111": "默认情况下，显示最后的扫描数据（如果没有，请点击日志扫描）",
       "index_112": "如果日志文件过大，扫描可能需要较长时间，请耐心等待",
-      "index_113": "aaPanel WAF",
+      "index_113": "K2Panel WAF",
       "index_114": "可以有效阻止此类攻击",
       "index_115": "扫描中，扫描进度...",
       "Limit": {
@@ -602,7 +602,7 @@
       "index_21": "替换为， 可以留空"
     },
     "RulesError": {
-      "index_1": "示例：aapanel.com",
+      "index_1": "示例：k2panel.com",
       "index_2": "子目录名称不能为空",
       "index_3": "WordPress 网站标题不能为空",
       "index_4": "请选择语言",
@@ -669,7 +669,7 @@
       "index_12": "不区分大小写",
       "index_13": "仅替换第一个",
       "index_14": "正则表达式",
-      "index_15": "默认效果：将所有 'http://www.aapanel.com' 替换为 'https://www.aapanel.com'。",
+      "index_15": "默认效果：将所有 'http://www.k2panel.com' 替换为 'https://www.k2panel.com'。",
       "index_16": "全局 WebSocket 已启用，不允许单独禁用",
       "index_17": "删除反向代理项目",
       "index_18": "替换所有匹配的关键词"

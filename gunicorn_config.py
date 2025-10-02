@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 #coding: utf-8
 # +-------------------------------------------------------------------
-# | aaPanel - Gunicorn Configuration with Config Factory
+# | K2Panel - Gunicorn Configuration with Config Factory
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2099 aaPanel(www.aapanel.com) All rights reserved.
+# | Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
 # +-------------------------------------------------------------------
 
 import os
@@ -72,7 +72,7 @@ access_log_format = '%(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
 # ============================================================================
 # Process Naming
 # ============================================================================
-proc_name = 'aapanel'
+proc_name = 'k2panel'
 
 # ============================================================================
 # Server Performance
@@ -121,7 +121,7 @@ reload_engine = 'auto'
 def on_starting(server):
     """يُستدعى عند بدء Gunicorn master"""
     print(f"=" * 70)
-    print(f"🚀 بدء تشغيل aaPanel - Gunicorn Master")
+    print(f"🚀 بدء تشغيل K2Panel - Gunicorn Master")
     print(f"=" * 70)
     print(f"البيئة: {config.ENVIRONMENT}")
     print(f"المنفذ: {config.PORT}")
@@ -160,7 +160,7 @@ def worker_exit(server, worker):
 
 def on_exit(server):
     """يُستدعى عند إيقاف Gunicorn"""
-    print("👋 إيقاف aaPanel - Gunicorn")
+    print("👋 إيقاف K2Panel - Gunicorn")
 
 # ============================================================================
 # Security (Production)

@@ -449,7 +449,7 @@ define(['require', 'exports', './snabbdom', './configMixin'], function (require,
 										},
 										template: function () {
 											var lineWidth = '125px',
-												helpHref = 'https://www.aapanel.com/forum/d/482-api-interface-tutorial';
+												helpHref = 'https://www.k2panel.com/forum/d/482-api-interface-tutorial';
 											return (0, snabbdom_1.jsx)(
 												'div',
 												{ class: this.$class('bt-form'), style: this.$style('padding: 15px 25px;') },
@@ -731,8 +731,8 @@ define(['require', 'exports', './snabbdom', './configMixin'], function (require,
 							return [
 								4,
 								this.$confirm({
-									title: 'Unbind aaPanel account',
-									msg: 'Unbind the aaPanel account and continue!',
+									title: 'Unbind K2Panel account',
+									msg: 'Unbind the K2Panel account and continue!',
 								}),
 							];
 						case 1:

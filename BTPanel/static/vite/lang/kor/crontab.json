@@ -181,7 +181,7 @@
 			"index_35": "백업 디렉토리",
 			"index_36": "웹 쉘",
 			"index_37": "동기화 시간",
-			"index_38": "기본적으로 NTP 서버에서 시간을 동기화하고 실패하면 AAPANEL.com의 서버 시간을 동기화합니다.",
+			"index_38": "기본적으로 NTP 서버에서 시간을 동기화하고 실패하면 K2PANEL.com의 서버 시간을 동기화합니다.",
 			"index_39": "무료 램",
 			"index_40": "PHP, MySQL, Pure-Ftpd, Apache, Nginx의 메모리 풋 프린트를 해제하십시오. 매일 자정에 실행하는 것이 좋습니다!",
 			"index_41": "액세스 URL",

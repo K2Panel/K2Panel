@@ -153,7 +153,7 @@ main() {
     add_ipset_rules "${ipset_rules[@]}"
     create_systemd_service
     systemctl reload BT-FirewallServices
-    echo "aapanel firewall init finish..."
+    echo "k2panel firewall init finish..."
 }
 
 main

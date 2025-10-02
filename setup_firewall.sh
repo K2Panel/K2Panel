@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ================================================================
-# UFW Firewall Setup Script for aaPanel - ULTRA SECURE VERSION
+# UFW Firewall Setup Script for K2Panel - ULTRA SECURE VERSION
 # ================================================================
 # هذا السكريبت يقوم بإعداد UFW firewall للإنتاج تلقائياً بطريقة آمنة 100%
 # 

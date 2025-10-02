@@ -249,7 +249,7 @@
       "index_24": "When you do not specify a SSL default site, if you use HTTPS to access a site that does not have SSL enabled, you will directly access a site that has SSL enabled.",
       "index_25": "In DNS validation, we provide three automated DNS API, and provide manual mode.",
       "index_26": "The certificate can be renewed automatically by using the DNS API. In manual mode, the certificate needs to be reapplied after the certificate expires.",
-      "index_27": "Before using the [aaPanel DNS Cloud Resolution] API, you need to confirm that the domain DNS for which you want to apply for SSL certificate is [Cloud Resolution].",
+      "index_27": "Before using the [K2Panel DNS Cloud Resolution] API, you need to confirm that the domain DNS for which you want to apply for SSL certificate is [Cloud Resolution].",
       "index_28": "Before using the [DNSPod/Ali Cloud DNS] API, you need to set the API key of the corresponding interface in the pop-up window.",
       "index_29": "Domain name",
       "index_30": "Brand",
@@ -405,7 +405,7 @@
       "index_110": "Analyzed log data contains intercepted requests",
       "index_111": "By default, the last scan data is displayed (if not, please click log scan)",
       "index_112": "If the log file is too large, scanning may take a long time, please be patient",
-      "index_113": "aaPanel WAF",
+      "index_113": "K2Panel WAF",
       "index_114": "can effectively block such attacks",
       "index_115": "Scanning, scanning progress...",
       "Limit": {
@@ -602,7 +602,7 @@
       "index_21": "Replace to, can be blank"
     },
     "RulesError": {
-      "index_1": "Example: aapanel.com",
+      "index_1": "Example: k2panel.com",
       "index_2": "Subdirectory name cannot be empty",
       "index_3": "Wordpress site title cannot be empty",
       "index_4": "Please select the language",
@@ -669,7 +669,7 @@
       "index_12": "Case insensitive",
       "index_13": "Only replace the first",
       "index_14": "Regular expression",
-      "index_15": "Default effect: Replace all 'http://www.aapanel.com' with 'https://www.aapanel.com'.",
+      "index_15": "Default effect: Replace all 'http://www.k2panel.com' with 'https://www.k2panel.com'.",
       "index_16": "Global websocket are enabled and are not allowed to be disabled individually",
       "index_17": "Delete reverse proxy project",
       "index_18": "Replace all matched keywords"

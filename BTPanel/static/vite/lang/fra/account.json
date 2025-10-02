@@ -49,7 +49,7 @@
 			"accountState-721844-12": "Expiré",
 			"accountState-721844-13": "Date d'expiration",
 			"accountState-721844-14": "Remarques",
-			"accountState-721844-15": "Connexion sous-aapanel",
+			"accountState-721844-15": "Connexion sous-k2panel",
 			"accountState-721844-16": "Modifier",
 			"accountState-721844-17": "Supprimer",
 			"accountState-721844-18": "Création de l'utilisateur, veuillez patienter ...",
@@ -138,7 +138,7 @@
 			"disk_810348-13": "Activation du quota de disque, veuillez patienter ..."
 		},
 		"Install": {
-			"index_1": "AAPANEL SUB COMPTE - Plusieurs utilisateurs",
+			"index_1": "K2PANEL SUB COMPTE - Plusieurs utilisateurs",
 			"index_2": "Quota de ressources",
 			"index_3": "Zone d'utilisateurs séparés",
 			"index_4": "Aussi simple qu'Aapanel",

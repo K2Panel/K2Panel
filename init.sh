@@ -360,7 +360,7 @@ case "$1" in
                 ipv6_address=""
                 if [ "$address" = "" ];then
                        
-                        ipv4_address=$(curl -4 -sS --connect-timeout 10 -m 15 https://www.aapanel.com/api/common/getClientIP 2>&1)
+                        ipv4_address=$(curl -4 -sS --connect-timeout 10 -m 15 https://www.k2panel.com/api/common/getClientIP 2>&1)
                         if [ -z "${ipv4_address}" ];then
                                 ipv4_address=$(curl -4 -sS --connect-timeout 10 -m 15 https://ifconfig.me 2>&1)
                                 if [ -z "${ipv4_address}" ];then
@@ -372,7 +372,7 @@ case "$1" in
                                 ipv4_address=""
                         fi
                         
-                        ipv6_address=$(curl -6 -sS --connect-timeout 10 -m 15 https://www.aapanel.com/api/common/getClientIP 2>&1)
+                        ipv6_address=$(curl -6 -sS --connect-timeout 10 -m 15 https://www.k2panel.com/api/common/getClientIP 2>&1)
                         # IPV6_REGEX="^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$"
                         IPV6_REGEX="^([0-9a-fA-F]{0,4}:){1,7}[0-9a-fA-F]{0,4}$"
                         if ! [[ $ipv6_address =~ $IPV6_REGEX ]]; then
@@ -397,26 +397,26 @@ case "$1" in
                 fi
                 LOCAL_IP=$(ip addr | grep -E -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -E -v "^127\.|^255\.|^0\." | head -n 1)
                 echo -e "=================================================================="
-                echo -e "\033[32maaPanel default info!\033[0m"
+                echo -e "\033[32mK2Panel default info!\033[0m"
                 echo -e "=================================================================="
-                #echo  "aaPanel Internet Address: $pool://$address:$port$auth_path"
-                #echo  "aaPanel Internal Address: $pool://${LOCAL_IP}:$port$auth_path"
+                #echo  "K2Panel Internet Address: $pool://$address:$port$auth_path"
+                #echo  "K2Panel Internal Address: $pool://${LOCAL_IP}:$port$auth_path"
 
                 if [ "${ipv6_address}" ];then
-                        echo  "aaPanel Internet IPv6 Address: ${pool}://${ipv6_address}:${port}${auth_path}"
+                        echo  "K2Panel Internet IPv6 Address: ${pool}://${ipv6_address}:${port}${auth_path}"
                 fi
                 if [ "${ipv4_address}" ];then
-                        echo  "aaPanel Internet IPv4 Address: ${pool}://${ipv4_address}:${port}${auth_path}"
+                        echo  "K2Panel Internet IPv4 Address: ${pool}://${ipv4_address}:${port}${auth_path}"
                 fi
                 if [ "${address}" ];then
-                        echo  "aaPanel Internet Address: ${pool}://${address}:${port}${auth_path}"
+                        echo  "K2Panel Internet Address: ${pool}://${address}:${port}${auth_path}"
                 fi
 
                 if [ "${address}" ];then
-                    echo  "aaPanel Internal Address: ${pool}://${address}:${port}${auth_path}"
+                    echo  "K2Panel Internal Address: ${pool}://${address}:${port}${auth_path}"
                     echo -e "\033[33mNote: After binding a Domain, access is only allowed via the Domain. \nTo unbind the Domain, use: bt 12 \033[0m"
                 else
-                    echo  "aaPanel Internal Address:      ${pool}://${LOCAL_IP}:${port}${auth_path}"
+                    echo  "K2Panel Internal Address:      ${pool}://${LOCAL_IP}:${port}${auth_path}"
                 fi
 
                 echo -e `$pythonV $panel_path/tools.py username`

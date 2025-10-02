@@ -1,10 +1,10 @@
 # coding: utf-8
 # -------------------------------------------------------------------
-# aaPanel
+# K2Panel
 # -------------------------------------------------------------------
-# Copyright (c) 2015-2099 aaPanel(www.aapanel.com) All rights reserved.
+# Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
 # -------------------------------------------------------------------
-# Author: wzz <wzz@aapanel.com>
+# Author: wzz <wzz@k2panel.com>
 # -------------------------------------------------------------------
 import json
 import os

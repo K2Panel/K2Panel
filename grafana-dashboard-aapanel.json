@@ -82,7 +82,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "aapanel_cpu_percent",
+          "expr": "k2panel_cpu_percent",
           "refId": "A"
         }
       ],
@@ -149,7 +149,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "aapanel_memory_percent",
+          "expr": "k2panel_memory_percent",
           "refId": "A"
         }
       ],
@@ -216,7 +216,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "aapanel_disk_percent",
+          "expr": "k2panel_disk_percent",
           "refId": "A"
         }
       ],
@@ -303,7 +303,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "aapanel_db_pool_active_connections",
+          "expr": "k2panel_db_pool_active_connections",
           "refId": "A",
           "legendFormat": "Active"
         },
@@ -312,7 +312,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "aapanel_db_pool_idle_connections",
+          "expr": "k2panel_db_pool_idle_connections",
           "refId": "B",
           "legendFormat": "Idle"
         }
@@ -400,7 +400,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "aapanel_db_response_time_ms",
+          "expr": "k2panel_db_response_time_ms",
           "refId": "A",
           "legendFormat": "Database Response Time"
         }
@@ -488,7 +488,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "aapanel_redis_response_time_ms",
+          "expr": "k2panel_redis_response_time_ms",
           "refId": "A",
           "legendFormat": "Redis Response Time"
         }
@@ -500,7 +500,7 @@
   "refresh": "10s",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": ["aapanel", "monitoring"],
+  "tags": ["k2panel", "monitoring"],
   "templating": {
     "list": []
   },
@@ -510,8 +510,8 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "aaPanel System Monitoring",
-  "uid": "aapanel-monitoring",
+  "title": "K2Panel System Monitoring",
+  "uid": "k2panel-monitoring",
   "version": 1,
   "weekStart": ""
 }

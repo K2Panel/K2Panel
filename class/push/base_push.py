@@ -1,10 +1,10 @@
 #coding: utf-8
 # +-------------------------------------------------------------------
-# | aaPanel
+# | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2020 aapanel(https://www.bt.cn) All rights reserved.
+# | Copyright (c) 2015-2020 k2panel(https://www.bt.cn) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: baozi <baozi@aapanel.com>
+# | Author: baozi <baozi@k2panel.com>
 # | Author: baozi
 # +-------------------------------------------------------------------
 import sys,os,re,json

@@ -1,10 +1,10 @@
 # coding: utf-8
 # +-------------------------------------------------------------------
-# | aaPanel
+# | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2019 aaPanel(www.aapanel.com) All rights reserved.
+# | Copyright (c) 2015-2019 K2Panel(www.k2panel.com) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: hwliang <hwl@aapanel.com>
+# | Author: hwliang <hwl@k2panel.com>
 # +-------------------------------------------------------------------
 import os
 import sys
@@ -101,7 +101,7 @@ class wxapp():
             import config
             config.config().reload_session()
             public.writeFile(login_type,'True')
-            public.login_send_body("aaPanel Mobile",userInfo['username'],public.GetClientIp(),str(request.environ.get('REMOTE_PORT')))
+            public.login_send_body("K2Panel Mobile",userInfo['username'],public.GetClientIp(),str(request.environ.get('REMOTE_PORT')))
             return public.returnMsg(True, public.lang("login successful!"))
         except:
             return public.returnMsg(False, public.lang("Login failed 2"))

@@ -1,7 +1,7 @@
 [
   {
     "protocol": "https://",
-    "address": "node.aapanel.com",
+    "address": "node.k2panel.com",
     "port": "80",
     "ping": 500
   },

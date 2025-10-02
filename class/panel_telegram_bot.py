@@ -1,10 +1,10 @@
 # coding: utf-8
 # +-------------------------------------------------------------------
-# | aaPanel x3
+# | K2Panel x3
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2017 aaPanel(www.aapanel.com) All rights reserved.
+# | Copyright (c) 2015-2017 K2Panel(www.k2panel.com) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: zhw <zhw@aapanel.com>
+# | Author: zhw <zhw@k2panel.com>
 # +-------------------------------------------------------------------
 
 import public

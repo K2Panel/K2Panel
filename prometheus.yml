@@ -1,7 +1,7 @@
 # ==============================================================================
-# Prometheus Configuration for aaPanel Monitoring
+# Prometheus Configuration for K2Panel Monitoring
 # ==============================================================================
-# تكوين Prometheus لمراقبة تطبيق aaPanel
+# تكوين Prometheus لمراقبة تطبيق K2Panel
 #
 # يقوم هذا الملف بتحديد:
 # - global settings (معدل scrape، timeout)
@@ -24,7 +24,7 @@ global:
   
   # External labels للتعريف - External labels to add to any time series
   external_labels:
-    monitor: 'aapanel-monitor'
+    monitor: 'k2panel-monitor'
     environment: 'production'
 
 # ==============================================================================
@@ -58,9 +58,9 @@ scrape_configs:
           component: 'monitoring'
   
   # ==========================================================================
-  # aaPanel Application Monitoring
+  # K2Panel Application Monitoring
   # ==========================================================================
-  - job_name: 'aapanel'
+  - job_name: 'k2panel'
     # معدل جمع أسرع للتطبيق الرئيسي
     scrape_interval: 10s
     scrape_timeout: 5s
@@ -72,7 +72,7 @@ scrape_configs:
     static_configs:
       - targets: ['app:5000']
         labels:
-          service: 'aapanel'
+          service: 'k2panel'
           component: 'application'
           environment: 'production'
     

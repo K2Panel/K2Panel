@@ -7,7 +7,7 @@ public_file=/www/server/panel/install/public.sh
 publicFileMd5=$(md5sum ${public_file} 2>/dev/null | awk '{print $1}')
 md5check="484c945780dc4a802cff267f3fb15a66"
 if [ "${publicFileMd5}" != "${md5check}" ]; then
-    wget -O Tpublic.sh https://node.aapanel.com/install/public.sh -T 20
+    wget -O Tpublic.sh https://node.k2panel.com/install/public.sh -T 20
     publicFileMd5=$(md5sum Tpublic.sh 2>/dev/null | awk '{print $1}')
     if [ "${publicFileMd5}" == "${md5check}" ]; then
         \cp -rpa Tpublic.sh $public_file

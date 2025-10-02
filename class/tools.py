@@ -1,10 +1,10 @@
 #coding: utf-8
 # +-------------------------------------------------------------------
-# | aaPanel
+# | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2099 aaPanel(www.aapanel.com) All rights reserved.
+# | Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: hwliang <hwl@aapanel.com>
+# | Author: hwliang <hwl@k2panel.com>
 # +-------------------------------------------------------------------
 
 #------------------------------
@@ -365,14 +365,14 @@ def setup_idc():
         pFile = panelPath + '/static/language/Simplified_Chinese/public.json'
         pInfo = json.loads(public.readFile(pFile))
         pInfo['BRAND'] = idcInfo['msg']['name']
-        pInfo['PRODUCT'] = public.lang("Customized edition with aaPanel")
+        pInfo['PRODUCT'] = public.lang("Customized edition with K2Panel")
         pInfo['NANE'] = pInfo['BRAND'] + pInfo['PRODUCT']
         public.writeFile(pFile,json.dumps(pInfo))
         tFile = panelPath + '/data/title.pl'
         titleNew = (pInfo['BRAND'] + public.lang("Failed，cannot delete current port of the panel!")).encode('utf-8')
         if os.path.exists(tFile):
             title = public.readFile(tFile).strip()
-            if title == public.lang("aaPanel") or title == '': public.writeFile(tFile,titleNew)
+            if title == public.lang("K2Panel") or title == '': public.writeFile(tFile,titleNew)
         else:
             public.writeFile(tFile,titleNew)
         return True
@@ -401,7 +401,7 @@ def update_to6():
 #命令行菜单
 def bt_cli():
     raw_tip = "==============================================="
-    print("===============%s==================" % public.lang("aaPanel CLI"))
+    print("===============%s==================" % public.lang("K2Panel CLI"))
     print("(01) %s           (08) %s" % (public.lang("Restart panel"),public.lang("Change panel port")))
     print("(02) %s           (09) %s" % (public.lang("Stop panel"),public.lang("Clear panel cache")))
     print("(03) %s           (10) %s" % (public.lang("Restart panel"),public.lang("Clear login limit")))

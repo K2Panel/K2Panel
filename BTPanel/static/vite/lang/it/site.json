@@ -405,7 +405,7 @@
 			"index_110": "I dati di registro analizzati contiene richieste intercettate",
 			"index_111": "Per impostazione predefinita, vengono visualizzati gli ultimi dati di scansione (in caso contrario, fare clic su Log Scan",
 			"index_112": "Se il file di registro è troppo grande, la scansione può richiedere molto tempo, si prega di essere paziente",
-			"index_113": "aapanel waf",
+			"index_113": "k2panel waf",
 			"index_114": "può effettivamente bloccare tali attacchi",
 			"index_115": "Scansione, scansione Progressi ...",
 			"Limit": {
@@ -602,7 +602,7 @@
 			"index_21": "Sostituisci a, può essere vuoto"
 		},
 		"RulesError": {
-			"index_1": "Esempio: aapanel.com",
+			"index_1": "Esempio: k2panel.com",
 			"index_2": "Il nome della sottodirectory non può essere vuoto",
 			"index_3": "Il titolo del sito WordPress non può essere vuoto",
 			"index_4": "Seleziona la lingua",
@@ -669,7 +669,7 @@
 			"index_12": "Caso insensibile",
 			"index_13": "Sostituisci solo il primo",
 			"index_14": "Espressione regolare",
-			"index_15": "Effetto predefinito: sostituire tutto 'http://www.aapanel.com' con 'https://www.aapanel.com'.",
+			"index_15": "Effetto predefinito: sostituire tutto 'http://www.k2panel.com' con 'https://www.k2panel.com'.",
 			"index_16": "WebSocket globale è abilitato e non è consentito essere disabilitato individualmente",
 			"index_17": "Elimina il progetto proxy inverso",
 			"index_18": "Sostituisci tutte le parole chiave abbinate"

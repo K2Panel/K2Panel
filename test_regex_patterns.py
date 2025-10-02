@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Test Fail2Ban regex patterns for aaPanel filter
+Test Fail2Ban regex patterns for K2Panel filter
 Simulates fail2ban-regex behavior to verify IP extraction
 """
 
@@ -118,7 +118,7 @@ def test_cases():
     ]
     
     print("=" * 80)
-    print("Testing Fail2Ban Regex Patterns for aaPanel")
+    print("Testing Fail2Ban Regex Patterns for K2Panel")
     print("=" * 80)
     print()
     

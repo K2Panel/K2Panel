@@ -1,10 +1,10 @@
 #coding: utf-8
 # +-------------------------------------------------------------------
-# | aaPanel
+# | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2020 aaPanel(www.aapanel.com) All rights reserved.
+# | Copyright (c) 2015-2020 K2Panel(www.k2panel.com) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: 沐落 <cjx@aapanel.com>
+# | Author: 沐落 <cjx@k2panel.com>
 # | Author: lx
 # | 消息通道邮箱模块
 # +-------------------------------------------------------------------
@@ -55,7 +55,7 @@ class sms_msg:
         data['date'] = '2022-08-02'
         data['author'] = '宝塔'
         data['title'] = '短信'
-        data['help'] = 'http://www.aapanel.com'
+        data['help'] = 'http://www.k2panel.com'
         return data
 
     def get_config(self,get):

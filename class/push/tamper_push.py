@@ -1,10 +1,10 @@
 #coding: utf-8
 # +-------------------------------------------------------------------
-# | aaPanel
+# | K2Panel
 # +-------------------------------------------------------------------
 # | Copyright (c) 2015-2020 宝塔软件(https://www.bt.cn) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: baozi <baozi@aapanel.com>
+# | Author: baozi <baozi@k2panel.com>
 # | Author: baozi
 # +-------------------------------------------------------------------
 import sys,os,re,json
@@ -83,7 +83,7 @@ class tamper_push(base_push):
         data['ps'] = 'Tamper-proof for Enterprise'
         data['version'] = '1.0'
         data['date'] = '2023-03-24'
-        data['author'] = 'aaPanel'
+        data['author'] = 'K2Panel'
         data['help'] = 'http://www.bt.cn/bbs'
         return data
 

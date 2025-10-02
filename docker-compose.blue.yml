@@ -24,7 +24,7 @@ services:
   app-blue:
     # استخدام الصورة المبنية من ghcr.io
     image: ${REGISTRY:-ghcr.io}/${IMAGE_NAME}:${IMAGE_TAG:-latest}
-    container_name: aapanel_app_blue
+    container_name: k2panel_app_blue
     
     # Port mapping - Blue على منفذ 5001
     ports:
@@ -48,7 +48,7 @@ services:
     
     # Network
     networks:
-      - aapanel_network
+      - k2panel_network
     
     # Restart policy
     restart: always
@@ -63,8 +63,8 @@ services:
     
     # Labels للتعريف
     labels:
-      com.aapanel.deployment.color: "blue"
-      com.aapanel.deployment.type: "blue-green"
+      com.k2panel.deployment.color: "blue"
+      com.k2panel.deployment.type: "blue-green"
 
 # ==============================================================================
 # Persistent Volumes
@@ -73,20 +73,20 @@ volumes:
   # Blue Application data (منفصلة)
   app_data_blue:
     driver: local
-    name: aapanel_app_data_blue
+    name: k2panel_app_data_blue
   
   # Blue Application logs (منفصلة)
   app_logs_blue:
     driver: local
-    name: aapanel_app_logs_blue
+    name: k2panel_app_logs_blue
 
 # ==============================================================================
 # Networks
 # ==============================================================================
 networks:
-  aapanel_network:
+  k2panel_network:
     external: true
-    name: aapanel_network
+    name: k2panel_network
 
 # ==============================================================================
 # Important Notes

@@ -1,7 +1,7 @@
 #!/bin/bash
 #coding: utf-8
 # +-------------------------------------------------------------------
-# | aaPanel - VPS Deployment Script
+# | K2Panel - VPS Deployment Script
 # +-------------------------------------------------------------------
 # | Automated deployment with health checks and rollback support
 # +-------------------------------------------------------------------
@@ -17,7 +17,7 @@ NC='\033[0m' # No Color
 
 # المتغيرات
 REGISTRY="${REGISTRY:-ghcr.io}"
-IMAGE_NAME="${IMAGE_NAME:-owner/aapanel}"
+IMAGE_NAME="${IMAGE_NAME:-owner/k2panel}"
 IMAGE_TAG="${IMAGE_TAG:-latest}"
 FULL_IMAGE="${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
 BACKUP_SUFFIX=".backup.yml"
@@ -264,7 +264,7 @@ deployment_summary() {
 
 # ==================== التنفيذ الرئيسي ====================
 main() {
-    print_header "🚀 aaPanel Deployment Script"
+    print_header "🚀 K2Panel Deployment Script"
     echo "Image: ${FULL_IMAGE}"
     echo "Time: $(date '+%Y-%m-%d %H:%M:%S')"
     

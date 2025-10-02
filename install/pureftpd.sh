@@ -3,11 +3,11 @@ PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 
 public_file=/www/server/panel/install/public.sh
-[ ! -f $public_file ] && wget -O $public_file https://node.aapanel.com/install/public.sh -T 5;
+[ ! -f $public_file ] && wget -O $public_file https://node.k2panel.com/install/public.sh -T 5;
 
 publicFileMd5=$(md5sum ${public_file}|awk '{print $1}')
 md5check="f94b33b66e8a6bc378245070e3d1b1b9"
-[ "${publicFileMd5}" != "${md5check}"  ] && wget -O $public_file https://node.aapanel.com/install/public.sh -T 5;
+[ "${publicFileMd5}" != "${md5check}"  ] && wget -O $public_file https://node.k2panel.com/install/public.sh -T 5;
 
 . $public_file
 download_Url=$NODE_URL

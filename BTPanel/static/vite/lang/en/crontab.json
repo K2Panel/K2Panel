@@ -181,7 +181,7 @@
 			"index_35": "Backup Directory",
 			"index_36": "Webshell",
 			"index_37": "Sync Time",
-			"index_38": "Synchronize the time from NTP server by default, and will synchronize the server time of aapanel.com when it fails.",
+			"index_38": "Synchronize the time from NTP server by default, and will synchronize the server time of k2panel.com when it fails.",
 			"index_39": "Free RAM",
 			"index_40": "Release the memory footprint of PHP, MYSQL, PURE-FTPD, APACHE, NGINX, it is recommended to execute it at midnight every day!",
 			"index_41": "Access URL",

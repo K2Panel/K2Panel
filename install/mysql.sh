@@ -714,8 +714,8 @@ EOF
     rm -rf src
     /etc/init.d/mysqld start
 
-    AAPANEL_CHECK=$(grep "English" /www/server/panel/config/config.json)
-    if [ "${AAPANEL_CHECK}" ];then
+    K2PANEL_CHECK=$(grep "English" /www/server/panel/config/config.json)
+    if [ "${K2PANEL_CHECK}" ];then
         sed -i "s/log-bin=mysql-bin/#log-bin=mysql-bin/g" /etc/my.cnf
         if [ "${version}" == "8.0" ] || [ "${version}" == "8.4" ] || [ "${version}" == "9.0" ];then
             sed -i '/log-bin=/a\skip-log-bin' /etc/my.cnf

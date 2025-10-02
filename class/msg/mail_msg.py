@@ -1,10 +1,10 @@
 #coding: utf-8
 # +-------------------------------------------------------------------
-# | aaPanel
+# | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2020 aaPanel(www.aapanel.com) All rights reserved.
+# | Copyright (c) 2015-2020 K2Panel(www.k2panel.com) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: 沐落 <cjx@aapanel.com>
+# | Author: 沐落 <cjx@k2panel.com>
 # | Author: lx
 # | 消息通道邮箱模块
 # +-------------------------------------------------------------------
@@ -58,9 +58,9 @@ class mail_msg:
         data['ps'] = 'Email is used to receive panel message push'
         data['version'] = '1.1'
         data['date'] = '2022-08-10'
-        data['author'] = 'aaPanel'
+        data['author'] = 'K2Panel'
         data['title'] = 'Email'
-        data['help'] = 'http://www.aapanel.com'
+        data['help'] = 'http://www.k2panel.com'
         return data
 
     def get_config(self,get):
@@ -154,7 +154,7 @@ class mail_msg:
         except:pass
         return msg,title
 
-    def send_msg(self,msg , title = 'aaPanel panel message push',to_email = None):
+    def send_msg(self,msg , title = 'K2Panel panel message push',to_email = None):
         """
         邮箱发送
         @msg 消息正文

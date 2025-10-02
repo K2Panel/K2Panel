@@ -5,7 +5,7 @@
 	"versions": "3.7",
 	"checks": "/www/server/panel/plugin/dns_manager",
 	"author": "official",
-	"home": "http://www.aapanel.com",
+	"home": "http://www.k2panel.com",
 	"date": "",
     "display": 1
 }

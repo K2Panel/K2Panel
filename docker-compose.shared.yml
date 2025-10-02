@@ -20,7 +20,7 @@ services:
   # ============================================================================
   postgres-shared:
     image: postgres:15-alpine
-    container_name: aapanel_postgres_shared
+    container_name: k2panel_postgres_shared
     
     # Environment file
     env_file:
@@ -33,14 +33,14 @@ services:
     
     # Network
     networks:
-      - aapanel_network
+      - k2panel_network
     
     # Restart policy
     restart: always
     
     # Health check
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-aapanel_user} -d $${POSTGRES_DB:-production_db}"]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-k2panel_user} -d $${POSTGRES_DB:-production_db}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -51,7 +51,7 @@ services:
   # ============================================================================
   redis-shared:
     image: redis:7-alpine
-    container_name: aapanel_redis_shared
+    container_name: k2panel_redis_shared
     
     # Additional commands
     command: >
@@ -68,7 +68,7 @@ services:
     
     # Network
     networks:
-      - aapanel_network
+      - k2panel_network
     
     # Restart policy
     restart: always
@@ -86,7 +86,7 @@ services:
   # ============================================================================
   prometheus-shared:
     image: prom/prometheus:v2.48.0
-    container_name: aapanel_prometheus_shared
+    container_name: k2panel_prometheus_shared
     
     # Commands
     command:
@@ -114,7 +114,7 @@ services:
     
     # Network (with alias for datasource compatibility)
     networks:
-      aapanel_network:
+      k2panel_network:
         aliases:
           - prometheus  # Allow Grafana to connect via http://prometheus:9090
     
@@ -134,7 +134,7 @@ services:
   # ============================================================================
   grafana-shared:
     image: grafana/grafana:10.2.2
-    container_name: aapanel_grafana_shared
+    container_name: k2panel_grafana_shared
     
     # Environment
     environment:
@@ -155,7 +155,7 @@ services:
     # Volumes
     volumes:
       - grafana_data_shared:/var/lib/grafana
-      - ./grafana-dashboard-aapanel.json:/var/lib/grafana/dashboards/aapanel.json:ro
+      - ./grafana-dashboard-k2panel.json:/var/lib/grafana/dashboards/k2panel.json:ro
       # Datasources provisioning - Prometheus & Loki
       - ./grafana-datasource.yml:/etc/grafana/provisioning/datasources/prometheus.yml:ro
       - ./grafana-loki-datasource.yml:/etc/grafana/provisioning/datasources/loki.yml:ro
@@ -168,7 +168,7 @@ services:
     
     # Network
     networks:
-      - aapanel_network
+      - k2panel_network
     
     # Restart policy
     restart: always
@@ -186,7 +186,7 @@ services:
   # ============================================================================
   alertmanager-shared:
     image: prom/alertmanager:latest
-    container_name: aapanel_alertmanager_shared
+    container_name: k2panel_alertmanager_shared
     
     # Commands
     command:
@@ -210,7 +210,7 @@ services:
     
     # Network (with alias for datasource compatibility)
     networks:
-      aapanel_network:
+      k2panel_network:
         aliases:
           - alertmanager  # Allow Prometheus to connect via alertmanager:9093
     
@@ -230,7 +230,7 @@ services:
   # ============================================================================
   loki-shared:
     image: grafana/loki:2.9.0
-    container_name: aapanel_loki_shared
+    container_name: k2panel_loki_shared
     
     # Loki is internal-only for security. Access via Grafana.
     # No external port binding - accessible only within Docker network
@@ -245,7 +245,7 @@ services:
     
     # Network (with alias for datasource compatibility)
     networks:
-      aapanel_network:
+      k2panel_network:
         aliases:
           - loki  # Allow Grafana and Promtail to connect via http://loki:3100
     
@@ -265,7 +265,7 @@ services:
   # ============================================================================
   promtail-shared:
     image: grafana/promtail:2.9.0
-    container_name: aapanel_promtail_shared
+    container_name: k2panel_promtail_shared
     
     # Volumes
     volumes:
@@ -289,7 +289,7 @@ services:
     
     # Network
     networks:
-      - aapanel_network
+      - k2panel_network
     
     # Restart policy
     restart: unless-stopped
@@ -301,45 +301,45 @@ volumes:
   # Shared PostgreSQL data
   postgres_data_shared:
     driver: local
-    name: aapanel_postgres_data_shared
+    name: k2panel_postgres_data_shared
   
   # Shared Redis data
   redis_data_shared:
     driver: local
-    name: aapanel_redis_data_shared
+    name: k2panel_redis_data_shared
   
   # Shared Prometheus data
   prometheus_data_shared:
     driver: local
-    name: aapanel_prometheus_data_shared
+    name: k2panel_prometheus_data_shared
   
   # Shared Grafana data
   grafana_data_shared:
     driver: local
-    name: aapanel_grafana_data_shared
+    name: k2panel_grafana_data_shared
   
   # Shared Alertmanager data
   alertmanager_data_shared:
     driver: local
-    name: aapanel_alertmanager_data_shared
+    name: k2panel_alertmanager_data_shared
   
   # Shared Loki data
   loki_data_shared:
     driver: local
-    name: aapanel_loki_data_shared
+    name: k2panel_loki_data_shared
   
   # Shared Promtail positions
   promtail_positions_shared:
     driver: local
-    name: aapanel_promtail_positions_shared
+    name: k2panel_promtail_positions_shared
 
 # ==============================================================================
 # Networks
 # ==============================================================================
 networks:
-  aapanel_network:
+  k2panel_network:
     driver: bridge
-    name: aapanel_network
+    name: k2panel_network
 
 # ==============================================================================
 # Important Notes

@@ -76,7 +76,7 @@
         "form_5": "Specify IP",
         "form_6": "Please enter the specified IP, Multiple IPs should be separated by \",\" or line breaks. e.g. 192.168.1.1, 192.168.1.2",
         "form_7": "Specify domain",
-        "form_8": "Please enter the specified domain. e.g. www.aapanel.com",
+        "form_8": "Please enter the specified domain. e.g. www.k2panel.com",
         "form_9": "Strategy",
         "form_10": "Direction",
         "form_11": "Remarks",
@@ -315,7 +315,7 @@
       "Index_10": "Operation logs"
     },
     "Conf": {
-      "Index_1": "aaPanel Brute Force Protection",
+      "Index_1": "K2Panel Brute Force Protection",
       "Index_2": "Your current IP address [{0}] is not on the whitelist",
       "Index_3": "Add to Whitelist",
       "Index_4": "It is recommended to turn on the antiviolence feature. It will better secure the server. Do you want to continue?",

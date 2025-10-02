@@ -1,10 +1,10 @@
 # coding: utf-8
 # -------------------------------------------------------------------
-# aaPanel
+# K2Panel
 # -------------------------------------------------------------------
-# Copyright (c) 2014-2099 aaPanel(www.aapanel.com) All rights reserved.
+# Copyright (c) 2014-2099 K2Panel(www.k2panel.com) All rights reserved.
 # -------------------------------------------------------------------
-# Author: wzz <wzz@aapanel.com>
+# Author: wzz <wzz@k2panel.com>
 # -------------------------------------------------------------------
 
 # ------------------------------
@@ -529,7 +529,7 @@ class main(dockerBase):
         if data: return
         pdata = {
             "name": server_name,
-            "remark": "aaPanel Docker Quick Deployment templates only [Do not delete them and use them separately to create projects]",
+            "remark": "K2Panel Docker Quick Deployment templates only [Do not delete them and use them separately to create projects]",
             "path": "{}/{}/docker-compose.yml".format(self.templates_path, server_name)
         }
         dp.sql("templates").insert(pdata)

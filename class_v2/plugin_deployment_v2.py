@@ -1,10 +1,10 @@
 #coding: utf-8
 # +-------------------------------------------------------------------
-# | aaPanel
+# | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2099 aaPanel(www.aapanel.com) All rights reserved.
+# | Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: hwliang <hwl@aapanel.com>
+# | Author: hwliang <hwl@k2panel.com>
 # +-------------------------------------------------------------------
 
 #+--------------------------------------------------------------------
@@ -276,7 +276,7 @@ class plugin_deployment:
         if not os.path.exists(packageZip): return public.returnMsg(False,'File download failed!' + packageZip)
 
         pinfo = self.set_temp_file(packageZip,path)
-        if not pinfo: return public.returnMsg(False, public.lang("Cannot find [aaPanel Auto Deployment Configuration File] in the installation package"))
+        if not pinfo: return public.returnMsg(False, public.lang("Cannot find [K2Panel Auto Deployment Configuration File] in the installation package"))
 
         #设置权限
         self.WriteLogs(json.dumps({'name':'Setting permissions','total':0,'used':0,'pre':0,'speed':0}))
@@ -466,7 +466,7 @@ class plugin_deployment:
         except: return False
 
 
-    #提交安装统计  todo 改提交aapanel
+    #提交安装统计  todo 改提交k2panel
     def depTotal(self,id):
         import panelAuth
         p = panelAuth.panelAuth()
@@ -540,7 +540,7 @@ class plugin_deployment:
             "ext": "pathinfo,exif",
             "version": "1.5.0",
             "install": "",
-            "download": "https://node.aapanel.com/install/package/roundcubemail.zip",
+            "download": "https://node.k2panel.com/install/package/roundcubemail.zip",
             "password": "",
             "config": "/config/config.inc.php",
             "md5": "785660db6540692b5c0eb240b41816e9"

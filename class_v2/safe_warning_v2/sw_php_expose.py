@@ -1,9 +1,9 @@
 #!/usr/bin/python
 #coding: utf-8
 # -------------------------------------------------------------------
-# aapanel
+# k2panel
 # -------------------------------------------------------------------
-# Copyright (c) 2015-2099 aapanel(http://www.aapanel.com) All rights reserved.
+# Copyright (c) 2015-2099 k2panel(http://www.k2panel.com) All rights reserved.
 # -------------------------------------------------------------------
 # Author: lkq <lkq@bt.cn>
 # -------------------------------------------------------------------

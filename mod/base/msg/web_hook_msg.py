@@ -1,8 +1,8 @@
 # coding: utf-8
 # +-------------------------------------------------------------------
-# | aapanel
+# | k2panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2020 aapanel(http://www.aapanel.com) All rights reserved.
+# | Copyright (c) 2015-2020 k2panel(http://www.k2panel.com) All rights reserved.
 # +-------------------------------------------------------------------
 # | Author: baozi <baozi@bt.cn>
 # | 消息通道HOOK模块

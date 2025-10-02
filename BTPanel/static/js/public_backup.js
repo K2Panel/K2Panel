@@ -1630,7 +1630,7 @@ bt.pub = {
             area: ['420px', '360px'],
             closeBtn: 2,
             shadeClose: false,
-            content: '<div class="libLogin pd20" ><div class="bt-form text-center"><div class="line mb15"><h3 class="c2 f16 text-center mtb20">' + lan.public_backup.bind_bt_account + '</h3></div><div class="line"><input class="bt-input-text" name="username2" type="text" placeholder="' + lan.public_backup.mobile_phone_or_email + '" id="p1"></div><div class="line"><input autocomplete="new-password" class="bt-input-text" type="password" name="password2"  placeholder="' + lan.public_backup.pass + '" id="p2"></div><div class="line"><input class="login-button" value="' + lan.public_backup.login + '" type="button" ></div><p class="text-right"><a class="btlink" href="https://brandnew.aapanel.com/user_admin/login" target="_blank">' + lan.public_backup.no_account + '</a></p></div></div>'
+            content: '<div class="libLogin pd20" ><div class="bt-form text-center"><div class="line mb15"><h3 class="c2 f16 text-center mtb20">' + lan.public_backup.bind_bt_account + '</h3></div><div class="line"><input class="bt-input-text" name="username2" type="text" placeholder="' + lan.public_backup.mobile_phone_or_email + '" id="p1"></div><div class="line"><input autocomplete="new-password" class="bt-input-text" type="password" name="password2"  placeholder="' + lan.public_backup.pass + '" id="p2"></div><div class="line"><input class="login-button" value="' + lan.public_backup.login + '" type="button" ></div><p class="text-right"><a class="btlink" href="https://brandnew.k2panel.com/user_admin/login" target="_blank">' + lan.public_backup.no_account + '</a></p></div></div>'
         });
         setTimeout(function() {
             $('.login-button').click(function() {
@@ -4186,7 +4186,7 @@ bt.soft = {
 							<div class="pro-left-list-content"></div>\
 						</div>\
 						<div class="pro-price-herf">\
-							<a class="privilege_contrast" href="https://aapanel.com/new/pricing.html" target="_blank" rel="noreferer noopener">Feature contrast</a>\
+							<a class="privilege_contrast" href="https://k2panel.com/new/pricing.html" target="_blank" rel="noreferer noopener">Feature contrast</a>\
 						</div>\
 					</div>\
 				</div>\
@@ -8338,7 +8338,7 @@ function setPanelSSL(){
                     }
                 },
               {
-                  html: '<div class="details"><input type="checkbox" id="checkSSL" /><label style="font-weight: 400;margin: -1px 5px 0px;" for="checkSSL">' + lan.config.ssl_open_ps_4 + '</label><a target="_blank" class="btlink" href="https://www.aapanel.com/forum/d/167-common-problems-after-opening-the-panel-certificate">' + lan.config.ssl_open_ps_5 + '</a></p></div>'
+                  html: '<div class="details"><input type="checkbox" id="checkSSL" /><label style="font-weight: 400;margin: -1px 5px 0px;" for="checkSSL">' + lan.config.ssl_open_ps_4 + '</label><a target="_blank" class="btlink" href="https://www.k2panel.com/forum/d/167-common-problems-after-opening-the-panel-certificate">' + lan.config.ssl_open_ps_5 + '</a></p></div>'
               }
 
             ],

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ================================================================
-# Comprehensive Security Check Script for aaPanel
+# Comprehensive Security Check Script for K2Panel
 # ================================================================
 # هذا السكريبت يفحص النظام بحثاً عن المشاكل الأمنية والثغرات
 #
@@ -124,7 +124,7 @@ check_root() {
 check_root
 
 if [ "$OUTPUT_MODE" != "json" ]; then
-    print_header "🔒 فحص أمان شامل لـ aaPanel"
+    print_header "🔒 فحص أمان شامل لـ K2Panel"
 fi
 
 # ================================================================
@@ -493,32 +493,32 @@ if command -v last &> /dev/null; then
 fi
 
 # ================================================================
-# 9. aaPanel Specific Checks
+# 9. K2Panel Specific Checks
 # ================================================================
 
-print_header "9️⃣ فحص أمان aaPanel"
+print_header "9️⃣ فحص أمان K2Panel"
 
-# Check 9.1: aaPanel directory permissions
-check_start "التحقق من صلاحيات مجلد aaPanel"
+# Check 9.1: K2Panel directory permissions
+check_start "التحقق من صلاحيات مجلد K2Panel"
 if [ -d /www/server/panel ]; then
     PANEL_PERMS=$(stat -c "%a" /www/server/panel 2>/dev/null || stat -f "%Lp" /www/server/panel 2>/dev/null)
     if [ "$PANEL_PERMS" = "750" ] || [ "$PANEL_PERMS" = "755" ]; then
-        check_pass "aaPanel directory permissions OK ($PANEL_PERMS)"
+        check_pass "K2Panel directory permissions OK ($PANEL_PERMS)"
     else
-        check_warning "aaPanel directory permissions: $PANEL_PERMS (recommended: 750)"
+        check_warning "K2Panel directory permissions: $PANEL_PERMS (recommended: 750)"
     fi
 else
-    check_info "aaPanel directory not found"
+    check_info "K2Panel directory not found"
 fi
 
-# Check 9.2: aaPanel logs
-check_start "التحقق من سجلات aaPanel"
+# Check 9.2: K2Panel logs
+check_start "التحقق من سجلات K2Panel"
 if [ -f /www/server/panel/logs/error.log ]; then
     ERROR_COUNT=$(tail -100 /www/server/panel/logs/error.log 2>/dev/null | grep -i "error" | wc -l || echo "0")
     if [ "$ERROR_COUNT" -lt 10 ]; then
-        check_pass "Low error count in aaPanel logs ($ERROR_COUNT)"
+        check_pass "Low error count in K2Panel logs ($ERROR_COUNT)"
     else
-        check_warning "High error count in aaPanel logs ($ERROR_COUNT)"
+        check_warning "High error count in K2Panel logs ($ERROR_COUNT)"
     fi
 fi
 

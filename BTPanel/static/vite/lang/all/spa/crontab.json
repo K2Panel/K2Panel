@@ -163,7 +163,7 @@
 	"213cb47719d7d95e6d4ac0c023077698": "Directorio de respaldo",
 	"d985c8ef9ce347ea05138c2c660162d4": "Webshell",
 	"52e2e97d44cef7498a6ab300c59378ec": "Tiempo de sincronización",
-	"f16738eb14e338663ce083aea1168302": "Sincronice el tiempo del servidor NTP de forma predeterminada y sincronizará el tiempo del servidor de aapanel.com cuando falle.",
+	"f16738eb14e338663ce083aea1168302": "Sincronice el tiempo del servidor NTP de forma predeterminada y sincronizará el tiempo del servidor de k2panel.com cuando falle.",
 	"d22b4455f9d4e4783ff7f030f42feca3": "Carnero gratis",
 	"6163f52c564e8b1fa597a63b60922233": "Libere la huella de memoria de PHP, MySQL, Pure-Ftpd, Apache, Nginx, ¡se recomienda ejecutarla a medianoche todos los días!",
 	"a63c4434a8943a075c04ebdf1b54a13e": "URL de acceso",
@@ -204,5 +204,5 @@
 	"1366ea178d5982a458473a26d2497704": "A partir del minuto 0 de cada hora y ejecutó cada {0} minutos",
 	"39aba25ea2402e1013ebe54be1c7acc8": "Ejecutado cada {0} segundos",
 	"b7b5c32036d1bb9dd91e97886fc1b1f3": "Programación de tareas",
-	"aac027ec9e38230130244e0397eaac6d": "Sincronice el tiempo del servidor NTP de forma predeterminada y sincronizará el tiempo del servidor de AAPANEL.com cuando falle."
+	"aac027ec9e38230130244e0397eaac6d": "Sincronice el tiempo del servidor NTP de forma predeterminada y sincronizará el tiempo del servidor de K2PANEL.com cuando falle."
 }

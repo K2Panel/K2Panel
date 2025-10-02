@@ -2,9 +2,9 @@
 # +-------------------------------------------------------------------
 # | 宝塔Windows面板
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2099 aaPanel(www.aapanel.com) All rights reserved.
+# | Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: 沐落 <cjx@aapanel.com>
+# | Author: 沐落 <cjx@k2panel.com>
 # +-------------------------------------------------------------------
 
 import re,os,sys,public

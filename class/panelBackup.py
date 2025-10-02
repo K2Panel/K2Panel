@@ -1,10 +1,10 @@
 # coding: utf-8
 # -------------------------------------------------------------------
-# aaPanel
+# K2Panel
 # -------------------------------------------------------------------
-# Copyright (c) 2015-2099 aaPanel(www.aapanel.com) All rights reserved.
+# Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
 # -------------------------------------------------------------------
-# Author: hwliang <hwl@aapanel.com>
+# Author: hwliang <hwl@k2panel.com>
 # -------------------------------------------------------------------
 
 # ------------------------------
@@ -847,7 +847,7 @@ class backup:
         return title
 
     def generate_failture_title(self, task_name):
-        title = "aaPanel backup task failed reminder".format(task_name)
+        title = "K2Panel backup task failed reminder".format(task_name)
         return title
 
     def generate_all_failture_notice(self, task_name, msg, backup_type, remark=""):
@@ -858,23 +858,23 @@ class backup:
         if remark:
             remark = "\n* Task notes: {}".format(remark)
 
-        notice_content = """*aaPanel reminds you that the cron failed to execute*
+        notice_content = """*K2Panel reminds you that the cron failed to execute*
 * Server IP*: {}
 * Time*: {}
 * Task name*: {} {}
 * The following is a list of {} that failed to backup*:
 {}
---Notification by aaPanel""".format(
+--Notification by K2Panel""".format(
             server_ip, now, task_name, remark, backup_type, msg)
 
-#         tg_content = """📣‼*aaPanel reminds you that the cron failed to execute*‼
+#         tg_content = """📣‼*K2Panel reminds you that the cron failed to execute*‼
 #
 # * Server IP*: {}
 # * Time*: {}
 # * Task name*: {} {}
 # * The following is a list of {} that failed to backup*:
 # {}
-# --Notification by aaPanel""".format(
+# --Notification by K2Panel""".format(
 #             server_ip, now, task_name, remark, backup_type, msg)
         # return {"mail":notice_content,"tg":tg_content}
         return notice_content
@@ -887,16 +887,16 @@ class backup:
         if remark:
             remark = "\n* Task notes: {}".format(remark)
 
-        notice_content = """*aaPanel reminds you that the cron failed to execute*
+        notice_content = """*K2Panel reminds you that the cron failed to execute*
 * Server IP*: {}
 * Time*: {}
 * Task name*: {} {}
 * error message*:
 {}
---Notification by aaPanel""".format(
+--Notification by K2Panel""".format(
             server_ip, now, task_name, remark, msg)
 
-#         tg_content = """📣‼*aaPanel reminds you that the cron failed to execute*‼
+#         tg_content = """📣‼*K2Panel reminds you that the cron failed to execute*‼
 #
 # * Server IP*: {}
 # * Time*: {}
@@ -904,7 +904,7 @@ class backup:
 # * Error messages*：
 # {}
 #
-# -- Notification by aaPanel""".format(
+# -- Notification by K2Panel""".format(
 #             server_ip, now, task_name, remark, msg)
         # return {'mail':notice_content,'tg':tg_content}
         return notice_content

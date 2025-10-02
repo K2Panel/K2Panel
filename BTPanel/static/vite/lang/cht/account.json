@@ -49,7 +49,7 @@
 			"accountState-721844-12": "過期",
 			"accountState-721844-13": "過期時間",
 			"accountState-721844-14": "備註",
-			"accountState-721844-15": "登錄至aapanel",
+			"accountState-721844-15": "登錄至k2panel",
 			"accountState-721844-16": "編輯",
 			"accountState-721844-17": "刪除",
 			"accountState-721844-18": "創建用戶中，請稍候...",
@@ -79,7 +79,7 @@
 			"account_533924-6": "未開啟",
 			"account_533924-7": "配額",
 			"account_533924-8": "可用的子用戶：",
-			"account_533924-9": "aapanel pro版本最多只能添加{0} 個賬戶！",
+			"account_533924-9": "k2panel pro版本最多只能添加{0} 個賬戶！",
 			"account_533924-10": "賬戶數量",
 			"account_533924-11": "未開啟API或未將127.0.0.1加入API白名單，將導致子麵板郵局無法使用，將導致子麵板郵局無法使用",
 			"account_533924-12": "一鍵加白"
@@ -138,10 +138,10 @@
 			"disk_810348-13": "正在啟用磁盤配額，請稍候..."
 		},
 		"Install": {
-			"index_1": "aaPanel子賬戶 - 多用戶",
+			"index_1": "K2Panel子賬戶 - 多用戶",
 			"index_2": "資源配額",
 			"index_3": "獨立用戶區域",
-			"index_4": "像aaPanel一樣簡單",
+			"index_4": "像K2Panel一樣簡單",
 			"index_5": "安裝日誌",
 			"index_6": "正在安裝中，請稍候...",
 			"index_7": "當前web：{0}，請將當前web服務器調整成{1}，調整前請先備份相關數據再調整",

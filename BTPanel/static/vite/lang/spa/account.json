@@ -49,7 +49,7 @@
 			"accountState-721844-12": "Venció",
 			"accountState-721844-13": "Fecha de expiración",
 			"accountState-721844-14": "Observaciones",
-			"accountState-721844-15": "Iniciar sesión sub aapanel",
+			"accountState-721844-15": "Iniciar sesión sub k2panel",
 			"accountState-721844-16": "Editar",
 			"accountState-721844-17": "Borrar",
 			"accountState-721844-18": "Creando usuario, espere ...",
@@ -79,7 +79,7 @@
 			"account_533924-6": "Desactivar",
 			"account_533924-7": "Cuota",
 			"account_533924-8": "Sub-usadores disponibles:",
-			"account_533924-9": "AAPANEL Pro Edition solo puede sumar a {0} cuenta！",
+			"account_533924-9": "K2PANEL Pro Edition solo puede sumar a {0} cuenta！",
 			"account_533924-10": "Número de cuenta",
 			"account_533924-11": "Si la API no está habilitada o no se agrega 127.0.0.1 a la lista blanca API, la oficina de correos de subanel será inutilizable.",
 			"account_533924-12": "Blanqueamiento de un solo clic"
@@ -138,10 +138,10 @@
 			"disk_810348-13": "Habilitando la cuota de disco, por favor espere ..."
 		},
 		"Install": {
-			"index_1": "AAPANEL Sub cuenta: múltiples usuarios",
+			"index_1": "K2PANEL Sub cuenta: múltiples usuarios",
 			"index_2": "Cuota de recursos",
 			"index_3": "Área de usuario separada",
-			"index_4": "Tan simple como aapanel",
+			"index_4": "Tan simple como k2panel",
 			"index_5": "Registro de instalación",
 			"index_6": "Instalando, espere ...",
 			"index_7": "Servidor web: {0}, ajuste el servidor web actual a {1}, haga una copia de seguridad de los datos relacionados antes del ajuste.",

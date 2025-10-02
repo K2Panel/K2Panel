@@ -1,10 +1,10 @@
 #coding: utf-8
 # +-------------------------------------------------------------------
-# | aaPanel 
+# | K2Panel 
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2099 aaPanel(www.aapanel.com) All rights reserved.
+# | Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: hwliang <hwl@aapanel.com>
+# | Author: hwliang <hwl@k2panel.com>
 # +-------------------------------------------------------------------
 import json
 import time
@@ -38,7 +38,7 @@ class ssh_terminal:
     _ssh = None
     _last_cmd = ""
     _last_cmd_tip = 0
-    _log_type = public.lang("aaPanel terminal")
+    _log_type = public.lang("K2Panel terminal")
     _history_len = 0
     _client = ""
     _rep_ssh_config = False

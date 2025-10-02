@@ -197,8 +197,8 @@ class BaseTask:
         print(title)
         if dingding:
             print("dingdingtitle",title)
-            if "aapanel" not in title:
-                title += "aapanel"
+            if "k2panel" not in title:
+                title += "k2panel"
                 print("dingdingtitle",title)
         
         print(title)     

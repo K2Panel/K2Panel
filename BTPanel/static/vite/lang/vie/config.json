@@ -33,7 +33,7 @@
 			"index_28": "(1 mỗi dòng)",
 			"index_29": "Khi API được bật, chỉ IP trong danh sách trắng IP mới có thể truy cập API bảng điều khiển.",
 			"index_30": "Vui lòng không kích hoạt điều này trong môi trường sản xuất, vì nó có thể tăng rủi ro bảo mật cho máy chủ.",
-			"index_31": "Vui lòng không sử dụng các ứng dụng của bên thứ ba để gọi API AAPANEL để ngăn chặn các mối đe dọa bảo mật tiềm ẩn.",
+			"index_31": "Vui lòng không sử dụng các ứng dụng của bên thứ ba để gọi API K2PANEL để ngăn chặn các mối đe dọa bảo mật tiềm ẩn.",
 			"index_32": "Tài liệu API: ",
 			"index_33": "Đặt lại khóa",
 			"index_86": "Bạn có chắc là bạn muốn đặt lại khóa hiện tại của mình không?",
@@ -532,7 +532,7 @@
 			"index_94": "Khôi phục thành công"
 		},
 		"Migrate": {
-			"index_1": "Việc di chuyển toàn bộ hệ thống sẽ tự động cài đặt Aapanel. Hãy chắc chắn rằng mục tiêu là một máy chủ mới không có AAPANEL hoặc bất kỳ môi trường nào khác, hoặc việc di chuyển có thể thất bại!",
+			"index_1": "Việc di chuyển toàn bộ hệ thống sẽ tự động cài đặt Aapanel. Hãy chắc chắn rằng mục tiêu là một máy chủ mới không có K2PANEL hoặc bất kỳ môi trường nào khác, hoặc việc di chuyển có thể thất bại!",
 			"index_2": "Bắt đầu di chuyển",
 			"index_3": "Bấm để xem dữ liệu di chuyển chi tiết",
 			"index_4": "Chi tiết di chuyển",

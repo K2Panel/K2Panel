@@ -1,10 +1,10 @@
 # coding: utf-8
 # +-------------------------------------------------------------------
-# | aaPanel x3
+# | K2Panel x3
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2017 aaPanel(www.aapanel.com) All rights reserved.
+# | Copyright (c) 2015-2017 K2Panel(www.k2panel.com) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: hwliang <hwl@aapanel.com>
+# | Author: hwliang <hwl@k2panel.com>
 # +-------------------------------------------------------------------
 import base64
 import public,re,os,nginx,apache,json,time,ols
@@ -86,7 +86,7 @@ class config:
         # 自定义邮件
         self.mail.qq_stmp_insert(get.email.strip(), get.stmp_pwd.strip(), get.hosts.strip(),get.port.strip())
         # 测试发送
-        if self.mail.qq_smtp_send(get.email.strip(), public.lang("aaPanel Alert Test Email"), public.lang("aaPanel Alert Test Email")):
+        if self.mail.qq_smtp_send(get.email.strip(), public.lang("K2Panel Alert Test Email"), public.lang("K2Panel Alert Test Email")):
             if not get.email.strip() in self.__mail_list:
                 self.__mail_list.append(get.email.strip())
                 public.writeFile(self.__mail_list_data, json.dumps(self.__mail_list))
@@ -1031,13 +1031,13 @@ class config:
         domains = self.get_host_all()
         pdata = {
             "action": "get_domain_cert",
-            "company": "aapanel.com",
+            "company": "k2panel.com",
             "domain": ','.join(domains),
             "uid": userInfo['uid'],
             "access_key": 'B' * 32,
             "panel": 1
         }
-        cert_api = 'https://api.aapanel.com/aapanel_cert'
+        cert_api = 'https://api.k2panel.com/k2panel_cert'
         result = json.loads(public.httpPost(cert_api, {'data': json.dumps(pdata)}))
         if 'status' in result:
             if result['status']:
@@ -1499,7 +1499,7 @@ class config:
                 self.CreateSSL()
                 cert['info'] = public.get_cert_data(cert_file)
             if cert['info']:
-                if cert['info']['issuer'] == 'aapanel.com':
+                if cert['info']['issuer'] == 'k2panel.com':
                     if os.path.exists('ssl/baota_root.pfx'):
                         cert['download_root'] = True
                         cert['root_password'] = public.readFile('ssl/root_password.pl')
@@ -1928,7 +1928,7 @@ class config:
                 try:
                     panel_name = json.loads(public.readFile(self._setup_path+'/config/config.json'))['title']
                 except:
-                    panel_name = 'aaPanel'
+                    panel_name = 'K2Panel'
                 data = pyotp.totp.TOTP(secret_key).provisioning_uri(username, issuer_name='{}--{}'.format(panel_name,local_ip))
                 public.writeFile(self._core_fle_path+'/qrcode.txt',str(data))
                 return public.return_msg_gettext(True, 'Setup successfully!')
@@ -2335,7 +2335,7 @@ class config:
         public.create_logs()
         import page
         page = page.Page()
-        count = public.M('logs2').where('type=?', (u'aapanel login reminder',)).field('log,addtime').count()
+        count = public.M('logs2').where('type=?', (u'k2panel login reminder',)).field('log,addtime').count()
         limit = 7
         info = {}
         info['count'] = count
@@ -2350,7 +2350,7 @@ class config:
         data = {}
         # 获取分页数据
         data['page'] = page.GetPage(info, '1,2,3,4,5,8')
-        data['data'] = public.M('logs2').where('type=?', (u'aapanel login reminder',)).field('log,addtime').order('id desc').limit(
+        data['data'] = public.M('logs2').where('type=?', (u'k2panel login reminder',)).field('log,addtime').order('id desc').limit(
             str(page.SHIFT) + ',' + str(page.ROW)).field('log,addtime').select()
         return data
 
@@ -2677,7 +2677,7 @@ class config:
 
     def install_msg_module(self,get):
         """
-        aapanel 不与面板相同，不删除通道模块
+        k2panel 不与面板相同，不删除通道模块
         安装/更新消息通道模块
         @name 需要安装的模块名称
         """
@@ -2722,7 +2722,7 @@ class config:
 
     def uninstall_msg_module(self,get):
         """
-        aapanel 不与面板相同，不删除通道模块，只删除配置文件
+        k2panel 不与面板相同，不删除通道模块，只删除配置文件
         @module_name 是删除配置文件
         """
         module_name = get.name
@@ -3605,7 +3605,7 @@ class config:
     #     software_name = get.software_name
     #     product_type = get.product_type
     #     import json, requests
-    #     api_url = 'https://wafapi2.aapanel.com/api/v2/contact/nps/submit'
+    #     api_url = 'https://wafapi2.k2panel.com/api/v2/contact/nps/submit'
     #     user_info = json.loads(public.ReadFile("{}/data/userInfo.json".format(public.get_panel_path())))
     #     if 'rate' not in get:
     #         return public.returnMsg(False, "参数错误")
@@ -3746,7 +3746,7 @@ class config:
         # 提交
         if not public.cache_get(pkey):
             try:
-                public.run_thread(public.httpPost("https://geterror.aapanel.com/bt_error/index.php", error_infos))
+                public.run_thread(public.httpPost("https://geterror.k2panel.com/bt_error/index.php", error_infos))
                 public.cache_set(pkey, 1, 1800)
             except Exception as e:
                 pass

@@ -181,7 +181,7 @@
 			"index_35": "Sicherungsverzeichnis",
 			"index_36": "Webshell",
 			"index_37": "Zeit synchronisieren",
-			"index_38": "Synchronisieren Sie die Zeit standardmäßig vom NTP -Server und synchronisieren die Serverzeit von aapanel.com, wenn er fehlschlägt.",
+			"index_38": "Synchronisieren Sie die Zeit standardmäßig vom NTP -Server und synchronisieren die Serverzeit von k2panel.com, wenn er fehlschlägt.",
 			"index_39": "Freier Ram",
 			"index_40": "Veröffentlichen Sie den Speicherausdruck von PHP, MySQL, Pure-Fftpd, Apache, Nginx. Es wird empfohlen, ihn jeden Tag um Mitternacht auszuführen!",
 			"index_41": "Zugang zu URL",

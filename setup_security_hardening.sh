@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ================================================================
-# Security Hardening Script for aaPanel - COMPREHENSIVE VERSION
+# Security Hardening Script for K2Panel - COMPREHENSIVE VERSION
 # ================================================================
 # هذا السكريبت يقوم بتشديد أمان النظام للإنتاج بشكل شامل
 # 
@@ -145,7 +145,7 @@ backup_config() {
 check_root
 detect_os
 
-print_header "🔒 إعداد Security Hardening لـ aaPanel"
+print_header "🔒 إعداد Security Hardening لـ K2Panel"
 print_info "نظام التشغيل: $OS $VER"
 
 # ================================================================
@@ -427,7 +427,7 @@ cat > /etc/audit/rules.d/security-hardening.rules <<'EOF'
 # File & Directory Access
 -w /etc/ -p wa -k etc_changes
 -w /var/log/ -p wa -k log_changes
--w /www/server/panel/ -p wa -k aapanel_changes
+-w /www/server/panel/ -p wa -k k2panel_changes
 
 # Network
 -a always,exit -F arch=b64 -S socket -S connect -S sendto -S recvfrom -k network
@@ -508,7 +508,7 @@ chmod 600 /etc/gshadow 2>/dev/null || true
 chmod 644 /etc/passwd 2>/dev/null || true
 chmod 644 /etc/group 2>/dev/null || true
 
-# aaPanel directories
+# K2Panel directories
 if [ -d /www/server/panel ]; then
     chown -R www:www /www/server/panel 2>/dev/null || true
     chmod 750 /www/server/panel 2>/dev/null || true
@@ -658,7 +658,7 @@ echo "   • Complexity requirements مفعّلة"
 echo ""
 echo -e "${CYAN}6. File Permissions:${NC}"
 echo "   • Critical files محمية"
-echo "   • aaPanel directories آمنة"
+echo "   • K2Panel directories آمنة"
 echo ""
 
 echo -e "${CYAN}الأوامر المفيدة:${NC}"

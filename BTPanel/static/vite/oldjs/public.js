@@ -4292,14 +4292,14 @@ function loginActivity() {
 		content:
 			'<div style="display:flex">' +
 			'<div style="width:450px;background: linear-gradient(0deg, #d8efdb, #edf7ef);padding:50px 30px;">' +
-			'<p style="font-size:30px;margin-bottom:40px;font-weight: bold;">Log in to aaPanel account</p>' +
+			'<p style="font-size:30px;margin-bottom:40px;font-weight: bold;">Log in to K2Panel account</p>' +
 			'<p style="font-size:14px;margin-bottom:15px">SSL certificate synchronization (coming soon)</p>' +
 			'<p style="font-size:14px;margin-bottom:15px">Receive service exception information (coming soon)</p>' +
 			'<p style="font-size:14px;margin-bottom:15px;margin-left:5px;">·Website application firewall (WAF)</p>' +
 			'<p style="font-size:14px;margin-bottom:15px;margin-left:5px;">·Website tamper-proof</p>' +
 			'<p style="font-size:14px;margin-bottom:15px;margin-left:5px;">·File synchronization tool</p>' +
 			'<p style="font-size:14px;margin-bottom:15px;margin-left:5px;">·Website analysis</p>' +
-			'<p style="font-size:14px;margin-bottom:15px;">·aaPanel Mobile (APP)</p>' +
+			'<p style="font-size:14px;margin-bottom:15px;">·K2Panel Mobile (APP)</p>' +
 			'</div>' +
 			'<div style="width:500px;padding:60px 30px; position: relative;">' +
 			'<span id="signupPagBtn" style="font-size: 16px; cursor: pointer; border-bottom: 2px solid #20A53A; padding: 10px 0; color:#20A53A;">Sign up</span>' +
@@ -4317,7 +4317,7 @@ function loginActivity() {
 			// 验证邮件发送成功页面
 			'<div id="mailboxPag" style="display:none">' +
 			'<p style="font-size:25px; margin: 0 0 20px 0; font-weight: bold; word-break: break-all;">The verification email has been <br />sent to: <span class="email" style="text-decoration: underline; text-underline-offset: 7px;">aaaaaaaaaaaaaaaaaaaaaaaaaaaa@aaaaaaaaaaaaaa.com</span></p>' +
-			'<p style="font-size:16px; margin: 20px 0 50px 0;">If you cannot receive the verification email, please use your registered email to contact: <span style="text-decoration: underline;">support@aapanel.com</span></p>' +
+			'<p style="font-size:16px; margin: 20px 0 50px 0;">If you cannot receive the verification email, please use your registered email to contact: <span style="text-decoration: underline;">support@k2panel.com</span></p>' +
 			'<div>' +
 			'<button id="verified" style="width:200px; font-size:14px; background-color: #20a53a; border-color: transparent; height: 40px; cursor: pointer; color: #fff; border: none; border-radius: 2px;">I have verified</button>' +
 			'<button id="resend" style="width:100px; font-size:14px; background-color: #ffffff; border: 1px solid #20a53a; height: 40px; cursor: pointer; color: #20a53a; border-radius: 2px; margin-left:20px;">Resend</button>' +
@@ -5935,7 +5935,7 @@ function show_ssh_login(is_config) {
                             <div class="line " style="margin-left: -40px;"><span class="tname">Method</span><div class="info-r "><button class="ssh_check_s2" id="pass_check" onclick="pass_check()">Password</button><button id="rsa_check" class="ssh_check_s1" onclick="rsa_check()">Key</button></div></div>\
                             <div class="line ssh_passwd" style="margin-left: -40px;"><span class="tname">Password</span><div class="info-r "><input name="ssh_passwd" readonly="readonly" class="bt-input-text mr5" type="password" style="width:330px" value="" autocomplete="off"></div></div>\
                             <div class="line ssh_pkey" style="display:none;margin-left: -40px;"><span class="tname">Key</span><div class="info-r "><textarea name="ssh_pkey" class="bt-input-text mr5" style="width:330px;height:80px;" ></textarea></div></div>\
-                            <div class="line " style="margin-left: -40px;"><span class="tname"></span><div class="info-r "><input style="margin-top: 1px;width: 16px;" name="ssh_is_save" id="ssh_is_save" class="bt-input-text mr5" type="checkbox" ><label style="position: absolute;margin-left: 5px;" for="ssh_is_save">Remember password, the next time you use the aaPanel terminal will automatically log in</label></div></div>\
+                            <div class="line " style="margin-left: -40px;"><span class="tname"></span><div class="info-r "><input style="margin-top: 1px;width: 16px;" name="ssh_is_save" id="ssh_is_save" class="bt-input-text mr5" type="checkbox" ><label style="position: absolute;margin-left: 5px;" for="ssh_is_save">Remember password, the next time you use the K2Panel terminal will automatically log in</label></div></div>\
                             <p style="color: red;margin-top: 10px;text-align: center;margin-left: -62px;">Only support login to this server</p>\
                             <div class="bt-form-submit-btn"><button type="button" class="btn btn-sm btn-danger" onclick="' +
 		(is_config ? 'layer.close(ssh_login)' : 'layer.closeAll()') +
@@ -6294,7 +6294,7 @@ function MessageChannelSettings() {
                                 <ul class="help-info-text c7" style="margin-top: 315px;">\
                                     <li>ID: Your telegram user ID</li>\
                                     <li>Token: Your telegram bot token </li>\
-                                    <li>e.g: [ 12345677:AAAAAAAAA_a0VUo2jjr__CCCCDDD ] <a class="btlink" href="https://www.aapanel.com/forum/d/5115-how-to-add-telegram-to-panel-notifications" target="_blank" rel="noopener"> Help</a></li>\
+                                    <li>e.g: [ 12345677:AAAAAAAAA_a0VUo2jjr__CCCCDDD ] <a class="btlink" href="https://www.k2panel.com/forum/d/5115-how-to-add-telegram-to-panel-notifications" target="_blank" rel="noopener"> Help</a></li>\
                                 </ul>\
 							</div>\
 						</div>\
@@ -6989,7 +6989,7 @@ function renderTelegramConfigView(data) {
 					<ul class="help-info-text c7" style="position: absolute; left: 40px; bottom: 20px;">\
 						<li>ID: Your telegram user ID</li>\
 						<li>Token: Your telegram bot token</li>\
-						<li>e.g: [ 12345677:AAAAAAAAA_a0VUo2jjr__CCCCDDD ] <a class="btlink" href="https://www.aapanel.com/forum/d/5115-how-to-add-telegram-to-panel-notifications" target="_blank" rel="noopener">Help</a></li>\
+						<li>e.g: [ 12345677:AAAAAAAAA_a0VUo2jjr__CCCCDDD ] <a class="btlink" href="https://www.k2panel.com/forum/d/5115-how-to-add-telegram-to-panel-notifications" target="_blank" rel="noopener">Help</a></li>\
 					</ul>\
 				</div>\
 			</div>',

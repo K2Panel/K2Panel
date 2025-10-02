@@ -49,7 +49,7 @@
       "accountState-721844-12": "过期",
       "accountState-721844-13": "过期时间",
       "accountState-721844-14": "备注",
-      "accountState-721844-15": "登录至aapanel",
+      "accountState-721844-15": "登录至k2panel",
       "accountState-721844-16": "编辑",
       "accountState-721844-17": "删除",
       "accountState-721844-18": "创建用户中，请稍候...",
@@ -79,7 +79,7 @@
       "account_533924-6": "未开启",
       "account_533924-7": "配额",
       "account_533924-8": "可用的子用户：",
-      "account_533924-9": "aaPanel Pro版本最多只能添加{0}个账户！",
+      "account_533924-9": "K2Panel Pro版本最多只能添加{0}个账户！",
       "account_533924-10": "账户数量",
       "account_533924-11": "未开启api或未将127.0.0.1加入api白名单，将导致子面板邮局无法使用",
       "account_533924-12": "一键加白"
@@ -138,10 +138,10 @@
       "disk_810348-13": "正在启用磁盘配额，请稍候..."
     },
     "Install": {
-      "index_1": "aaPanel子账户 - 多用户",
+      "index_1": "K2Panel子账户 - 多用户",
       "index_2": "资源配额",
       "index_3": "独立用户区域",
-      "index_4": "像aaPanel一样简单",
+      "index_4": "像K2Panel一样简单",
       "index_5": "安装日志",
       "index_6": "正在安装中，请稍候...",
       "index_7": "当前Web服务器：{0}，请将当前Web服务器调整成{1}，调整前请先备份相关数据再调整",

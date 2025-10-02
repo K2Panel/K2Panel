@@ -171,7 +171,7 @@
 	"213cb47719d7d95e6d4ac0c023077698": "Yedek dizin",
 	"d985c8ef9ce347ea05138c2c660162d4": "Web Shell",
 	"52e2e97d44cef7498a6ab300c59378ec": "Senkronizasyon Süresi",
-	"aac027ec9e38230130244e0397eaac6d": "Varsayılan olarak NTP sunucusundan gelen süreyi senkronize edin ve başarısız olduğunda aapanel.com'un sunucu süresini senkronize edecektir.",
+	"aac027ec9e38230130244e0397eaac6d": "Varsayılan olarak NTP sunucusundan gelen süreyi senkronize edin ve başarısız olduğunda k2panel.com'un sunucu süresini senkronize edecektir.",
 	"d22b4455f9d4e4783ff7f030f42feca3": "Ücretsiz Ram",
 	"6163f52c564e8b1fa597a63b60922233": "PHP, MySQL, Pure-FTPD, Apache, Nginx'in bellek ayak izini serbest bırakın, her gün gece yarısı yürütülmesi önerilir!",
 	"a63c4434a8943a075c04ebdf1b54a13e": "Erişim URL'si",

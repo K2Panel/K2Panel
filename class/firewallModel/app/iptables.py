@@ -1,9 +1,9 @@
 #!/www/server/panel/pyenv/bin/python3.7
 # coding: utf-8
 # -------------------------------------------------------------------
-# aapanel
+# k2panel
 # -------------------------------------------------------------------
-# Copyright (c) 2014-2099 aapanel(http://www.aapanel.com) All rights reserved.
+# Copyright (c) 2014-2099 k2panel(http://www.k2panel.com) All rights reserved.
 # -------------------------------------------------------------------
 # Author: wzz <wzz@bt.cn>
 # -------------------------------------------------------------------

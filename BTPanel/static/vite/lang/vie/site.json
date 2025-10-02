@@ -249,7 +249,7 @@
 			"index_24": "Khi bạn không chỉ định trang web mặc định SSL, nếu bạn sử dụng HTTPS để truy cập một trang web không được bật SSL, bạn sẽ trực tiếp truy cập một trang web đã bật SSL.",
 			"index_25": "Trong xác thực DNS, chúng tôi cung cấp ba API DNS tự động và cung cấp chế độ thủ công.",
 			"index_26": "Chứng chỉ có thể được gia hạn tự động bằng cách sử dụng API DNS. Trong chế độ thủ công, chứng chỉ cần được áp dụng lại sau khi hết hạn chứng chỉ.",
-			"index_27": "Trước khi sử dụng API [AAPANEL DNS Cloud), bạn cần xác nhận rằng DNS miền mà bạn muốn đăng ký chứng chỉ SSL là [độ phân giải đám mây].",
+			"index_27": "Trước khi sử dụng API [K2PANEL DNS Cloud), bạn cần xác nhận rằng DNS miền mà bạn muốn đăng ký chứng chỉ SSL là [độ phân giải đám mây].",
 			"index_28": "Trước khi sử dụng API [DNSPOD/ALI Cloud DNS], bạn cần đặt khóa API của giao diện tương ứng trong cửa sổ bật lên.",
 			"index_29": "Tên miền",
 			"index_30": "Thương hiệu",
@@ -405,7 +405,7 @@
 			"index_110": "Dữ liệu nhật ký được phân tích chứa các yêu cầu bị chặn",
 			"index_111": "Theo mặc định, dữ liệu quét cuối cùng được hiển thị (nếu không, vui lòng nhấp vào nhật ký quét)",
 			"index_112": "Nếu tệp nhật ký quá lớn, quét có thể mất nhiều thời gian, vui lòng kiên nhẫn",
-			"index_113": "aaPanel WAF",
+			"index_113": "K2Panel WAF",
 			"index_114": "có thể chặn các cuộc tấn công như vậy một cách hiệu quả",
 			"index_115": "Quét, quét tiến độ ...",
 			"Limit": {
@@ -602,7 +602,7 @@
 			"index_21": "Thay thế, có thể trống"
 		},
 		"RulesError": {
-			"index_1": "Ví dụ: aapanel.com",
+			"index_1": "Ví dụ: k2panel.com",
 			"index_2": "Tên thư mục con không thể trống",
 			"index_3": "Tiêu đề trang web WordPress không thể trống",
 			"index_4": "Vui lòng chọn ngôn ngữ",
@@ -669,7 +669,7 @@
 			"index_12": "Trường hợp không nhạy cảm",
 			"index_13": "Chỉ thay thế cái đầu tiên",
 			"index_14": "Biểu thức chính quy",
-			"index_15": "Hiệu ứng mặc định: Thay thế tất cả 'http://www.aapanel.com' bằng 'https://www.aapanel.com'.",
+			"index_15": "Hiệu ứng mặc định: Thay thế tất cả 'http://www.k2panel.com' bằng 'https://www.k2panel.com'.",
 			"index_16": "WebSocket toàn cầu được bật và không được phép bị vô hiệu hóa riêng lẻ",
 			"index_17": "Xóa dự án proxy ngược",
 			"index_18": "Thay thế tất cả các từ khóa phù hợp"

@@ -1,10 +1,10 @@
 #coding: utf-8
 #-------------------------------------------------------------------
-# aapanel
+# k2panel
 #-------------------------------------------------------------------
-# Copyright (c) 2015-2099 aapanel(http://aapanel.com) All rights reserved.
+# Copyright (c) 2015-2099 k2panel(http://k2panel.com) All rights reserved.
 #-------------------------------------------------------------------
-# Author: hwliang <hwl@aapanel.com>
+# Author: hwliang <hwl@k2panel.com>
 #-------------------------------------------------------------------
 import os,sys,time,json
 panelPath = '/www/server/panel'
@@ -24,7 +24,7 @@ class crontabBase:
         self.check_column()
         self.sync_scripts()
         self.sync_types() 
-        self.check_aapanel_column()
+        self.check_k2panel_column()
 
     def exists_column(self, sql_pbj,table,column):
         '''
@@ -64,7 +64,7 @@ class crontabBase:
         if sql_obj.table('types').where('type_id=?',3).getField('name') != 'Alarm notification':
             sql_obj.table('types').where('type_id=?',3).update({'name':'Alarm notification','title':'Script for sending various alarm notifications'})
 
-    def check_aapanel_column(self):
+    def check_k2panel_column(self):
         dbfile = public.get_panel_path() + '/data/default.db'
         sql_obj = db.Sql().dbfile(dbfile)
         if not sql_obj: return

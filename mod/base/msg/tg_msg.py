@@ -1,10 +1,10 @@
 # coding: utf-8
 # +-------------------------------------------------------------------
-# | aaPanel
+# | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2020 aaPanel(www.aapanel.com) All rights reserved.
+# | Copyright (c) 2015-2020 K2Panel(www.k2panel.com) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: jose <zhw@aapanel.com>
+# | Author: jose <zhw@k2panel.com>
 # | 消息通道电报模块
 # +-------------------------------------------------------------------
 
@@ -48,9 +48,9 @@ class TgMsg:
         data['ps'] = 'Use telegram bots to send receive panel notifications'
         data['version'] = '1.0'
         data['date'] = '2022-08-10'
-        data['author'] = 'aaPanel'
+        data['author'] = 'K2Panel'
         data['title'] = 'Telegram'
-        data['help'] = 'http://www.aapanel.com'
+        data['help'] = 'http://www.k2panel.com'
         return data
 
     def get_config(self, get):
@@ -88,7 +88,7 @@ class TgMsg:
                                         ['>Configuration status：<font color=#20a53a>successfully</font>\n\n'])
             ret = self.send_msg(info['msg'], get.my_id.strip(), get.bot_token)
         except:
-            ret = self.send_msg('aaPanel alarm test', get.my_id.strip(), get.bot_token)
+            ret = self.send_msg('K2Panel alarm test', get.my_id.strip(), get.bot_token)
         if ret:
 
             if 'default' in get and get['default']:
@@ -104,7 +104,7 @@ class TgMsg:
         @name 处理md格式
         """
         try:
-            title = 'aaPanel notifications'
+            title = 'K2Panel notifications'
             if msg.find("####") >= 0:
                 try:
                     title = re.search(r"####(.+)", msg).groups()[0]
@@ -206,7 +206,7 @@ class TgMsg:
 
 
         except:
-            ret = tg.send_msg('aaPanel alarm test', "Message channel configuration reminders")
+            ret = tg.send_msg('K2Panel alarm test', "Message channel configuration reminders")
 
         # 测试失败也添加
         if ret:

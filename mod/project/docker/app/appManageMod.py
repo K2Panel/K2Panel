@@ -1464,12 +1464,12 @@ class AppManage(App):
     # 2024/7/30 上午10:38 获取应用分类标签
     def get_tags(self, get):
         if not os.path.exists(self.app_tags_file):
-            public.downloadFile(public.get_url() + '/src/dk_app/aapanel/apps/apptags.json', self.app_tags_file)
+            public.downloadFile(public.get_url() + '/src/dk_app/k2panel/apps/apptags.json', self.app_tags_file)
 
         app_tags = self.read_json(self.app_tags_file)
         if not app_tags:
             public.ExecShell("rm -f {}".format(self.app_tags_file))
-            public.downloadFile(public.get_url() + '/src/dk_app/aapanel/apps/apptags.json', self.app_tags_file)
+            public.downloadFile(public.get_url() + '/src/dk_app/k2panel/apps/apptags.json', self.app_tags_file)
             app_tags = self.read_json(self.app_tags_file)
         if not app_tags:
             return public.return_message(0, 0, [])

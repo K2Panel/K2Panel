@@ -1,10 +1,10 @@
 # coding: utf-8
 # +-------------------------------------------------------------------
-# | aaPanel
+# | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2099 aaPanel(www.aapanel.com) All rights reserved.
+# | Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: hwliang <hwl@aapanel.com>
+# | Author: hwliang <hwl@k2panel.com>
 # +---
 
 import sys
@@ -795,7 +795,7 @@ REQUEST_FORM: {request_form}
     # 提交异常报告
     if not public.cache_get(pkey):
         try:
-            public.run_thread(public.httpPost, ("https://geterror.aapanel.com/bt_error/index.php", error_infos))
+            public.run_thread(public.httpPost, ("https://geterror.k2panel.com/bt_error/index.php", error_infos))
             public.cache_set(pkey, 1, 1800)
         except Exception as e:
             pass
@@ -6449,10 +6449,10 @@ def breaking_through_v2(pdata=None):
     return publicObject(breakingObject, defs, None, pdata)
 
 @app.route(route_v2 + '/virtual/<def_name>', methods=method_all)
-@app.route(route_v2 + '/aapanelsub/<def_name>', methods=method_all)
-@app.route('/aapanelsub/<def_name>', methods=method_all)
+@app.route(route_v2 + '/k2panelsub/<def_name>', methods=method_all)
+@app.route('/k2panelsub/<def_name>', methods=method_all)
 def virtualModel_v2(def_name):
-    if request.method in ['GET'] and request.path.startswith('/aapanelsub'):
+    if request.method in ['GET'] and request.path.startswith('/k2panelsub'):
         return index_new(request.path)
     path_split = request.path.split("/")
     if len(path_split) < 3: return

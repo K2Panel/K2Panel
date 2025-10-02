@@ -1,10 +1,10 @@
 #coding: utf-8
 #-------------------------------------------------------------------
-# aaPanel
+# K2Panel
 #-------------------------------------------------------------------
-# Copyright (c) 2015-2017 aaPanel(www.aapanel.com) All rights reserved.
+# Copyright (c) 2015-2017 K2Panel(www.k2panel.com) All rights reserved.
 #-------------------------------------------------------------------
-# Author: lkqiang <lkq@aapanel.com>
+# Author: lkqiang <lkq@k2panel.com>
 #-------------------------------------------------------------------
 # SSH 安全类
 #------------------------------
@@ -500,7 +500,7 @@ class ssh_security:
         cpath = 'data/msg.json'
         try:
             if 'force' in get or not os.path.exists(cpath):
-                public.downloadFile('{}/linux/panel/msg/msg.json'.format("https://node.aapanel.com"),cpath)
+                public.downloadFile('{}/linux/panel/msg/msg.json'.format("https://node.k2panel.com"),cpath)
         except : pass
 
         data = {}

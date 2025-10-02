@@ -1,10 +1,10 @@
 # coding: utf-8
 # +-------------------------------------------------------------------
-# | aaPanel
+# | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2099 aaPanel(www.aapanel.com) All rights reserved.
+# | Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: hwliang <hwl@aapanel.com>
+# | Author: hwliang <hwl@k2panel.com>
 # +-------------------------------------------------------------------
 import json
 import os
@@ -128,7 +128,7 @@ class panelAdmin(panelSetup):
             "The current IE browser version is too low to display some features, please use another browser."
             " Or if you use a browser developed by a Chinese company, please switch to Extreme Mode!"
         )
-        session["bt_help"] = public.lang("For Support|Suggestions, please visit the aaPanel Forum")
+        session["bt_help"] = public.lang("For Support|Suggestions, please visit the K2Panel Forum")
         session["download"] = public.lang("Downloading:")
         if request.method == 'GET':
             self.__set_session_munes()
@@ -137,7 +137,7 @@ class panelAdmin(panelSetup):
             session['brand'] = public.GetConfigValue('brand')
             session['product'] = public.GetConfigValue('product')
             session['rootPath'] = '/www'
-            session['download_url'] = 'https://node.aapanel.com'
+            session['download_url'] = 'https://node.k2panel.com'
             session['setupPath'] = session['rootPath'] + '/server'
             session['logsPath'] = '/www/wwwlogs'
             session['yaer'] = datetime.now().year

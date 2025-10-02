@@ -113,7 +113,7 @@
     "ver": "1",
     "used": true,
     "source": "panel_pwd_end_time",
-    "title": "aaPanel password expiration date",
+    "title": "K2Panel password expiration date",
     "load_cls": {
       "load_type": "path",
       "cls_path": "mod.base.push_mod.site_push",
@@ -309,7 +309,7 @@
     "ver": "1",
     "used": true,
     "source": "panel_safe_push",
-    "title": "aaPanel security alarms",
+    "title": "K2Panel security alarms",
     "load_cls": {
       "load_type": "path",
       "cls_path": "mod.base.push_mod.site_push",
@@ -394,7 +394,7 @@
     "ver": "1",
     "used": true,
     "source": "panel_login",
-    "title": "aaPanel login alarm",
+    "title": "K2Panel login alarm",
     "load_cls": {
       "load_type": "path",
       "cls_path": "mod.base.push_mod.site_push",

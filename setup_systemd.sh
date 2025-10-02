@@ -1,9 +1,9 @@
 #!/bin/bash
 #coding: utf-8
 # +-------------------------------------------------------------------
-# | aaPanel - systemd Service Setup Script
+# | K2Panel - systemd Service Setup Script
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2099 aaPanel(www.aapanel.com) All rights reserved.
+# | Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
 # +-------------------------------------------------------------------
 
 set -e
@@ -17,7 +17,7 @@ NC='\033[0m' # No Color
 
 # تعريف المتغيرات
 PANEL_PATH="/www/server/panel"
-SERVICE_FILE="aapanel.service"
+SERVICE_FILE="k2panel.service"
 SYSTEMD_PATH="/etc/systemd/system"
 USER="www"
 GROUP="www"
@@ -172,7 +172,7 @@ install_service() {
     print_success "تم إعادة تحميل systemd"
     
     # تفعيل الخدمة للبدء التلقائي
-    systemctl enable aapanel.service
+    systemctl enable k2panel.service
     print_success "تم تفعيل الخدمة للبدء التلقائي"
 }
 
@@ -181,7 +181,7 @@ test_service() {
     print_info "اختبار الخدمة..."
     
     # التحقق من صحة ملف الخدمة
-    systemctl cat aapanel.service &>/dev/null
+    systemctl cat k2panel.service &>/dev/null
     if [ $? -eq 0 ]; then
         print_success "ملف الخدمة صحيح"
     else
@@ -194,19 +194,19 @@ test_service() {
 start_service() {
     print_info "بدء الخدمة..."
     
-    systemctl start aapanel.service
+    systemctl start k2panel.service
     
     # الانتظار قليلاً
     sleep 3
     
     # التحقق من الحالة
-    if systemctl is-active --quiet aapanel.service; then
+    if systemctl is-active --quiet k2panel.service; then
         print_success "الخدمة تعمل بنجاح!"
-        systemctl status aapanel.service --no-pager
+        systemctl status k2panel.service --no-pager
     else
         print_error "فشل بدء الخدمة"
         print_info "عرض السجلات:"
-        journalctl -u aapanel.service -n 50 --no-pager
+        journalctl -u k2panel.service -n 50 --no-pager
         exit 1
     fi
 }
@@ -215,27 +215,27 @@ start_service() {
 post_install_info() {
     echo ""
     echo -e "${GREEN}╔═══════════════════════════════════════════════╗${NC}"
-    echo -e "${GREEN}║   ✓ تم تثبيت aaPanel systemd service بنجاح   ║${NC}"
+    echo -e "${GREEN}║   ✓ تم تثبيت K2Panel systemd service بنجاح   ║${NC}"
     echo -e "${GREEN}╚═══════════════════════════════════════════════╝${NC}"
     echo ""
     print_info "الأوامر المفيدة:"
     echo -e "  ${YELLOW}# عرض حالة الخدمة${NC}"
-    echo "    sudo systemctl status aapanel"
+    echo "    sudo systemctl status k2panel"
     echo ""
     echo -e "  ${YELLOW}# بدء الخدمة${NC}"
-    echo "    sudo systemctl start aapanel"
+    echo "    sudo systemctl start k2panel"
     echo ""
     echo -e "  ${YELLOW}# إيقاف الخدمة${NC}"
-    echo "    sudo systemctl stop aapanel"
+    echo "    sudo systemctl stop k2panel"
     echo ""
     echo -e "  ${YELLOW}# إعادة تشغيل الخدمة${NC}"
-    echo "    sudo systemctl restart aapanel"
+    echo "    sudo systemctl restart k2panel"
     echo ""
     echo -e "  ${YELLOW}# عرض السجلات${NC}"
-    echo "    sudo journalctl -u aapanel -f"
+    echo "    sudo journalctl -u k2panel -f"
     echo ""
     echo -e "  ${YELLOW}# تعطيل البدء التلقائي${NC}"
-    echo "    sudo systemctl disable aapanel"
+    echo "    sudo systemctl disable k2panel"
     echo ""
     print_info "ملاحظات مهمة:"
     echo "  - تأكد من تعديل ملف .env بالإعدادات الصحيحة"
@@ -247,7 +247,7 @@ post_install_info() {
 # Main function
 main() {
     echo -e "${BLUE}╔═══════════════════════════════════════════════╗${NC}"
-    echo -e "${BLUE}║     aaPanel systemd Service Setup Script     ║${NC}"
+    echo -e "${BLUE}║     K2Panel systemd Service Setup Script     ║${NC}"
     echo -e "${BLUE}╚═══════════════════════════════════════════════╝${NC}"
     echo ""
     

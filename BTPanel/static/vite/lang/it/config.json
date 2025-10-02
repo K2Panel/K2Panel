@@ -33,7 +33,7 @@
 			"index_28": "(1 per riga)",
 			"index_29": "Quando l'API è abilitata, solo IP nella whitelist IP può accedere all'API del pannello.",
 			"index_30": "Si prega di non abilitarlo in un ambiente di produzione, in quanto può aumentare i rischi di sicurezza per il server.",
-			"index_31": "Si prega di non utilizzare applicazioni di terze parti per chiamare l'API AAPANEL per prevenire potenziali minacce alla sicurezza.",
+			"index_31": "Si prega di non utilizzare applicazioni di terze parti per chiamare l'API K2PANEL per prevenire potenziali minacce alla sicurezza.",
 			"index_32": "Il documento API: ",
 			"index_33": "Tasto di ripristino",
 			"index_86": "Sei sicuro di voler ripristinare la chiave attuale?",

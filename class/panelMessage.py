@@ -1,8 +1,8 @@
 #coding: utf-8
 # +-------------------------------------------------------------------
-# | aaPanel
+# | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2099 aaPanel(www.aapanel.com) All rights reserved.
+# | Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
 # +-------------------------------------------------------------------
 # | Author: hwliang <2020-05-18>
 # +-------------------------------------------------------------------
@@ -42,7 +42,7 @@ class panelMessage:
     """
     def get_cloud_messages(self,args):
 
-        # aapanel 暂时不用
+        # k2panel 暂时不用
         return public.returnMsg(True, public.lang("Synchronization success!"))
 
         try:

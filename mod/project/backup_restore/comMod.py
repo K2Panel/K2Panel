@@ -1,8 +1,8 @@
 # coding: utf-8
 # -------------------------------------------------------------------
-# aapanel
+# k2panel
 # -------------------------------------------------------------------
-# Copyright (c) 2015-2099 aapanel(http://www.aapanel.com) All rights reserved.
+# Copyright (c) 2015-2099 k2panel(http://www.k2panel.com) All rights reserved.
 # -------------------------------------------------------------------
 # Author: miku <wzz@bt.cn>
 # -------------------------------------------------------------------
@@ -542,7 +542,7 @@ class main(DataManager):
                 if migrate_config['run_type'] == "COMPLETED":
                     migrate_config['migrate_progress'] = 100
                     migrate_config['migrate_err_msg'] = None
-                    migrate_config['migrate_msg'] = public.lang("aapanel installation completed!")
+                    migrate_config['migrate_msg'] = public.lang("k2panel installation completed!")
                     try:
                         migrate_config['panel_addr'] = migrate_config['task_info']['panel_info']['panel_url']
                         migrate_config['panel_user'] = migrate_config['task_info']['panel_info']['username']
@@ -561,7 +561,7 @@ class main(DataManager):
                 run_name = public.lang("Migration Task")
                 err_info = []
                 if migrate_config['run_type'] == "PANEL_INSTALL":
-                    run_name = public.lang("aapanel Installation")
+                    run_name = public.lang("k2panel Installation")
                 elif migrate_config['run_type'] == "LOCAL_BACKUP":
                     run_name = public.lang("Local Backup")
                 elif migrate_config['run_type'] == "UPLOAD_FILE":

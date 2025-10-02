@@ -80,7 +80,7 @@ TRUE_POSITIVES = [
     ("2025-01-01 12:00:00 [error] Invalid user test from 192.168.1.50", "192.168.1.50"),
     ("2025-01-01 12:00:00 [error] Unauthorized access attempt from 10.0.0.5", "10.0.0.5"),
     
-    # aaPanel-specific formats (username:, ip:, ip())
+    # K2Panel-specific formats (username:, ip:, ip())
     ("2025-01-01 12:00:00 [error] Login failed, username: admin, ip: 192.168.1.100", "192.168.1.100"),
     ("2025-01-01 12:00:00 [error] Login failed, username: admin, ip(192.168.1.100)", "192.168.1.100"),
     ("2025-01-01 12:00:00 Error: login failed; client: 192.168.1.100", "192.168.1.100"),

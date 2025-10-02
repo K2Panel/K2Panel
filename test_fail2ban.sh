@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ================================================================
-# Fail2Ban Testing Script for aaPanel
+# Fail2Ban Testing Script for K2Panel
 # ================================================================
 # هذا السكريبت يختبر إعدادات Fail2Ban بشكل شامل
 #
@@ -80,7 +80,7 @@ check_root() {
 
 check_root
 
-print_header "🛡️  اختبار Fail2Ban لـ aaPanel"
+print_header "🛡️  اختبار Fail2Ban لـ K2Panel"
 
 # Test 1: Check if Fail2Ban is installed
 test_start "التحقق من تثبيت Fail2Ban"
@@ -138,28 +138,28 @@ else
 fi
 
 # Test 6: Check custom filter
-test_start "التحقق من custom filter لـ aaPanel"
-if [ -f /etc/fail2ban/filter.d/aapanel.conf ]; then
-    test_pass "aapanel.conf موجود"
+test_start "التحقق من custom filter لـ K2Panel"
+if [ -f /etc/fail2ban/filter.d/k2panel.conf ]; then
+    test_pass "k2panel.conf موجود"
     
     # Test filter with sample log
     SAMPLE_LOG="2025-01-01 12:00:00 [error] Login failed for user 'admin' from IP: 192.168.1.100"
-    if echo "$SAMPLE_LOG" | fail2ban-regex - /etc/fail2ban/filter.d/aapanel.conf --print-all-matched >/dev/null 2>&1; then
+    if echo "$SAMPLE_LOG" | fail2ban-regex - /etc/fail2ban/filter.d/k2panel.conf --print-all-matched >/dev/null 2>&1; then
         test_pass "filter يعمل بشكل صحيح"
     else
         test_warning "filter قد يحتاج مراجعة"
     fi
 else
-    test_warning "aapanel.conf غير موجود"
+    test_warning "k2panel.conf غير موجود"
 fi
 
-# Test 6.1: Test filter accuracy (True Positives) - REAL aaPanel log formats
+# Test 6.1: Test filter accuracy (True Positives) - REAL K2Panel log formats
 test_start "اختبار filter - True Positives (يجب أن يطابق)"
-if [ -f /etc/fail2ban/filter.d/aapanel.conf ]; then
+if [ -f /etc/fail2ban/filter.d/k2panel.conf ]; then
     TRUE_POSITIVE_COUNT=0
     TRUE_POSITIVE_TOTAL=17
     
-    # REAL aaPanel log formats that SHOULD match (actual login failures)
+    # REAL K2Panel log formats that SHOULD match (actual login failures)
     TP_SAMPLES=(
         # Standard formats
         "2025-01-01 12:00:00 [error] Login failed for user 'admin' from IP: 192.168.1.100"
@@ -168,7 +168,7 @@ if [ -f /etc/fail2ban/filter.d/aapanel.conf ]; then
         "2025-01-01 12:00:00 [error] Invalid user test from 192.168.1.50"
         "2025-01-01 12:00:00 [error] Unauthorized access attempt from 10.0.0.5"
         
-        # aaPanel-specific formats (username:, ip:, ip())
+        # K2Panel-specific formats (username:, ip:, ip())
         "2025-01-01 12:00:00 [error] Login failed, username: admin, ip: 192.168.1.100"
         "2025-01-01 12:00:00 [error] Login failed, username: admin, ip(192.168.1.100)"
         "2025-01-01 12:00:00 Error: login failed; client: 192.168.1.100"
@@ -188,7 +188,7 @@ if [ -f /etc/fail2ban/filter.d/aapanel.conf ]; then
     )
     
     for sample in "${TP_SAMPLES[@]}"; do
-        if echo "$sample" | fail2ban-regex - /etc/fail2ban/filter.d/aapanel.conf --print-all-matched >/dev/null 2>&1; then
+        if echo "$sample" | fail2ban-regex - /etc/fail2ban/filter.d/k2panel.conf --print-all-matched >/dev/null 2>&1; then
             TRUE_POSITIVE_COUNT=$((TRUE_POSITIVE_COUNT + 1))
         fi
     done
@@ -200,19 +200,19 @@ if [ -f /etc/fail2ban/filter.d/aapanel.conf ]; then
         test_info "  تم اكتشاف $TRUE_POSITIVE_COUNT من أصل $TRUE_POSITIVE_TOTAL"
     fi
 else
-    test_warning "aapanel.conf غير موجود - تخطي الاختبار"
+    test_warning "k2panel.conf غير موجود - تخطي الاختبار"
 fi
 
 # Test 6.1.5: CRITICAL - Verify EXACT IP extraction in multi-IP scenarios
 test_start "اختبار استخراج IP الصحيح (CRITICAL Multi-IP)"
-if [ -f /etc/fail2ban/filter.d/aapanel.conf ]; then
+if [ -f /etc/fail2ban/filter.d/k2panel.conf ]; then
     MULTI_IP_PASS=0
     MULTI_IP_TOTAL=5
     
     # Helper function to extract IP from fail2ban-regex output
     extract_ip() {
         local log_line="$1"
-        local output=$(echo "$log_line" | fail2ban-regex - /etc/fail2ban/filter.d/aapanel.conf 2>/dev/null)
+        local output=$(echo "$log_line" | fail2ban-regex - /etc/fail2ban/filter.d/k2panel.conf 2>/dev/null)
         # Extract IP from "Addresses found:" section
         echo "$output" | grep -A 20 "Addresses found:" | grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}' | head -1
     }
@@ -269,12 +269,12 @@ if [ -f /etc/fail2ban/filter.d/aapanel.conf ]; then
         test_warning "⚠️  خطر: قد يتم حظر مستخدمين شرعيين!"
     fi
 else
-    test_warning "aapanel.conf غير موجود - تخطي الاختبار"
+    test_warning "k2panel.conf غير موجود - تخطي الاختبار"
 fi
 
 # Test 6.2: Test filter accuracy (False Positives)
 test_start "اختبار filter - False Positives (لا يجب أن يطابق)"
-if [ -f /etc/fail2ban/filter.d/aapanel.conf ]; then
+if [ -f /etc/fail2ban/filter.d/k2panel.conf ]; then
     FALSE_POSITIVE_COUNT=0
     FALSE_POSITIVE_TOTAL=10
     
@@ -296,7 +296,7 @@ if [ -f /etc/fail2ban/filter.d/aapanel.conf ]; then
     )
     
     for sample in "${FP_SAMPLES[@]}"; do
-        if ! echo "$sample" | fail2ban-regex - /etc/fail2ban/filter.d/aapanel.conf --print-all-matched >/dev/null 2>&1; then
+        if ! echo "$sample" | fail2ban-regex - /etc/fail2ban/filter.d/k2panel.conf --print-all-matched >/dev/null 2>&1; then
             FALSE_POSITIVE_COUNT=$((FALSE_POSITIVE_COUNT + 1))
         fi
     done
@@ -308,7 +308,7 @@ if [ -f /etc/fail2ban/filter.d/aapanel.conf ]; then
         test_warning "⚠️  خطر: المستخدمون الشرعيون قد يتم حظرهم!"
     fi
 else
-    test_warning "aapanel.conf غير موجود - تخطي الاختبار"
+    test_warning "k2panel.conf غير موجود - تخطي الاختبار"
 fi
 
 # Test 7: List active jails
@@ -379,11 +379,11 @@ else
     test_warning "  سجلات Nginx غير موجودة"
 fi
 
-# aaPanel logs
+# K2Panel logs
 if [ -f /www/server/panel/logs/error.log ]; then
     test_pass "  /www/server/panel/logs/error.log موجود"
 else
-    test_warning "  سجلات aaPanel غير موجودة"
+    test_warning "  سجلات K2Panel غير موجودة"
 fi
 
 # Test 10: Check Fail2Ban logs

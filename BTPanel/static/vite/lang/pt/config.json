@@ -41,7 +41,7 @@
 			"index_34": "Chave da API gerada. Por favor, mantenha sua nova chave.",
 			"index_35": "Linguagem",
 			"index_36": "Alias",
-			"index_37": "Tome pseudônimo para aaPanel",
+			"index_37": "Tome pseudônimo para K2Panel",
 			"index_38": "Alias ​​não podem conter barras para frente ou para trás.",
 			"index_39": "Tempo esgotado",
 			"index_40": "Se o usuário não tiver nenhuma operação dentro de {time_1}, o painel fará o logout automático",
@@ -78,7 +78,7 @@
 			"index_72": "Desbloquear",
 			"index_73": "A maioria das funções do painel depende de serviços em nuvem (aplicativo de certificado, compra de produtos, lista de software etc.).",
 			"index_74": "Desbloquear a conta AAPALEL",
-			"index_75": "Descobri a conta aaPanel e continue!",
+			"index_75": "Descobri a conta K2Panel e continue!",
 			"index_76": "Barra de menu escondida",
 			"index_77": "Sem bar escondida",
 			"index_78": "Esconder a barra de menu esquerda",
@@ -532,7 +532,7 @@
 			"index_94": "Restaurar sucesso"
 		},
 		"Migrate": {
-			"index_1": "A migração completa do sistema instalará automaticamente aapanel. Verifique se o destino é um novo servidor sem um AAPALEL ou qualquer outro ambiente, ou a migração pode falhar!",
+			"index_1": "A migração completa do sistema instalará automaticamente k2panel. Verifique se o destino é um novo servidor sem um AAPALEL ou qualquer outro ambiente, ou a migração pode falhar!",
 			"index_2": "Comece a migração",
 			"index_3": "Clique para visualizar dados detalhados de migração",
 			"index_4": "Detalhes da migração",

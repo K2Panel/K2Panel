@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ================================================================
-# Nginx Setup Script for aaPanel
+# Nginx Setup Script for K2Panel
 # ================================================================
 # هذا السكريبت يقوم بإعداد nginx للإنتاج تلقائياً
 # 
@@ -175,7 +175,7 @@ else
 fi
 
 # Create temporary config file
-TEMP_CONFIG="/tmp/aapanel_nginx.conf"
+TEMP_CONFIG="/tmp/k2panel_nginx.conf"
 cp "$TEMPLATE_FILE" "$TEMP_CONFIG"
 
 # Replace variables in template
@@ -190,13 +190,13 @@ sed -i "s|\${SSL_KEY}|$SSL_KEY|g" "$TEMP_CONFIG"
 
 print_info "إنشاء المجلدات المطلوبة..."
 
-mkdir -p /var/www/aapanel
-mkdir -p /var/www/aapanel/errors
+mkdir -p /var/www/k2panel
+mkdir -p /var/www/k2panel/errors
 mkdir -p /var/www/certbot
 mkdir -p /var/log/nginx
 
 # Create simple error pages
-cat > /var/www/aapanel/errors/404.html << 'EOF'
+cat > /var/www/k2panel/errors/404.html << 'EOF'
 <!DOCTYPE html>
 <html>
 <head>
@@ -216,7 +216,7 @@ cat > /var/www/aapanel/errors/404.html << 'EOF'
 </html>
 EOF
 
-cat > /var/www/aapanel/errors/50x.html << 'EOF'
+cat > /var/www/k2panel/errors/50x.html << 'EOF'
 <!DOCTYPE html>
 <html>
 <head>
@@ -245,7 +245,7 @@ print_success "تم إنشاء المجلدات والملفات"
 print_info "تثبيت تهيئة nginx..."
 
 # Backup existing config if exists
-NGINX_SITE="/etc/nginx/sites-available/aapanel"
+NGINX_SITE="/etc/nginx/sites-available/k2panel"
 if [ -f "$NGINX_SITE" ]; then
     print_warning "توجد تهيئة سابقة، جاري عمل نسخة احتياطية..."
     cp "$NGINX_SITE" "$NGINX_SITE.backup.$(date +%Y%m%d_%H%M%S)"
@@ -262,7 +262,7 @@ if [ -f "proxy_params" ]; then
 fi
 
 # Enable site (create symlink)
-ln -sf "$NGINX_SITE" /etc/nginx/sites-enabled/aapanel
+ln -sf "$NGINX_SITE" /etc/nginx/sites-enabled/k2panel
 print_success "تم تفعيل الموقع"
 
 # Remove default site (optional)
@@ -338,7 +338,7 @@ if [ "$SSL_REQUESTED" = "yes" ]; then
     USE_SSL="yes"
     
     # Re-create config with SSL
-    TEMP_CONFIG="/tmp/aapanel_nginx_ssl.conf"
+    TEMP_CONFIG="/tmp/k2panel_nginx_ssl.conf"
     cp nginx.conf.template "$TEMP_CONFIG"
     
     # Replace variables
@@ -402,7 +402,7 @@ print_info "الأوامر المفيدة:"
 echo "  • اختبار التهيئة: sudo nginx -t"
 echo "  • إعادة التحميل: sudo systemctl reload nginx"
 echo "  • إعادة التشغيل: sudo systemctl restart nginx"
-echo "  • السجلات: sudo tail -f /var/log/nginx/aapanel_error.log"
+echo "  • السجلات: sudo tail -f /var/log/nginx/k2panel_error.log"
 echo ""
 
 print_success "يمكنك الآن الوصول للتطبيق عبر:"

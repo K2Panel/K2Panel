@@ -1,10 +1,10 @@
 # coding: utf-8
 # -------------------------------------------------------------------
-# aaPanel
+# K2Panel
 # -------------------------------------------------------------------
-# Copyright (c) 2015-2099 aaPanel(www.aapanel.com) All rights reserved.
+# Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
 # -------------------------------------------------------------------
-# Author: wzz <wzz@aapanel.com>
+# Author: wzz <wzz@k2panel.com>
 # -------------------------------------------------------------------
 
 # ------------------------------
@@ -175,7 +175,7 @@ class main(dockerBase):
 
             jou_stdout, jou_stderr = public.ExecShell("journalctl -xe -u docker -n 100 --no-pager|grep libusranalyse.so")
             if jou_stdout != "":
-                return public.return_message(-1, 0, public.lang("Docker service setup failed, please turn off aapanel anti-intrusion and try again!"))
+                return public.return_message(-1, 0, public.lang("Docker service setup failed, please turn off k2panel anti-intrusion and try again!"))
 
             if "Can't operate. Failed to connect to bus" in stderr:
                 wsl_cmd = "/etc/init.d/docker {}".format(get.act)
@@ -647,7 +647,7 @@ fi
                 else:
                     url_file = "/www/server/panel/class/btdockerModel/config/install_url.pl"
                     public.ExecShell("rm -f {}".format(url_file))
-                    public.downloadFile("{}/src/dk_app/aapanel/apps/install_url.pl".format(public.get_url()), url_file)
+                    public.downloadFile("{}/src/dk_app/k2panel/apps/install_url.pl".format(public.get_url()), url_file)
                     url_body = public.readFile(url_file)
                     url = url_body.strip() if url_body else ""
 

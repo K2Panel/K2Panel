@@ -1,8 +1,8 @@
 # coding: utf-8
 # -------------------------------------------------------------------
-# aapanel
+# k2panel
 # -------------------------------------------------------------------
-# Copyright (c) 2014-2099 aapanel(http://www.aapanel.com) All rights reserved.
+# Copyright (c) 2014-2099 k2panel(http://www.k2panel.com) All rights reserved.
 # -------------------------------------------------------------------
 
 import os
@@ -368,7 +368,7 @@ if __name__ == '__main__':
         upgrade_countrys(commodel)
         upgrade_malicious_ip()
         upgrade_port_forward(commodel)
-        print("aapanel: FireWall Migrate Service Finish...")
+        print("k2panel: FireWall Migrate Service Finish...")
     except Exception as e:
         import traceback
 

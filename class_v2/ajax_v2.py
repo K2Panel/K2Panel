@@ -1,17 +1,17 @@
  #coding: utf-8
 # +-------------------------------------------------------------------
-# | aaPanel
+# | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2016 aaPanel(www.aapanel.com) All rights reserved.
+# | Copyright (c) 2015-2016 K2Panel(www.k2panel.com) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: hwliang <hwl@aapanel.com>
+# | Author: hwliang <hwl@k2panel.com>
 # +-------------------------------------------------------------------
 from flask import session,request
 import public,os,json,time,apache,psutil
 from public.validate import Param
 
 class ajax:
-    __official_url = 'https://www.aapanel.com'
+    __official_url = 'https://www.k2panel.com'
 
     def GetApacheStatus(self, get):
         a = apache.apache()
@@ -983,7 +983,7 @@ class ajax:
 
     # 下载云端php扩展配置
     def _get_cloud_phplib(self):
-        if not session.get('download_url'): session['download_url'] = 'https://node.aapanel.com'
+        if not session.get('download_url'): session['download_url'] = 'https://node.k2panel.com'
         download_url = session['download_url'] + '/install/lib/phplib_en.json'
         tstr = public.httpGet(download_url)
         data = json.loads(tstr)
@@ -1119,7 +1119,7 @@ class ajax:
             public.serviceReload()
             if i=="apache":
                 import firewalls
-                # aapanel 使用 get_msg_gettext
+                # k2panel 使用 get_msg_gettext
                 get.ps = public.lang("New phpMyAdmin SSL Port")
                 fw = firewalls.firewalls()
                 fw.AddAcceptPort(get)

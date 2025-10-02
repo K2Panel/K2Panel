@@ -1,10 +1,10 @@
 #coding: utf-8
 # +-------------------------------------------------------------------
-# | aaPanel
+# | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2099 aaPanel(www.aapanel.com) All rights reserved.
+# | Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: hwliang <hwl@aapanel.com>
+# | Author: hwliang <hwl@k2panel.com>
 # +-------------------------------------------------------------------
 
 #--------------------------------
@@ -55,7 +55,7 @@ class process_network_total:
                 f.close()
                 if red_body.find('CentOS Linux release 8.') != -1:
                     rpm_file = '/root/libpcap-1.9.1.rpm'
-                    down_url = "wget -O {} https://node.aapanel.com/src/libpcap-devel-1.9.1-5.el8.x86_64.rpm  --no-check-certificate -T 10".format(
+                    down_url = "wget -O {} https://node.k2panel.com/src/libpcap-devel-1.9.1-5.el8.x86_64.rpm  --no-check-certificate -T 10".format(
                         rpm_file)
                     if os.path.exists(rpm_file):
                         os.system(down_url)

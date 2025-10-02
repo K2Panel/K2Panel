@@ -1,10 +1,10 @@
 # coding: utf-8
 # -------------------------------------------------------------------
-# aaPanel
+# K2Panel
 # -------------------------------------------------------------------
-# Copyright (c) 2015-2016 aaPanel(www.aapanel.com) All rights reserved.
+# Copyright (c) 2015-2016 K2Panel(www.k2panel.com) All rights reserved.
 # -------------------------------------------------------------------
-# Author: hwliang <hwl@aapanel.com>
+# Author: hwliang <hwl@k2panel.com>
 # -------------------------------------------------------------------
 
 # ------------------------------
@@ -28,18 +28,18 @@ except:
 class panelSSL:
     # __APIURL = public.GetConfigValue('home') + '/api/Auth'
     # __APIURL2 = public.GetConfigValue('home') + '/api/Cert'
-    # __BINDURL = 'https://wafapi.aapanel.com/Auth/GetAuthToken'   # 获取token 获取官网token
+    # __BINDURL = 'https://wafapi.k2panel.com/Auth/GetAuthToken'   # 获取token 获取官网token
 
 
 
 
     __BINDURL = '{}/api/user'.format(public.OfficialApiBase())  # 获取token 获取官网token
-    # __BINDURL = 'http://dev.aapanel.com/api/user'  # 获取token 获取官网token
+    # __BINDURL = 'http://dev.k2panel.com/api/user'  # 获取token 获取官网token
 
-    __CODEURL = 'https://wafapi.aapanel.com/Auth/GetBindCode'  # 获取绑定验证码
+    __CODEURL = 'https://wafapi.k2panel.com/Auth/GetBindCode'  # 获取绑定验证码
     __UPATH = 'data/userInfo.json'
 
-    # __APIURL = 'http://dev.aapanel.com/api'
+    # __APIURL = 'http://dev.k2panel.com/api'
     __APIURL = '{}/api'.format(public.OfficialApiBase())
 
     __PUBKEY = 'data/public.key'
@@ -532,7 +532,7 @@ class panelSSL:
         verify_info['paths'] = []
         verify_info['hosts'] = []
         if verify_info['data']['application']['status'] == 'ongoing':
-            return public.return_msg_gettext(False, public.lang("In verification, please contact aaPanel if the audit still fails after 24 hours"))
+            return public.return_msg_gettext(False, public.lang("In verification, please contact K2Panel if the audit still fails after 24 hours"))
 
         for dinfo in verify_info['data']['dcvList']:
             is_https = dinfo['dcvMethod'] == 'HTTPS_CSR_HASH'
@@ -616,7 +616,7 @@ class panelSSL:
     #     # /api/common/stripe/{out_trade_no}
     #     # result = self.request_test('order/pay')
     #     result = public.return_msg_gettext(False, '测试用 模拟支付!')
-    #     url = "https://dev.aapanel.com/api/common/stripe/" + out_trade_no
+    #     url = "https://dev.k2panel.com/api/common/stripe/" + out_trade_no
     #     response_data = public.httpGet(url)
     #
     #     # public.print_log("******************** url: {}".format(url))

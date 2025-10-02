@@ -1,10 +1,10 @@
 # coding: utf-8
 # -------------------------------------------------------------------
-# aaPanel
+# K2Panel
 # -------------------------------------------------------------------
-# Copyright (c) 2015-2099 aaPanel(www.aapanel.com) All rights reserved.
+# Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
 # -------------------------------------------------------------------
-# Author: hwliang <hwl@aapanel.com>
+# Author: hwliang <hwl@k2panel.com>
 # -------------------------------------------------------------------
 
 import json
@@ -96,7 +96,7 @@ class panelRedisDB():
                 return False
             public.ExecShell("mv /www/server/redis/redis.conf /www/server/redis/redis.conf.bak")
             public.ExecShell(
-                "wget -O /www/server/redis/redis.conf https://node.aapanel.com/conf/redis.conf;chmod 600 /www/server/redis/redis.conf;chown redis:redis /www/server/redis/redis.conf"
+                "wget -O /www/server/redis/redis.conf https://node.k2panel.com/conf/redis.conf;chmod 600 /www/server/redis/redis.conf;chown redis:redis /www/server/redis/redis.conf"
             )
             time.sleep(1)
             redis_conf = public.readFile("{}/redis/redis.conf".format(public.get_setup_path()))

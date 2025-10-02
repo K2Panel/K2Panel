@@ -1,10 +1,10 @@
 #coding: utf-8
 # +-------------------------------------------------------------------
-# | aaPanel
+# | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2099 aaPanel(www.aapanel.com) All rights reserved.
+# | Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: zhwen <zhw@aapanel.com>
+# | Author: zhwen <zhw@k2panel.com>
 # +-------------------------------------------------------------------
 import os
 os.chdir("/www/server/panel")
@@ -33,7 +33,7 @@ class setPanelLets:
         public.writeFile('ssl/input.pl','True')
         return public.returnMsg(True, public.lang("The certificate has been saved!"))
 
-    # 检查是否存在站点aapanel主机名站点
+    # 检查是否存在站点k2panel主机名站点
     def __check_host_name(self, domain):
         sql = db.Sql()
         path = sql.table('sites').where('name=?', (domain,)).getField('path')

@@ -249,7 +249,7 @@
 			"index_24": "當您未指定 SSL 默認站點時，如果使用 HTTPS 訪問未啟用 SSL 的站點，則將直接訪問已啟用 SSL 的站點。",
 			"index_25": "在 DNS 驗證中，我們提供三個自動化 DNS API，並提供手動模式。",
 			"index_26": "證書可以通過使用 DNS API 自動續訂。在手動模式下，證書到期後需要重新申請。",
-			"index_27": "在使用 [aaPanel DNS 雲解析] API 之前，您需要確認要申請 SSL 證書的域名 DNS 是 [雲解析]。",
+			"index_27": "在使用 [K2Panel DNS 雲解析] API 之前，您需要確認要申請 SSL 證書的域名 DNS 是 [雲解析]。",
 			"index_28": "在使用 [DNSPOD/阿里雲 DNS] API 之前，您需要在彈出窗口中設置相應接口的 API 密鑰。",
 			"index_29": "域名",
 			"index_30": "品牌",
@@ -602,7 +602,7 @@
 			"index_21": "替換為， 可以留空"
 		},
 		"RulesError": {
-			"index_1": "示例：aapanel.com",
+			"index_1": "示例：k2panel.com",
 			"index_2": "子目錄名稱不能為空",
 			"index_3": "WordPress 網站標題不能為空",
 			"index_4": "請選擇語言",
@@ -669,7 +669,7 @@
 			"index_12": "不區分大小寫",
 			"index_13": "僅替換第一個",
 			"index_14": "正則表達式",
-			"index_15": "默認效果：將所有 'http://www.aapanel.com' 替換為 'https://www.aapanel.com'。",
+			"index_15": "默認效果：將所有 'http://www.k2panel.com' 替換為 'https://www.k2panel.com'。",
 			"index_16": "全局 WebSocket 已啟用，不允許單獨禁用",
 			"index_17": "刪除反向代理項目",
 			"index_18": "替換所有匹配的關鍵詞"

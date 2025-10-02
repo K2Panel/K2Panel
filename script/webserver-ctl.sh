@@ -40,12 +40,12 @@ get_pid() {
 
 validate_server_files() {
     if [ ! -f "$webserver_conf" ]; then
-        echo "aaPanel web server configuration not found: $webserver_conf"
+        echo "K2Panel web server configuration not found: $webserver_conf"
         exit 1
     fi
 
     if [ ! -f "$webserver_bin" ]; then
-        echo "aaPanel web server binary not found: $webserver_bin"
+        echo "K2Panel web server binary not found: $webserver_bin"
         exit 1
     fi
 }
@@ -55,18 +55,18 @@ start() {
     get_pid
     
     if [ $PID -gt 0 ]; then
-        echo "aaPanel web server is already running with PID ($PID)"
+        echo "K2Panel web server is already running with PID ($PID)"
         exit 1
     fi
 
-    echo -n "Starting aaPanel web server..."
+    echo -n "Starting K2Panel web server..."
     if [ -f "$webserver_pid" ]; then
         rm -f $webserver_pid
     fi
     chmod 700 $webserver_bin
     $webserver_bin -c $webserver_conf
     if [ $? -ne 0 ]; then
-        echo "Failed to start aaPanel web server"
+        echo "Failed to start K2Panel web server"
         exit 1
     fi
 
@@ -77,11 +77,11 @@ stop() {
     validate_server_files
     get_pid
     if [ $PID -eq 0 ]; then
-        echo "aaPanel web server is not running"
+        echo "K2Panel web server is not running"
         exit 1
     fi
 
-    echo -n "Stopping aaPanel web server..."
+    echo -n "Stopping K2Panel web server..."
     $webserver_bin -c $webserver_conf -s stop
     
     pids=$(lsof -c webserver|grep LISTEN|awk '{print $2}'|sort -u)
@@ -106,7 +106,7 @@ stop() {
 restart() {
     validate_server_files
     get_pid
-    echo -n "Restarting aaPanel web server..."
+    echo -n "Restarting K2Panel web server..."
     if [ $PID -eq 0 ]; then
         $webserver_bin -c $webserver_conf
     else
@@ -114,7 +114,7 @@ restart() {
     fi
 
     if [ $? -ne 0 ]; then
-        echo "Failed to restart aaPanel web server"
+        echo "Failed to restart K2Panel web server"
         exit 1
     fi
 
@@ -125,15 +125,15 @@ status() {
     validate_server_files
     get_pid
     if [ $PID -eq 0 ]; then
-        echo "aaPanel web server is not running"
+        echo "K2Panel web server is not running"
     else
         cmdline=/proc/$PID/cmdline
         if [ ! -f $cmdline ]; then
-            echo "aaPanel web server is not running"
+            echo "K2Panel web server is not running"
             rm -f $webserver_pid
             exit 1
         fi
-        echo "aaPanel web server is running with PID ($PID)"
+        echo "K2Panel web server is running with PID ($PID)"
     fi
 }
 
@@ -141,14 +141,14 @@ reload() {
     validate_server_files
     get_pid
     if [ $PID -eq 0 ]; then
-        echo "aaPanel web server is not running"
+        echo "K2Panel web server is not running"
         exit 1
     fi
 
-    echo -n "Reloading aaPanel web server..."
+    echo -n "Reloading K2Panel web server..."
     $webserver_bin -c $webserver_conf -s reload
     if [ $? -ne 0 ]; then
-        echo "Failed to reload aaPanel web server"
+        echo "Failed to reload K2Panel web server"
         exit 1
     fi
     echo " Reloaded"
@@ -164,7 +164,7 @@ configtest() {
 download() {
     tip_file=$panel_path/data/download.pl
     if [ -f $tip_file ]; then
-        echo "aaPanel web server binary has been downloaded"
+        echo "K2Panel web server binary has been downloaded"
         exit 1
     fi
 
@@ -174,18 +174,18 @@ download() {
     # 获取machine
     machine=$(uname -m)
     zip_file=$panel_path/data/webserver-$machine.zip
-    wget -O $zip_file https://node.aapanel.com/webserver/webserver-$machine.zip
+    wget -O $zip_file https://node.k2panel.com/webserver/webserver-$machine.zip
     if [ $? -ne 0 ]; then
-        echo "Failed to download aaPanel web server binary"
+        echo "Failed to download K2Panel web server binary"
         rm -f $zip_file
         exit 1
     fi
 
     # 验证文件hash
     hash256=$(sha256sum $zip_file | awk '{print $1}')
-    cloud_hash256=$(wget -q -O - https://node.aapanel.com/webserver/webserver-$machine.txt)
+    cloud_hash256=$(wget -q -O - https://node.k2panel.com/webserver/webserver-$machine.txt)
     if [ "$hash256" != "$cloud_hash256" ]; then
-        echo "Failed to verify aaPanel web server binary"
+        echo "Failed to verify K2Panel web server binary"
         rm -f $zip_file
         exit 1
     fi
@@ -193,7 +193,7 @@ download() {
     # 解压文件
     unzip -o $zip_file -d $panel_path/
     if [ ! -f $webserver_bin ]; then
-        echo "Failed to extract aaPanel web server binary"
+        echo "Failed to extract K2Panel web server binary"
         rm -f $zip_file
         exit 1
     fi
@@ -202,7 +202,7 @@ download() {
     rm -f $zip_file
     # 设置权限
     chmod 700 $webserver_bin
-    echo "aaPanel web server binary has been downloaded"
+    echo "K2Panel web server binary has been downloaded"
     bash /www/server/panel/init.sh reload
 }
 

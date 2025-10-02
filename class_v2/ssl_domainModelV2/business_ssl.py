@@ -23,7 +23,7 @@ class BusinessSSL(object):
     __BINDURL = f"{public.OfficialApiBase()}/api/user"  # 获取token 获取官网token
     __APIURL = f"{public.OfficialApiBase()}/api"
 
-    __CODEURL = "https://wafapi.aapanel.com/Auth/GetBindCode"  # 获取绑定验证码
+    __CODEURL = "https://wafapi.k2panel.com/Auth/GetBindCode"  # 获取绑定验证码
     __UPATH = "data/userInfo.json"
     __PUBKEY = "data/public.key"
 
@@ -244,13 +244,13 @@ class BusinessSSL(object):
         """
         auto = [
           {
-            "domain": "testwpsite.aapanel.org",
+            "domain": "testwpsite.k2panel.org",
             "id": 13,
             "name": "CloudFlareDns",
             "alias": "a"
           },
           {
-            "domain": "testphp22.aapanel.org",
+            "domain": "testphp22.k2panel.org",
             "id": 14,
             "name": "CloudFlareDns",
             "alias": "b"
@@ -445,7 +445,7 @@ class BusinessSSL(object):
             verify_info['hosts'] = []
             if verify_info['data']['application']['status'] == 'ongoing':
                 return public.fail_v2(
-                    public.lang("In verification, please contact aaPanel if the audit still fails after 24 hours")
+                    public.lang("In verification, please contact K2Panel if the audit still fails after 24 hours")
                 )
 
             for dinfo in verify_info['data']['dcvList']:

@@ -5,7 +5,7 @@
   "versions": "2.2",
   "checks": "/www/server/panel/plugin/nodejs",
   "author": "official",
-  "home": "http://www.aapanel.com",
+  "home": "http://www.k2panel.com",
   "beta": false,
   "force_message": "",
   "not_substituted":["version_list.json|f"]

@@ -1,5 +1,5 @@
 # ==============================================================================
-# Alertmanager Configuration for aaPanel
+# Alertmanager Configuration for K2Panel
 # ==============================================================================
 # تكوين Alertmanager لإدارة وإرسال التنبيهات
 # يدعم Slack و Email notifications
@@ -85,7 +85,7 @@ receivers:
     slack_configs:
       - api_url: '${SLACK_WEBHOOK_URL}'
         channel: '#alerts'
-        username: 'aaPanel Alertmanager'
+        username: 'K2Panel Alertmanager'
         icon_emoji: ':warning:'
         
         # عنوان الإشعار - Notification title
@@ -117,7 +117,7 @@ receivers:
         
         # عنوان البريد - Email subject
         headers:
-          Subject: '[CRITICAL] aaPanel Alert: {{ .CommonLabels.alertname }}'
+          Subject: '[CRITICAL] K2Panel Alert: {{ .CommonLabels.alertname }}'
         
         # محتوى البريد - Email body (HTML)
         html: |
@@ -148,7 +148,7 @@ receivers:
             </div>
             {{ end }}
             <hr>
-            <p><small>This is an automated alert from aaPanel Alertmanager</small></p>
+            <p><small>This is an automated alert from K2Panel Alertmanager</small></p>
           </body>
           </html>
         

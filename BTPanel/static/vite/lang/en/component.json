@@ -15,7 +15,7 @@
 		},
 		"Feedback": {
 			"index_7": "Feedback",
-			"index_1": "aaPanel demand feedback collection",
+			"index_1": "K2Panel demand feedback collection",
 			"index_2": "If you encounter any problems or imperfect functions during use, please describe",
 			"index_3": "your problems or needs to us in detail, we will try our best to solve or improve for",
 			"index_4": "We pay special attention to your requirements feedback, and we conduct regular weekly requirements reviews. I hope I can help you better",
@@ -87,12 +87,12 @@
 			"index_47": "Pay Now"
 		},
 		"BindAccount": {
-			"index_1": "Bind aaPanel account",
+			"index_1": "Bind K2Panel account",
 			"index_2": "No account, go to register",
 			"index_3": "Log in",
 			"index_4": "Please enter your email address",
 			"index_5": "Please enter your password",
-			"index_6": "Bind aaPanel account",
+			"index_6": "Bind K2Panel account",
 			"index_7": "Your Email address",
 			"index_8": "Your Password"
 		},

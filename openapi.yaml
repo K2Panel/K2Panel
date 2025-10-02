@@ -1,10 +1,10 @@
 openapi: 3.0.3
 info:
-  title: aaPanel API
+  title: K2Panel API
   description: |
-    # aaPanel REST API Documentation
+    # K2Panel REST API Documentation
     
-    aaPanel is a powerful server management control panel providing comprehensive server administration capabilities through a web interface and RESTful API.
+    K2Panel is a powerful server management control panel providing comprehensive server administration capabilities through a web interface and RESTful API.
     
     ## Current Implementation Status
     
@@ -38,8 +38,8 @@ info:
     
   version: 1.0.0
   contact:
-    name: aaPanel Support
-    url: https://www.aapanel.com
+    name: K2Panel Support
+    url: https://www.k2panel.com
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html

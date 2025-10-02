@@ -1,7 +1,7 @@
 #!/bin/bash
 #coding: utf-8
 # +-------------------------------------------------------------------
-# | aaPanel - Blue-Green Deployment Script
+# | K2Panel - Blue-Green Deployment Script
 # +-------------------------------------------------------------------
 # | Zero-downtime deployment with automatic rollback
 # +-------------------------------------------------------------------
@@ -18,7 +18,7 @@ NC='\033[0m' # No Color
 
 # المتغيرات
 REGISTRY="${REGISTRY:-ghcr.io}"
-IMAGE_NAME="${IMAGE_NAME:-owner/aapanel}"
+IMAGE_NAME="${IMAGE_NAME:-owner/k2panel}"
 IMAGE_TAG="${IMAGE_TAG:-latest}"
 FULL_IMAGE="${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}"
 MAX_HEALTH_RETRIES=15
@@ -59,10 +59,10 @@ detect_active_environment() {
         print_info "Current active environment from file: $CURRENT_ACTIVE"
     else
         # اكتشاف تلقائي من الحاويات الجارية
-        if docker ps | grep -q "aapanel_app_blue"; then
+        if docker ps | grep -q "k2panel_app_blue"; then
             CURRENT_ACTIVE="blue"
             print_info "Detected blue environment is running"
-        elif docker ps | grep -q "aapanel_app_green"; then
+        elif docker ps | grep -q "k2panel_app_green"; then
             CURRENT_ACTIVE="green"
             print_info "Detected green environment is running"
         else
@@ -97,7 +97,7 @@ start_shared_services() {
     print_header "🔧 Starting Shared Services"
     
     # التحقق إذا كانت الخدمات المشتركة تعمل
-    if docker ps | grep -q "aapanel_postgres_shared" && docker ps | grep -q "aapanel_redis_shared"; then
+    if docker ps | grep -q "k2panel_postgres_shared" && docker ps | grep -q "k2panel_redis_shared"; then
         print_success "Shared services already running"
         return 0
     fi
@@ -144,7 +144,7 @@ deploy_target_environment() {
     print_info "Starting ${TARGET_ENV} environment on port ${TARGET_PORT}..."
     
     # إيقاف البيئة المستهدفة إذا كانت موجودة
-    if docker ps -a | grep -q "aapanel_app_${TARGET_ENV}"; then
+    if docker ps -a | grep -q "k2panel_app_${TARGET_ENV}"; then
         print_info "Stopping existing ${TARGET_ENV} containers..."
         docker-compose -f "docker-compose.${TARGET_ENV}.yml" down
     fi
@@ -264,7 +264,7 @@ rollback() {
             print_info "Restoring ${PREVIOUS_ACTIVE} environment..."
             
             # التأكد من أن البيئة السابقة تعمل
-            if ! docker ps | grep -q "aapanel_app_${PREVIOUS_ACTIVE}"; then
+            if ! docker ps | grep -q "k2panel_app_${PREVIOUS_ACTIVE}"; then
                 print_info "Starting ${PREVIOUS_ACTIVE} environment..."
                 docker-compose -f "docker-compose.${PREVIOUS_ACTIVE}.yml" up -d
             fi
@@ -318,7 +318,7 @@ deployment_summary() {
 
 # ==================== التنفيذ الرئيسي ====================
 main() {
-    print_header "🚀 aaPanel Blue-Green Deployment"
+    print_header "🚀 K2Panel Blue-Green Deployment"
     echo "Image: ${FULL_IMAGE}"
     echo "Time: $(date '+%Y-%m-%d %H:%M:%S')"
     

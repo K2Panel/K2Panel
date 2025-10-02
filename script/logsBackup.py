@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #coding: utf-8
 #-----------------------------
-#aaPanel
+#K2Panel
 # 网站日志切割脚本
 #-----------------------------
 import sys

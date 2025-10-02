@@ -1,10 +1,10 @@
 # # coding: utf-8
 # # +-------------------------------------------------------------------
-# # | aaPanel x6
+# # | K2Panel x6
 # # +-------------------------------------------------------------------
-# # | Copyright (c) 2015-2017 aaPanel(www.aapanel.com) All rights reserved.
+# # | Copyright (c) 2015-2017 K2Panel(www.k2panel.com) All rights reserved.
 # # +-------------------------------------------------------------------
-# # | Author: lkqiang <lkq@aapanel.com>
+# # | Author: lkqiang <lkq@k2panel.com>
 # # +-------------------------------------------------------------------
 # # +--------------------------------------------------------------------
 # # |   宝塔webshell 内置扫描
@@ -301,9 +301,9 @@
 #         public.WriteFile('/www/server/panel/data/webshell_data.json', json.dumps(data))
 #         localtime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 #         if len(data) >= 1:
-#             public.WriteLog('aaPanel built-in webshell killing','Killing the %s directory found the following Trojan %s'%(path,data))
+#             public.WriteLog('K2Panel built-in webshell killing','Killing the %s directory found the following Trojan %s'%(path,data))
 #         else:
-#         	public.WriteLog('aaPanel built-in webshell killing','Checking and killing [ %s ] directory did not find any risks'%(path))
+#         	public.WriteLog('K2Panel built-in webshell killing','Checking and killing [ %s ] directory did not find any risks'%(path))
 #     elif type=='site':
 #         data = public.M('sites').where('name=?', (path,)).field('name,id,path').select()
 #         localtime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
@@ -312,8 +312,8 @@
 #             ##木马返回在这里
 #             data = aa.send_san_dir(path, send)
 #             if len(data) >= 1:
-#                 public.WriteLog('aaPanel built-in webshell killing', 'Killing the %s directory found the following Trojan %s' % (path, data))
+#                 public.WriteLog('K2Panel built-in webshell killing', 'Killing the %s directory found the following Trojan %s' % (path, data))
 #             else:
-#             	public.WriteLog('aaPanel built-in webshell killing','Checking and killing [ %s ] directory did not find any risks'%(path))
+#             	public.WriteLog('K2Panel built-in webshell killing','Checking and killing [ %s ] directory did not find any risks'%(path))
 #
 #

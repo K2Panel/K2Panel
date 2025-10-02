@@ -1,5 +1,5 @@
 # ==============================================================================
-# Dockerfile لتطبيق aaPanel
+# Dockerfile لتطبيق K2Panel
 # Multi-stage Build لتقليل حجم الصورة النهائية
 # ==============================================================================
 
@@ -88,8 +88,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # إنشاء مستخدم غير root للأمان
 # استخدام UID/GID محددين للتوافق
-RUN groupadd -r -g 1000 aapanel && \
-    useradd -r -u 1000 -g aapanel -m -d /home/aapanel -s /bin/bash aapanel
+RUN groupadd -r -g 1000 k2panel && \
+    useradd -r -u 1000 -g k2panel -m -d /home/k2panel -s /bin/bash k2panel
 
 # تعيين مجلد العمل
 WORKDIR /app
@@ -99,7 +99,7 @@ COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/pytho
 COPY --from=builder /usr/local/bin /usr/local/bin
 
 # نسخ ملفات التطبيق (مع مراعاة .dockerignore)
-COPY --chown=aapanel:aapanel . .
+COPY --chown=k2panel:k2panel . .
 
 # إنشاء المجلدات الضرورية وتعيين الأذونات
 RUN mkdir -p /app/data/db \
@@ -107,11 +107,11 @@ RUN mkdir -p /app/data/db \
     /app/data/sess_files \
     /app/logs \
     /app/logs/request \
-    && chown -R aapanel:aapanel /app \
+    && chown -R k2panel:k2panel /app \
     && chmod -R 755 /app
 
 # التبديل إلى المستخدم غير root
-USER aapanel
+USER k2panel
 
 # كشف المنفذ 5000
 EXPOSE 5000

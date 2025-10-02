@@ -24,7 +24,7 @@ services:
   app-green:
     # استخدام الصورة المبنية من ghcr.io
     image: ${REGISTRY:-ghcr.io}/${IMAGE_NAME}:${IMAGE_TAG:-latest}
-    container_name: aapanel_app_green
+    container_name: k2panel_app_green
     
     # Port mapping - Green على منفذ 5002
     ports:
@@ -48,7 +48,7 @@ services:
     
     # Network
     networks:
-      - aapanel_network
+      - k2panel_network
     
     # Restart policy
     restart: always
@@ -63,8 +63,8 @@ services:
     
     # Labels للتعريف
     labels:
-      com.aapanel.deployment.color: "green"
-      com.aapanel.deployment.type: "blue-green"
+      com.k2panel.deployment.color: "green"
+      com.k2panel.deployment.type: "blue-green"
 
 # ==============================================================================
 # Persistent Volumes
@@ -73,20 +73,20 @@ volumes:
   # Green Application data (منفصلة)
   app_data_green:
     driver: local
-    name: aapanel_app_data_green
+    name: k2panel_app_data_green
   
   # Green Application logs (منفصلة)
   app_logs_green:
     driver: local
-    name: aapanel_app_logs_green
+    name: k2panel_app_logs_green
 
 # ==============================================================================
 # Networks
 # ==============================================================================
 networks:
-  aapanel_network:
+  k2panel_network:
     external: true
-    name: aapanel_network
+    name: k2panel_network
 
 # ==============================================================================
 # Important Notes

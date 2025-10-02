@@ -1,10 +1,10 @@
 #coding: utf-8
 # +-------------------------------------------------------------------
-# | aaPanel
+# | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2016 aaPanel(www.aapanel.com) All rights reserved.
+# | Copyright (c) 2015-2016 K2Panel(www.k2panel.com) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: hwliang <hwl@aapanel.com>
+# | Author: hwliang <hwl@k2panel.com>
 # +-------------------------------------------------------------------
 import sys,os,re,time,json
 from datetime import datetime, timedelta
@@ -1321,7 +1321,7 @@ class data:
                         try:
                             ico_response = requests.get(ico_url, headers={
                                 'host': domain_name,
-                                'user-agent': 'aaPanel',
+                                'user-agent': 'K2Panel',
                             }, verify=False, timeout=15)
 
                             if ico_response.status_code == 200 and ico_response.headers.get('Content-Type', '').lower() == 'image/x-icon':
@@ -1342,7 +1342,7 @@ class data:
                             # 无法获取favicon.ico，尝试从首页中获取
                             response = requests.get(url, headers={
                                 'host': domain_name,
-                                'user-agent': 'aaPanel',
+                                'user-agent': 'K2Panel',
                             }, verify=False, timeout=15)
 
                             # 检查是否重定向
@@ -1371,7 +1371,7 @@ class data:
                             if m:
                                 ico_url = m.group(1)
                                 headers = {
-                                        'user-agent': 'aaPanel',
+                                        'user-agent': 'K2Panel',
                                     }
                                 if not ico_url.startswith('http'):
                                     headers['host'] = domain_name

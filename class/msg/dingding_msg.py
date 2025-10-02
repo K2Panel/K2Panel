@@ -1,10 +1,10 @@
 #coding: utf-8
 # +-------------------------------------------------------------------
-# | aaPanel
+# | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2020 aaPanel(www.aapanel.com) All rights reserved.
+# | Copyright (c) 2015-2020 K2Panel(www.k2panel.com) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: 沐落 <cjx@aapanel.com>
+# | Author: 沐落 <cjx@k2panel.com>
 # | Author: lx
 # | 消息通道邮箱模块
 # +-------------------------------------------------------------------
@@ -45,9 +45,9 @@ class dingding_msg:
         data['ps'] = 'Dingding is used to receive panel message push'
         data['version'] = '1.2'
         data['date'] = '2022-08-10'
-        data['author'] = 'aaPanel'
+        data['author'] = 'K2Panel'
         data['title'] = 'Dingding'
-        data['help'] = 'http://www.aapanel.com'
+        data['help'] = 'http://www.k2panel.com'
         return data
 
     def get_config(self,get):
@@ -100,7 +100,7 @@ class dingding_msg:
             info = public.get_push_info('Message channel configuration reminder',['>configuration status: <font color=#20a53a>Success</font>\n\n'])
             ret = self.send_msg(info['msg'])
         except:
-            ret = self.send_msg('aaPanel alarm test')
+            ret = self.send_msg('K2Panel alarm test')
 
         if ret['status']:
             if 'default' in get and get['default']:
@@ -120,7 +120,7 @@ class dingding_msg:
         @name 处理md格式
         """
         try:
-            title = 'aaPanel alarm notification'
+            title = 'K2Panel alarm notification'
             if msg.find("####") >= 0:
                 try:
                     title = re.search(r"####(.+)", msg).groups()[0]

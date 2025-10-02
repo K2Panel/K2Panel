@@ -2,7 +2,7 @@
 # -------------------------------------------------------------------
 # aapPanel
 # -------------------------------------------------------------------
-# Copyright (c) 2015-2099  aaPanel(www.aapanel.com) All rights reserved.
+# Copyright (c) 2015-2099  K2Panel(www.k2panel.com) All rights reserved.
 # -------------------------------------------------------------------
 # Author: wpl <wpl@bt.cn>
 # -------------------------------------------------------------------
@@ -433,7 +433,7 @@ class CloudDetector(WebshellDetector):
             return True
 
         try:
-            ret = requests.get('https://webshellcheck.aapanel.com/checkWebShell.php').json()
+            ret = requests.get('https://webshellcheck.k2panel.com/checkWebShell.php').json()
             if ret['status'] and ret['url']:
                 self.check_url = ret['url']
                 self.last_check_time = current_time
@@ -584,7 +584,7 @@ class SafeCloudModel:
     # 恶意文件 云端上报配置[目前不给支持]
     def __init__(self):
         self.upload_config = {
-            'url': 'https://w-check.aapanel.com/upload_web.php',
+            'url': 'https://w-check.k2panel.com/upload_web.php',
             'max_file_size': 2 * 1024 * 1024,  # 最大文件大小限制(1MB)
             'max_daily_uploads': 50,  # 每日最大上报数量
             'min_upload_interval': 300,  # 最小上报间隔(秒)
@@ -2165,7 +2165,7 @@ class main(projectBase):
         '''
             @time: 2025-02-19
             @name 设置告警配置
-                - 支持告警方式:使用aapanel支持的告警方式
+                - 支持告警方式:使用k2panel支持的告警方式
                 - 支持功能:木马查杀
                 - 支持频率:10分钟内,仅限告警一次
             @param get.status: 是否开启[用户可设置]
@@ -2357,7 +2357,7 @@ class main(projectBase):
         '''
         try:
 
-            ret = requests.get('https://webshellcheck.aapanel.com/checkWebShell.php').json()
+            ret = requests.get('https://webshellcheck.k2panel.com/checkWebShell.php').json()
             # public.print_log("|====ret:".format(ret))
             if ret['status']:
                 return ret['url']

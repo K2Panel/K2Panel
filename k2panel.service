@@ -1,6 +1,6 @@
 [Unit]
-Description=aaPanel - Server Management Control Panel
-Documentation=https://www.aapanel.com/
+Description=K2Panel - Server Management Control Panel
+Documentation=https://www.k2panel.com/
 After=network.target postgresql.service mysql.service redis.service
 Wants=network-online.target
 
@@ -64,7 +64,7 @@ TimeoutStopSec=30
 # Logging
 StandardOutput=journal
 StandardError=journal
-SyslogIdentifier=aapanel
+SyslogIdentifier=k2panel
 
 [Install]
 WantedBy=multi-user.target

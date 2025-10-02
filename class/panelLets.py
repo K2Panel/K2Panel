@@ -1,10 +1,10 @@
 #coding: utf-8
 # +-------------------------------------------------------------------
-# | aaPanel
+# | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2099 aaPanel(www.aapanel.com) All rights reserved.
+# | Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: 沐落 <cjx@aapanel.com>
+# | Author: 沐落 <cjx@k2panel.com>
 # +-------------------------------------------------------------------
 import os,sys,json,time,re
 setup_path = '/www/server/panel'

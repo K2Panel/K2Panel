@@ -1,6 +1,6 @@
 # coding: utf-8
 """
-Alembic Environment Configuration for aaPanel
+Alembic Environment Configuration for K2Panel
 Handles migrations for SQLite and PostgreSQL/MySQL databases
 """
 

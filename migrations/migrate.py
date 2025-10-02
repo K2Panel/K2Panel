@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 """
-Migration Management Script for aaPanel
+Migration Management Script for K2Panel
 Provides commands for database migrations
 """
 
@@ -78,7 +78,7 @@ def history():
         sys.exit(1)
 
 def main():
-    parser = argparse.ArgumentParser(description='aaPanel Migration Management')
+    parser = argparse.ArgumentParser(description='K2Panel Migration Management')
     
     subparsers = parser.add_subparsers(dest='command', help='Commands')
     
@@ -103,7 +103,7 @@ def main():
         sys.exit(1)
     
     print("=" * 70)
-    print("aaPanel Migration Management")
+    print("K2Panel Migration Management")
     print("=" * 70)
     print()
     

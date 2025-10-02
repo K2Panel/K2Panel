@@ -36,7 +36,7 @@ var soft = {
 			soft.set_soft_tips(rdata, type);
 
 			// if (type == 10) {
-			//   $("#updata_pro_info").html('<div class="alert alert-danger" style="margin-bottom:15px"><strong>' + lan.soft.bt_developer + '</strong><a class="btn btn-success btn-xs va0" href="https://www.aapanel.com" title="' + lan.soft.get_third_party_apps + '" style="margin-left: 8px" target="_blank">' + lan.soft.get_third_party_apps + '</a><input type="file" style="display:none;" accept=".zip,.tar.gz" id="update_zip" multiple="multiple"><button class="btn btn-success btn-xs" onclick="soft.update_zip_open()" style="margin-left:8px">' + lan.soft.import_plug + '</button></div>')
+			//   $("#updata_pro_info").html('<div class="alert alert-danger" style="margin-bottom:15px"><strong>' + lan.soft.bt_developer + '</strong><a class="btn btn-success btn-xs va0" href="https://www.k2panel.com" title="' + lan.soft.get_third_party_apps + '" style="margin-left: 8px" target="_blank">' + lan.soft.get_third_party_apps + '</a><input type="file" style="display:none;" accept=".zip,.tar.gz" id="update_zip" multiple="multiple"><button class="btn btn-success btn-xs" onclick="soft.update_zip_open()" style="margin-left:8px">' + lan.soft.import_plug + '</button></div>')
 			// } else if (type == 11) {
 			//   $("#updata_pro_info").html('<div class="alert alert-info" style="margin-bottom:15px"><strong>' + lan.soft.comingsoon + '</strong></div>')
 			// }
@@ -547,13 +547,13 @@ var soft = {
 			],
 			data: data,
 			empty:
-				'<a class="btlink"  onClick="javascript:bt.openFeedback({title:\'aaPanel demand feedback collection\',placeholder:\'<span>If you encounter any problems or imperfect functions during use, please describe <br> your problems or needs to us in detail, we will try our best to solve or improve for <br> you</span>\',recover:\'We pay special attention to your requirements feedback, and we conduct regular weekly requirements reviews. I hope I can help you better\',key:993,proType:2});" style="margin-left: 10px;display:block;margin:10px 10px;white-space: nowrap;">If the search content is not found, submit the demand feedback</a>',
+				'<a class="btlink"  onClick="javascript:bt.openFeedback({title:\'K2Panel demand feedback collection\',placeholder:\'<span>If you encounter any problems or imperfect functions during use, please describe <br> your problems or needs to us in detail, we will try our best to solve or improve for <br> you</span>\',recover:\'We pay special attention to your requirements feedback, and we conduct regular weekly requirements reviews. I hope I can help you better\',key:993,proType:2});" style="margin-left: 10px;display:block;margin:10px 10px;white-space: nowrap;">If the search content is not found, submit the demand feedback</a>',
 		});
 		// 需求反馈
 		if (data.length == 0) {
 			$('.feedback-btn').remove();
 			$('.soft-filter-box .soft-search').after(
-				'<span style="display:inline-block; margin-left:10px;margin-top:8px;vertical-align: bottom;" class="feedback-btn"><span class="flex" style="align-items: center;margin-right:16px;width:100px;"><i class="icon-demand"></i><a class="btlink" onClick="javascript:bt.openFeedback({title:\'aaPanel demand feedback collection\',placeholder:\'<span>If you encounter any problems or imperfect functions during use, please describe <br> your problems or needs to us in detail, we will try our best to solve or improve for <br> you</span>\',recover:\'We pay special attention to your requirements feedback, and we conduct regular weekly requirements reviews. I hope I can help you better\',key:993,proType:2});" style="margin-left: 10px;">Feedback</a></span></span>'
+				'<span style="display:inline-block; margin-left:10px;margin-top:8px;vertical-align: bottom;" class="feedback-btn"><span class="flex" style="align-items: center;margin-right:16px;width:100px;"><i class="icon-demand"></i><a class="btlink" onClick="javascript:bt.openFeedback({title:\'K2Panel demand feedback collection\',placeholder:\'<span>If you encounter any problems or imperfect functions during use, please describe <br> your problems or needs to us in detail, we will try our best to solve or improve for <br> you</span>\',recover:\'We pay special attention to your requirements feedback, and we conduct regular weekly requirements reviews. I hope I can help you better\',key:993,proType:2});" style="margin-left: 10px;">Feedback</a></span></span>'
 			);
 		}
 	},
@@ -682,7 +682,7 @@ var soft = {
 		if (type == 10) {
 			$(el).css('display', 'block');
 			explain.text(
-				'Security Reminder: aaPanel officially conducted a security audit before the third-party plug-in was put on the shelves, but there may be security risks. Please check it out before using it in the production environment.'
+				'Security Reminder: K2Panel officially conducted a security audit before the third-party plug-in was put on the shelves, but there may be security risks. Please check it out before using it in the production environment.'
 			);
 			btn_ground = soft.render_tips_btn(btn_ground, [
 				//{title:'免费入驻',href:'https://www.bt.cn/developer/',rel:'noreferrer noopener',target:'_blank',btn:'免费入驻',class:'btn btn-success btn-xs va0',style:"margin-left:10px;"},
@@ -982,7 +982,7 @@ var soft = {
 			if ($('.onekey-type').attr('class') === undefined) {
 				tbody =
 					'<div class="alert alert-info" style="margin-bottom: 10px;">\
-                        <strong class="mr5">aaPanel one-click deployment has been launched, and we invite global outstanding projects to settle in (limited to project officials)</strong>\
+                        <strong class="mr5">K2Panel one-click deployment has been launched, and we invite global outstanding projects to settle in (limited to project officials)</strong>\
                         <a class="btn btn-success btn-xs mr5" href="https://www.bt.cn/bbs/thread-33063-1-1.html" target="_blank">Free entry</a>\
                         <a class="btn btn-success btn-xs" onclick="soft.input_package()">Import project</a>\
                         </div><div class="onekey-menu-sub onekey-type" style="margin-bottom:15px">';
@@ -1061,7 +1061,7 @@ var soft = {
 					'<td><a class="btlink" target="_blank" href="' +
 					rdata.list[i].official +
 					'">' +
-					(rdata.list[i].author == 'aaPanel' ? rdata.list[i].title : rdata.list[i].author) +
+					(rdata.list[i].author == 'K2Panel' ? rdata.list[i].title : rdata.list[i].author) +
 					'</a></td>' +
 					'<td>' +
 					(rdata.list[i].sort !== undefined
@@ -4917,7 +4917,7 @@ function onekeyCodeSite(codename, versions, title, enable_functions) {
 				</from>';
 		add = layer.open({
 			type: 1,
-			title: 'aaPanel One-Click [' + title + ']',
+			title: 'K2Panel One-Click [' + title + ']',
 			area: '560px',
 			closeBtn: 2,
 			shadeClose: false,

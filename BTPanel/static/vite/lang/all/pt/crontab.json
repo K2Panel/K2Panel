@@ -163,7 +163,7 @@
 	"213cb47719d7d95e6d4ac0c023077698": "Diretório de backup",
 	"d985c8ef9ce347ea05138c2c660162d4": "Webshell",
 	"52e2e97d44cef7498a6ab300c59378ec": "Tempo de sincronização",
-	"f16738eb14e338663ce083aea1168302": "Sincronize o tempo do servidor NTP por padrão e sincronizará o tempo do servidor do aapanel.com quando falhar.",
+	"f16738eb14e338663ce083aea1168302": "Sincronize o tempo do servidor NTP por padrão e sincronizará o tempo do servidor do k2panel.com quando falhar.",
 	"d22b4455f9d4e4783ff7f030f42feca3": "RAM grátis",
 	"6163f52c564e8b1fa597a63b60922233": "Libere a pegada de memória de PHP, MySQL, Pure-FTPD, Apache, Nginx, é recomendável executá-lo à meia-noite todos os dias!",
 	"a63c4434a8943a075c04ebdf1b54a13e": "Acesso URL",

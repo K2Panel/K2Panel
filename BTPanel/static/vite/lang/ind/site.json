@@ -602,7 +602,7 @@
 			"index_21": "Ganti ke, bisa kosong"
 		},
 		"RulesError": {
-			"index_1": "Contoh: aapanel.com",
+			"index_1": "Contoh: k2panel.com",
 			"index_2": "Nama subdirektori tidak bisa kosong",
 			"index_3": "Judul situs WordPress tidak bisa kosong",
 			"index_4": "Pilih bahasanya",
@@ -669,7 +669,7 @@
 			"index_12": "Kasus tidak sensitif",
 			"index_13": "Hanya ganti yang pertama",
 			"index_14": "Ekspresi reguler",
-			"index_15": "Efek default: Ganti semua 'http://www.aapanel.com' dengan 'https://www.aapanel.com'.",
+			"index_15": "Efek default: Ganti semua 'http://www.k2panel.com' dengan 'https://www.k2panel.com'.",
 			"index_16": "Websocket global diaktifkan dan tidak diizinkan dinonaktifkan secara individual",
 			"index_17": "Hapus proyek proxy terbalik",
 			"index_18": "Ganti semua kata kunci yang cocok"

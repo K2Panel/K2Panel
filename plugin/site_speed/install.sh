@@ -22,7 +22,7 @@ rm -f $pluginPath/*cpython-37m*.so
 rm -f $pluginPath/*_main.so
 extFile=""
 version=""
-download_Url=https://node.aapanel.com
+download_Url=https://node.k2panel.com
 
 Install_site_speed()
 {
@@ -73,7 +73,7 @@ Install_site_speed()
 	# 卸载旧版本网站加速
 	site_cache_path=/www/server/panel/plugin/site_cache
 	if [ -f $site_cache/info.json ];then
-		wget -O $site_cache/install.sh https://node.aapanel.com/install/plugin/site_cache/install.sh -T 5
+		wget -O $site_cache/install.sh https://node.k2panel.com/install/plugin/site_cache/install.sh -T 5
 		bash $site_cache/install.sh uninstall
 	fi
 

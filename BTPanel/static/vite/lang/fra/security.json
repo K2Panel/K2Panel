@@ -76,7 +76,7 @@
 				"form_5": "Spécifier IP",
 				"form_6": "Veuillez saisir l'IP spécifié, plusieurs IP doivent être séparés par \", ou des pauses de ligne. par exemple 192.168.1.1, 192.168.1.2",
 				"form_7": "Spécifier le domaine",
-				"form_8": "Veuillez saisir le domaine spécifié. par exemple www.aapanel.com",
+				"form_8": "Veuillez saisir le domaine spécifié. par exemple www.k2panel.com",
 				"form_9": "Stratégie",
 				"form_10": "Direction",
 				"form_11": "Remarques",
@@ -315,7 +315,7 @@
 			"Index_10": "Journaux d'opération"
 		},
 		"Conf": {
-			"Index_1": "protection contre la force brute AAPANEL",
+			"Index_1": "protection contre la force brute K2PANEL",
 			"Index_2": "Votre adresse IP actuelle [{0}] n'est pas sur la liste blanche",
 			"Index_3": "Ajouter à la liste blanche",
 			"Index_4": "Il est recommandé d'allumer la fonction antiviolence. Il fera mieux sécuriser le serveur. Voulez-vous continuer?",

@@ -1,10 +1,10 @@
 # coding: utf-8
 # -------------------------------------------------------------------
-# aaPanel
+# K2Panel
 # -------------------------------------------------------------------
-# Copyright (c) 2015-2099 aaPanel(www.aapanel.com) All rights reserved.
+# Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
 # -------------------------------------------------------------------
-# Author: hwliang <hwl@aapanel.com>
+# Author: hwliang <hwl@k2panel.com>
 # -------------------------------------------------------------------
 
 # ------------------------------
@@ -1703,7 +1703,7 @@ class backup:
         return title
 
     def generate_failture_title(self, task_name):
-        title = "aapanel Plan Task Backup Failure Reminder".format(task_name)
+        title = "k2panel Plan Task Backup Failure Reminder".format(task_name)
         return title
 
     def generate_all_failture_notice(self, task_name, msg, backup_type, remark=""):

@@ -602,7 +602,7 @@
 			"index_21": "Substituir para, pode estar em branco"
 		},
 		"RulesError": {
-			"index_1": "Exemplo: aapanel.com",
+			"index_1": "Exemplo: k2panel.com",
 			"index_2": "O nome do subdiretório não pode estar vazio",
 			"index_3": "O título do site do WordPress não pode estar vazio",
 			"index_4": "Selecione o idioma",
@@ -669,7 +669,7 @@
 			"index_12": "Caso insensível",
 			"index_13": "Substitua apenas o primeiro",
 			"index_14": "Expressão regular",
-			"index_15": "Efeito padrão: substitua todos os 'http://www.aapanel.com' por 'https://www.aapanel.com'.",
+			"index_15": "Efeito padrão: substitua todos os 'http://www.k2panel.com' por 'https://www.k2panel.com'.",
 			"index_16": "O WebSocket global está ativado e não pode ser desativado individualmente",
 			"index_17": "Excluir projeto de proxy reverso",
 			"index_18": "Substitua todas as palavras -chave correspondentes"

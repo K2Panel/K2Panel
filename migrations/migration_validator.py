@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 """
-Migration Validator for aaPanel
+Migration Validator for K2Panel
 نظام التحقق من صحة Migrations
 
 A comprehensive validation system for Alembic migration files.
@@ -563,7 +563,7 @@ def validate_all_migrations(migrations_dir: str = 'migrations/versions') -> Dict
 def main():
     """CLI interface for migration validator"""
     parser = argparse.ArgumentParser(
-        description='aaPanel Migration Validator | التحقق من صحة Migrations',
+        description='K2Panel Migration Validator | التحقق من صحة Migrations',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples | أمثلة:

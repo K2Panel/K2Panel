@@ -7,7 +7,7 @@ public_file=/www/server/panel/install/public.sh
 publicFileMd5=$(md5sum ${public_file} 2>/dev/null|awk '{print $1}')
 md5check="484c945780dc4a802cff267f3fb15a66"
 if [ "${publicFileMd5}" != "${md5check}"  ] && [ -z "${NODE_URL}" ]; then
-	wget -O Tpublic.sh https://node.aapanel.com/install/public.sh -T 20;
+	wget -O Tpublic.sh https://node.k2panel.com/install/public.sh -T 20;
 	publicFileMd5=$(md5sum Tpublic.sh 2>/dev/null|awk '{print $1}')
 	if [ "${publicFileMd5}" == "${md5check}"  ]; then
 		\cp -rpa Tpublic.sh $public_file
@@ -128,7 +128,7 @@ Error_Msg(){
 	GetSysInfo
 	echo -e "ERROR: php-${phpVersion} ${actionType} failed.";
 	if [ "${EN_CHECK}" ];then
-		echo -e "Please submit to https://forum.aapanel.com for help"
+		echo -e "Please submit to https://forum.k2panel.com for help"
 	else
 	    if [ -z "${SYS_VERSION}" ];then
             echo -e "============================================"
@@ -582,8 +582,8 @@ Install_Configure(){
 		export CC="gcc -DTRUE=1 -DFALSE=0"
 		DEBIAN_12_C=$(cat /etc/issue|grep Debian|grep 12)
 		if [ "${DEBIAN_12_C}" ];then
-		    wget -O /www/server/php/${php_version}/src/ext/intl/breakiterator/codepointiterator_internal.cpp https://node.aapanel.com//patch/php/debian-12-php-71-codepointiterator_internal.cpp
-            wget -O /www/server/php/${php_version}/src/ext/intl/breakiterator/codepointiterator_internal.h https://node.aapanel.com//patch/php/debian-12-php-71-codepointiterator_internal.h
+		    wget -O /www/server/php/${php_version}/src/ext/intl/breakiterator/codepointiterator_internal.cpp https://node.k2panel.com//patch/php/debian-12-php-71-codepointiterator_internal.cpp
+            wget -O /www/server/php/${php_version}/src/ext/intl/breakiterator/codepointiterator_internal.h https://node.k2panel.com//patch/php/debian-12-php-71-codepointiterator_internal.h
 		fi
 	fi 
 
