@@ -45,6 +45,23 @@ jobs:
             echo "✅ VPS_SSH_KEY is set"
           fi
           
+          if [ -z "${{ secrets.VPS_HOST_FINGERPRINT }}" ]; then
+            echo "❌ VPS_HOST_FINGERPRINT is not set"
+            echo ""
+            echo "⚠️  Security Warning: Host fingerprint verification is REQUIRED to prevent MITM attacks"
+            echo ""
+            echo "📋 To get your VPS host fingerprint, run this command locally:"
+            echo "   ssh-keyscan -H ${{ secrets.VPS_HOST }} 2>/dev/null | ssh-keygen -lf - | awk '{print \$2}'"
+            echo ""
+            echo "   OR connect to your VPS first and check: ~/.ssh/known_hosts"
+            echo ""
+            echo "Then add it as VPS_HOST_FINGERPRINT secret in:"
+            echo "   https://github.com/${{ github.repository }}/settings/secrets/actions"
+            VALIDATION_FAILED=1
+          else
+            echo "✅ VPS_HOST_FINGERPRINT is set"
+          fi
+          
           if [ $VALIDATION_FAILED -eq 1 ]; then
             echo ""
             echo "❌ Some secrets are missing. Please add them in:"
@@ -63,8 +80,33 @@ jobs:
           echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
           
-          # إضافة host key للتجنب من سؤال التأكيد
-          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts 2>/dev/null || true
+          # جلب host key من الخادم
+          echo "Fetching host key from ${{ secrets.VPS_HOST }}..."
+          SCANNED_KEY=$(ssh-keyscan -H ${{ secrets.VPS_HOST }} 2>/dev/null)
+          
+          if [ -z "$SCANNED_KEY" ]; then
+            echo "❌ Failed to get host key from server"
+            exit 1
+          fi
+          
+          # التحقق من البصمة (إلزامي للأمان)
+          echo "🔐 Verifying host fingerprint..."
+          ACTUAL_FINGERPRINT=$(echo "$SCANNED_KEY" | ssh-keygen -lf - | awk '{print $2}')
+          
+          if [ "$ACTUAL_FINGERPRINT" != "${{ secrets.VPS_HOST_FINGERPRINT }}" ]; then
+            echo "❌ Host fingerprint mismatch!"
+            echo "   Expected: ${{ secrets.VPS_HOST_FINGERPRINT }}"
+            echo "   Actual: $ACTUAL_FINGERPRINT"
+            echo ""
+            echo "⚠️  SECURITY ALERT: Possible MITM attack detected!"
+            echo "   The server's fingerprint does not match the expected value."
+            echo "   This could indicate a man-in-the-middle attack or server change."
+            exit 1
+          fi
+          echo "✅ Host fingerprint verified successfully"
+          
+          # إضافة المفتاح إلى known_hosts
+          echo "$SCANNED_KEY" >> ~/.ssh/known_hosts
           
           echo "✅ SSH key configured"
 
@@ -74,10 +116,12 @@ jobs:
           echo "🔌 Testing SSH connection to VPS..."
           echo ""
           
-          # اختبار الاتصال
+          # اختبار الاتصال مع التحقق من هوية الخادم
           ssh -i ~/.ssh/deploy_key \
-            -o StrictHostKeyChecking=no \
+            -o StrictHostKeyChecking=yes \
             -o ConnectTimeout=10 \
+            -o ServerAliveInterval=5 \
+            -o ServerAliveCountMax=3 \
             ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
             "echo '✅ SSH Connection successful!'; echo ''; echo 'Server Info:'; uname -a; echo ''; echo 'Available disk space:'; df -h /"
           
@@ -96,9 +140,29 @@ jobs:
           echo "🐳 Checking Docker installation on VPS..."
           
           ssh -i ~/.ssh/deploy_key \
-            -o StrictHostKeyChecking=no \
-            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
-            "which docker && docker --version && docker-compose --version || echo '⚠️  Docker or Docker Compose not found'"
+            -o StrictHostKeyChecking=yes \
+            -o ConnectTimeout=10 \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'ENDSSH'
+          set -e
+          
+          echo "Checking Docker..."
+          if ! which docker > /dev/null 2>&1; then
+            echo "❌ Docker is not installed"
+            exit 1
+          fi
+          docker --version
+          
+          echo ""
+          echo "Checking Docker Compose..."
+          if ! docker-compose --version > /dev/null 2>&1; then
+            echo "❌ Docker Compose is not installed"
+            exit 1
+          fi
+          docker-compose --version
+          
+          echo ""
+          echo "✅ Docker and Docker Compose are installed"
+          ENDSSH
 
       # ==================== الخطوة 5: التحقق من المسار ====================
       - name: Check deployment path
@@ -106,7 +170,8 @@ jobs:
           echo "📁 Checking deployment path /opt/k2panel..."
           
           ssh -i ~/.ssh/deploy_key \
-            -o StrictHostKeyChecking=no \
+            -o StrictHostKeyChecking=yes \
+            -o ConnectTimeout=10 \
             ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'ENDSSH'
           
           if [ ! -d "/opt/k2panel" ]; then
@@ -140,14 +205,31 @@ jobs:
       - name: Cleanup
         if: always()
         run: |
+          echo "🧹 Cleaning up sensitive files..."
           rm -f ~/.ssh/deploy_key
+          # إزالة host key من known_hosts
+          if [ -f ~/.ssh/known_hosts ]; then
+            ssh-keygen -R ${{ secrets.VPS_HOST }} 2>/dev/null || true
+          fi
+          echo "✅ Cleanup completed"
 
 # ==============================================================================
 # Workflow Features:
 # - ✅ Validates all required GitHub Secrets
-# - ✅ Tests SSH connection to VPS
-# - ✅ Checks Docker installation
+# - ✅ Tests SSH connection to VPS with host verification
+# - ✅ Checks Docker installation (fails if missing)
 # - ✅ Verifies deployment directory
 # - ✅ Safe secret handling (cleanup)
 # - ✅ Manual trigger only (workflow_dispatch)
+# - ✅ Mandatory fingerprint verification (VPS_HOST_FINGERPRINT)
+#
+# Required Secrets:
+# - VPS_HOST: VPS IP address or hostname
+# - VPS_USER: SSH username
+# - VPS_SSH_KEY: SSH private key
+# - VPS_HOST_FINGERPRINT: SSH host fingerprint for MITM protection (e.g., SHA256:xxxxx...)
+#
+# How to get VPS_HOST_FINGERPRINT:
+#   1. From your local machine: ssh-keyscan -H YOUR_VPS_IP | ssh-keygen -lf - | awk '{print $2}'
+#   2. Or SSH to VPS first, then check: cat ~/.ssh/known_hosts
 # ==============================================================================
