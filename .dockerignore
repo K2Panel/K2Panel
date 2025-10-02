@@ -97,6 +97,10 @@ Jenkinsfile
 .cache/
 tmp/
 
+# Attached assets (temporary upload folder)
+attached_assets/
+attached_assets/**
+
 # ملفات الجلسات المؤقتة (سيتم إنشاؤها في الحاوية)
 data/session/
 data/sess_files/

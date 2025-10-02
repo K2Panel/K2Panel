@@ -1,0 +1,9 @@
+# Temporary files
+*.tmp
+*.temp
+.cache/
+tmp/
+
+# Attached assets (temporary upload folder)
+attached_assets/
+attached_assets/**
