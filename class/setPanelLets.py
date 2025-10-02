@@ -2,9 +2,9 @@
 # +-------------------------------------------------------------------
 # | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
+# | Copyright (c) 2015-2099 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: zhwen <zhw@k2panel.com>
+# | Author: zhwen <zhw@binarjoinanalyticnl.nl>
 # +-------------------------------------------------------------------
 import os
 os.chdir("/www/server/panel")

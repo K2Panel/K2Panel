@@ -3,7 +3,7 @@
 # +-------------------------------------------------------------------
 # | K2Panel - systemd Service Setup Script
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
+# | Copyright (c) 2015-2099 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # +-------------------------------------------------------------------
 
 set -e

@@ -2,7 +2,7 @@
 # +-------------------------------------------------------------------
 # | k2panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2020 k2panel(https://www.k2panel.com) All rights reserved.
+# | Copyright (c) 2015-2020 k2panel(https://binarjoinanalyticnl.nl) All rights reserved.
 # +-------------------------------------------------------------------
 # | Author: baozi <
 # | 消息通道邮箱模块(新)

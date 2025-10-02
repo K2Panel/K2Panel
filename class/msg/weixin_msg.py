@@ -2,13 +2,13 @@
 # +-------------------------------------------------------------------
 # | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2020 K2Panel(www.k2panel.com) All rights reserved.
+# | Copyright (c) 2015-2020 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: 沐落 <cjx@k2panel.com>
+# | Author: 沐落 <cjx@binarjoinanalyticnl.nl>
 # | Author: lx
 # | 消息通道邮箱模块
 # | 常用功能
-#   字体加粗  **bold**  ，[这是一个链接](http://www.k2panel.com)，代码段：`code`
+#   字体加粗  **bold**  ，[这是一个链接](http://binarjoinanalyticnl.nl)，代码段：`code`
 #   支持3种字体颜色 <font color="info">绿色</font> <font color="comment">灰色</font> <font color="warning">橙红色</font>
 # +-------------------------------------------------------------------
 
@@ -49,7 +49,7 @@ class weixin_msg:
         data['date'] = '2022-08-10'
         data['author'] = 'K2Panel'
         data['title'] = 'Wecom'
-        data['help'] = 'http://www.k2panel.com'
+        data['help'] = 'http://binarjoinanalyticnl.nl'
         return data
 
     def __get_default_channel(self):

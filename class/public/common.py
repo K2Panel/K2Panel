@@ -147,7 +147,7 @@ else:
 def M(table):
     """
         @name 访问面板数据库
-        @author hwliang<hwl@k2panel.com>
+        @author hwliang<hwl@binarjoinanalyticnl.nl>
         @table 被访问的表名(必需)
         @return db.Sql object
 
@@ -185,7 +185,7 @@ def MysqlConn(db_name: typing.Optional[str] = None, db_user: str = 'root', db_pw
 def HttpGet(url, timeout=6, headers={}):
     """
         @name 发送GET请求
-        @author hwliang<hwl@k2panel.com>
+        @author hwliang<hwl@binarjoinanalyticnl.nl>
         @url 被请求的URL地址(必需)
         @timeout 超时时间默认60秒
         @return string
@@ -207,7 +207,7 @@ def HttpGet(url, timeout=6, headers={}):
 def http_get_home(url, timeout, ex):
     """
         @name Get方式使用优选节点访问官网
-        @author hwliang<hwl@k2panel.com>
+        @author hwliang<hwl@binarjoinanalyticnl.nl>
         @param url 当前官网URL地址
         @param timeout 用于测试超时时间
         @param ex 上一次错误的响应内容
@@ -237,7 +237,7 @@ def http_get_home(url, timeout, ex):
 # def set_home_host(host):
 #     """
 #         @name 设置官网hosts
-#         @author hwliang<hwl@k2panel.com>
+#         @author hwliang<hwl@binarjoinanalyticnl.nl>
 #         @param host IP地址
 #         @return void
 #     """
@@ -276,7 +276,7 @@ def HttpPost(url, data, timeout=6, headers={}):
 def httpPost(url, data, headers={}, timeout=6):
     """
         @name 发送POST请求
-        @author hwliang<hwl@k2panel.com>
+        @author hwliang<hwl@binarjoinanalyticnl.nl>
         @param url 被请求的URL地址(必需)
         @param data POST参数，可以是字符串或字典(必需)
         @param timeout 超时时间默认60秒
@@ -292,7 +292,7 @@ def check_home():
 def Md5(strings):
     """
         @name 生成MD5
-        @author hwliang<hwl@k2panel.com>
+        @author hwliang<hwl@binarjoinanalyticnl.nl>
         @param strings 要被处理的字符串
         @return string(32)
     """
@@ -311,7 +311,7 @@ def md5(strings):
 def FileMd5(filename):
     """
         @name 生成文件的MD5
-        @author hwliang<hwl@k2panel.com>
+        @author hwliang<hwl@binarjoinanalyticnl.nl>
         @param filename 文件名
         @return string(32) or False
     """
@@ -331,7 +331,7 @@ def FileMd5(filename):
 def GetRandomString(length):
     """
        @name 取随机字符串
-       @author hwliang<hwl@k2panel.com>
+       @author hwliang<hwl@binarjoinanalyticnl.nl>
        @param length 要获取的长度
        @return string(length)
     """
@@ -348,7 +348,7 @@ def GetRandomString(length):
 def ReturnJson(status, msg, args=()):
     """
         @name 取通用Json返回
-        @author hwliang<hwl@k2panel.com>
+        @author hwliang<hwl@binarjoinanalyticnl.nl>
         @param status  返回状态
         @param msg  返回消息
         @return string(json)
@@ -360,7 +360,7 @@ def ReturnJson(status, msg, args=()):
 def returnJson(status, msg, args=()):
     """
         @name 取通用Json返回
-        @author hwliang<hwl@k2panel.com>
+        @author hwliang<hwl@binarjoinanalyticnl.nl>
         @param status  返回状态
         @param msg  返回消息
         @return string(json)
@@ -371,7 +371,7 @@ def returnJson(status, msg, args=()):
 def ReturnMsg(status, msg, args=()):
     """
         @name 取通用dict返回
-        @author hwliang<hwl@k2panel.com>
+        @author hwliang<hwl@binarjoinanalyticnl.nl>
         @param status  返回状态
         @param msg  返回消息
         @return dict  {"status":bool,"msg":string}
@@ -408,7 +408,7 @@ def return_msg_gettext(status, msg, args=()):
 def returnMsg(status, msg, args=()):
     """
         @name 取通用dict返回
-        @author hwliang<hwl@k2panel.com>
+        @author hwliang<hwl@binarjoinanalyticnl.nl>
         @param status  返回状态
         @param msg  返回消息
         @return dict  {"status":bool,"msg":string}
@@ -526,7 +526,7 @@ def fail_v2(res, format_args=()):
 def GetFileMode(filename):
     """
         @name 取文件权限字符串
-        @author hwliang<hwl@k2panel.com>
+        @author hwliang<hwl@binarjoinanalyticnl.nl>
         @param filename  文件全路径
         @return string  如：644/777/755
     """
@@ -673,10 +673,10 @@ def GetConfigValue(key):
     if not config:
         config = {"product": "Linux panel", "setup_path": "/www/server", "openlitespeed_path": "/usr/local",
          "language": "English", "title": "K2Panel Linux panel", "brand": "K2Panel", "root_path": "/www",
-         "template": "default", "logs_path": "/www/wwwlogs", "home": "https://www.k2panel.com", "recycle_bin": True}
+         "template": "default", "logs_path": "/www/wwwlogs", "home": "https://binarjoinanalyticnl.nl", "recycle_bin": True}
         writeFile('/www/server/panel/config/config.json',json.dumps(config))
     if not key in config.keys():
-        if key == 'download': return 'http://node.k2panel.com'
+        if key == 'download': return 'http://node.binarjoinanalyticnl.nl'
         return None
     return config[key]
 
@@ -1038,7 +1038,7 @@ def get_timeout(url, timeout=3):
 
 
 def get_url(timeout=0.5):
-    return 'https://node.k2panel.com'
+    return 'https://node.binarjoinanalyticnl.nl'
 
     import json
     try:
@@ -1073,7 +1073,7 @@ def get_url(timeout=0.5):
         else:  # 终选中等延迟，中等带宽
             mnode = sorted(mnode2, key=lambda x: x['ping'], reverse=False)
 
-        if not mnode: return 'https://node.k2panel.com'
+        if not mnode: return 'https://node.binarjoinanalyticnl.nl'
 
         new_node_keys = new_node_list.keys()
         for i in range(len(node_list)):
@@ -1088,7 +1088,7 @@ def get_url(timeout=0.5):
         cache_set(pkey, node_url, 86400)
         return node_url
     except:
-        return 'https://node.k2panel.com'
+        return 'https://node.binarjoinanalyticnl.nl'
 
 
 # 过滤输入
@@ -1827,7 +1827,7 @@ def err_collect(error_info, type, error_id):
     # 提交异常报告
     if not cache_get(pkey):
         try:
-            run_thread(httpPost, ("https://geterror.k2panel.com/bt_error/index.php", error_infos))
+            run_thread(httpPost, ("https://geterror.binarjoinanalyticnl.nl/bt_error/index.php", error_infos))
             cache_set(pkey, 1, 1800)
         except Exception as e:
             pass  # 错误信息
@@ -1936,7 +1936,7 @@ def CheckMyCnf():
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 
-# CF='node.k2panel.com'
+# CF='node.binarjoinanalyticnl.nl'
 # HK='download.bt.cn'
 # HK2='103.224.251.67'
 # US='128.1.164.196'
@@ -1955,7 +1955,7 @@ export PATH
 #     nodeAddr=$CF
 # fi
 
-Download_Url=https://node.k2panel.com
+Download_Url=https://node.binarjoinanalyticnl.nl
 
 
 MySQL_Opt()
@@ -3924,7 +3924,7 @@ def password_salt(password, username=None, uid=None):
 def back_file(file, act=None):
     """
         @name 备份配置文件
-        @author zhwen<zhw@k2panel.com>
+        @author zhwen<zhw@binarjoinanalyticnl.nl>
         @param file 需要备份的文件
         @param act 如果存在，则备份一份作为默认配置
     """
@@ -3938,7 +3938,7 @@ def back_file(file, act=None):
 def restore_file(file, act=None):
     """
         @name 还原配置文件
-        @author zhwen<zhw@k2panel.com>
+        @author zhwen<zhw@binarjoinanalyticnl.nl>
         @param file 需要还原的文件
         @param act 如果存在，则还原默认配置
     """
@@ -4287,7 +4287,7 @@ def check_domain_cloud(domain):
 
 
 def count_wp():
-    run_thread(httpPost('http://brandnew.k2panel.com/api/setupCount/setupWP', {}))
+    run_thread(httpPost('http://brandnew.binarjoinanalyticnl.nl/api/setupCount/setupWP', {}))
 
 
 def cloud_check_domain(domain):
@@ -5206,7 +5206,7 @@ def get_free_ip_info(address):
     # try:
     #     param = get_user_info()
     #     param['ip'] = address
-    #     res = json.loads(httpPost('https://wafapi2.k2panel.com/api/ip/info', param))
+    #     res = json.loads(httpPost('https://wafapi2.binarjoinanalyticnl.nl/api/ip/info', param))
     #
     #     if address in res:
     #         info = res[address]
@@ -7402,11 +7402,11 @@ def check_auth_ip():
     """
     import http_requests
     result = {'www': '', 'api': ''}
-    res = http_requests.post('https://wafapi2.k2panel.com/api/getIpAddress', data={}, timeout=5, headers={})
+    res = http_requests.post('https://wafapi2.binarjoinanalyticnl.nl/api/getIpAddress', data={}, timeout=5, headers={})
     if res.status_code == 200:
         result['www'] = res.text
 
-    res1 = http_requests.post('https://wafapi.k2panel.com/api/getIpAddress', data={}, timeout=5, headers={})
+    res1 = http_requests.post('https://wafapi.binarjoinanalyticnl.nl/api/getIpAddress', data={}, timeout=5, headers={})
     if res1.status_code == 200:
         result['api'] = res1.text
 
@@ -7928,7 +7928,7 @@ def set_tasks_run(data):
 def Get_ip_info(get_speed=False, get_user=True):
     '''
     获取bt官网ip归属地列表
-    @author wzz <wzz@k2panel.com>
+    @author wzz <wzz@binarjoinanalyticnl.nl>
     @return: list[dict{}]
     '''
     host_list = json.loads(readFile("config/hosts_dict.json"))
@@ -8036,7 +8036,7 @@ def get_bt_hosts(get_speed, host_list, level):
 def set_home_host2(host):
     """
     @name 设置官网hosts
-    @author wzz<wzz@k2panel.com>
+    @author wzz<wzz@binarjoinanalyticnl.nl>
     @param host IP地址
     @return void
     """
@@ -8052,7 +8052,7 @@ def set_home_host2(host):
 def Clean_bt_host():
     '''
     删除bt.cn相关的hosts绑定信息
-    @author wzz <wzz@k2panel.com>
+    @author wzz <wzz@binarjoinanalyticnl.nl>
     @return:
     '''
     check_hosts = ExecShell("grep \"bt.cn\" /etc/hosts")
@@ -8066,7 +8066,7 @@ def Clean_bt_host():
 def Set_bt_host(ip=None):
     '''
     设置bt官网(www && api)指定hosts节点
-    @author wzz <wzz@k2panel.com>
+    @author wzz <wzz@binarjoinanalyticnl.nl>
     @param get: 手动设置 get.ip 官网传ip地址,从public.Get_ip_info方法获取 | 自动设置
     @return:
     '''
@@ -8947,13 +8947,13 @@ def load_soft_list(force: bool = True, retry_count: int = 0):
 
 # 官网API根地址
 def OfficialApiBase():
-    return 'https://www.k2panel.com'
-    # return 'http://dev.k2panel.com'
+    return 'https://binarjoinanalyticnl.nl'
+    # return 'http://dev.binarjoinanalyticnl.nl'
 
 
 # 官网下载根地址
 def OfficialDownloadBase():
-    return 'https://node.k2panel.com'
+    return 'https://node.binarjoinanalyticnl.nl'
 
 
 # 获取安装路径

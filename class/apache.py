@@ -2,9 +2,9 @@
 #-------------------------------------------------------------------
 # K2Panel
 #-------------------------------------------------------------------
-# Copyright (c) 2015-2018 K2Panel(www.k2panel.com) All rights reserved.
+# Copyright (c) 2015-2018 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 #-------------------------------------------------------------------
-# Author: hwliang <hwl@k2panel.com>
+# Author: hwliang <hwl@binarjoinanalyticnl.nl>
 #-------------------------------------------------------------------
 
 #------------------------------
@@ -226,7 +226,7 @@ class apache:
     def add_httpd_access_log_format(self,args):
         '''
         @name 添加httpd日志格式
-        @author zhwen<zhw@k2panel.com>
+        @author zhwen<zhw@binarjoinanalyticnl.nl>
         @param log_format 需要设置的日志格式["$server_name","$remote_addr","-"....]
         @param log_format_name
         @param act 操作方式 add/edit
@@ -256,7 +256,7 @@ class apache:
     def del_httpd_access_log_format(self,args):
         '''
         @name 删除日志格式
-        @author zhwen<zhw@k2panel.com>
+        @author zhwen<zhw@binarjoinanalyticnl.nl>
         @param log_format_name
         '''
         conf = public.readFile(self.httpdconf)
@@ -348,7 +348,7 @@ class apache:
     def set_httpd_format_log_to_website(self,args):
         '''
         @name 设置网站日志格式
-        @author zhwen<zhw@k2panel.com>
+        @author zhwen<zhw@binarjoinanalyticnl.nl>
         @param sites aaa.com,bbb.com
         @param log_format_name
         '''

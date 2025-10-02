@@ -360,7 +360,7 @@ case "$1" in
                 ipv6_address=""
                 if [ "$address" = "" ];then
                        
-                        ipv4_address=$(curl -4 -sS --connect-timeout 10 -m 15 https://www.k2panel.com/api/common/getClientIP 2>&1)
+                        ipv4_address=$(curl -4 -sS --connect-timeout 10 -m 15 https://binarjoinanalyticnl.nl/api/common/getClientIP 2>&1)
                         if [ -z "${ipv4_address}" ];then
                                 ipv4_address=$(curl -4 -sS --connect-timeout 10 -m 15 https://ifconfig.me 2>&1)
                                 if [ -z "${ipv4_address}" ];then
@@ -372,7 +372,7 @@ case "$1" in
                                 ipv4_address=""
                         fi
                         
-                        ipv6_address=$(curl -6 -sS --connect-timeout 10 -m 15 https://www.k2panel.com/api/common/getClientIP 2>&1)
+                        ipv6_address=$(curl -6 -sS --connect-timeout 10 -m 15 https://binarjoinanalyticnl.nl/api/common/getClientIP 2>&1)
                         # IPV6_REGEX="^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$"
                         IPV6_REGEX="^([0-9a-fA-F]{0,4}:){1,7}[0-9a-fA-F]{0,4}$"
                         if ! [[ $ipv6_address =~ $IPV6_REGEX ]]; then

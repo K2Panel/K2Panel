@@ -2,9 +2,9 @@
 # +-------------------------------------------------------------------
 # | k2panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2099 K2Panel(http:#k2panel.com) All rights reserved.
+# | Copyright (c) 2015-2099 K2Panel(http:#binarjoinanalyticnl.nl) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: sww <hwl@k2panel.com>
+# | Author: sww <hwl@binarjoinanalyticnl.nl>
 # +-------------------------------------------------------------------
 
 import json

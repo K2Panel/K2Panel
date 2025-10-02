@@ -36,7 +36,7 @@ class Roundcube_main():
         #         {
         #   "status": true,
         #   "id": 2,
-        #   "site_name": "webmail.k2panel.com",
+        #   "site_name": "webmail.binarjoinanalyticnl.nl",
         #   "php_version": "80",
         #   "ssl_status": true,
         #   "timestimp": 1733541781

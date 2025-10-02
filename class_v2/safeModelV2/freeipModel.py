@@ -2,9 +2,9 @@
 #-------------------------------------------------------------------
 # K2Panel
 #-------------------------------------------------------------------
-# Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
+# Copyright (c) 2015-2099 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 #-------------------------------------------------------------------
-# Author: cjxin <cjxin@k2panel.com>
+# Author: cjxin <cjxin@binarjoinanalyticnl.nl>
 #-------------------------------------------------------------------
 
 # 免费IP库
@@ -57,7 +57,7 @@ class main(safeBase):
             # 与面板字段差异
             data["serverid"]=self.user_info["server_id"]
             #如果不是我们的用户，那么不返回数据
-            res = public.httpPost('https://wafapi2.k2panel.com/api/ip/info',data)
+            res = public.httpPost('https://wafapi2.binarjoinanalyticnl.nl/api/ip/info',data)
             res = json.loads(res)
             data = self.get_ip_area_cache()
             for key in res:

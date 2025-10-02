@@ -53,13 +53,13 @@ class CreateSSLMain:
         domains = self.get_host_all()
         pdata = {
             "action":"get_domain_cert",
-            "company":"k2panel.com",
+            "company":"binarjoinanalyticnl.nl",
             "domain":','.join(domains),
             "uid":userInfo['uid'],
             "access_key":userInfo['access_key'],
             "panel":1
         }
-        cert_api = 'https://api.k2panel.com/k2panel_cert'
+        cert_api = 'https://api.binarjoinanalyticnl.nl/k2panel_cert'
         result = json.loads(public.httpPost(cert_api,{'data': json.dumps(pdata)}))
         if 'status' in result:
             if result['status']:

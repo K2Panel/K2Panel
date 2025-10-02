@@ -4,7 +4,7 @@
 # +-------------------------------------------------------------------
 # | Copyright (c) 2015-2020 k2panel(https://www.bt.cn) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: baozi <baozi@k2panel.com>
+# | Author: baozi <baozi@binarjoinanalyticnl.nl>
 # | Author: baozi
 # +-------------------------------------------------------------------
 import sys,os,re,json

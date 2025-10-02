@@ -2,9 +2,9 @@
 # +-------------------------------------------------------------------
 # | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
+# | Copyright (c) 2015-2099 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: 沐落 <cjx@k2panel.com>
+# | Author: 沐落 <cjx@binarjoinanalyticnl.nl>
 # +-------------------------------------------------------------------
 import os,sys,json,time,re
 setup_path = '/www/server/panel'

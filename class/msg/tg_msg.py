@@ -2,9 +2,9 @@
 # +-------------------------------------------------------------------
 # | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2020 K2Panel(www.k2panel.com) All rights reserved.
+# | Copyright (c) 2015-2020 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: jose <zhw@k2panel.com>
+# | Author: jose <zhw@binarjoinanalyticnl.nl>
 # | 消息通道电报模块
 # +-------------------------------------------------------------------
 
@@ -52,7 +52,7 @@ class tg_msg:
         data['date'] = '2022-08-10'
         data['author'] = 'K2Panel'
         data['title'] = 'Telegram'
-        data['help'] = 'http://www.k2panel.com'
+        data['help'] = 'http://binarjoinanalyticnl.nl'
         return data
 
     def get_config(self, get):

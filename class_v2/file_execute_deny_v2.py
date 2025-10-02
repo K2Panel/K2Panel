@@ -2,9 +2,9 @@
 #-------------------------------------------------------------------
 # K2Panel
 #-------------------------------------------------------------------
-# Copyright (c) 2015-2020 K2Panel(www.k2panel.com) All rights reserved.
+# Copyright (c) 2015-2020 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 #-------------------------------------------------------------------
-# Author: zhwen <zhw@k2panel.com>
+# Author: zhwen <zhw@binarjoinanalyticnl.nl>
 #-------------------------------------------------------------------
 
 #------------------------------
@@ -25,7 +25,7 @@ class FileExecuteDeny:
     def get_file_deny(self,args):
         '''
         # 添加某个网站禁止运行PHP
-        author: zhwen<zhw@k2panel.com>
+        author: zhwen<zhw@binarjoinanalyticnl.nl>
         :param args: website 网站名 str
         :return:
         '''
@@ -115,7 +115,7 @@ class FileExecuteDeny:
     def set_file_deny(self,args):
         '''
         # 添加某个网站禁止运行PHP
-        author: zhwen<zhw@k2panel.com>
+        author: zhwen<zhw@binarjoinanalyticnl.nl>
         :param args: website 网站名 str
         :param args: deny_name 规则名称 str
         :param args: suffix 禁止访问的后续名 str
@@ -240,7 +240,7 @@ class FileExecuteDeny:
     def del_file_deny(self,args):
         '''
         # 添加某个网站禁止运行PHP
-        author: zhwen<zhw@k2panel.com>
+        author: zhwen<zhw@binarjoinanalyticnl.nl>
         :param args: website 网站名 str
         :param args: deny_name 规则名称 str
         :return:

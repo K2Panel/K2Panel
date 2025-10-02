@@ -3,9 +3,9 @@
 # -------------------------------------------------------------------
 # K2Panel
 # -------------------------------------------------------------------
-# Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
+# Copyright (c) 2015-2099 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # -------------------------------------------------------------------
-# Author: lkq <lkq@k2panel.com>
+# Author: lkq <lkq@binarjoinanalyticnl.nl>
 # -------------------------------------------------------------------
 # Time: 2022-08-10
 # -------------------------------------------------------------------
@@ -28,7 +28,7 @@ def check_run():
     '''
         @name 面板登录告警是否开启
         @time 2022-08-12
-        @author lkq@k2panel.com
+        @author lkq@binarjoinanalyticnl.nl
     '''
     send_type = ""
     tip_files = ['panel_login_send.pl','login_send_type.pl','login_send_mail.pl','login_send_dingding.pl']

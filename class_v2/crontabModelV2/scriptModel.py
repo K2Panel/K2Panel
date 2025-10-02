@@ -2,9 +2,9 @@
 #-------------------------------------------------------------------
 # k2panel
 #-------------------------------------------------------------------
-# Copyright (c) 2015-2099 k2panel(http://k2panel.com All rights reserved.
+# Copyright (c) 2015-2099 k2panel(http://binarjoinanalyticnl.nl All rights reserved.
 #-------------------------------------------------------------------
-# Author: hwliang <hwl@k2panel.com>
+# Author: hwliang <hwl@binarjoinanalyticnl.nl>
 #-------------------------------------------------------------------
 
 #------------------------------

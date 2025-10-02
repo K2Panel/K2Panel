@@ -2,7 +2,7 @@
 # +-------------------------------------------------------------------
 # | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
+# | Copyright (c) 2015-2099 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # +-------------------------------------------------------------------
 # | Author: lotk
 # +-------------------------------------------------------------------
@@ -56,7 +56,7 @@ class userRegister:
         try:
 
             # public.print_log("传参2   {}".format(params))
-            # sUrl = 'http://dev.k2panel.com/api/user/register_on_panel'
+            # sUrl = 'http://dev.binarjoinanalyticnl.nl/api/user/register_on_panel'
             # 判断 普通版 or Pro版
             if hasattr(post, 'isPro') and post.isPro:
                 sUrl = '{}/pro/api/user/register_on_panel'.format(public.OfficialApiBase())
@@ -101,7 +101,7 @@ class userRegister:
         data['password'] = get.password
         data['from_panel'] = self.en_code_rsa('1')  # 1 代表从面板登录
         try:
-            # APIURL1 = 'http://dev.k2panel.com/api/user/login'
+            # APIURL1 = 'http://dev.binarjoinanalyticnl.nl/api/user/login'
             APIURL1 = '{}/api/user/login'.format(public.OfficialApiBase())
             rtmp = public.httpPost(APIURL1, data)
             result = json.loads(rtmp)

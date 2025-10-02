@@ -2,9 +2,9 @@
 # +-------------------------------------------------------------------
 # | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
+# | Copyright (c) 2015-2099 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: hwliang <hwl@k2panel.com>
+# | Author: hwliang <hwl@binarjoinanalyticnl.nl>
 # +-------------------------------------------------------------------
 from BTPanel import session, cache , request, redirect, g,abort
 from datetime import datetime
@@ -107,7 +107,7 @@ class panelAdmin(panelSetup):
             session['brand'] = public.GetConfigValue('brand')
             session['product'] = public.GetConfigValue('product')
             session['rootPath'] = '/www'
-            session['download_url'] = 'https://node.k2panel.com'
+            session['download_url'] = 'https://node.binarjoinanalyticnl.nl'
             session['setupPath'] = session['rootPath'] + '/server'
             session['logsPath'] = '/www/wwwlogs'
             session['yaer'] = datetime.now().year

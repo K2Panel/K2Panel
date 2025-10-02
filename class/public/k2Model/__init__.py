@@ -1,7 +1,7 @@
 # coding: utf-8
 from .fields import *
 from .manager import Q, QueryProperty
-from .model import aaModel
+from .model import k2Model
 
 # from .file_model import *
 

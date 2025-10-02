@@ -2,9 +2,9 @@
 # +-------------------------------------------------------------------
 # | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2020 K2Panel(www.k2panel.com) All rights reserved.
+# | Copyright (c) 2015-2020 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: 沐落 <cjx@k2panel.com>
+# | Author: 沐落 <cjx@binarjoinanalyticnl.nl>
 # | Author: lx
 # | 消息通道邮箱模块
 # +-------------------------------------------------------------------
@@ -60,7 +60,7 @@ class mail_msg:
         data['date'] = '2022-08-10'
         data['author'] = 'K2Panel'
         data['title'] = 'Email'
-        data['help'] = 'http://www.k2panel.com'
+        data['help'] = 'http://binarjoinanalyticnl.nl'
         return data
 
     def get_config(self,get):

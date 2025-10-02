@@ -4,7 +4,7 @@
 # +-------------------------------------------------------------------
 # | Copyright (c) 2015-2020 宝塔软件(https://www.bt.cn) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: 沐落 <cjx@k2panel.com>
+# | Author: 沐落 <cjx@binarjoinanalyticnl.nl>
 # | Author: lx
 # +-------------------------------------------------------------------
 import sys,os,time,psutil,re

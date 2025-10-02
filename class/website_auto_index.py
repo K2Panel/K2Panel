@@ -2,9 +2,9 @@
 #-------------------------------------------------------------------
 # K2Panel
 #-------------------------------------------------------------------
-# Copyright (c) 2015-2020 K2Panel(www.k2panel.com) All rights reserved.
+# Copyright (c) 2015-2020 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 #-------------------------------------------------------------------
-# Author: zhwen <zhw@k2panel.com>
+# Author: zhwen <zhw@binarjoinanalyticnl.nl>
 #-------------------------------------------------------------------
 
 #------------------------------
@@ -25,7 +25,7 @@ class website_auto_index:
     def get_auto_index(self, args):
         '''
         # 添加某个网站禁止运行PHP
-        author: zhwen<zhw@k2panel.com>
+        author: zhwen<zhw@binarjoinanalyticnl.nl>
         :param args: website 网站名 str
         :return:
         '''
@@ -69,7 +69,7 @@ class website_auto_index:
     def set_auto_index(self, args):
         '''
         # 添加自动索引目录
-        author: zhwen<zhw@k2panel.com>
+        author: zhwen<zhw@binarjoinanalyticnl.nl>
         :param args: website 网站名 str
         :param args: index_name 规则名称 str
         :param args: dir 自动索引目录 str
@@ -155,7 +155,7 @@ class website_auto_index:
     def del_auto_index(self, args):
         '''
         # 添加某个网站禁止运行PHP
-        author: zhwen<zhw@k2panel.com>
+        author: zhwen<zhw@binarjoinanalyticnl.nl>
         :param args: website 网站名 str
         :param args: deny_name 规则名称 str
         :return:

@@ -2,15 +2,15 @@
 # +-------------------------------------------------------------------
 # | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2016 K2Panel(www.k2panel.com) All rights reserved.
+# | Copyright (c) 2015-2016 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: hwliang <hwl@k2panel.com>
+# | Author: hwliang <hwl@binarjoinanalyticnl.nl>
 # +-------------------------------------------------------------------
 from flask import session,request
 
 import public,os,json,time,apache,psutil
 class ajax:
-    __official_url = 'https://www.k2panel.com'
+    __official_url = 'https://binarjoinanalyticnl.nl'
 
     def GetApacheStatus(self,get):
         a = apache.apache()
@@ -881,7 +881,7 @@ class ajax:
 
     # 下载云端php扩展配置
     def _get_cloud_phplib(self):
-        if not session.get('download_url'): session['download_url'] = 'https://node.k2panel.com'
+        if not session.get('download_url'): session['download_url'] = 'https://node.binarjoinanalyticnl.nl'
         download_url = session['download_url'] + '/install/lib/phplib_en.json'
         tstr = public.httpGet(download_url)
         data = json.loads(tstr)

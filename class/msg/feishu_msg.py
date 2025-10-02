@@ -2,7 +2,7 @@
 # +-------------------------------------------------------------------
 # | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2020 K2Panel(www.k2panel.com) All rights reserved.
+# | Copyright (c) 2015-2020 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # +-------------------------------------------------------------------
 # | Author: lx
 # | 消息通道飞书通知模块
@@ -48,7 +48,7 @@ class feishu_msg:
         data['date'] = '2022-08-10'
         data['author'] = 'K2Panel'
         data['title'] = 'Feishu'
-        data['help'] = 'http://www.k2panel.com'
+        data['help'] = 'http://binarjoinanalyticnl.nl'
         return data
 
 

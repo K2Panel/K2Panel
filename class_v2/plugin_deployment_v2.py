@@ -2,9 +2,9 @@
 # +-------------------------------------------------------------------
 # | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
+# | Copyright (c) 2015-2099 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: hwliang <hwl@k2panel.com>
+# | Author: hwliang <hwl@binarjoinanalyticnl.nl>
 # +-------------------------------------------------------------------
 
 #+--------------------------------------------------------------------
@@ -540,7 +540,7 @@ class plugin_deployment:
             "ext": "pathinfo,exif",
             "version": "1.5.0",
             "install": "",
-            "download": "https://node.k2panel.com/install/package/roundcubemail.zip",
+            "download": "https://node.binarjoinanalyticnl.nl/install/package/roundcubemail.zip",
             "password": "",
             "config": "/config/config.inc.php",
             "md5": "785660db6540692b5c0eb240b41816e9"

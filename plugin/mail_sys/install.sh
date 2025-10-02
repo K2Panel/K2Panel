@@ -14,7 +14,7 @@ if [ "$?" -ne 0 ];then
   download_Url=$NODE_URL
 else
   is_English=1
-  download_Url=https://node.k2panel.com
+  download_Url=https://node.binarjoinanalyticnl.nl
 fi
 
 echo 'download url...'
@@ -41,7 +41,7 @@ GetSysInfo() {
     echo -e ${SYS_VERSION}
     echo -e Bit:${SYS_BIT} Mem:${MEM_TOTAL}M Core:${CPU_INFO}
     echo -e ${SYS_INFO}
-    echo -e "Please screenshot above error message and post forum forum.k2panel.com or send email: kern@k2panel.com for help"
+    echo -e "Please screenshot above error message and post forum forum.binarjoinanalyticnl.nl or send email: kern@binarjoinanalyticnl.nl for help"
 }
 
 
@@ -97,7 +97,7 @@ Little_tail() {
     # echo "$install_status"
 
     #0-failure, 1-success
-    curl -o /dev/null -fsSLk --connect-time 10 "https://www.k2panel.com/api/setupCount/setupProduct?product=aamail&uid=0&os=${system}&src=official&status=${install_status}&err_msg=${url_err_msg}" >/dev/null 2>&1
+    curl -o /dev/null -fsSLk --connect-time 10 "https://binarjoinanalyticnl.nl/api/setupCount/setupProduct?product=aamail&uid=0&os=${system}&src=official&status=${install_status}&err_msg=${url_err_msg}" >/dev/null 2>&1
 
 }
 

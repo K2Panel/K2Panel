@@ -2,9 +2,9 @@
 # -------------------------------------------------------------------
 # K2Panel
 # -------------------------------------------------------------------
-# Copyright (c) 2015-2017 K2Panel(www.k2panel.com) All rights reserved.
+# Copyright (c) 2015-2017 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # -------------------------------------------------------------------
-# Author: hezhihong <hezhihong@k2panel.com>
+# Author: hezhihong <hezhihong@binarjoinanalyticnl.nl>
 # -------------------------------------------------------------------
 
 # ------------------------------
@@ -48,7 +48,7 @@ class main(safeBase):
         self._breaking_white_file='{}/data/breaking_white.conf'.format(public.get_panel_path())
         self._limit_file='{}/data/limit_login.pl'.format(public.get_panel_path())
         self.__script_py = public.get_panel_path() + '/script/breaking_through_check.py'
-        self.__complier_group='k2panel_complier'
+        self.__complier_group='binarjoinanalyticnl.nlplier'
         self.__gcc_path=""
         if os.path.exists("/usr/bin/gcc"):
             self.__gcc_path="/usr/bin/gcc"

@@ -3,9 +3,9 @@
 # -------------------------------------------------------------------
 # K2Panel
 # -------------------------------------------------------------------
-# Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
+# Copyright (c) 2015-2099 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # -------------------------------------------------------------------
-# Author: lkq <lkq@k2panel.com>
+# Author: lkq <lkq@binarjoinanalyticnl.nl>
 # -------------------------------------------------------------------
 # Time: 2022-08-10
 # -------------------------------------------------------------------
@@ -29,7 +29,7 @@ def check_run():
     '''
         @name Mysql 弱口令检测
         @time 2022-08-12
-        @author lkq@k2panel.com
+        @author lkq@binarjoinanalyticnl.nl
     '''
     pass_info = public.ReadFile("/www/server/panel/config/weak_pass.txt")
     if not pass_info: return True, 'Risk-free'

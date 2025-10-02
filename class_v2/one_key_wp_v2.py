@@ -2,9 +2,9 @@
 # +-------------------------------------------------------------------
 # | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2016 K2Panel(www.k2panel.com) All rights reserved.
+# | Copyright (c) 2015-2016 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: zhwen <zhwen@k2panel.com>
+# | Author: zhwen <zhwen@binarjoinanalyticnl.nl>
 # +-------------------------------------------------------------------
 import os
 import time
@@ -1147,7 +1147,7 @@ class one_key_wp:
             if re.search(rep_domain, args.domain):
                 values['domain'] = public.xssencode2(args.domain)
             else:
-                return public.return_message(-1, 0, public.lang("Please check if the [{}] format is correct For example: {}", "domain", "k2panel.com"))
+                return public.return_message(-1, 0, public.lang("Please check if the [{}] format is correct For example: {}", "domain", "binarjoinanalyticnl.nl"))
         if hasattr(args, 'weblog_title'):
             values['weblog_title'] = public.xssencode2(args.weblog_title)
         if hasattr(args, 'user_name'):
@@ -1163,7 +1163,7 @@ class one_key_wp:
             if re.search(rep_email, args.admin_email):
                 values['admin_email'] = public.xssencode2(args.admin_email)
             else:
-                return public.return_message(-1, 0, public.lang("Please check if the [{}] format is correct For example: {}", "admin_email", "adimn@k2panel.com"))
+                return public.return_message(-1, 0, public.lang("Please check if the [{}] format is correct For example: {}", "admin_email", "adimn@binarjoinanalyticnl.nl"))
         if hasattr(args, 'prefix'):
             values['prefix'] = public.xssencode2(args.prefix)
         if hasattr(args, 'php_version'):

@@ -2,9 +2,9 @@
 # -------------------------------------------------------------------
 # K2Panel
 # -------------------------------------------------------------------
-# Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
+# Copyright (c) 2015-2099 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # -------------------------------------------------------------------
-# Author: zouhw <zhw@k2panel.com>
+# Author: zouhw <zhw@binarjoinanalyticnl.nl>
 # -------------------------------------------------------------------
 
 # ------------------------------
@@ -285,7 +285,7 @@ class main(dockerBase):
                 "registry.cn-hangzhou.aliyuncs.com": "Alibaba Cloud Mirror Station (Hangzhou)"
             }
 
-            # # https://node.k2panel.com/src/com_registry.json
+            # # https://node.binarjoinanalyticnl.nl/src/com_registry.json
             # public.ExecShell("rm -f {}".format(com_registry_file))
             # public.downloadFile("{}/src/com_registry.json".format(public.get_url()), com_registry_file)
             # try:

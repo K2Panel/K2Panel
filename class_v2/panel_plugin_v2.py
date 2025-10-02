@@ -2,9 +2,9 @@
 #-------------------------------------------------------------------
 # K2Panel
 #-------------------------------------------------------------------
-# Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
+# Copyright (c) 2015-2099 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 #-------------------------------------------------------------------
-# Author: hwliang <hwl@k2panel.com>
+# Author: hwliang <hwl@binarjoinanalyticnl.nl>
 #-------------------------------------------------------------------
 import threading
 
@@ -2555,7 +2555,7 @@ class panelPlugin:
     def getCloudPlugin(self,get):
         if session.get('getCloudPlugin') and get != None: return public.return_message(0, 0,'Your plugin list is already the latest version {}!',("-1",))
         import json
-        if not session.get('download_url'): session['download_url'] = 'http://node.k2panel.com'
+        if not session.get('download_url'): session['download_url'] = 'http://node.binarjoinanalyticnl.nl'
 
         #获取列表
         try:
@@ -2716,7 +2716,7 @@ class panelPlugin:
                 data = json.loads(public.ReadFile(p_info).decode('utf-8-sig'))
             data['size'] = public.get_path_size(tmp_path)
             if not 'author' in data: data['author'] = public.lang("Unknown")
-            if not 'home' in data: data['home'] = 'https://www.k2panel.com/forum'
+            if not 'home' in data: data['home'] = 'https://binarjoinanalyticnl.nl/forum'
 
             plugin_path = '/www/server/panel/plugin/' + data['name'] + '/info.json'
             data['old_version'] = '0'
@@ -2775,7 +2775,7 @@ class panelPlugin:
                 data = json.loads(public.ReadFile(p_info).decode('utf-8-sig'))
             data['size'] = public.get_path_size(tmp_path)
             if not 'author' in data: data['author'] = public.lang("Unknown")
-            if not 'home' in data: data['home'] = 'https://www.k2panel.com/forum'
+            if not 'home' in data: data['home'] = 'https://binarjoinanalyticnl.nl/forum'
 
             plugin_path = '/www/server/panel/plugin/' + data['name'] + '/info.json'
             data['old_version'] = '0'

@@ -2,9 +2,9 @@
 #-------------------------------------------------------------------
 # K2Panel
 #-------------------------------------------------------------------
-# Copyright (c) 2015-2019 K2Panel(www.k2panel.com) All rights reserved.
+# Copyright (c) 2015-2019 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 #-------------------------------------------------------------------
-# Author: hwliang <hwl@k2panel.com>
+# Author: hwliang <hwl@binarjoinanalyticnl.nl>
 #-------------------------------------------------------------------
 
 #------------------------------
@@ -22,7 +22,7 @@ class panelAuth:
     __product_bay_path = 'data/product_bay.pl'
     __product_id = '100000011'
     __official_url = '{}'.format(public.OfficialApiBase())
-    # __official_url = 'http://dev.k2panel.com'
+    # __official_url = 'http://dev.binarjoinanalyticnl.nl'
 
     def create_serverid(self, get):
         try:

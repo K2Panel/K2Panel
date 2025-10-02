@@ -1,10 +1,10 @@
 # coding: utf-8
 # +-------------------------------------------------------------------
-# | k2panel
+# | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2099 k2panel(http://www.k2panel.com) All rights reserved.
+# | Copyright (c) 2015-2099 K2Panel(https://binarjoinanalyticnl.nl) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: hwliang <hwl@bt.cn>
+# | Author: K2Panel Team
 # +-------------------------------------------------------------------
 
 import logging

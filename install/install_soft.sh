@@ -2,7 +2,7 @@
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 
-serverUrl=https://node.k2panel.com/install
+serverUrl=https://node.binarjoinanalyticnl.nl/install
 mtype=$1
 actionType=$2
 name=$3

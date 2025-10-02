@@ -1,6 +1,6 @@
 [Unit]
 Description=K2Panel - Server Management Control Panel
-Documentation=https://www.k2panel.com/
+Documentation=https://binarjoinanalyticnl.nl/
 After=network.target postgresql.service mysql.service redis.service
 Wants=network-online.target
 

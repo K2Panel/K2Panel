@@ -4,7 +4,7 @@
 # +-------------------------------------------------------------------
 # | Copyright (c) 2015-2020 k2panel(https://www.bt.cn) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: 沐落 <cjx@k2panel.com>
+# | Author: 沐落 <cjx@binarjoinanalyticnl.nl>
 # +-------------------------------------------------------------------
 import sys, os, time, json, re, psutil
 
@@ -40,7 +40,7 @@ class site_push:
         data['version'] = '1.0'
         data['date'] = '2020-08-10'
         data['author'] = 'K2Panel'
-        data['help'] = 'http://www.k2panel.com'
+        data['help'] = 'http://binarjoinanalyticnl.nl'
         return data
 
     """

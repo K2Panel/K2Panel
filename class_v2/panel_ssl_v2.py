@@ -2,9 +2,9 @@
 # -------------------------------------------------------------------
 # K2Panel
 # -------------------------------------------------------------------
-# Copyright (c) 2015-2016 K2Panel(www.k2panel.com) All rights reserved.
+# Copyright (c) 2015-2016 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # -------------------------------------------------------------------
-# Author: hwliang <hwl@k2panel.com>
+# Author: hwliang <hwl@binarjoinanalyticnl.nl>
 # -------------------------------------------------------------------
 
 # ------------------------------
@@ -29,18 +29,18 @@ except:
 class panelSSL:
     # __APIURL = public.GetConfigValue('home') + '/api/Auth'
     # __APIURL2 = public.GetConfigValue('home') + '/api/Cert'
-    # __BINDURL = 'https://wafapi.k2panel.com/Auth/GetAuthToken'   # 获取token 获取官网token
+    # __BINDURL = 'https://wafapi.binarjoinanalyticnl.nl/Auth/GetAuthToken'   # 获取token 获取官网token
 
 
 
 
     __BINDURL = '{}/api/user'.format(public.OfficialApiBase())  # 获取token 获取官网token
-    # __BINDURL = 'http://dev.k2panel.com/api/user'  # 获取token 获取官网token
+    # __BINDURL = 'http://dev.binarjoinanalyticnl.nl/api/user'  # 获取token 获取官网token
 
-    __CODEURL = 'https://wafapi.k2panel.com/Auth/GetBindCode'  # 获取绑定验证码
+    __CODEURL = 'https://wafapi.binarjoinanalyticnl.nl/Auth/GetBindCode'  # 获取绑定验证码
     __UPATH = 'data/userInfo.json'
 
-    # __APIURL = 'http://dev.k2panel.com/api'
+    # __APIURL = 'http://dev.binarjoinanalyticnl.nl/api'
     __APIURL = '{}/api'.format(public.OfficialApiBase())
 
     __PUBKEY = 'data/public.key'
@@ -139,7 +139,7 @@ class panelSSL:
         data['environment_info'] = json.dumps(public.fetch_env_info())
 
         try:
-            # https://www.k2panel.com
+            # https://binarjoinanalyticnl.nl
             isPro = False
             if hasattr(get, 'isPro') and get.isPro:
                 isPro = True
@@ -627,7 +627,7 @@ class panelSSL:
     #     # /api/common/stripe/{out_trade_no}
     #     # result = self.request_test('order/pay')
     #     result = public.return_msg_gettext(False, '测试用 模拟支付!')
-    #     url = "https://dev.k2panel.com/api/common/stripe/" + out_trade_no
+    #     url = "https://dev.binarjoinanalyticnl.nl/api/common/stripe/" + out_trade_no
     #     response_data = public.httpGet(url)
     #
     #     # public.print_log("******************** url: {}".format(url))

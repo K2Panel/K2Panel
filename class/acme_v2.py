@@ -3,7 +3,7 @@
 # -------------------------------------------------------------------
 # k2panel
 # -------------------------------------------------------------------
-# Copyright (c) 2015-2099 k2panel(http://www.k2panel.com) All rights reserved.
+# Copyright (c) 2015-2099 k2panel(http://binarjoinanalyticnl.nl) All rights reserved.
 # -------------------------------------------------------------------
 # Author: hwliang <hwl@bt.cn> a
 # -------------------------------------------------------------------
@@ -68,7 +68,7 @@ class acme_v2:
     _bits = 2048
     _acme_timeout = 30
     _dns_class = None
-    _user_agent = "BaoTa/1.0 (+https://www.k2panel.com)"
+    _user_agent = "BaoTa/1.0 (+https://binarjoinanalyticnl.nl)"
     _replay_nonce = None
     _verify = False
     _digest = "sha256"
@@ -1751,7 +1751,7 @@ fullchain.pem       Paste into certificate input box
     # 注册acme帐户
     def register(self, existing=False):
         if not 'email' in self._config:
-            self._config['email'] = 'demo@k2panel.com'
+            self._config['email'] = 'demo@binarjoinanalyticnl.nl'
         if existing:
             payload = {"onlyReturnExisting": True}
         elif self._config['email']:

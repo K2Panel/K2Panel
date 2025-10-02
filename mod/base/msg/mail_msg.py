@@ -2,7 +2,7 @@
 # +-------------------------------------------------------------------
 # | k2panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2020 k2panel(http://www.k2panel.com) All rights reserved.
+# | Copyright (c) 2015-2020 k2panel(http://binarjoinanalyticnl.nl) All rights reserved.
 # +-------------------------------------------------------------------
 # | Author: 沐落 <cjx@bt.cn>
 # | Author: lx

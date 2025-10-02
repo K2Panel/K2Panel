@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #coding: utf-8
-# Author: lkqiang<lkq@k2panel.com>
+# Author: lkqiang<lkq@binarjoinanalyticnl.nl>
 # panelWaf.py
 # code: 面板基础安全类
 # +-------------------------------------------------------------------

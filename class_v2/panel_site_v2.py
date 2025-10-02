@@ -2,9 +2,9 @@
 # -------------------------------------------------------------------
 # K2Panel
 # -------------------------------------------------------------------
-# Copyright (c) 2015-2017 K2Panel(www.k2panel.com) All rights reserved.
+# Copyright (c) 2015-2017 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # -------------------------------------------------------------------
-# Author: hwliang <hwl@k2panel.com>
+# Author: hwliang <hwl@binarjoinanalyticnl.nl>
 # -------------------------------------------------------------------
 
 # ------------------------------
@@ -3475,7 +3475,7 @@ listener SSL443 {
             return public.return_message(0, 0, public.lang("Site stopped"))
         if not os.path.exists(path):
             os.makedirs(path)
-            public.downloadFile('https://node.k2panel.com/stop_en.html', path + '/index.html')
+            public.downloadFile('https://node.binarjoinanalyticnl.nl/stop_en.html', path + '/index.html')
 
         # if 'This site has been closed by administrator' not in public.readFile(path + '/index.html'):
         #     public.downloadFile('http://download.bt.cn/stop_en.html', path + '/index.html')
@@ -5312,7 +5312,7 @@ RewriteRule ^%s(.*)$ http://%s/$1 [P,E=Proxy-Host:%s]
                 return ret
 
         if not get.proxysite.split('//')[-1]:
-            return public.return_message(-1, 0, public.lang("The target URL cannot be [http:// or https://], please fill in the full URL, such as: https://k2panel.com"))
+            return public.return_message(-1, 0, public.lang("The target URL cannot be [http:// or https://], please fill in the full URL, such as: https://binarjoinanalyticnl.nl"))
         # project_type = public.M('sites').where('name=?', (get.sitename,)).field('project_type').find()['project_type']
         # if project_type == 'WP':
         #     return public.return_msg_gettext(False, public.lang("Reverse proxies are not currently available for Wordpress sites that use one-click deployment"))

@@ -2,9 +2,9 @@
 # +-------------------------------------------------------------------
 # | K2Panel x3
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2017 K2Panel(www.k2panel.com) All rights reserved.
+# | Copyright (c) 2015-2017 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: hwliang <hwl@k2panel.com>
+# | Author: hwliang <hwl@binarjoinanalyticnl.nl>
 # +-------------------------------------------------------------------
 import public, re, os, nginx, apache, json, time, ols
 from public.validate import Param
@@ -1021,7 +1021,7 @@ class config:
         @author hezhihong
         """
         # 取国际标准0时时间戳
-        time_str = public.HttpGet('https://wafapi2.k2panel.com'+ '/api/index/get_time')
+        time_str = public.HttpGet('https://wafapi2.binarjoinanalyticnl.nl'+ '/api/index/get_time')
 
         try:
             new_time = int(time_str) - 28800
@@ -1323,13 +1323,13 @@ class config:
         domains = self.get_host_all()
         pdata = {
             "action": "get_domain_cert",
-            "company": "k2panel.com",
+            "company": "binarjoinanalyticnl.nl",
             "domain": ','.join(domains),
             "uid": userInfo['uid'],
             "access_key": 'B' * 32,
             "panel": 1
         }
-        cert_api = 'https://api.k2panel.com/k2panel_cert'
+        cert_api = 'https://api.binarjoinanalyticnl.nl/k2panel_cert'
         result = json.loads(public.httpPost(cert_api, {'data': json.dumps(pdata)}))
         if 'status' in result:
             if result['status']:
@@ -1801,7 +1801,7 @@ class config:
                 self.CreateSSL()
                 cert['info'] = public.get_cert_data(cert_file)
             if cert['info']:
-                if cert['info']['issuer'] == 'k2panel.com':
+                if cert['info']['issuer'] == 'binarjoinanalyticnl.nl':
                     if os.path.exists('ssl/baota_root.pfx'):
                         cert['download_root'] = True
                         cert['root_password'] = public.readFile('ssl/root_password.pl')

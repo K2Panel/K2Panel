@@ -2,9 +2,9 @@
 # +-------------------------------------------------------------------
 # | K2Panel x3
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2017 K2Panel(www.k2panel.com) All rights reserved.
+# | Copyright (c) 2015-2017 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: zhw <zhw@k2panel.com>
+# | Author: zhw <zhw@binarjoinanalyticnl.nl>
 # +-------------------------------------------------------------------
 
 import public

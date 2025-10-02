@@ -2,9 +2,9 @@
 # -------------------------------------------------------------------
 # K2Panel
 # -------------------------------------------------------------------
-# Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
+# Copyright (c) 2015-2099 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # -------------------------------------------------------------------
-# Author: lwh <lwh@k2panel.com>
+# Author: lwh <lwh@binarjoinanalyticnl.nl>
 # -------------------------------------------------------------------
 import fnmatch
 import os, sys, time
@@ -136,7 +136,7 @@ class main(dockerBase):
     def image_safe_scan(self, get):
         """
         @name 镜像安全扫描入口函数
-        @author lwh@k2panel.com
+        @author lwh@binarjoinanalyticnl.nl
         @time 2024-01-22
         @param _ws
         @return 返回服务器扫描项
@@ -235,7 +235,7 @@ gpgcheck=0""")
     def scan_history(self, get, image):
         """
         @name 异常历史命令
-        @author lwh@k2panel.com
+        @author lwh@binarjoinanalyticnl.nl
         @time 2024-01-22
         """
         instruct_set = (

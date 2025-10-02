@@ -3,10 +3,10 @@
 # +-------------------------------------------------------------------
 # | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
+# | Copyright (c) 2015-2099 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: wzjie <wzj@k2panel.com>
-# | Author: zhwen <zhw@k2panel.com>
+# | Author: wzjie <wzj@binarjoinanalyticnl.nl>
+# | Author: zhwen <zhw@binarjoinanalyticnl.nl>
 # +-------------------------------------------------------------------
 
 # +--------------------------------------------------------------------
@@ -17,7 +17,7 @@ sys.path.append("class/")
 import public
 main_cf = "/etc/postfix/main.cf"
 # download_url = public.get_url()
-download_url = "http://node.k2panel.com"
+download_url = "http://node.binarjoinanalyticnl.nl"
 
 
 def get_postconf():
@@ -145,7 +145,7 @@ class mail_server_init:
             return public.returnMsg(True,'success')
         return public.returnMsg(False, "Your hostname ({}) is invalid, and must be set to a fully qualified domain"
                                        " name before initialization mail server. You can update your hostname by "
-                                       "running 'hostnamectl set-hostname --static mail.k2panel.com'".format(hostname))
+                                       "running 'hostnamectl set-hostname --static mail.binarjoinanalyticnl.nl'".format(hostname))
 
     def M(self, table_name):
         import db

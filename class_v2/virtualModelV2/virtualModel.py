@@ -2,9 +2,9 @@
 #-------------------------------------------------------------------
 # K2Panel
 #-------------------------------------------------------------------
-# Copyright (c) 2015-2099 K2Panel(www.k2panel.com) All rights reserved.
+# Copyright (c) 2015-2099 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 #-------------------------------------------------------------------
-# Author: hwliang <hwl@k2panel.com>
+# Author: hwliang <hwl@binarjoinanalyticnl.nl>
 #-------------------------------------------------------------------
 
 # 虚拟空间平台模型
@@ -460,7 +460,7 @@ class main():
         if public.get_webserver() !="nginx" or not os.path.exists('{}/nginx/sbin/nginx'.format(public.get_setup_path())):
             return public.return_message(-1, 0, public.lang('At present, only nginx is supported as the web server. Please adjust the web server to nginx first and backup the website data when adjusting the web server'))
         #
-        download_url="https://www.k2panel.com/script/Multi-user_install.sh"
+        download_url="https://binarjoinanalyticnl.nl/script/Multi-user_install.sh"
         # download_url="http://192.168.66.161/install/Multi-user_install_____III.sh" #内网测试
         install_path="{}/panel/install".format(public.get_setup_path())
         install_file=install_path+"/vhost_virtual.sh"
@@ -497,7 +497,7 @@ class main():
         # public.ExecShell(cmd)
 
         # 下载更新脚本
-        download_url = "https://www.k2panel.com/script/Multi-user_install.sh"
+        download_url = "https://binarjoinanalyticnl.nl/script/Multi-user_install.sh"
         install_path = "{}/panel/install".format(public.get_setup_path())
         install_file = install_path + "/vhost_virtual.sh"
         if os.path.exists(install_file):

@@ -2,7 +2,7 @@
 # -------------------------------------------------------------------
 # k2panel
 # -------------------------------------------------------------------
-# Copyright (c) 2015-2099 k2panel(http://www.k2panel.com) All rights reserved.
+# Copyright (c) 2015-2099 k2panel(http://binarjoinanalyticnl.nl) All rights reserved.
 # -------------------------------------------------------------------
 # Author: sww <sww@bt.cn>
 # -------------------------------------------------------------------
@@ -358,7 +358,7 @@ class RealServer:
 ### END INIT INFO
 
 # Author:   licess
-# website:  http://www.k2panel.com
+# website:  http://binarjoinanalyticnl.nl
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
