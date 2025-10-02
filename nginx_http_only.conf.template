@@ -22,8 +22,8 @@ server {
     root /var/www/aapanel;
     
     # Logging
-    access_log /var/log/nginx/aapanel_access.log;
-    error_log /var/log/nginx/aapanel_error.log warn;
+    access_log /var/log/nginx/k2panel_access.log;
+    error_log /var/log/nginx/k2panel_error.log warn;
     
     # ACME challenge for Let's Encrypt (important!)
     location ^~ /.well-known/acme-challenge/ {
