@@ -46,7 +46,9 @@ class AliyunDns(common.BaseDns):
         self._secret = secret
         self._endpoint = endpoint
         self._debug = debug
-        self.clt = client.AcsClient(self._key, self._secret, self._endpoint, debug=self._debug)
+        self.clt = client.AcsClient(
+            self._key, self._secret, self._endpoint, debug=self._debug
+        )
 
     def _send_reqeust(self, request):
         """
@@ -60,7 +62,9 @@ class AliyunDns(common.BaseDns):
                 result["Success"] = False
                 self.logger.warning("aliyundns resp error: %s", result)
         except Exception as exc:
-            self.logger.warning("aliyundns failed to send request: %s, %s", str(exc), request)
+            self.logger.warning(
+                "aliyundns failed to send request: %s, %s", str(exc), request
+            )
             status, headers, result = 502, {}, '{"Success": false}'
             result = json.loads(result)
 
@@ -178,7 +182,9 @@ class AliyunDns(common.BaseDns):
         request.set_Value(domain_dns_value)
         resp = self._send_reqeust(request)
 
-        self.logger.info("create_dns_record end: %s", (domain_name, domain_dns_value, resp.json()))
+        self.logger.info(
+            "create_dns_record end: %s", (domain_name, domain_dns_value, resp.json())
+        )
 
         return resp
 
@@ -196,7 +202,11 @@ class AliyunDns(common.BaseDns):
 
         record_id = self.query_recored_id(root, acme_txt)
         if not record_id:
-            msg = "failed to find record_id of domain: %s, value: %s", domain_name, domain_dns_value
+            msg = (
+                "failed to find record_id of domain: %s, value: %s",
+                domain_name,
+                domain_dns_value,
+            )
             self.logger.warning(msg)
             return
 
@@ -206,5 +216,7 @@ class AliyunDns(common.BaseDns):
         request.set_RecordId(record_id)
         resp = self._send_reqeust(request)
 
-        self.logger.info("delete_dns_record end: %s", (domain_name, domain_dns_value, resp.json()))
+        self.logger.info(
+            "delete_dns_record end: %s", (domain_name, domain_dns_value, resp.json())
+        )
         return resp

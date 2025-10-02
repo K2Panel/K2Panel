@@ -4,10 +4,12 @@ from . import utils
 from .otp import OTP
 from .compat import str
 
+
 class HOTP(OTP):
     """
     Handler for HMAC-based OTP counters.
     """
+
     def at(self, count):
         """
         Generates the OTP for the given count.
@@ -54,5 +56,5 @@ class HOTP(OTP):
             initial_count=initial_count,
             issuer_name=issuer_name,
             algorithm=self.digest().name,
-            digits=self.digits
+            digits=self.digits,
         )

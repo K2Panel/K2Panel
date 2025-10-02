@@ -36,23 +36,23 @@ class tg_msg:
             red_conf_path = public.readFile(self.conf_path)
 
             self.__tg_info = json.loads(red_conf_path)
-            if not 'bot_token' in self.__tg_info or not 'my_id' in self.__tg_info:
+            if not "bot_token" in self.__tg_info or not "my_id" in self.__tg_info:
                 self.__tg_info = None
         except:
             self.__tg_info = None
-        self.__module_name = self.__class__.__name__.replace('_msg', '')
+        self.__module_name = self.__class__.__name__.replace("_msg", "")
 
     def get_version_info(self, get):
         """
         获取版本信息
         """
         data = {}
-        data['ps'] = 'Use telegram bots to send receive panel notifications'
-        data['version'] = '1.0'
-        data['date'] = '2022-08-10'
-        data['author'] = 'K2Panel'
-        data['title'] = 'Telegram'
-        data['help'] = 'http://binarjoinanalyticnl.nl'
+        data["ps"] = "Use telegram bots to send receive panel notifications"
+        data["version"] = "1.0"
+        data["date"] = "2022-08-10"
+        data["author"] = "K2Panel"
+        data["title"] = "Telegram"
+        data["help"] = "http://binarjoinanalyticnl.nl"
         return data
 
     def get_config(self, get):
@@ -63,7 +63,7 @@ class tg_msg:
         if self.__tg_info:
             data = self.__tg_info
 
-            data['default'] = self.__get_default_channel()
+            data["default"] = self.__get_default_channel()
 
         return data
 
@@ -74,26 +74,37 @@ class tg_msg:
         @bot_token 机器人token
         """
 
-        if not hasattr(get, 'my_id') or not hasattr(get, 'bot_token'):
-            return public.returnMsg(False, public.lang("Please fill in the complete information"))
+        if not hasattr(get, "my_id") or not hasattr(get, "bot_token"):
+            return public.returnMsg(
+                False, public.lang("Please fill in the complete information")
+            )
 
-        title = 'Default'
-        if hasattr(get, 'title'):
+        title = "Default"
+        if hasattr(get, "title"):
             title = get.title
             if len(title) > 7:
-                return public.returnMsg(False, public.lang("Note name cannot exceed 7 characters"))
+                return public.returnMsg(
+                    False, public.lang("Note name cannot exceed 7 characters")
+                )
 
-        self.__tg_info = {"my_id": get.my_id.strip(), "bot_token": get.bot_token, "title": title, "status": True}
+        self.__tg_info = {
+            "my_id": get.my_id.strip(),
+            "bot_token": get.bot_token,
+            "title": title,
+            "status": True,
+        }
 
         try:
-            info = public.get_push_info('Notification Configuration Reminder',
-                                        ['>Configuration status：<font color=#20a53a>successfully</font>\n\n'])
-            ret = self.send_msg(info['msg'])
+            info = public.get_push_info(
+                "Notification Configuration Reminder",
+                [">Configuration status：<font color=#20a53a>successfully</font>\n\n"],
+            )
+            ret = self.send_msg(info["msg"])
         except:
-            ret = self.send_msg('K2Panel alarm test')
+            ret = self.send_msg("K2Panel alarm test")
         if ret:
 
-            if 'default' in get and get['default']:
+            if "default" in get and get["default"]:
                 public.writeFile(self.__default_pl, self.__module_name)
 
             public.writeFile(self.conf_path, json.dumps(self.__tg_info))
@@ -106,15 +117,17 @@ class tg_msg:
         @name 处理md格式
         """
         try:
-            title = 'K2Panel notifications'
+            title = "K2Panel notifications"
             if msg.find("####") >= 0:
                 try:
                     title = re.search(r"####(.+)", msg).groups()[0]
                 except:
                     pass
             else:
-                info = public.get_push_info('Notification Configuration Reminder', ['>Send Content: ' + msg])
-                msg = info['msg']
+                info = public.get_push_info(
+                    "Notification Configuration Reminder", [">Send Content: " + msg]
+                )
+                msg = info["msg"]
         except:
             pass
         return msg, title
@@ -124,34 +137,51 @@ class tg_msg:
         格式化消息
         """
         # 去掉无用的转义字符
-        msg = msg.replace('\\', '')
+        msg = msg.replace("\\", "")
 
         # 去掉 HTML 标签
-        msg = re.sub(r'<[^>]+>', '', msg)
+        msg = re.sub(r"<[^>]+>", "", msg)
 
         # 去掉标题中的 ####
-        msg = msg.replace('####', '')
+        msg = msg.replace("####", "")
 
         # > 增加空格
-        msg = msg.replace('>', '> ')
+        msg = msg.replace(">", "> ")
 
         # 去掉标题两边的空格
-        title = msg.split('\n')[0].strip()
+        title = msg.split("\n")[0].strip()
 
         # 去掉标题后面的换行符和空行，保留消息
-        msg = msg.replace(f'{title}\n\n', '')
+        msg = msg.replace(f"{title}\n\n", "")
 
         # 去掉消息前后的空格
         msg = msg.strip()
 
-        character = ['\\', '_', '`', '*', '{', '}', '[', ']', '(', ')', '>', '#', '+', '-', '=', '.', '!']
+        character = [
+            "\\",
+            "_",
+            "`",
+            "*",
+            "{",
+            "}",
+            "[",
+            "]",
+            "(",
+            ")",
+            ">",
+            "#",
+            "+",
+            "-",
+            "=",
+            ".",
+            "!",
+        ]
         for c in character:
             if c in msg:
-                msg = msg.replace(c, '\\' + c)
-
+                msg = msg.replace(c, "\\" + c)
 
         # 将处理后的消息发送到Telegram
-        msg = f'*{title}*\n\n{msg}'
+        msg = f"*{title}*\n\n{msg}"
 
         return msg
 
@@ -167,7 +197,7 @@ class tg_msg:
 
         public.print_log(msg)
 
-        await bot.send_message(chat_id=chat_id, text=msg, parse_mode='MarkdownV2')
+        await bot.send_message(chat_id=chat_id, text=msg, parse_mode="MarkdownV2")
 
     def send_msg(self, msg):
         """
@@ -175,9 +205,17 @@ class tg_msg:
         @msg 消息正文
         """
         if not self.__tg_info:
-            return public.returnMsg(False, public.lang("The telegram information is incorrectly configured."))
-        if isinstance(self.__tg_info['my_id'], int):
-            return public.returnMsg(False, public.lang("Telegram configuration error, please reconfigure the robot."))
+            return public.returnMsg(
+                False,
+                public.lang("The telegram information is incorrectly configured."),
+            )
+        if isinstance(self.__tg_info["my_id"], int):
+            return public.returnMsg(
+                False,
+                public.lang(
+                    "Telegram configuration error, please reconfigure the robot."
+                ),
+            )
         msg, title = self.get_send_msg(msg)
         # public.WriteFile("/tmp/title.tg", title)
         # public.WriteFile("/tmp/msg.tg", msg)
@@ -185,9 +223,9 @@ class tg_msg:
         # public.WriteFile("/tmp/send_content.tg", send_content)
 
         # bot = telegram.Bot(self.__tg_info['bot_token'])
-        bot_token = self.__tg_info['bot_token']
-        chat_id = self.__tg_info['my_id']
-        #text = msg
+        bot_token = self.__tg_info["bot_token"]
+        chat_id = self.__tg_info["my_id"]
+        # text = msg
         public.print_log(msg)
 
         # public.print_log("bot:{}".format(self.__tg_info['bot_token']))
@@ -200,23 +238,27 @@ class tg_msg:
 
         try:
             loop.run_until_complete(self.send_msg_async(bot_token, chat_id, msg))
-            ret = {'success': 1}
+            ret = {"success": 1}
 
             public.write_push_log(self.__module_name, title, ret)
 
-            public.print_log('message sent successfully！')
+            public.print_log("message sent successfully！")
             loop.close()
 
-            return public.returnMsg(True, public.lang("send complete, send result: True."))
+            return public.returnMsg(
+                True, public.lang("send complete, send result: True.")
+            )
 
         except:
-            public.print_log('Error:{}'.format(str(public.get_error_info())))
+            public.print_log("Error:{}".format(str(public.get_error_info())))
 
-            ret = {'success': 0}
+            ret = {"success": 0}
 
             public.write_push_log(self.__module_name, title, ret)
 
-            return public.returnMsg(False, public.lang("send complete, send result: False."))
+            return public.returnMsg(
+                False, public.lang("send complete, send result: False.")
+            )
 
     def push_data(self, data):
         """
@@ -225,7 +267,7 @@ class tg_msg:
             {"module":"mail","title":"标题","msg":"内容","to_email":"xx@qq.com","sm_type":"","sm_args":{}}
         """
 
-        return self.send_msg(data['msg'])
+        return self.send_msg(data["msg"])
 
     def __get_default_channel(self):
         """

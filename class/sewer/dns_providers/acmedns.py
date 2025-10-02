@@ -1,7 +1,7 @@
 try:
-	import urllib.parse as urlparse
+    import urllib.parse as urlparse
 except:
-	import urlparse
+    import urlparse
 
 try:
     acmedns_dependencies = True
@@ -14,8 +14,7 @@ from . import common
 
 
 class AcmeDnsDns(common.BaseDns):
-    """
-    """
+    """ """
 
     dns_provider_name = "acmedns"
 
@@ -47,7 +46,10 @@ class AcmeDnsDns(common.BaseDns):
         subdomain, _ = str(answer.canonical_name).split(".", 1)
 
         url = urlparse.urljoin(self.ACME_DNS_API_BASE_URL, "update")
-        headers = {"X-Api-User": self.ACME_DNS_API_USER, "X-Api-Key": self.ACME_DNS_API_KEY}
+        headers = {
+            "X-Api-User": self.ACME_DNS_API_USER,
+            "X-Api-Key": self.ACME_DNS_API_KEY,
+        }
         body = {"subdomain": subdomain, "txt": domain_dns_value}
         update_acmedns_dns_record_response = requests.post(
             url, headers=headers, json=body, timeout=self.HTTP_TIMEOUT

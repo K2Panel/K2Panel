@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from time import time
-import os,struct
+import os, struct
+
 try:
     import cPickle as pickle
 except ImportError:  # pragma: no cover
@@ -11,12 +12,13 @@ import io
 import builtins
 
 safe_builtins = {
-    'range',
-    'complex',
-    'set',
-    'frozenset',
-    'slice',
+    "range",
+    "complex",
+    "set",
+    "frozenset",
+    "slice",
 }
+
 
 class RestrictedUnpickler(pickle.Unpickler):
     def find_class(self, module, name):
@@ -25,14 +27,13 @@ class RestrictedUnpickler(pickle.Unpickler):
             return getattr(builtins, name)
         return None
 
+
 def restricted_loads(s):
     # return RestrictedUnpickler(io.BytesIO(s)).load()
     return True
 
 
-
 class SimpleCache(BaseCache):
-
     """Simple memory cache for single process environments.  This class exists
     mainly for the development server and is not 100% thread safe.  It tries
     to use as many atomic operations as possible and no locks for simplicity
@@ -44,11 +45,12 @@ class SimpleCache(BaseCache):
                             specified on :meth:`~BaseCache.set`. A timeout of
                             0 indicates that the cache never expires.
     """
-    __session_key = 'BT_:'
-    __session_basedir = '/www/server/panel/data/session'
 
-    __SHM_PREFIX = 'SHM_:'
-    __SHM_BASEDIR = '/dev/shm/aap-shm'
+    __session_key = "BT_:"
+    __session_basedir = "/www/server/panel/data/session"
+
+    __SHM_PREFIX = "SHM_:"
+    __SHM_BASEDIR = "/dev/shm/aap-shm"
 
     def __init__(self, threshold=500, default_timeout=300):
         BaseCache.__init__(self, default_timeout)
@@ -67,51 +69,57 @@ class SimpleCache(BaseCache):
                 self._cache.pop(key, None)
                 self.del_session_by_file(key)
 
-
     def _normalize_timeout(self, timeout):
         timeout = BaseCache._normalize_timeout(self, timeout)
         if timeout > 0:
             timeout = time() + timeout
         return timeout
 
-    def get_session_by_file(self,key):
+    def get_session_by_file(self, key):
         try:
             if key[:4] == self.__session_key:
-                filename =  '/'.join((self.__session_basedir,self.md5(key)))
-                if not os.path.exists(filename): return None
+                filename = "/".join((self.__session_basedir, self.md5(key)))
+                if not os.path.exists(filename):
+                    return None
 
-                with open(filename, 'rb') as fp:
+                with open(filename, "rb") as fp:
                     _val = fp.read()
                     fp.close()
-                    expires = struct.unpack('f',_val[:4])[0]
+                    expires = struct.unpack("f", _val[:4])[0]
                     if expires == 0 or expires > time():
                         value = _val[4:]
 
-                        self._cache[key] = (expires,value)
+                        self._cache[key] = (expires, value)
                         return pickle.loads(value)
-        except :pass
+        except:
+            pass
 
-    def set_session_by_file(self,key,_val,expires):
+    def set_session_by_file(self, key, _val, expires):
         try:
             if key[:4] == self.__session_key:
-                if not os.path.exists(self.__session_basedir): os.makedirs(self.__session_basedir,384)
-                expires = struct.pack('f',expires)
-                filename =  '/'.join((self.__session_basedir,self.md5(key)))
-                fp = open(filename, 'wb+')
+                if not os.path.exists(self.__session_basedir):
+                    os.makedirs(self.__session_basedir, 384)
+                expires = struct.pack("f", expires)
+                filename = "/".join((self.__session_basedir, self.md5(key)))
+                fp = open(filename, "wb+")
                 fp.write(expires + _val)
                 fp.close()
-                os.chmod(filename,384)
-        except :pass
+                os.chmod(filename, 384)
+        except:
+            pass
 
-    def del_session_by_file(self,key):
+    def del_session_by_file(self, key):
         try:
             if key[:4] == self.__session_key:
-                filename =  '/'.join((self.__session_basedir,self.md5(key)))
-                if os.path.exists(filename): os.remove(filename)
-        except : pass
+                filename = "/".join((self.__session_basedir, self.md5(key)))
+                if os.path.exists(filename):
+                    os.remove(filename)
+        except:
+            pass
 
     def get(self, key):
-        if not isinstance(key,str): return None
+        if not isinstance(key, str):
+            return None
 
         try:
             # 优先从shm中查找
@@ -119,7 +127,8 @@ class SimpleCache(BaseCache):
 
             if _shm_val is not None:
                 return _shm_val
-        except: pass
+        except:
+            pass
 
         try:
             expires, value = self._cache[key]
@@ -131,9 +140,10 @@ class SimpleCache(BaseCache):
     def set(self, key, value, timeout=None):
 
         # 类型判断
-        if not isinstance(key,str): return False
-        type_list=(int,float,bool,str,list,dict,tuple,set,bytes)
-        value_type=type(value)
+        if not isinstance(key, str):
+            return False
+        type_list = (int, float, bool, str, list, dict, tuple, set, bytes)
+        value_type = type(value)
         if value_type not in type_list:
             return False
 
@@ -141,7 +151,8 @@ class SimpleCache(BaseCache):
             # 优先写入shm
             if self.__set_shm(key, value, timeout):
                 return True
-        except: pass
+        except:
+            pass
 
         # 过期清理
         expires = self._normalize_timeout(timeout)
@@ -152,17 +163,18 @@ class SimpleCache(BaseCache):
             return False
 
         # 转换
-        _val =  pickle.dumps(value, pickle.HIGHEST_PROTOCOL)
-        self._cache[key] = (expires,_val)
-        self.set_session_by_file(key,_val,expires)
+        _val = pickle.dumps(value, pickle.HIGHEST_PROTOCOL)
+        self._cache[key] = (expires, _val)
+        self.set_session_by_file(key, _val, expires)
         return True
 
     def add(self, key, value, timeout=None):
 
         # 类型判断
-        if not isinstance(key,str): return False
-        type_list=(int,float,bool,str,list,dict,tuple,set,bytes)
-        value_type=type(value)
+        if not isinstance(key, str):
+            return False
+        type_list = (int, float, bool, str, list, dict, tuple, set, bytes)
+        value_type = type(value)
         if value_type not in type_list:
             return False
 
@@ -170,7 +182,8 @@ class SimpleCache(BaseCache):
             # 优先写入shm
             if self.__add_shm(key, value, timeout):
                 return True
-        except: pass
+        except:
+            pass
 
         expires = self._normalize_timeout(timeout)
         self._prune()
@@ -178,11 +191,11 @@ class SimpleCache(BaseCache):
             restricted_loads(pickle.dumps(value))
         except:
             return False
-        item = (expires, pickle.dumps(value,pickle.HIGHEST_PROTOCOL))
+        item = (expires, pickle.dumps(value, pickle.HIGHEST_PROTOCOL))
         if key in self._cache:
             return False
         self._cache.setdefault(key, item)
-        self.set_session_by_file(key,item[1],expires)
+        self.set_session_by_file(key, item[1], expires)
         return True
 
     def delete(self, key):
@@ -190,7 +203,8 @@ class SimpleCache(BaseCache):
             # 优先删除shm
             if self.__del_shm(key):
                 return True
-        except: pass
+        except:
+            pass
 
         result = self._cache.pop(key, None) is not None
         self.del_session_by_file(key)
@@ -201,13 +215,15 @@ class SimpleCache(BaseCache):
             # 优先shm
             if self.__has_shm(key):
                 return True
-        except: pass
+        except:
+            pass
 
         try:
             expires, value = self._cache[key]
             return expires == 0 or expires > time()
         except KeyError:
-            if self.get_session_by_file(key): return True
+            if self.get_session_by_file(key):
+                return True
             return False
 
     def get_expire_time(self, key):
@@ -217,59 +233,61 @@ class SimpleCache(BaseCache):
         except KeyError:
             return 0
 
-    def md5(self,strings):
+    def md5(self, strings):
         """
         生成MD5
         @strings 要被处理的字符串
         return string(32)
         """
         import hashlib
+
         m = hashlib.md5()
 
-        m.update(strings.encode('utf-8'))
+        m.update(strings.encode("utf-8"))
         return m.hexdigest()
 
     def __set_shm(self, key, value, timeout=None):
-        '''
-            @name 尝试将缓存写入shm目录
-            @author Zhj<2022-10-08>
-            @param  key<string>     键名
-            @param  value<mixed>    值
-            @param  timeout<int>    存活时间/秒
-            @return bool
-        '''
+        """
+        @name 尝试将缓存写入shm目录
+        @author Zhj<2022-10-08>
+        @param  key<string>     键名
+        @param  value<mixed>    值
+        @param  timeout<int>    存活时间/秒
+        @return bool
+        """
         if key[:5] != self.__SHM_PREFIX:
             return False
 
         self.__makesure_shm_basedir()
 
-        expires = struct.pack('f', self._normalize_timeout(timeout))
-        filename = '/'.join((self.__SHM_BASEDIR, self.md5(key)))
-        with open(filename, 'wb') as fp:
+        expires = struct.pack("f", self._normalize_timeout(timeout))
+        filename = "/".join((self.__SHM_BASEDIR, self.md5(key)))
+        with open(filename, "wb") as fp:
             fp.write(expires + pickle.dumps(value, pickle.HIGHEST_PROTOCOL))
         os.chmod(filename, 384)
 
         return True
 
     def __get_shm(self, key):
-        '''
-            @name 尝试从shm目录下读取缓存
-            @author Zhj<2022-10-08>
-            @param  key<string> 键名
-            @return mixed|None
-        '''
+        """
+        @name 尝试从shm目录下读取缓存
+        @author Zhj<2022-10-08>
+        @param  key<string> 键名
+        @return mixed|None
+        """
         if key[:5] != self.__SHM_PREFIX:
             return None
 
         self.__makesure_shm_basedir()
 
-        filename = '/'.join((self.__SHM_BASEDIR, self.md5(key)))
-        if not os.path.exists(filename): return None
+        filename = "/".join((self.__SHM_BASEDIR, self.md5(key)))
+        if not os.path.exists(filename):
+            return None
 
-        with open(filename, 'rb') as fp:
+        with open(filename, "rb") as fp:
             _val = fp.read()
 
-        expires = struct.unpack('f', _val[:4])[0]
+        expires = struct.unpack("f", _val[:4])[0]
 
         # 过期 删除缓存文件
         if expires > 0 and expires <= time():
@@ -279,41 +297,42 @@ class SimpleCache(BaseCache):
         return pickle.loads(_val[4:])
 
     def __del_shm(self, key):
-        '''
-            @name 删除shm目录下的缓存
-            @author Zhj<2022-10-08>
-            @param  key<string> 键名
-            @return bool
-        '''
+        """
+        @name 删除shm目录下的缓存
+        @author Zhj<2022-10-08>
+        @param  key<string> 键名
+        @return bool
+        """
         if key[:5] != self.__SHM_PREFIX:
             return False
 
         self.__makesure_shm_basedir()
 
-        filename = '/'.join((self.__SHM_BASEDIR, self.md5(key)))
+        filename = "/".join((self.__SHM_BASEDIR, self.md5(key)))
         if os.path.exists(filename):
             os.remove(filename)
 
         return True
 
     def __has_shm(self, key):
-        '''
-            @name 检查shm目录下的缓存是否存在
-            @author Zhj<2022-10-08>
-            @param  key<string> 键名
-            @return bool
-        '''
+        """
+        @name 检查shm目录下的缓存是否存在
+        @author Zhj<2022-10-08>
+        @param  key<string> 键名
+        @return bool
+        """
         if key[:5] != self.__SHM_PREFIX:
             return False
 
         self.__makesure_shm_basedir()
 
-        filename = '/'.join((self.__SHM_BASEDIR, self.md5(key)))
-        if not os.path.exists(filename): return False
+        filename = "/".join((self.__SHM_BASEDIR, self.md5(key)))
+        if not os.path.exists(filename):
+            return False
 
         # 获取缓存过期时间
-        with open(filename, 'rb') as fp:
-            expires = struct.unpack('f', fp.read(4))[0]
+        with open(filename, "rb") as fp:
+            expires = struct.unpack("f", fp.read(4))[0]
 
         # 过期 删除缓存文件
         if expires > 0 and expires <= time():
@@ -323,25 +342,24 @@ class SimpleCache(BaseCache):
         return True
 
     def __add_shm(self, key, value, timeout=None):
-        '''
-            @name 尝试添加缓存到shm目录下
-            @author Zhj<2022-10-08>
-            @param  key<string>  键名
-            @param  value<mixed> 值
-            @param  timeout<int> 缓存存活时间/秒
-            @return bool
-        '''
+        """
+        @name 尝试添加缓存到shm目录下
+        @author Zhj<2022-10-08>
+        @param  key<string>  键名
+        @param  value<mixed> 值
+        @param  timeout<int> 缓存存活时间/秒
+        @return bool
+        """
         if self.__has_shm(key):
             return False
 
         return self.__set_shm(key, value, timeout)
 
     def __makesure_shm_basedir(self):
-        '''
-            @name 确保shm下的缓存目录存在
-            @author Zhj<2022-10-08>
-            @return void
-        '''
+        """
+        @name 确保shm下的缓存目录存在
+        @author Zhj<2022-10-08>
+        @return void
+        """
         if not os.path.exists(self.__SHM_BASEDIR):
             os.makedirs(self.__SHM_BASEDIR, 384)
-

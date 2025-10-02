@@ -1,7 +1,7 @@
 try:
-	import urllib.parse as urlparse
+    import urllib.parse as urlparse
 except:
-	import urlparse
+    import urlparse
 import requests
 from . import common
 
@@ -15,8 +15,7 @@ import time
 
 
 class RackspaceDns(common.BaseDns):
-    """
-    """
+    """ """
 
     dns_providername = "rackspace"
 
@@ -31,7 +30,9 @@ class RackspaceDns(common.BaseDns):
                 }
             }
         }
-        find_rackspace_api_details_response = requests.post(RACKSPACE_IDENTITY_URL, json=payload)
+        find_rackspace_api_details_response = requests.post(
+            RACKSPACE_IDENTITY_URL, json=payload
+        )
         self.logger.debug(
             "find_rackspace_api_details_response. status_code={0}".format(
                 find_rackspace_api_details_response.status_code
@@ -47,7 +48,12 @@ class RackspaceDns(common.BaseDns):
         data = find_rackspace_api_details_response.json()
         api_token = data["access"]["token"]["id"]
         url_data = next(
-            (item for item in data["access"]["serviceCatalog"] if item["type"] == "rax:model"), None
+            (
+                item
+                for item in data["access"]["serviceCatalog"]
+                if item["type"] == "rax:model"
+            ),
+            None,
         )
         if url_data is None:
             raise ValueError(
@@ -68,7 +74,9 @@ class RackspaceDns(common.BaseDns):
         self.RACKSPACE_API_KEY = RACKSPACE_API_KEY
         self.HTTP_TIMEOUT = 65  # seconds
         super(RackspaceDns, self).__init__()
-        self.RACKSPACE_API_TOKEN, self.RACKSPACE_API_BASE_URL = self.get_rackspace_credentials()
+        self.RACKSPACE_API_TOKEN, self.RACKSPACE_API_BASE_URL = (
+            self.get_rackspace_credentials()
+        )
         self.RACKSPACE_HEADERS = {
             "X-Auth-Token": self.RACKSPACE_API_TOKEN,
             "Content-Type": "application/json",
@@ -77,7 +85,9 @@ class RackspaceDns(common.BaseDns):
     def get_dns_zone(self, domain_name):
         self.logger.debug("get_dns_zone")
         extracted_domain = tldextract.extract(domain_name)
-        self.RACKSPACE_DNS_ZONE = ".".join([extracted_domain.domain, extracted_domain.suffix])
+        self.RACKSPACE_DNS_ZONE = ".".join(
+            [extracted_domain.domain, extracted_domain.suffix]
+        )
 
     def find_dns_zone_id(self, domain_name):
         self.logger.debug("find_dns_zone_id")
@@ -98,7 +108,12 @@ class RackspaceDns(common.BaseDns):
             )
         result = find_dns_zone_id_response.json()
         domain_data = next(
-            (item for item in result["domains"] if item["name"] == self.RACKSPACE_DNS_ZONE), None
+            (
+                item
+                for item in result["domains"]
+                if item["name"] == self.RACKSPACE_DNS_ZONE
+            ),
+            None,
         )
         if domain_data is None:
             raise ValueError(
@@ -114,7 +129,9 @@ class RackspaceDns(common.BaseDns):
     def find_dns_record_id(self, domain_name, domain_dns_value):
         self.logger.debug("find_dns_record_id")
         self.RACKSPACE_DNS_ZONE_ID = self.find_dns_zone_id(domain_name)
-        url = self.RACKSPACE_API_BASE_URL + "domains/{0}/records".format(self.RACKSPACE_DNS_ZONE_ID)
+        url = self.RACKSPACE_API_BASE_URL + "domains/{0}/records".format(
+            self.RACKSPACE_DNS_ZONE_ID
+        )
         find_dns_record_id_response = requests.get(url, headers=self.RACKSPACE_HEADERS)
         self.logger.debug(
             "find_dns_record_id_response. status_code={0}".format(
@@ -149,7 +166,9 @@ class RackspaceDns(common.BaseDns):
     def poll_callback_url(self, callback_url):
         start_time = time.time()
         while True:
-            callback_url_response = requests.get(callback_url, headers=self.RACKSPACE_HEADERS)
+            callback_url_response = requests.get(
+                callback_url, headers=self.RACKSPACE_HEADERS
+            )
             if time.time() > start_time + self.HTTP_TIMEOUT:
                 raise ValueError(
                     "Timed out polling callbackurl for model record status.  Last status_code={status_code} last response={response}".format(
@@ -181,10 +200,18 @@ class RackspaceDns(common.BaseDns):
         self.RACKSPACE_DNS_ZONE_ID = self.find_dns_zone_id(domain_name)
         record_name = "_acme-challenge." + domain_name
         url = urlparse.urljoin(
-            self.RACKSPACE_API_BASE_URL, "domains/{0}/records".format(self.RACKSPACE_DNS_ZONE_ID)
+            self.RACKSPACE_API_BASE_URL,
+            "domains/{0}/records".format(self.RACKSPACE_DNS_ZONE_ID),
         )
         body = {
-            "records": [{"name": record_name, "type": "TXT", "data": domain_dns_value, "ttl": 3600}]
+            "records": [
+                {
+                    "name": record_name,
+                    "type": "TXT",
+                    "data": domain_dns_value,
+                    "ttl": 3600,
+                }
+            ]
         }
         create_rackspace_dns_record_response = requests.post(
             url, headers=self.RACKSPACE_HEADERS, json=body, timeout=self.HTTP_TIMEOUT
@@ -216,15 +243,24 @@ class RackspaceDns(common.BaseDns):
         self.logger.info("delete_dns_record")
         record_name = "_acme-challenge." + domain_name
         self.RACKSPACE_DNS_ZONE_ID = self.find_dns_zone_id(domain_name)
-        self.RACKSPACE_RECORD_ID = self.find_dns_record_id(domain_name, domain_dns_value)
-        url = self.RACKSPACE_API_BASE_URL + "domains/{domain_id}/records/?id={record_id}".format(
-            domain_id=self.RACKSPACE_DNS_ZONE_ID, record_id=self.RACKSPACE_RECORD_ID
+        self.RACKSPACE_RECORD_ID = self.find_dns_record_id(
+            domain_name, domain_dns_value
         )
-        delete_dns_record_response = requests.delete(url, headers=self.RACKSPACE_HEADERS)
+        url = (
+            self.RACKSPACE_API_BASE_URL
+            + "domains/{domain_id}/records/?id={record_id}".format(
+                domain_id=self.RACKSPACE_DNS_ZONE_ID, record_id=self.RACKSPACE_RECORD_ID
+            )
+        )
+        delete_dns_record_response = requests.delete(
+            url, headers=self.RACKSPACE_HEADERS
+        )
         # After sending a delete request, if all goes well, we get a 202 from the server and a URL that we can poll
         # to see when the job is done
         self.logger.debug(
-            "delete_dns_record_response={0}".format(delete_dns_record_response.status_code)
+            "delete_dns_record_response={0}".format(
+                delete_dns_record_response.status_code
+            )
         )
         if delete_dns_record_response.status_code != 202:
             raise ValueError(

@@ -7,8 +7,8 @@ import public.PluginLoader as plugin_loader
 import types
 
 
-if 'class_v2/' not in sys.path and 'class_v2' not in sys.path:
-    sys.path.insert(0, 'class_v2/')
+if "class_v2/" not in sys.path and "class_v2" not in sys.path:
+    sys.path.insert(0, "class_v2/")
 
 
 __hooked = False
@@ -21,7 +21,7 @@ def hook_import():
     if __hooked:
         return
 
-    def _aap__import__(name, globals = None, locals = None, fromlist = (), level = 0):
+    def _aap__import__(name, globals=None, locals=None, fromlist=(), level=0):
         try:
             return old__import__(name, globals, locals, fromlist, level)
         except SyntaxError:
@@ -29,16 +29,25 @@ def hook_import():
 
             # 处理相对导入
             if level > 0:
-                if not globals or '__package__' not in globals:
-                    raise ImportError("Attempted relative import with no known parent package")
-                package = globals.get('__package__') or globals.get('__name__', '').rpartition('.')[0]
+                if not globals or "__package__" not in globals:
+                    raise ImportError(
+                        "Attempted relative import with no known parent package"
+                    )
+                package = (
+                    globals.get("__package__")
+                    or globals.get("__name__", "").rpartition(".")[0]
+                )
                 if not package and level > 0:
-                    raise ImportError("Attempted relative import with no known parent package")
+                    raise ImportError(
+                        "Attempted relative import with no known parent package"
+                    )
                 if level > 1:
-                    parent_parts = package.split('.')
+                    parent_parts = package.split(".")
                     if len(parent_parts) < level - 1:
-                        raise ImportError("Attempted relative import beyond top-level package")
-                    package = '.'.join(parent_parts[:-level + 1])
+                        raise ImportError(
+                            "Attempted relative import beyond top-level package"
+                        )
+                    package = ".".join(parent_parts[: -level + 1])
                 absolute_name = f"{package}.{name}" if name else package
             else:
                 absolute_name = name
@@ -47,18 +56,18 @@ def hook_import():
             if absolute_name in sys.modules:
                 return sys.modules[absolute_name]
 
-            module_path_part = absolute_name.replace('.', '/')
+            module_path_part = absolute_name.replace(".", "/")
             is_package_import = bool(fromlist)
 
             for p in set(sys.path):
                 base_path = os.path.join(panel_path, p)
-                potential_file_path = os.path.join(base_path, module_path_part + '.py')
+                potential_file_path = os.path.join(base_path, module_path_part + ".py")
                 potential_dir_path = os.path.join(base_path, module_path_part)
 
                 top_module = None
 
                 if os.path.isdir(potential_dir_path):
-                    init_py = os.path.join(potential_dir_path, '__init__.py')
+                    init_py = os.path.join(potential_dir_path, "__init__.py")
 
                     if os.path.exists(init_py):
                         # 如果 __init__.py 存在，作为常规包加载
@@ -74,12 +83,16 @@ def hook_import():
 
                     if is_package_import:
                         for sub_module_name in fromlist:
-                            if sub_module_name == '*':
+                            if sub_module_name == "*":
                                 continue
-                            sub_module_path = os.path.join(potential_dir_path, sub_module_name + '.py')
+                            sub_module_path = os.path.join(
+                                potential_dir_path, sub_module_name + ".py"
+                            )
                             if os.path.exists(sub_module_path):
                                 try:
-                                    sub_module = plugin_loader.get_module(sub_module_path)
+                                    sub_module = plugin_loader.get_module(
+                                        sub_module_path
+                                    )
                                     setattr(top_module, sub_module_name, sub_module)
                                 except Exception:
                                     public.print_error()

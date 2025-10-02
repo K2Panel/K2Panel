@@ -28,10 +28,10 @@ class SocketMiddleware(object):
         adapter = self.ws.url_map.bind_to_environ(environ)
         try:
             handler, values = adapter.match()
-            environment = environ['wsgi.websocket']
+            environment = environ["wsgi.websocket"]
             cookie = None
-            if 'HTTP_COOKIE' in environ:
-                cookie = parse_cookie(environ['HTTP_COOKIE'])
+            if "HTTP_COOKIE" in environ:
+                cookie = parse_cookie(environ["HTTP_COOKIE"])
 
             with self.app.app_context():
                 with self.app.request_context(environ):
@@ -69,9 +69,10 @@ class Sockets(object):
     def route(self, rule, **options):
 
         def decorator(f):
-            endpoint = options.pop('endpoint', None)
+            endpoint = options.pop("endpoint", None)
             self.add_url_rule(rule, endpoint, f, **options)
             return f
+
         return decorator
 
     def add_url_rule(self, rule, _, f, **options):
@@ -88,10 +89,11 @@ class Sockets(object):
 
         if blueprint.name in self.blueprints:
             assert self.blueprints[blueprint.name] is blueprint, (
-                'A blueprint\'s name collision occurred between %r and '
+                "A blueprint's name collision occurred between %r and "
                 '%r.  Both share the same name "%s".  Blueprints that '
-                'are created on the fly need unique names.'
-                % (blueprint, self.blueprints[blueprint.name], blueprint.name))
+                "are created on the fly need unique names."
+                % (blueprint, self.blueprints[blueprint.name], blueprint.name)
+            )
         else:
             self.blueprints[blueprint.name] = blueprint
             self._blueprint_order.append(blueprint)
@@ -101,12 +103,11 @@ class Sockets(object):
 
 
 # CLI sugar.
-if ('Worker' in locals() and 'PyWSGIHandler' in locals() and
-        'gevent' in locals()):
+if "Worker" in locals() and "PyWSGIHandler" in locals() and "gevent" in locals():
 
     class GunicornWebSocketHandler(PyWSGIHandler, WebSocketHandler):
         def log_request(self):
-            if '101' not in self.status:
+            if "101" not in self.status:
                 super(GunicornWebSocketHandler, self).log_request()
 
     Worker.wsgi_handler = GunicornWebSocketHandler

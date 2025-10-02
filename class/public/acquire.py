@@ -8,20 +8,20 @@ _local = threading.local()
 
 @contextmanager
 def acquire(*locks, timeout=-1):
-    '''
-        @name 避免死锁
-        @author Zhj
-        @param locks<[]threading.Lock> 线程锁
-        @param timeout<integer> 最长阻塞时间/秒
-        @return None
-    '''
+    """
+    @name 避免死锁
+    @author Zhj
+    @param locks<[]threading.Lock> 线程锁
+    @param timeout<integer> 最长阻塞时间/秒
+    @return None
+    """
     # 升序排序
     locks = sorted(locks, key=lambda x: id(x))
 
     # 确保按顺序加锁
-    acquired = getattr(_local, 'acquired', [])
+    acquired = getattr(_local, "acquired", [])
     if timeout <= 0 and acquired and max(id(lock) for lock in acquired) >= id(locks[0]):
-        raise RuntimeError('Lock Order Violation')
+        raise RuntimeError("Lock Order Violation")
 
     # 加锁
     acquired.extend(locks)
@@ -39,5 +39,6 @@ def acquire(*locks, timeout=-1):
         for lock in reversed(locks):
             try:
                 lock.release()
-            except: pass
-        del (acquired[-len(locks):],)
+            except:
+                pass
+        del (acquired[-len(locks) :],)

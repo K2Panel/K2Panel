@@ -46,19 +46,31 @@ class main(sslBase):
             # Create a "String to Sign".
             def StringToSign(canonicalRequest, t):
                 bytes = HexEncodeSHA256Hash(canonicalRequest)
-                return "%s\n%s\n%s" % (self.Algorithm, datetime.strftime(t, self.BasicDateFormat), bytes)
+                return "%s\n%s\n%s" % (
+                    self.Algorithm,
+                    datetime.strftime(t, self.BasicDateFormat),
+                    bytes,
+                )
 
         else:
             body = body.encode("utf-8")
             from urllib.parse import quote, unquote
 
             def hmacsha256(keyByte, message):
-                return hmac.new(keyByte.encode('utf-8'), message.encode('utf-8'), digestmod=hashlib.sha256).digest()
+                return hmac.new(
+                    keyByte.encode("utf-8"),
+                    message.encode("utf-8"),
+                    digestmod=hashlib.sha256,
+                ).digest()
 
             # Create a "String to Sign".
             def StringToSign(canonicalRequest, t):
-                bytes = HexEncodeSHA256Hash(canonicalRequest.encode('utf-8'))
-                return "%s\n%s\n%s" % (self.Algorithm, datetime.strftime(t, self.BasicDateFormat), bytes)
+                bytes = HexEncodeSHA256Hash(canonicalRequest.encode("utf-8"))
+                return "%s\n%s\n%s" % (
+                    self.Algorithm,
+                    datetime.strftime(t, self.BasicDateFormat),
+                    bytes,
+                )
 
         def HexEncodeSHA256Hash(data):
             sha256 = hashlib.sha256()
@@ -78,17 +90,17 @@ class main(sslBase):
             keys.sort()
             a = []
             for key in keys:
-                k = quote(key, safe='~')
+                k = quote(key, safe="~")
                 value = query[key]
                 if type(value) is list:
                     value.sort()
                     for v in value:
-                        kv = k + "=" + quote(str(v), safe='~')
+                        kv = k + "=" + quote(str(v), safe="~")
                         a.append(kv)
                 else:
-                    kv = k + "=" + quote(str(value), safe='~')
+                    kv = k + "=" + quote(str(value), safe="~")
                     a.append(kv)
-            return '&'.join(a)
+            return "&".join(a)
 
         def SignStringToSign(stringToSign, signingKey):
             hm = hmacsha256(signingKey, stringToSign)
@@ -96,15 +108,19 @@ class main(sslBase):
 
         def AuthHeaderValue(signature, AppKey, signedHeaders):
             return "%s Access=%s, SignedHeaders=%s, Signature=%s" % (
-                self.Algorithm, AppKey, ";".join(signedHeaders), signature)
+                self.Algorithm,
+                AppKey,
+                ";".join(signedHeaders),
+                signature,
+            )
 
         spl = url.split("://", 1)
-        scheme = 'http'
+        scheme = "http"
         if len(spl) > 1:
             scheme = spl[0]
             url = spl[1]
         query = {}
-        spl = url.split('?', 1)
+        spl = url.split("?", 1)
         url = spl[0]
         if len(spl) > 1:
             for kv in spl[1].split("&"):
@@ -113,19 +129,19 @@ class main(sslBase):
                 value = ""
                 if len(spl) > 1:
                     value = spl[1]
-                if key != '':
+                if key != "":
                     key = unquote(key)
                     value = unquote(value)
                     if key in query:
                         query[key].append(value)
                     else:
                         query[key] = [value]
-        spl = url.split('/', 1)
+        spl = url.split("/", 1)
         host = spl[0]
         if len(spl) > 1:
-            url = '/' + spl[1]
+            url = "/" + spl[1]
         else:
-            url = '/'
+            url = "/"
         if headers is None:
             headers = {"content-type": "application/json"}
         else:
@@ -141,7 +157,7 @@ class main(sslBase):
 
         haveHost = False
         for key in headers:
-            if key.lower() == 'host':
+            if key.lower() == "host":
                 haveHost = True
                 break
         if not haveHost:
@@ -158,24 +174,30 @@ class main(sslBase):
             valueEncoded = value.strip()
             __headers[keyEncoded] = valueEncoded
             if sys.version_info.major == 3:
-                headers[key] = valueEncoded.encode("utf-8").decode('iso-8859-1')
+                headers[key] = valueEncoded.encode("utf-8").decode("iso-8859-1")
         for key in signedHeaders:
             a.append(key + ":" + __headers[key])
-        canonicalHeaders = '\n'.join(a) + "\n"
+        canonicalHeaders = "\n".join(a) + "\n"
 
         hexencode = findHeader(headers, self.HeaderContentSha256)
         if hexencode is None:
             hexencode = HexEncodeSHA256Hash(body)
-        pattens = unquote(url).split('/')
+        pattens = unquote(url).split("/")
         CanonicalURI = []
         for v in pattens:
             CanonicalURI.append(quote(v, safe="~"))
         CanonicalURL = "/".join(CanonicalURI)
-        if CanonicalURL[-1] != '/':
+        if CanonicalURL[-1] != "/":
             CanonicalURL = CanonicalURL + "/"  # always end with /
 
-        canonicalRequest = "%s\n%s\n%s\n%s\n%s\n%s" % (method.upper(), CanonicalURL, CanonicalQueryString(query),
-                                                       canonicalHeaders, ";".join(signedHeaders), hexencode)
+        canonicalRequest = "%s\n%s\n%s\n%s\n%s\n%s" % (
+            method.upper(),
+            CanonicalURL,
+            CanonicalQueryString(query),
+            canonicalHeaders,
+            ";".join(signedHeaders),
+            hexencode,
+        )
 
         stringToSign = StringToSign(canonicalRequest, t)
         signature = SignStringToSign(stringToSign, self.sk)
@@ -186,17 +208,19 @@ class main(sslBase):
         if queryString != "":
             url = url + "?" + queryString
 
-        res = requests.request(method, scheme + "://" + host + url, headers=headers, data=body)
+        res = requests.request(
+            method, scheme + "://" + host + url, headers=headers, data=body
+        )
         return res
 
     def create_dns_record(self, get):
         domain_name = get.domain_name
         domain_dns_value = get.domain_dns_value
-        record_type = 'TXT'
-        if 'record_type' in get:
+        record_type = "TXT"
+        if "record_type" in get:
             record_type = get.record_type
-        if record_type == 'TXT':
-            domain_dns_value = "\"{}\"".format(domain_dns_value)
+        if record_type == "TXT":
+            domain_dns_value = '"{}"'.format(domain_dns_value)
 
         root_domain, sub_domain, _ = self.extract_zone(domain_name)
         if sub_domain == "@":
@@ -205,17 +229,21 @@ class main(sslBase):
         try:
             zone_dic = self.get_zoneid_dict(get.dns_id)
             zone_id = zone_dic.get(root_domain)
-            body = json.dumps({
-                "name": domain_name,
-                "type": record_type,
-                "records": [domain_dns_value],
-            })
+            body = json.dumps(
+                {
+                    "name": domain_name,
+                    "type": record_type,
+                    "records": [domain_dns_value],
+                }
+            )
 
-            res = self.sign_to_response(get.dns_id, "POST", "/v2/zones/{}/recordsets".format(zone_id), body=body)
+            res = self.sign_to_response(
+                get.dns_id, "POST", "/v2/zones/{}/recordsets".format(zone_id), body=body
+            )
             if res.status_code != 202:
                 return public.returnMsg(False, self.get_error(res.text))
 
-            return public.returnMsg(True, '添加成功')
+            return public.returnMsg(True, "添加成功")
         except Exception as e:
             return public.returnMsg(False, self.get_error(str(e)))
 
@@ -227,10 +255,14 @@ class main(sslBase):
         zone_dic = self.get_zoneid_dict(get.dns_id)
         zone_id = zone_dic[root_domain]
         try:
-            res = self.sign_to_response(get.dns_id, "DELETE", "/v2/zones/{}/recordsets/{}".format(zone_id, RecordId))
+            res = self.sign_to_response(
+                get.dns_id,
+                "DELETE",
+                "/v2/zones/{}/recordsets/{}".format(zone_id, RecordId),
+            )
             if res.status_code != 202:
                 return public.returnMsg(False, self.get_error(res.text))
-            return public.returnMsg(True, '删除成功')
+            return public.returnMsg(True, "删除成功")
         except Exception as e:
             return public.returnMsg(False, self.get_error(str(e)))
 
@@ -255,8 +287,13 @@ class main(sslBase):
             limit = 100
             offset = 0
             zone_id = zone_dic[root_domain]
-            res = self.sign_to_response(get.dns_id, "GET",
-                                "/v2/zones/{}/recordsets?limit={}&offset={}".format(zone_id, limit, offset))
+            res = self.sign_to_response(
+                get.dns_id,
+                "GET",
+                "/v2/zones/{}/recordsets?limit={}&offset={}".format(
+                    zone_id, limit, offset
+                ),
+            )
             if res.status_code != 200:
                 return {}
             response = res.json()
@@ -265,20 +302,26 @@ class main(sslBase):
                 {
                     "RecordId": i["id"],
                     "name": i["name"][:-1],
-                    "value": '\r\n'.join(i["records"]) if i["type"] != "TXT" else '\r\n'.join([j.replace('"', '') for j in i["records"]]),
+                    "value": (
+                        "\r\n".join(i["records"])
+                        if i["type"] != "TXT"
+                        else "\r\n".join([j.replace('"', "") for j in i["records"]])
+                    ),
                     "line": "默认",
                     "ttl": i["ttl"],
                     "type": i["type"],
-                    "status": "启用"if i["status"] == "ACTIVE" else "暂停" if i["status"] == "DISABLE" else i["status"],
+                    "status": (
+                        "启用"
+                        if i["status"] == "ACTIVE"
+                        else "暂停" if i["status"] == "DISABLE" else i["status"]
+                    ),
                     "mx": "",
                     "updated_on": i["update_at"],
                     "remark": i.get("description") or "",
                 }
                 for i in response["recordsets"]
             ]
-            data["info"] = {
-                'record_total': response['metadata']['total_count']
-            }
+            data["info"] = {"record_total": response["metadata"]["total_count"]}
         except Exception as e:
             pass
         self.set_record_data({root_domain: data})
@@ -293,23 +336,30 @@ class main(sslBase):
 
         if sub_domain == "@":
             domain_name = root_domain
-        if record_type == 'TXT':
-            domain_dns_value = "\"{}\"".format(domain_dns_value)
+        if record_type == "TXT":
+            domain_dns_value = '"{}"'.format(domain_dns_value)
 
         zone_dic = self.get_zoneid_dict(get.dns_id)
         zone_id = zone_dic[root_domain]
         try:
-            body = json.dumps({
-                "name": domain_name,
-                "type": record_type,
-                "records": [domain_dns_value],
-            })
+            body = json.dumps(
+                {
+                    "name": domain_name,
+                    "type": record_type,
+                    "records": [domain_dns_value],
+                }
+            )
 
-            res = self.sign_to_response(get.dns_id, "PUT", "/v2/zones/{}/recordsets/{}".format(zone_id, RecordId), body=body)
+            res = self.sign_to_response(
+                get.dns_id,
+                "PUT",
+                "/v2/zones/{}/recordsets/{}".format(zone_id, RecordId),
+                body=body,
+            )
             if res.status_code != 202:
                 return public.returnMsg(False, self.get_error(res.text))
 
-            return public.returnMsg(True, '修改成功')
+            return public.returnMsg(True, "修改成功")
         except Exception as e:
             return public.returnMsg(False, self.get_error(str(e)))
 

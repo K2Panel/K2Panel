@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#coding: utf-8
+# coding: utf-8
 # -------------------------------------------------------------------
 # K2Panel
 # -------------------------------------------------------------------
@@ -12,38 +12,43 @@
 # 是否修改面板默认帐号密码
 # -------------------------------------------------------------------
 
-import os,sys,re,public
+import os, sys, re, public
 
-_title = 'Panel password'
-_version = 1.0                              # 版本
-_ps = "Check whether the panel account password is safe"              # 描述
-_level = 0                                  # 风险级别： 1.提示(低)  2.警告(中)  3.危险(高)
-_date = '2020-08-04'                        # 最后更新时间
+_title = "Panel password"
+_version = 1.0  # 版本
+_ps = "Check whether the panel account password is safe"  # 描述
+_level = 0  # 风险级别： 1.提示(低)  2.警告(中)  3.危险(高)
+_date = "2020-08-04"  # 最后更新时间
 _ignore = os.path.exists("data/warning/ignore/sw_panel_pass.pl")
 _tips = [
     "Please go to the [Settings] page to modify the panel account password",
-    "Note: Please do not use too simple account password, so as not to cause security risks"
-    ]
-_help = ''
-_remind = 'This scheme can strengthen the complexity of the panel login account password and reduce the risk of being successfully exploded. '
+    "Note: Please do not use too simple account password, so as not to cause security risks",
+]
+_help = ""
+_remind = "This scheme can strengthen the complexity of the panel login account password and reduce the risk of being successfully exploded. "
+
+
 def check_run():
-    '''
-        @name 开始检测
-        @author hwliang<2020-08-04>
-        @return tuple (status<bool>,msg<string>)
-    '''
+    """
+    @name 开始检测
+    @author hwliang<2020-08-04>
+    @return tuple (status<bool>,msg<string>)
+    """
 
-    default_file = '/www/server/panel/default.pl'
+    default_file = "/www/server/panel/default.pl"
     if not os.path.exists(default_file):
-        return True,'Risk-free'
+        return True, "Risk-free"
     default_pass = public.readFile(default_file).strip()
-    
-    p1 = password_salt(public.md5(default_pass),uid=1)
-    find = public.M('users').where('id=?',(1,)).field('username,password').find()
-    if p1 == find['password']:
-        return False,'The default password of the panel has not been modified, and there is a security risk'
 
-    lower_pass_txt = '''12123
+    p1 = password_salt(public.md5(default_pass), uid=1)
+    find = public.M("users").where("id=?", (1,)).field("username,password").find()
+    if p1 == find["password"]:
+        return (
+            False,
+            "The default password of the panel has not been modified, and there is a security risk",
+        )
+
+    lower_pass_txt = """12123
 china
 test
 test12
@@ -1062,65 +1067,104 @@ baobao520
 winner
 123456m
 12312312
-'''
+"""
 
     lower_pass = lower_pass_txt.split("\n")
-    
+
     for lp in lower_pass:
-        if not lp: continue
-        if lp == find['username']:
-            return False,'The user name of the current panel is: {}, which is too simple and poses security risks'.format(lp)
-        p1 = password_salt(public.md5(lp),uid=1)
-        if p1 == find['password']:
-            return False,'The current panel password is too simple and there is a security risk'
-        
-        lp  = lp.upper()
-        if lp == find['username']:
-            return False,'The user name of the current panel is: {}, which is too simple and poses security risks'.format(lp)
-        p1 = password_salt(public.md5(lp),uid=1)
-        if p1 == find['password']:
-            return False,'The current panel password is too simple and there is a security risk'
-    
-    lower_rule = 'qwertyuiopasdfghjklzxcvbnm1234567890'
+        if not lp:
+            continue
+        if lp == find["username"]:
+            return (
+                False,
+                "The user name of the current panel is: {}, which is too simple and poses security risks".format(
+                    lp
+                ),
+            )
+        p1 = password_salt(public.md5(lp), uid=1)
+        if p1 == find["password"]:
+            return (
+                False,
+                "The current panel password is too simple and there is a security risk",
+            )
+
+        lp = lp.upper()
+        if lp == find["username"]:
+            return (
+                False,
+                "The user name of the current panel is: {}, which is too simple and poses security risks".format(
+                    lp
+                ),
+            )
+        p1 = password_salt(public.md5(lp), uid=1)
+        if p1 == find["password"]:
+            return (
+                False,
+                "The current panel password is too simple and there is a security risk",
+            )
+
+    lower_rule = "qwertyuiopasdfghjklzxcvbnm1234567890"
     for s in lower_rule:
         for i in range(12):
-            if not i: continue
+            if not i:
+                continue
             lp = s * i
-            if lp == find['username']:
-                return False,'The user name of the current panel is: {}, which is too simple and poses security risks'.format(lp)
-            p1 = password_salt(public.md5(lp),uid=1)
-            if p1 == find['password']:
-                return False,'The current panel password is too simple and there is a security risk'
-            
+            if lp == find["username"]:
+                return (
+                    False,
+                    "The user name of the current panel is: {}, which is too simple and poses security risks".format(
+                        lp
+                    ),
+                )
+            p1 = password_salt(public.md5(lp), uid=1)
+            if p1 == find["password"]:
+                return (
+                    False,
+                    "The current panel password is too simple and there is a security risk",
+                )
+
             lp = s.upper() * i
-            if lp == find['username']:
-                return False,'The user name of the current panel is: {}, which is too simple and poses security risks'.format(lp)
-            p1 = password_salt(public.md5(lp),uid=1)
-            if p1 == find['password']:
-                return False,'The current panel password is too simple and there is a security risk'
+            if lp == find["username"]:
+                return (
+                    False,
+                    "The user name of the current panel is: {}, which is too simple and poses security risks".format(
+                        lp
+                    ),
+                )
+            p1 = password_salt(public.md5(lp), uid=1)
+            if p1 == find["password"]:
+                return (
+                    False,
+                    "The current panel password is too simple and there is a security risk",
+                )
     if not is_strong_password(find["password"]):
-        return False, 'The current panel password is too simple and there is a security risk'
-    return True,'Risk-free'
+        return (
+            False,
+            "The current panel password is too simple and there is a security risk",
+        )
+    return True, "Risk-free"
+
 
 salt = None
 
-def password_salt(password,username=None,uid=None):
-    '''
-        @name 为指定密码加盐
-        @author hwliang<2020-07-08>
-        @param password string(被md5加密一次的密码)
-        @param username string(用户名) 可选
-        @param uid int(uid) 可选
-        @return string
-    '''
+
+def password_salt(password, username=None, uid=None):
+    """
+    @name 为指定密码加盐
+    @author hwliang<2020-07-08>
+    @param password string(被md5加密一次的密码)
+    @param username string(用户名) 可选
+    @param uid int(uid) 可选
+    @return string
+    """
     global salt
     if not salt:
-        salt = public.M('users').where('id=?',(uid,)).getField('salt')
+        salt = public.M("users").where("id=?", (uid,)).getField("salt")
         if salt:
             salt = salt[0]
         else:
             salt = ""
-    return public.md5(public.md5(password+'_bt.cn')+salt)
+    return public.md5(public.md5(password + "_bt.cn") + salt)
 
 
 def is_strong_password(password):
@@ -1136,15 +1180,18 @@ def is_strong_password(password):
         return False
 
     import re
+
     digit_reg = "[0-9]"  # 匹配数字 +1
     lower_case_letters_reg = "[a-z]"  # 匹配小写字母 +1
     upper_case_letters_reg = "[A-Z]"  # 匹配大写字母 +1
     special_characters_reg = r"((?=[\x21-\x7e]+)[^A-Za-z0-9])"  # 匹配特殊字符 +1
 
-    regs = [digit_reg,
-            lower_case_letters_reg,
-            upper_case_letters_reg,
-            special_characters_reg]
+    regs = [
+        digit_reg,
+        lower_case_letters_reg,
+        upper_case_letters_reg,
+        special_characters_reg,
+    ]
 
     grade = 0
     for reg in regs:

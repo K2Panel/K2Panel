@@ -9,15 +9,15 @@ from cachelib.redis import RedisCache
 from cachelib.uwsgi import UWSGICache
 
 __all__ = [
-    'BaseCache',
-    'NullCache',
-    'SimpleCache',
-    'FileSystemCache',
-    'MemcachedCache',
-    'RedisCache',
-    'UWSGICache',
-    'SimpleCacheSession'
+    "BaseCache",
+    "NullCache",
+    "SimpleCache",
+    "FileSystemCache",
+    "MemcachedCache",
+    "RedisCache",
+    "UWSGICache",
+    "SimpleCacheSession",
 ]
 
-__version__ = '0.1'
-__author__ = 'Pallets Team'
+__version__ = "0.1"
+__author__ = "Pallets Team"

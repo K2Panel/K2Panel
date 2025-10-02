@@ -1,21 +1,21 @@
-#coding: utf-8
-#-------------------------------------------------------------------
+# coding: utf-8
+# -------------------------------------------------------------------
 # K2Panel
-#-------------------------------------------------------------------
+# -------------------------------------------------------------------
 # Copyright (c) 2015-2099 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
-#-------------------------------------------------------------------
+# -------------------------------------------------------------------
 # Author: cjxin <cjxin@binarjoinanalyticnl.nl>
-#-------------------------------------------------------------------
+# -------------------------------------------------------------------
 
 # 免费IP库
-#------------------------------
-import os,re,json,time
+# ------------------------------
+import os, re, json, time
 from safeModel.base import safeBase
 import public
 
 
 class main(safeBase):
-    _sfile = '{}/data/free_ip_area.json'.format(public.get_panel_path())
+    _sfile = "{}/data/free_ip_area.json".format(public.get_panel_path())
 
     def __init__(self):
         try:
@@ -23,22 +23,22 @@ class main(safeBase):
         except:
             self.user_info = None
 
-    def get_ip_area(self,get):
+    def get_ip_area(self, get):
         """
         @获取IP地址所在地
         @param get: dict/array
         """
-        ips = get['ips']
-        arrs,result = [],{}
-        for ip in ips:arrs.append(ip)
+        ips = get["ips"]
+        arrs, result = [], {}
+        for ip in ips:
+            arrs.append(ip)
         if len(arrs) > 0:
             data = self.__get_cloud_ip_info(arrs)
             for ip in data:
                 result[ip] = data[ip]
         return result
 
-
-    def __get_cloud_ip_info(self,ips):
+    def __get_cloud_ip_info(self, ips):
         """
         @获取IP地址所在地
         @得判断是否是我们的用户
@@ -46,36 +46,40 @@ class main(safeBase):
         """
         result = {}
         try:
-            '''
-                @从云端获取IP地址所在地
-                @param data 是否是宝塔用户,如果不是则不返回
-                @param ips: IP地址
-            '''
+            """
+            @从云端获取IP地址所在地
+            @param data 是否是宝塔用户,如果不是则不返回
+            @param ips: IP地址
+            """
             data = {}
-            data['ip'] = ','.join(ips)
-            data['uid'] = self.user_info['uid']
+            data["ip"] = ",".join(ips)
+            data["uid"] = self.user_info["uid"]
             # data["serverid"]=self.user_info["serverid"]
             data["serverid"] = self.user_info["server_id"]
-            #如果不是我们的用户，那么不返回数据
-            res = public.httpPost('https://wafapi2.binarjoinanalyticnl.nl/api/ip/info',data)
+            # 如果不是我们的用户，那么不返回数据
+            res = public.httpPost(
+                "https://wafapi2.binarjoinanalyticnl.nl/api/ip/info", data
+            )
             res = json.loads(res)
             data = self.get_ip_area_cache()
             for key in res:
                 info = res[key]
                 if public.is_local_ip(key):
-                    res[key]['city']="Intranet"
-                if not res[key]['city']: continue
-                if not res[key]['city'].strip() and not res[key]['continent'].strip():
-                    info = {'info':'Unknown IP'}
+                    res[key]["city"] = "Intranet"
+                if not res[key]["city"]:
+                    continue
+                if not res[key]["city"].strip() and not res[key]["continent"].strip():
+                    info = {"info": "Unknown IP"}
                 else:
-                    info['info'] = '{} {} {} {}'.format(info['carrier'],info['country'],info['province'],info['city']).strip()
+                    info["info"] = "{} {} {} {}".format(
+                        info["carrier"], info["country"], info["province"], info["city"]
+                    ).strip()
                 data[key] = info
                 result[key] = info
             self.set_ip_area_cache(data)
         except:
             pass
         return result
-
 
     def get_ip_area_cache(self):
         """
@@ -86,13 +90,13 @@ class main(safeBase):
         try:
             data = json.loads(public.readFile(self._sfile))
         except:
-            public.writeFile(self._sfile,json.dumps({}))
+            public.writeFile(self._sfile, json.dumps({}))
         return data
 
-    def set_ip_area_cache(self,data):
+    def set_ip_area_cache(self, data):
         """
         @设置IP地址所在地
         @param data:
         """
-        public.writeFile(self._sfile,json.dumps(data))
+        public.writeFile(self._sfile, json.dumps(data))
         return True

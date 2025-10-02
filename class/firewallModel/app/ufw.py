@@ -15,11 +15,14 @@
 import subprocess
 import os
 import sys
+
 if "/www/server/panel/class" not in sys.path:
     sys.path.insert(0, "/www/server/panel/class")
 import public
+
 # import re
 from firewallModel.app.appBase import Base
+
 
 class Ufw(Base):
     def __init__(self):
@@ -30,14 +33,16 @@ class Ufw(Base):
 
     # 2024/3/19 下午 5:00 获取系统防火墙的运行状态
     def status(self):
-        '''
-            @name 获取系统防火墙的运行状态
-            @author wzz <2024/3/19 下午 5:00>
-            @param "data":{"参数名":""} <数据类型> 参数描述
-            @return dict{"status":True/False,"msg":"提示信息"}
-        '''
+        """
+        @name 获取系统防火墙的运行状态
+        @author wzz <2024/3/19 下午 5:00>
+        @param "data":{"参数名":""} <数据类型> 参数描述
+        @return dict{"status":True/False,"msg":"提示信息"}
+        """
         try:
-            result = subprocess.run([self.cmd_str, "status"], capture_output=True, text=True, check=True)
+            result = subprocess.run(
+                [self.cmd_str, "status"], capture_output=True, text=True, check=True
+            )
             if "Status: active" in result.stdout:
                 return "running"
             elif "状态： 激活" in result.stdout:
@@ -51,14 +56,16 @@ class Ufw(Base):
 
     # 2024/3/19 下午 5:00 获取系统防火墙的版本号
     def version(self):
-        '''
-            @name 获取系统防火墙的版本号
-            @author wzz <2024/3/19 下午 5:00>
-            @param "data":{"参数名":""} <数据类型> 参数描述
-            @return dict{"status":True/False,"msg":"提示信息"}
-        '''
+        """
+        @name 获取系统防火墙的版本号
+        @author wzz <2024/3/19 下午 5:00>
+        @param "data":{"参数名":""} <数据类型> 参数描述
+        @return dict{"status":True/False,"msg":"提示信息"}
+        """
         try:
-            result = subprocess.run([self.cmd_str, "version"], capture_output=True, text=True, check=True)
+            result = subprocess.run(
+                [self.cmd_str, "version"], capture_output=True, text=True, check=True
+            )
             info = result.stdout.replace("\n", "")
             return info.replace("ufw ", "")
         except Exception as e:
@@ -66,12 +73,12 @@ class Ufw(Base):
 
     # 2024/3/19 下午 5:00 启动防火墙
     def start(self):
-        '''
-            @name 启动防火墙
-            @author wzz <2024/3/19 下午 5:00>
-            @param "data":{"参数名":""} <数据类型> 参数描述
-            @return dict{"status":True/False,"msg":"提示信息"}
-        '''
+        """
+        @name 启动防火墙
+        @author wzz <2024/3/19 下午 5:00>
+        @param "data":{"参数名":""} <数据类型> 参数描述
+        @return dict{"status":True/False,"msg":"提示信息"}
+        """
         try:
             stdout, stderr = public.ExecShell("echo y | {} enable".format(self.cmd_str))
             if stderr:
@@ -82,12 +89,12 @@ class Ufw(Base):
 
     # 2024/3/19 下午 5:00 停止防火墙
     def stop(self):
-        '''
-            @name 停止防火墙
-            @author wzz <2024/3/19 下午 5:00>
-            @param "data":{"参数名":""} <数据类型> 参数描述
-            @return dict{"status":True/False,"msg":"提示信息"}
-        '''
+        """
+        @name 停止防火墙
+        @author wzz <2024/3/19 下午 5:00>
+        @param "data":{"参数名":""} <数据类型> 参数描述
+        @return dict{"status":True/False,"msg":"提示信息"}
+        """
         try:
             stdout, stderr = public.ExecShell("{} disable".format(self.cmd_str))
             if stderr:
@@ -98,12 +105,12 @@ class Ufw(Base):
 
     # 2024/3/19 下午 4:59 重启防火墙
     def restart(self):
-        '''
-            @name 重启防火墙
-            @author wzz <2024/3/19 下午 4:59>
-            @param "data":{"参数名":""} <数据类型> 参数描述
-            @return dict{"status":True/False,"msg":"提示信息"}
-        '''
+        """
+        @name 重启防火墙
+        @author wzz <2024/3/19 下午 4:59>
+        @param "data":{"参数名":""} <数据类型> 参数描述
+        @return dict{"status":True/False,"msg":"提示信息"}
+        """
         try:
             self.stop()
             self.start()
@@ -112,12 +119,12 @@ class Ufw(Base):
 
     # 2024/3/19 下午 4:59 重载防火墙
     def reload(self):
-        '''
-            @name 重载防火墙
-            @author wzz <2024/3/19 下午 4:59>
-            @param "data":{"参数名":""} <数据类型> 参数描述
-            @return dict{"status":True/False,"msg":"提示信息"}
-        '''
+        """
+        @name 重载防火墙
+        @author wzz <2024/3/19 下午 4:59>
+        @param "data":{"参数名":""} <数据类型> 参数描述
+        @return dict{"status":True/False,"msg":"提示信息"}
+        """
         try:
             subprocess.run([self.cmd_str, "reload"], check=True, stdout=subprocess.PIPE)
         except Exception as e:
@@ -125,15 +132,18 @@ class Ufw(Base):
 
     # 2024/3/19 上午 10:39 列出防火墙中所有端口规则
     def list_port(self):
-        '''
-            @name 列出防火墙中所有端口规则
-            @author wzz <2024/3/19 上午 10:39>
-            @param "data":{"参数名":""} <数据类型> 参数描述
-            @return dict{"status":True/False,"msg":"提示信息"}
-        '''
+        """
+        @name 列出防火墙中所有端口规则
+        @author wzz <2024/3/19 上午 10:39>
+        @param "data":{"参数名":""} <数据类型> 参数描述
+        @return dict{"status":True/False,"msg":"提示信息"}
+        """
         try:
             result = subprocess.run(
-                [self.cmd_str, "status", "verbose"], capture_output=True, text=True, check=True
+                [self.cmd_str, "status", "verbose"],
+                capture_output=True,
+                text=True,
+                check=True,
             )
             port_infos = result.stdout.split("\n")
             datas = []
@@ -145,9 +155,17 @@ class Ufw(Base):
                 if not is_start:
                     continue
                 item_fire = self._load_info(line, "port")
-                if item_fire.get("Port") and item_fire["Port"] != "Anywhere" and "." not in item_fire["Port"]:
+                if (
+                    item_fire.get("Port")
+                    and item_fire["Port"] != "Anywhere"
+                    and "." not in item_fire["Port"]
+                ):
                     item_fire["Port"] = item_fire["Port"].replace(":", "-")
-                    item_fire["Address"] = "all" if item_fire["Address"] == "Anywhere" else item_fire["Address"]
+                    item_fire["Address"] = (
+                        "all"
+                        if item_fire["Address"] == "Anywhere"
+                        else item_fire["Address"]
+                    )
 
                     datas.append(item_fire)
             return datas
@@ -156,15 +174,18 @@ class Ufw(Base):
 
     # 2024/3/19 上午 10:39 列出防火墙中所有input端口规则
     def list_input_port(self):
-        '''
-            @name 列出防火墙中所有input端口规则
-            @author wzz <2024/3/19 上午 10:39>
-            @param "data":{"参数名":""} <数据类型> 参数描述
-            @return dict{"status":True/False,"msg":"提示信息"}
-        '''
+        """
+        @name 列出防火墙中所有input端口规则
+        @author wzz <2024/3/19 上午 10:39>
+        @param "data":{"参数名":""} <数据类型> 参数描述
+        @return dict{"status":True/False,"msg":"提示信息"}
+        """
         try:
             result = subprocess.run(
-                [self.cmd_str, "status", "verbose"], capture_output=True, text=True, check=True
+                [self.cmd_str, "status", "verbose"],
+                capture_output=True,
+                text=True,
+                check=True,
             )
             port_infos = result.stdout.split("\n")
             datas = []
@@ -176,7 +197,11 @@ class Ufw(Base):
                 if not is_start:
                     continue
                 item_fire = self._load_info(line, "port")
-                if item_fire.get("Port") and item_fire["Port"] != "Anywhere" and "." not in item_fire["Port"]:
+                if (
+                    item_fire.get("Port")
+                    and item_fire["Port"] != "Anywhere"
+                    and "." not in item_fire["Port"]
+                ):
                     item_fire["Port"] = item_fire["Port"].replace(":", "-")
 
                     if item_fire["Chain"] == "INPUT":
@@ -187,15 +212,18 @@ class Ufw(Base):
 
     # 2024/3/19 上午 10:39 列出防火墙中所有output端口规则
     def list_output_port(self):
-        '''
-            @name 列出防火墙中所有output端口规则
-            @author wzz <2024/3/19 上午 10:39>
-            @param "data":{"参数名":""} <数据类型> 参数描述
-            @return dict{"status":True/False,"msg":"提示信息"}
-        '''
+        """
+        @name 列出防火墙中所有output端口规则
+        @author wzz <2024/3/19 上午 10:39>
+        @param "data":{"参数名":""} <数据类型> 参数描述
+        @return dict{"status":True/False,"msg":"提示信息"}
+        """
         try:
             result = subprocess.run(
-                [self.cmd_str, "status", "verbose"], capture_output=True, text=True, check=True
+                [self.cmd_str, "status", "verbose"],
+                capture_output=True,
+                text=True,
+                check=True,
             )
             port_infos = result.stdout.split("\n")
             datas = []
@@ -207,7 +235,11 @@ class Ufw(Base):
                 if not is_start:
                     continue
                 item_fire = self._load_info(line, "port")
-                if item_fire.get("Port") and item_fire["Port"] != "Anywhere" and "." not in item_fire["Port"]:
+                if (
+                    item_fire.get("Port")
+                    and item_fire["Port"] != "Anywhere"
+                    and "." not in item_fire["Port"]
+                ):
                     item_fire["Port"] = item_fire["Port"].replace(":", "-")
 
                     if item_fire["Chain"] == "OUTPUT":
@@ -218,15 +250,18 @@ class Ufw(Base):
 
     # 2024/3/19 上午 10:39 列出防火墙中所有的ip规则
     def list_address(self):
-        '''
-            @name 列出防火墙中所有的ip规则
-            @author wzz <2024/3/19 上午 10:39>
-            @param "data":{"参数名":""} <数据类型> 参数描述
-            @return dict{"status":True/False,"msg":"提示信息"}
-        '''
+        """
+        @name 列出防火墙中所有的ip规则
+        @author wzz <2024/3/19 上午 10:39>
+        @param "data":{"参数名":""} <数据类型> 参数描述
+        @return dict{"status":True/False,"msg":"提示信息"}
+        """
         try:
             result = subprocess.run(
-                [self.cmd_str, "status", "verbose"],  capture_output=True, text=True, check=True
+                [self.cmd_str, "status", "verbose"],
+                capture_output=True,
+                text=True,
+                check=True,
             )
             port_infos = result.stdout.split("\n")
             datas = []
@@ -238,7 +273,8 @@ class Ufw(Base):
                 if not is_start:
                     continue
                 item_fire = self._load_info(line, "address")
-                if "Port" in item_fire: continue
+                if "Port" in item_fire:
+                    continue
                 if item_fire.get("Address"):
                     datas.append(item_fire)
             return datas
@@ -247,15 +283,18 @@ class Ufw(Base):
 
     # 2024/3/19 上午 10:39 列出防火墙中所有input的ip规则
     def list_input_address(self):
-        '''
-            @name 列出防火墙中所有input的ip规则
-            @author wzz <2024/3/19 上午 10:39>
-            @param "data":{"参数名":""} <数据类型> 参数描述
-            @return dict{"status":True/False,"msg":"提示信息"}
-        '''
+        """
+        @name 列出防火墙中所有input的ip规则
+        @author wzz <2024/3/19 上午 10:39>
+        @param "data":{"参数名":""} <数据类型> 参数描述
+        @return dict{"status":True/False,"msg":"提示信息"}
+        """
         try:
             result = subprocess.run(
-                [self.cmd_str, "status", "verbose"],  capture_output=True, text=True, check=True
+                [self.cmd_str, "status", "verbose"],
+                capture_output=True,
+                text=True,
+                check=True,
             )
             port_infos = result.stdout.split("\n")
             datas = []
@@ -269,7 +308,8 @@ class Ufw(Base):
                 if " IN" not in line:
                     continue
                 item_fire = self._load_info(line, "address")
-                if "Port" in item_fire: continue
+                if "Port" in item_fire:
+                    continue
                 if item_fire.get("Address"):
                     datas.append(item_fire)
             return datas
@@ -278,15 +318,18 @@ class Ufw(Base):
 
     # 2024/3/19 上午 10:39 列出防火墙中所有output的ip规则
     def list_output_address(self):
-        '''
-            @name 列出防火墙中所有output的ip规则
-            @author wzz <2024/3/19 上午 10:39>
-            @param "data":{"参数名":""} <数据类型> 参数描述
-            @return dict{"status":True/False,"msg":"提示信息"}
-        '''
+        """
+        @name 列出防火墙中所有output的ip规则
+        @author wzz <2024/3/19 上午 10:39>
+        @param "data":{"参数名":""} <数据类型> 参数描述
+        @return dict{"status":True/False,"msg":"提示信息"}
+        """
         try:
             result = subprocess.run(
-                [self.cmd_str, "status", "verbose"],  capture_output=True, text=True, check=True
+                [self.cmd_str, "status", "verbose"],
+                capture_output=True,
+                text=True,
+                check=True,
             )
             port_infos = result.stdout.split("\n")
             datas = []
@@ -300,7 +343,8 @@ class Ufw(Base):
                 if " OUT" not in line:
                     continue
                 item_fire = self._load_info(line, "address")
-                if "Port" in item_fire: continue
+                if "Port" in item_fire:
+                    continue
                 if item_fire.get("Address"):
                     datas.append(item_fire)
             return datas
@@ -309,37 +353,53 @@ class Ufw(Base):
 
     # 2024/3/19 下午 4:59 添加端口规则
     def input_port(self, info, operation):
-        '''
-            @name 添加端口规则
-            @author wzz <2024/3/19 下午 4:59>
-            @param "data":{"参数名":""} <数据类型> 参数描述
-            @return dict{"status":True/False,"msg":"提示信息"}
-        '''
+        """
+        @name 添加端口规则
+        @author wzz <2024/3/19 下午 4:59>
+        @param "data":{"参数名":""} <数据类型> 参数描述
+        @return dict{"status":True/False,"msg":"提示信息"}
+        """
         try:
             if info["Strategy"] == "accept":
                 info["Strategy"] = "allow"
             elif info["Strategy"] == "drop":
                 info["Strategy"] = "deny"
 
-            if info["Port"].find('-') != -1:
-                info["Port"] = info["Port"].replace('-', ':')
+            if info["Port"].find("-") != -1:
+                info["Port"] = info["Port"].replace("-", ":")
 
             if operation == "add":
-                if info['Protocol'].find("/") != -1:
-                    rich_rule = self.cmd_str + " insert 1 {} {}".format(info['Strategy'], info['Port'])
+                if info["Protocol"].find("/") != -1:
+                    rich_rule = self.cmd_str + " insert 1 {} {}".format(
+                        info["Strategy"], info["Port"]
+                    )
                     stdout, stderr = public.ExecShell(rich_rule)
-                elif info['Protocol'] == "tcp/udp":
-                    stdout, stderr = public.ExecShell(self.cmd_str + " allow " + info['Port'])
+                elif info["Protocol"] == "tcp/udp":
+                    stdout, stderr = public.ExecShell(
+                        self.cmd_str + " allow " + info["Port"]
+                    )
                 else:
-                    stdout, stderr = public.ExecShell(self.cmd_str + " allow " + info['Port'] + "/" + info['Protocol'])
+                    stdout, stderr = public.ExecShell(
+                        self.cmd_str + " allow " + info["Port"] + "/" + info["Protocol"]
+                    )
             else:
-                if info['Protocol'].find("/") != -1:
-                    rich_rule = "{} delete {} {}".format(self.cmd_str, info['Strategy'], info['Port'])
+                if info["Protocol"].find("/") != -1:
+                    rich_rule = "{} delete {} {}".format(
+                        self.cmd_str, info["Strategy"], info["Port"]
+                    )
                     stdout, stderr = public.ExecShell(rich_rule)
-                elif info['Protocol'] == "tcp/udp":
-                    stdout, stderr = public.ExecShell(self.cmd_str + " delete allow " + info['Port'])
+                elif info["Protocol"] == "tcp/udp":
+                    stdout, stderr = public.ExecShell(
+                        self.cmd_str + " delete allow " + info["Port"]
+                    )
                 else:
-                    stdout, stderr = public.ExecShell(self.cmd_str + " delete allow " + info['Port'] + "/" + info['Protocol'])
+                    stdout, stderr = public.ExecShell(
+                        self.cmd_str
+                        + " delete allow "
+                        + info["Port"]
+                        + "/"
+                        + info["Protocol"]
+                    )
 
             if stderr:
                 if "setlocale" in stderr:
@@ -355,12 +415,12 @@ class Ufw(Base):
 
     # 2024/3/24 下午 11:28 设置output端口策略
     def output_port(self, info, operation):
-        '''
-            @name 设置output端口策略
-            @param info: 端口号
-            @param operation: 操作
-            @return None
-        '''
+        """
+        @name 设置output端口策略
+        @param info: 端口号
+        @param operation: 操作
+        @return None
+        """
         try:
             if info["Strategy"] == "accept":
                 info["Strategy"] = "allow"
@@ -368,15 +428,23 @@ class Ufw(Base):
                 info["Strategy"] = "deny"
 
             if operation == "add":
-                if info['Protocol'].find('/') != -1:
-                    cmd = "{} {} out {}".format(self.cmd_str, info['Strategy'], info['Port'])
+                if info["Protocol"].find("/") != -1:
+                    cmd = "{} {} out {}".format(
+                        self.cmd_str, info["Strategy"], info["Port"]
+                    )
                 else:
-                    cmd = "{} {} out {}/{}".format(self.cmd_str, info['Strategy'], info['Port'], info['Protocol'])
+                    cmd = "{} {} out {}/{}".format(
+                        self.cmd_str, info["Strategy"], info["Port"], info["Protocol"]
+                    )
             else:
-                if info['Protocol'].find('/') != -1:
-                    cmd = "{} delete {} out {}".format(self.cmd_str, info['Strategy'], info['Port'])
+                if info["Protocol"].find("/") != -1:
+                    cmd = "{} delete {} out {}".format(
+                        self.cmd_str, info["Strategy"], info["Port"]
+                    )
                 else:
-                    cmd = "{} delete {} out {}/{}".format(self.cmd_str, info['Strategy'], info['Port'], info['Protocol'])
+                    cmd = "{} delete {} out {}/{}".format(
+                        self.cmd_str, info["Strategy"], info["Port"], info["Protocol"]
+                    )
             stdout, stderr = public.ExecShell(cmd)
             if stderr:
                 if "setlocale" in stderr:
@@ -390,12 +458,12 @@ class Ufw(Base):
 
     # 2024/3/19 下午 4:58 复杂一些的规则管理
     def rich_rules(self, info, operation):
-        '''
-            @name 复杂一些的规则管理
-            @author wzz <2024/3/19 下午 4:58>
-            @param "data":{"参数名":""} <数据类型> 参数描述
-            @return dict{"status":True/False,"msg":"提示信息"}
-        '''
+        """
+        @name 复杂一些的规则管理
+        @author wzz <2024/3/19 下午 4:58>
+        @param "data":{"参数名":""} <数据类型> 参数描述
+        @return dict{"status":True/False,"msg":"提示信息"}
+        """
         try:
             if info["Strategy"] == "accept":
                 info["Strategy"] = "allow"
@@ -405,20 +473,26 @@ class Ufw(Base):
                 return self._result(False, "未知的策略参数:{}".format(info["Strategy"]))
 
             rule_str = "{} insert 1 {} ".format(self.cmd_str, info["Strategy"])
-            if "Address" in info and public.is_ipv6(info['Address']):
+            if "Address" in info and public.is_ipv6(info["Address"]):
                 rule_str = "{} {} ".format(self.cmd_str, info["Strategy"])
             if operation == "remove":
                 rule_str = "{} delete {} ".format(self.cmd_str, info["Strategy"])
 
-            if "Address" in info and info['Address'] != "all":
-                rule_str += "from {} ".format(info['Address'])
-            if len(info.get("Protocol", "")) != 0 and "/" not in info['Protocol']:
-                rule_str += "proto {} ".format(info['Protocol'])
+            if "Address" in info and info["Address"] != "all":
+                rule_str += "from {} ".format(info["Address"])
+            if len(info.get("Protocol", "")) != 0 and "/" not in info["Protocol"]:
+                rule_str += "proto {} ".format(info["Protocol"])
             if len(info.get("Port", "")) != 0:
-                rule_str += "to any port {} ".format(info['Port'])
+                rule_str += "to any port {} ".format(info["Port"])
             stdout, stderr = public.ExecShell(rule_str)
             if stderr:
-                if "Rule added" in stdout or "Rule deleted" in stdout or "Rule updated" in stdout or "Rule inserted" in stdout or "Skipping adding existing rule" in stdout:
+                if (
+                    "Rule added" in stdout
+                    or "Rule deleted" in stdout
+                    or "Rule updated" in stdout
+                    or "Rule inserted" in stdout
+                    or "Skipping adding existing rule" in stdout
+                ):
                     return self._result(True, "设置规则成功")
                 if "setlocale" in stderr:
                     return self._result(True, "设置规则成功")
@@ -431,12 +505,12 @@ class Ufw(Base):
 
     # 2024/3/24 下午 11:29 设置output rich_rules
     def output_rich_rules(self, info, operation):
-        '''
-            @name 设置output rich_rules
-            @param info: 规则
-            @param operation: 操作
-            @return None
-        '''
+        """
+        @name 设置output rich_rules
+        @param info: 规则
+        @param operation: 操作
+        @return None
+        """
         try:
             if info["Strategy"] == "accept":
                 info["Strategy"] = "allow"
@@ -446,20 +520,26 @@ class Ufw(Base):
                 return self._result(False, "未知的策略: {}".format(info["Strategy"]))
 
             rule_str = "{} insert 1 {} ".format(self.cmd_str, info["Strategy"])
-            if "Address" in info and public.is_ipv6(info['Address']):
+            if "Address" in info and public.is_ipv6(info["Address"]):
                 rule_str = "{} {} ".format(self.cmd_str, info["Strategy"])
             if operation == "remove":
                 rule_str = "{} delete {} ".format(self.cmd_str, info["Strategy"])
 
             if len(info.get("Address", "")) != 0:
-                rule_str += "out from {} ".format(info['Address'])
+                rule_str += "out from {} ".format(info["Address"])
             if len(info.get("Protocol", "")) != 0:
-                rule_str += "proto {} ".format(info['Protocol'])
+                rule_str += "proto {} ".format(info["Protocol"])
             if len(info.get("Port", "")) != 0:
-                rule_str += "to any port {} ".format(info['Port'])
+                rule_str += "to any port {} ".format(info["Port"])
             stdout, stderr = public.ExecShell(rule_str)
             if stderr:
-                if "Rule added" in stdout or "Rule deleted" in stdout or "Rule updated" in stdout or "Rule inserted" in stdout or "Skipping adding existing rule" in stdout:
+                if (
+                    "Rule added" in stdout
+                    or "Rule deleted" in stdout
+                    or "Rule updated" in stdout
+                    or "Rule inserted" in stdout
+                    or "Skipping adding existing rule" in stdout
+                ):
                     return self._result(True, "设置output规则成功")
                 if "setlocale" in stderr:
                     return self._result(True, "设置规则成功")
@@ -472,12 +552,12 @@ class Ufw(Base):
 
     # 2024/3/19 下午 5:01 解析防火墙规则信息，返回字典格式数据，用于添加或删除防火墙规则
     def _load_info(self, line, fire_type):
-        '''
-            @name 解析防火墙规则信息，返回字典格式数据，用于添加或删除防火墙规则
-            @author wzz <2024/3/19 上午 10:38>
-            @param "data":{"参数名":""} <数据类型> 参数描述
-            @return dict{"status":True/False,"msg":"提示信息"}
-        '''
+        """
+        @name 解析防火墙规则信息，返回字典格式数据，用于添加或删除防火墙规则
+        @author wzz <2024/3/19 上午 10:38>
+        @param "data":{"参数名":""} <数据类型> 参数描述
+        @return dict{"status":True/False,"msg":"提示信息"}
+        """
         fields = line.split()
         item_info = {}
         if "LIMIT" in line or "ALLOW FWD" in line:
@@ -546,29 +626,31 @@ class Ufw(Base):
 
     # 2024/3/25 下午 2:29 设置端口转发
     def port_forward(self, info, operation):
-        '''
-            @name 设置端口转发
-            @param port: 端口号
-            @param ip: ip地址
-            @param operation: 操作
-            @return None
-        '''
+        """
+        @name 设置端口转发
+        @param port: 端口号
+        @param ip: ip地址
+        @param operation: 操作
+        @return None
+        """
         from firewallModel.app.iptables import Iptables
+
         self.firewall = Iptables()
         return self.firewall.port_forward(info, operation)
 
     # 2024/3/25 下午 2:34 获取所有端口转发列表
     def list_port_forward(self):
-        '''
-            @name 获取所有端口转发列表
-            @return None
-        '''
+        """
+        @name 获取所有端口转发列表
+        @return None
+        """
         from firewallModel.app.iptables import Iptables
+
         self.firewall = Iptables()
         return self.firewall.get_nat_prerouting_rules()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     args = sys.argv
     firewall = Ufw()
     ufw_status = firewall.status()
@@ -593,8 +675,12 @@ if __name__ == '__main__':
         print("8. List All IP Addresses: list_address")
         print("9. Add Port: add_port <port> <protocol>")
         print("10. Remove Port: remove_port <port> <protocol>")
-        print("11. Add Port Rule: add_port_rule <address> <port> <protocol> <strategy> <operation>")
-        print("12. Remove Port Rule: remove_port_rule <address> <port> <protocol> <strategy> <operation>")
+        print(
+            "11. Add Port Rule: add_port_rule <address> <port> <protocol> <strategy> <operation>"
+        )
+        print(
+            "12. Remove Port Rule: remove_port_rule <address> <port> <protocol> <strategy> <operation>"
+        )
         print("13. Add IP Rule: add_ip_rule <address> <strategy> <operation>")
         print("14. Remove IP Rule: remove_ip_rule <address> <strategy> <operation>")
         print()
@@ -666,7 +752,14 @@ if __name__ == '__main__':
         strategy = args[5]
         operation = args[6]
         error = firewall.rich_rules(
-            {"Address": address, "Port": port, "Protocol": protocol, "Strategy": strategy}, operation)
+            {
+                "Address": address,
+                "Port": port,
+                "Protocol": protocol,
+                "Strategy": strategy,
+            },
+            operation,
+        )
         if error:
             print(f"Error: {error}")
         else:
@@ -678,7 +771,14 @@ if __name__ == '__main__':
         strategy = args[5]
         operation = args[6]
         error = firewall.rich_rules(
-            {"Address": address, "Port": port, "Protocol": protocol, "Strategy": strategy}, operation)
+            {
+                "Address": address,
+                "Port": port,
+                "Protocol": protocol,
+                "Strategy": strategy,
+            },
+            operation,
+        )
         if error:
             print(f"Error: {error}")
         else:
@@ -688,7 +788,8 @@ if __name__ == '__main__':
         strategy = args[3]
         operation = args[4]
         error = firewall.rich_rules(
-            {"Address": address, "Strategy": strategy}, operation)
+            {"Address": address, "Strategy": strategy}, operation
+        )
         if error:
             print(f"Error: {error}")
         else:
@@ -698,7 +799,8 @@ if __name__ == '__main__':
         strategy = args[3]
         operation = args[4]
         error = firewall.rich_rules(
-            {"Address": address, "Strategy": strategy}, operation)
+            {"Address": address, "Strategy": strategy}, operation
+        )
         if error:
             print(f"Error: {error}")
         else:
@@ -718,7 +820,14 @@ if __name__ == '__main__':
         strategy = args[5]
         operation = args[6]
         error = firewall.output_rich_rules(
-            {"Address": address, "Port": port, "Protocol": protocol, "Strategy": strategy}, operation)
+            {
+                "Address": address,
+                "Port": port,
+                "Protocol": protocol,
+                "Strategy": strategy,
+            },
+            operation,
+        )
         if error:
             print(f"Error: {error}")
         else:
@@ -726,4 +835,3 @@ if __name__ == '__main__':
     else:
         print("Invalid args")
         sys.exit(1)
-

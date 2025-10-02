@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import unicodedata
+
 try:
     from itertools import izip_longest
 except ImportError:
@@ -12,8 +13,15 @@ except ImportError:
     from urllib import quote, urlencode
 
 
-def build_uri(secret, name, initial_count=None, issuer_name=None,
-              algorithm=None, digits=None, period=None):
+def build_uri(
+    secret,
+    name,
+    initial_count=None,
+    issuer_name=None,
+    algorithm=None,
+    digits=None,
+    period=None,
+):
     """
     Returns the provisioning URI for the OTP; works for either TOTP or HOTP.
 
@@ -46,31 +54,31 @@ def build_uri(secret, name, initial_count=None, issuer_name=None,
     :rtype: str
     """
     # initial_count may be 0 as a valid param
-    is_initial_count_present = (initial_count is not None)
+    is_initial_count_present = initial_count is not None
 
     # Handling values different from defaults
-    is_algorithm_set = (algorithm is not None and algorithm != 'sha1')
-    is_digits_set = (digits is not None and digits != 6)
-    is_period_set = (period is not None and period != 30)
+    is_algorithm_set = algorithm is not None and algorithm != "sha1"
+    is_digits_set = digits is not None and digits != 6
+    is_period_set = period is not None and period != 30
 
-    otp_type = 'hotp' if is_initial_count_present else 'totp'
-    base_uri = 'otpauth://{0}/{1}?{2}'
+    otp_type = "hotp" if is_initial_count_present else "totp"
+    base_uri = "otpauth://{0}/{1}?{2}"
 
-    url_args = {'secret': secret}
+    url_args = {"secret": secret}
 
     label = quote(name)
     if issuer_name is not None:
-        label = quote(issuer_name) + ':' + label
-        url_args['issuer'] = issuer_name
+        label = quote(issuer_name) + ":" + label
+        url_args["issuer"] = issuer_name
 
     if is_initial_count_present:
-        url_args['counter'] = initial_count
+        url_args["counter"] = initial_count
     if is_algorithm_set:
-        url_args['algorithm'] = algorithm.upper()
+        url_args["algorithm"] = algorithm.upper()
     if is_digits_set:
-        url_args['digits'] = digits
+        url_args["digits"] = digits
     if is_period_set:
-        url_args['period'] = period
+        url_args["period"] = period
 
     uri = base_uri.format(otp_type, label, urlencode(url_args).replace("+", "%20"))
     return uri
@@ -104,6 +112,6 @@ def strings_equal(s1, s2):
     still reveal to a timing attack whether the strings are the same
     length.
     """
-    s1 = unicodedata.normalize('NFKC', s1)
-    s2 = unicodedata.normalize('NFKC', s2)
+    s1 = unicodedata.normalize("NFKC", s1)
+    s2 = unicodedata.normalize("NFKC", s2)
     return compare_digest(s1.encode("utf-8"), s2.encode("utf-8"))

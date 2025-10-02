@@ -2,8 +2,7 @@ import logging
 
 
 class BaseDns(object):
-    """
-    """
+    """ """
 
     def __init__(self, LOG_LEVEL="INFO"):
         self.LOG_LEVEL = LOG_LEVEL

@@ -12,8 +12,8 @@
 import os, sys, time, json, re
 import traceback
 
-if '/www/server/panel/class/' not in sys.path:
-    sys.path.insert(0, '/www/server/panel/class/')
+if "/www/server/panel/class/" not in sys.path:
+    sys.path.insert(0, "/www/server/panel/class/")
 import public, db
 import panelSite
 from datalistModel.base import dataBase
@@ -36,16 +36,37 @@ class main(dataBase):
             data_list = get.data_list
             # 获取前端需要的表头
             from config import config
-            table_header = config().get_table_header(public.to_dict_obj({'table_name': 'ftpTableColumn'}))
-            if table_header['ftpTableColumn'] == '':
-                table_header = ['用户名', '密码', '状态', '复制快速连接信息', '根目录', '设置密码有效期', '容量', '备注', '操作']
+
+            table_header = config().get_table_header(
+                public.to_dict_obj({"table_name": "ftpTableColumn"})
+            )
+            if table_header["ftpTableColumn"] == "":
+                table_header = [
+                    "用户名",
+                    "密码",
+                    "状态",
+                    "复制快速连接信息",
+                    "根目录",
+                    "设置密码有效期",
+                    "容量",
+                    "备注",
+                    "操作",
+                ]
             else:
-                table_header["ftpTableColumn"] = json.loads(table_header["ftpTableColumn"])
-                table_header = [i['title'] if 'title' in i else i['label'] for i in table_header["ftpTableColumn"] if
-                                (i.get('value', False) == True or i.get('isCustom', True) == True) and ('label' in i.keys() or 'title' in i.keys())]
+                table_header["ftpTableColumn"] = json.loads(
+                    table_header["ftpTableColumn"]
+                )
+                table_header = [
+                    i["title"] if "title" in i else i["label"]
+                    for i in table_header["ftpTableColumn"]
+                    if (
+                        i.get("value", False) == True or i.get("isCustom", True) == True
+                    )
+                    and ("label" in i.keys() or "title" in i.keys())
+                ]
             # 按需加载
-            custom_list = {"容量": "quota", '设置密码有效期': 'end_time'}
-            custom_conf = {'quota': {}, "end_time": {}}
+            custom_list = {"容量": "quota", "设置密码有效期": "end_time"}
+            custom_conf = {"quota": {}, "end_time": {}}
             paths = []
             ids = []
             default_quota = {
@@ -58,24 +79,27 @@ class main(dataBase):
                 "quota_storage": {
                     "size": 0,
                     "used": 0,
-                }}
-            
+                },
+            }
+
             # 用户权限处理
             user_Data = self.get_user_power()
-            if user_Data != 'all':
-                data_list = [i for i in data_list if str(i['id']) in user_Data.get('ftps', [])]
+            if user_Data != "all":
+                data_list = [
+                    i for i in data_list if str(i["id"]) in user_Data.get("ftps", [])
+                ]
             # 用户权限处理结束
 
-            [paths.append(val['path']) or ids.append(val['id']) for val in data_list]
+            [paths.append(val["path"]) or ids.append(val["id"]) for val in data_list]
             for i, j in custom_list.items():
                 if i in table_header:
-                    if j == 'quota':
+                    if j == "quota":
                         custom_conf[j] = self.get_all_quota(paths)
-                    if j == 'end_time':
+                    if j == "end_time":
                         custom_conf[j] = self.get_all_ftp_end_time(ids)
             for i in data_list:
-                i['quota'] = custom_conf['quota'].get(i['path'], default_quota)
-                i['end_time'] = custom_conf['end_time'].get(i['id'], '0')
+                i["quota"] = custom_conf["quota"].get(i["path"], default_quota)
+                i["end_time"] = custom_conf["end_time"].get(i["id"], "0")
             return data_list
         except:
             pass
@@ -86,7 +110,7 @@ class main(dataBase):
 
     def _get_site_args(self, get):
         try:
-            if not 'type' in get:
+            if not "type" in get:
                 get.type = 0
                 get.type = int(get.p)
         except:
@@ -96,8 +120,8 @@ class main(dataBase):
         #     get.project_type = 'PHP'
         # get.search_key = get.project_type.lower()
         get.search_key = get.table.lower()
-        if hasattr(get, 'search'):                
-            public.set_search_history(get.table,get.search_key,get.search)
+        if hasattr(get, "search"):
+            public.set_search_history(get.table, get.search_key, get.search)
         return get
 
     """
@@ -106,17 +130,16 @@ class main(dataBase):
 
     def get_search_where(self, get):
 
-        where = ''
+        where = ""
         params = get.search
 
-        conditions = ''
-        if '_' in get.search:
+        conditions = ""
+        if "_" in get.search:
             conditions = " escape '/'"
         if params:
             where = "name LIKE ? OR ps LIKE ? {}".format(conditions)
-            params = ('%' + params + '%', '%' + params + '%')
+            params = ("%" + params + "%", "%" + params + "%")
         return where, params
-
 
     """
     @获取ftp查询条件，追加and查询条件
@@ -127,20 +150,19 @@ class main(dataBase):
         get = self._get_site_args(get)
         if "type_id" in get and get.type_id:
             type_id = get.get("type_id")
-            wheres.append("type_id = {}".format(type_id))         
+            wheres.append("type_id = {}".format(type_id))
         return wheres
 
     # 获取fto到期时间
     def get_all_ftp_end_time(self, ids):
-        config_path = '/www/server/panel/data/ftp_push_config.json'
+        config_path = "/www/server/panel/data/ftp_push_config.json"
         if not os.path.exists(config_path):
             return {i: "0" for i in ids}
         config = json.loads(public.readFile(config_path))
         content = {}
         for _, i in config.items():
-            if _ == 'channel':
+            if _ == "channel":
                 continue
             for j in i:
-                content[j['id']] = j['end_time']
-        return {i: content[i] if i in content.keys() else '0' for i in ids}
-
+                content[j["id"]] = j["end_time"]
+        return {i: content[i] if i in content.keys() else "0" for i in ids}

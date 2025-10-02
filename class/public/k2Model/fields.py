@@ -53,6 +53,7 @@ def marks_dirty(func: Callable) -> Callable:
 
 class TrackedList(list):
     """override list, track fields dirty"""
+
     __slots__ = ("_tracker", "_field_name", "_batch")
 
     def __init__(self, *args, tracker=None, field_name=None, **kwargs):
@@ -96,6 +97,7 @@ class TrackedList(list):
 
 class TrackedDict(dict):
     """override dict, track fields dirty"""
+
     __slots__ = ("_tracker", "_field_name", "_batch")
 
     def __init__(self, *args, tracker=None, field_name=None, **kwargs):
@@ -149,6 +151,7 @@ class aaField(object):
     compare     比较
     transform    转换工具
     """
+
     default: Any = None
     ps: str = None
     null: bool = False
@@ -169,11 +172,14 @@ class aaField(object):
         try:
             return instance.__dict__[self.field_name]
         except KeyError:
-            raise AttributeError(f'{self.field_name} is not set')
+            raise AttributeError(f"{self.field_name} is not set")
 
     def __set__(self, instance: M, value: Any):
         # base type field, check new set value
-        if self.field_name not in instance.__dict__ or instance.__dict__[self.field_name] != value:
+        if (
+            self.field_name not in instance.__dict__
+            or instance.__dict__[self.field_name] != value
+        ):
             instance.__dict__[self.field_name] = value
             if hasattr(instance, "_mark_dirty"):
                 instance._mark_dirty(self.field_name)
@@ -186,7 +192,9 @@ class aaField(object):
 
     def _raise_error(self, raise_exp: bool = True) -> bool:
         if raise_exp is True:
-            err = f"'{self.field_name}' TypeError! It should be '{self.py_type.__name__}'"
+            err = (
+                f"'{self.field_name}' TypeError! It should be '{self.py_type.__name__}'"
+            )
             raise HintException(err)
         else:
             return False
@@ -201,7 +209,11 @@ class aaField(object):
     def default_val_sql(self) -> str:
         default_v = self.get_default_val(check=True)
         default_v = default_v if self.serialized is None else self.serialized(default_v)
-        return f"DEFAULT '{default_v}'" if isinstance(default_v, str) else f"DEFAULT {default_v}"
+        return (
+            f"DEFAULT '{default_v}'"
+            if isinstance(default_v, str)
+            else f"DEFAULT {default_v}"
+        )
 
     @property
     def py_types(self) -> List[type]:
@@ -215,7 +227,11 @@ class aaField(object):
         if check:
             self.check_org_type(raise_exp=check)
         if self.default is not None:
-            return self.default if not isinstance(self.default, Callable) else self.default()
+            return (
+                self.default
+                if not isinstance(self.default, Callable)
+                else self.default()
+            )
         else:
             if self.null is True:
                 return None
@@ -250,6 +266,7 @@ class StrField(aaField):
     field__startswith="a"
     field__endswith="a"
     """
+
     default: str | None = ""
     field_type: str = "TEXT"
     py_type: type = str
@@ -278,6 +295,7 @@ class IntField(aaField):
     field__in=[1, 2, 3]
     field__not_in=[1, 2, 3]
     """
+
     default: int | None | Any = 0
     field_type: str = "INTEGER"
     py_type: type = int
@@ -299,6 +317,7 @@ class FloatField(aaField):
     """
     Float field
     """
+
     default: float | None = 0.0
     field_type: str = "REAL"
     py_type: type = float
@@ -320,10 +339,10 @@ class BlobField(aaField):
     """
     Blob field
     """
-    default: bytes | None = b''
+
+    default: bytes | None = b""
     field_type: str = "BLOB"
     py_type: type = bytes
-
 
 
 @dataclass
@@ -356,9 +375,7 @@ class ListField(aaField):
         "contains",
         "any_contains",
     )
-    update: tuple[str] = (
-        "append",
-    )
+    update: tuple[str] = ("append",)
 
 
 @dataclass
@@ -398,9 +415,7 @@ class DictField(aaField):
         "startswith",
         "endswith",
     )
-    update: tuple[str] = (
-        "update",
-    )
+    update: tuple[str] = ("update",)
 
 
 @dataclass
@@ -430,10 +445,14 @@ class DateTimeStrField(aaField):
             if forward is True:
                 if isinstance(value, str):  # save will be str
                     return int(
-                        datetime.strptime(value, DateTimeStrField.format).timestamp() * DateTimeStrField.accuracy)
+                        datetime.strptime(value, DateTimeStrField.format).timestamp()
+                        * DateTimeStrField.accuracy
+                    )
             else:
                 if isinstance(value, int):
-                    return datetime.fromtimestamp(value / DateTimeStrField.accuracy).strftime(DateTimeStrField.format)
+                    return datetime.fromtimestamp(
+                        value / DateTimeStrField.accuracy
+                    ).strftime(DateTimeStrField.format)
             return value
         except Exception as e:
             print("type error %s" % e)
@@ -457,22 +476,26 @@ class DateTimeStrField(aaField):
 
     def __post_init__(self):
         if self.auto_now_add is True and self.auto_now is True:
-            raise TypeError("auto_now_add and auto_now can not be used at the same time")
+            raise TypeError(
+                "auto_now_add and auto_now can not be used at the same time"
+            )
         if self.auto_now is True:
             self.default = self._current_timestamp
         elif self.auto_now_add is True:
             self.default = self._current_timestamp
 
 
-COMPARE = tuple(set(
-    itertools.chain(
-        *[
-            StrField.compare,
-            IntField.compare,
-            FloatField.compare,
-            ListField.compare,
-            DictField.compare,
-            DateTimeStrField.compare,
-        ]
+COMPARE = tuple(
+    set(
+        itertools.chain(
+            *[
+                StrField.compare,
+                IntField.compare,
+                FloatField.compare,
+                ListField.compare,
+                DictField.compare,
+                DateTimeStrField.compare,
+            ]
+        )
     )
-))
+)

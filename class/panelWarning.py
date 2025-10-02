@@ -11,21 +11,21 @@ import os, sys, json, time, public, datetime
 
 
 class panelWarning:
-    __path = '/www/server/panel/data/warning'
-    __ignore = __path + '/ignore'
-    __result = __path + '/result'
-    __risk = __path + '/risk'
-    _vuln_ignore = __path + '/ignore.json'
-    _vuln_result = __path + '/result.json'
-    __repair_count = __path + '/repair_count.json'
-    __vul_list = __path + '/high_risk_vul-9.json'  # 空i那么；皮的泡沫隔离
-    __report = '/www/server/panel/data/warning_report'
+    __path = "/www/server/panel/data/warning"
+    __ignore = __path + "/ignore"
+    __result = __path + "/result"
+    __risk = __path + "/risk"
+    _vuln_ignore = __path + "/ignore.json"
+    _vuln_result = __path + "/result.json"
+    __repair_count = __path + "/repair_count.json"
+    __vul_list = __path + "/high_risk_vul-9.json"  # 空i那么；皮的泡沫隔离
+    __report = "/www/server/panel/data/warning_report"
     vul_num = 0
     discov_count = 0  # 扫描中发现的漏洞数
     score = 100  # 扫描中动态分数
-    yum_time = __path + '/yum_time.pl'
-    new_vul_list = __path + '/vul_centos7.json'
-    product_version = __path + '/product_version.json'
+    yum_time = __path + "/yum_time.pl"
+    new_vul_list = __path + "/vul_centos7.json"
+    product_version = __path + "/product_version.json"
 
     def __init__(self):
         if not os.path.exists(self.__ignore):
@@ -52,9 +52,9 @@ class panelWarning:
     def _get_list(self):
         # 最终输出结果
         self.data = {
-            'security': [],
-            'risk': [],
-            'ignore': [],
+            "security": [],
+            "risk": [],
+            "ignore": [],
             "is_autofix": [],
         }
         # 获取支持一键修复的列表
@@ -64,14 +64,21 @@ class panelWarning:
             is_autofix = []
         # 临时扫描结果，中断的时候返回
         self.tmp_data = {
-            'security': [],
-            'risk': [],
-            'ignore': [],
-            'is_autofix': is_autofix,
-            'check_time': datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
+            "security": [],
+            "risk": [],
+            "ignore": [],
+            "is_autofix": is_autofix,
+            "check_time": datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S"),
         }
-        context = {"status": "Ready to repair", "percentage": 0, "count": 0, "score": 100}
-        public.WriteFile(self.__path + '/bar.txt', json.dumps(context))  # 扫描进度条归零
+        context = {
+            "status": "Ready to repair",
+            "percentage": 0,
+            "count": 0,
+            "score": 100,
+        }
+        public.WriteFile(
+            self.__path + "/bar.txt", json.dumps(context)
+        )  # 扫描进度条归零
         bar_num = 0  # 进度条初始化
         bar_limit = 0  # 进度条限制
         self.discov_count = 0  # 扫描中发现漏洞数量初始化
@@ -82,79 +89,105 @@ class panelWarning:
         if not self.download_new_vulns():
             sys_version = None
         # centos_7走新版漏洞扫描
-        if sys_version == 'centos_7' or sys_version == 'centos_8' or sys_version == 'centos_8_stream':
+        if (
+            sys_version == "centos_7"
+            or sys_version == "centos_8"
+            or sys_version == "centos_8_stream"
+        ):
             self.new_system_scan()
         # ubuntu走新版2接口
-        elif sys_version == 'ubuntu_20.04' or sys_version == 'ubuntu_22.04' or sys_version == 'ubuntu_18.04' or sys_version == 'debian_12' or sys_version == 'debian_11' or sys_version == 'debian_10':
+        elif (
+            sys_version == "ubuntu_20.04"
+            or sys_version == "ubuntu_22.04"
+            or sys_version == "ubuntu_18.04"
+            or sys_version == "debian_12"
+            or sys_version == "debian_11"
+            or sys_version == "debian_10"
+        ):
             self.new_system_scan2()
         # 旧版本漏洞检测
         # else:
         #     self.system_scan()  # 旧版本系统漏洞扫描
 
         # 加载安全风险模块
-        p = public.get_modules('class/safe_warning')
+        p = public.get_modules("class/safe_warning")
         for m_name in p.__dict__.keys():
-            ignore_file = self.__ignore + '/' + m_name + '.pl'
+            ignore_file = self.__ignore + "/" + m_name + ".pl"
             # 忽略的检查项
-            if p[m_name]._level == 0: continue
+            if p[m_name]._level == 0:
+                continue
 
             m_info = {
-                'title': p[m_name]._title,
-                'm_name': m_name,
-                'ps': p[m_name]._ps,
-                'version': p[m_name]._version,
-                'level': p[m_name]._level,
-                'ignore': p[m_name]._ignore,
-                'date': p[m_name]._date,
-                'tips': p[m_name]._tips,
-                'help': p[m_name]._help
+                "title": p[m_name]._title,
+                "m_name": m_name,
+                "ps": p[m_name]._ps,
+                "version": p[m_name]._version,
+                "level": p[m_name]._level,
+                "ignore": p[m_name]._ignore,
+                "date": p[m_name]._date,
+                "tips": p[m_name]._tips,
+                "help": p[m_name]._help,
             }
             try:
-                m_info['remind'] = p[m_name]._remind
+                m_info["remind"] = p[m_name]._remind
             except:
                 pass
-            result_file = self.__result + '/' + m_name + '.pl'
+            result_file = self.__result + "/" + m_name + ".pl"
 
             try:
                 s_time = time.time()
-                m_info['status'], m_info['msg'] = p[m_name].check_run()
-                m_info['taking'] = round(time.time() - s_time, 6)
-                m_info['check_time'] = int(time.time())
-                public.writeFile(result_file, json.dumps(
-                    [m_info['status'], m_info['msg'], m_info['check_time'], m_info['taking']], ))
+                m_info["status"], m_info["msg"] = p[m_name].check_run()
+                m_info["taking"] = round(time.time() - s_time, 6)
+                m_info["check_time"] = int(time.time())
+                public.writeFile(
+                    result_file,
+                    json.dumps(
+                        [
+                            m_info["status"],
+                            m_info["msg"],
+                            m_info["check_time"],
+                            m_info["taking"],
+                        ],
+                    ),
+                )
             except:
                 continue
 
-            m_info['ignore'] = os.path.exists(ignore_file)
-            if m_info['ignore']:
-                self.data['ignore'].append(m_info)
-                self.tmp_data['ignore'].append(m_info)  # 临时扫描结果
+            m_info["ignore"] = os.path.exists(ignore_file)
+            if m_info["ignore"]:
+                self.data["ignore"].append(m_info)
+                self.tmp_data["ignore"].append(m_info)  # 临时扫描结果
             else:
-                if m_info['status']:
-                    self.data['security'].append(m_info)
-                    self.tmp_data['security'].append(m_info)  # 临时扫描结果
+                if m_info["status"]:
+                    self.data["security"].append(m_info)
+                    self.tmp_data["security"].append(m_info)  # 临时扫描结果
                 else:
-                    risk_file = self.__risk + '/' + m_name + '.pl'
+                    risk_file = self.__risk + "/" + m_name + ".pl"
                     public.writeFile(risk_file, json.dumps(m_info))
-                    self.data['risk'].append(m_info)
-                    self.tmp_data['risk'].append(m_info)  # 临时扫描结果
+                    self.data["risk"].append(m_info)
+                    self.tmp_data["risk"].append(m_info)  # 临时扫描结果
                     self.discov_count += 1  # 扫描中发现风险数
-                    self.score -= m_info['level']
+                    self.score -= m_info["level"]
                     if self.score < 0:
                         self.score = 0
 
-            bar = ("%.2f" % (float(bar_num) / float(len(p.__dict__.keys())) * 50 + 50))
+            bar = "%.2f" % (float(bar_num) / float(len(p.__dict__.keys())) * 50 + 50)
             #  通过进度条限制，防止写文件频繁占用高
             if int(float(bar)) >= bar_limit:
-                context = {"status": "{}".format(m_info['title']), "percentage": int(float(bar)), "count": self.discov_count, "score": self.score}
-                public.WriteFile(self.__path + '/bar.txt', json.dumps(context))
+                context = {
+                    "status": "{}".format(m_info["title"]),
+                    "percentage": int(float(bar)),
+                    "count": self.discov_count,
+                    "score": self.score,
+                }
+                public.WriteFile(self.__path + "/bar.txt", json.dumps(context))
                 self.dump_tmp_result()  # 发现漏洞，先保存一份临时的
                 bar_limit += 10
             bar_num += 1
 
         # 新版漏洞检测无需读文件
         # is_autofix被包含进tmp_data{}字典里，会动态增加
-        self.data['is_autofix'] = is_autofix
+        self.data["is_autofix"] = is_autofix
         # self.data['is_autofix'] += is_autofix
 
         # if sys_version == 'centos_7' or sys_version == 'ubuntu_20.04' or sys_version == 'ubuntu_22.04' or sys_version == 'ubuntu_18.04' or sys_version == 'debian_12' or sys_version == 'debian_11' or sys_version == 'debian_10':
@@ -171,100 +204,119 @@ class panelWarning:
         #     self.data['is_autofix'] = is_autofix + vuln_is_autofix
 
         score = 100
-        for d in self.data['risk']:
-            score = score - d['level']
+        for d in self.data["risk"]:
+            score = score - d["level"]
         if score < 0:
-            self.data['score'] = 0
+            self.data["score"] = 0
         else:
-            self.data['score'] = score
-        self.data['risk'] = sorted(self.data['risk'], key=lambda x: x['level'], reverse=True)
-        self.data['security'] = sorted(self.data['security'], key=lambda x: x['level'], reverse=True)
-        self.data['ignore'] = sorted(self.data['ignore'], key=lambda x: x['level'], reverse=True)
-        self.data['check_time'] = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
+            self.data["score"] = score
+        self.data["risk"] = sorted(
+            self.data["risk"], key=lambda x: x["level"], reverse=True
+        )
+        self.data["security"] = sorted(
+            self.data["security"], key=lambda x: x["level"], reverse=True
+        )
+        self.data["ignore"] = sorted(
+            self.data["ignore"], key=lambda x: x["level"], reverse=True
+        )
+        self.data["check_time"] = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
         # 将结果输出一份到报告目录下
         with open("/www/server/panel/data/warning_report/data.json", "w") as f:
             json.dump(self.data, f)
         self.record_times()
-        context = {"status": "检测完成", "percentage": 100, "count": self.discov_count, "score": self.score}
-        public.WriteFile(self.__path + '/bar.txt', json.dumps(context))
+        context = {
+            "status": "检测完成",
+            "percentage": 100,
+            "count": self.discov_count,
+            "score": self.score,
+        }
+        public.WriteFile(self.__path + "/bar.txt", json.dumps(context))
         # public.WriteFile(self.__path + '/bar.txt', "100")  # 扫描进度条归零
         return self.data
 
     def download_new_vulns(self):
-        '''
+        """
         根据系统版本确定漏洞库名
-        '''
+        """
         sys_version = self.get_sys_version()
         zip_file = ""
         if sys_version == "centos_7":
-            self.new_vul_list = self.__path + '/vul_centos7.json'
+            self.new_vul_list = self.__path + "/vul_centos7.json"
             zip_file = "vul_centos7.zip"
         elif sys_version == "centos_8":
-            self.new_vul_list = self.__path + '/vul_centos8.json'
+            self.new_vul_list = self.__path + "/vul_centos8.json"
             zip_file = "vul_centos8.zip"
         elif sys_version == "centos_8_stream":
-            self.new_vul_list = self.__path + '/vul_centos8stream.json'
+            self.new_vul_list = self.__path + "/vul_centos8stream.json"
             zip_file = "vul_centos8stream.zip"
         elif sys_version == "ubuntu_20.04":
-            self.new_vul_list = self.__path + '/vul_ubuntu2004.json'
+            self.new_vul_list = self.__path + "/vul_ubuntu2004.json"
             zip_file = "vul_ubuntu2004.zip"
         elif sys_version == "ubuntu_22.04":
-            self.new_vul_list = self.__path + '/vul_ubuntu2204.json'
+            self.new_vul_list = self.__path + "/vul_ubuntu2204.json"
             zip_file = "vul_ubuntu2204.zip"
         elif sys_version == "ubuntu_18.04":
-            self.new_vul_list = self.__path + '/vul_ubuntu1804.json'
+            self.new_vul_list = self.__path + "/vul_ubuntu1804.json"
             zip_file = "vul_ubuntu1804.zip"
         elif sys_version == "debian_12":
-            self.new_vul_list = self.__path + '/vul_debian12.json'
+            self.new_vul_list = self.__path + "/vul_debian12.json"
             zip_file = "vul_debian12.zip"
         elif sys_version == "debian_11":
-            self.new_vul_list = self.__path + '/vul_debian11.json'
+            self.new_vul_list = self.__path + "/vul_debian11.json"
             zip_file = "vul_debian11.zip"
         elif sys_version == "debian_10":
-            self.new_vul_list = self.__path + '/vul_debian10.json'
+            self.new_vul_list = self.__path + "/vul_debian10.json"
             zip_file = "vul_debian10.zip"
         # 检查漏洞库文件是否存在
         if not os.path.exists(self.new_vul_list):
-            if zip_file != '':
-                downfile = self.__path+'/'+zip_file
-                public.downloadFile("{}/safe_warning/{}".format(public.get_url(), zip_file), downfile)
-                o, e = public.ExecShell("unzip -o {} -d {}".format(downfile, self.__path))
+            if zip_file != "":
+                downfile = self.__path + "/" + zip_file
+                public.downloadFile(
+                    "{}/safe_warning/{}".format(public.get_url(), zip_file), downfile
+                )
+                o, e = public.ExecShell(
+                    "unzip -o {} -d {}".format(downfile, self.__path)
+                )
                 # 解压报错
                 if e != "":
                     return False
             else:
                 return False
         return True
+
     # cve_id
     def get_list(self, args):
-        '''
+        """
         @name 开始扫描并返回结果
         @param args:
         @return:
-        '''
+        """
         import subprocess
+
         public.set_module_logs("panelWarning", "get_list")
-        public.WriteFile(self.__path + '/kill.pl', "False")  # 用来判断这次的扫描是否被中断，默认没中断
+        public.WriteFile(
+            self.__path + "/kill.pl", "False"
+        )  # 用来判断这次的扫描是否被中断，默认没中断
         command = "btpython /www/server/panel/class/panelWarning.py"
         process = subprocess.Popen(command, shell=True)
         # 获取进程ID
         pid = process.pid
         public.WriteFile(self.__path + "/pid.txt", str(pid))
         process.wait()
-        output = json.loads(public.ReadFile(self.__path+ '/resultresult.json'))
+        output = json.loads(public.ReadFile(self.__path + "/resultresult.json"))
         # 给前端判断这次的扫描结果是否中断
-        if public.ReadFile(self.__path + '/kill.pl') == "True":
+        if public.ReadFile(self.__path + "/kill.pl") == "True":
             output["interrupt"] = True
         else:
             output["interrupt"] = False
         return output
 
     def sync_rule(self):
-        '''
-            @name 从云端同步规则
-            @author hwliang<2020-08-05>
-            @return void
-        '''
+        """
+        @name 从云端同步规则
+        @author hwliang<2020-08-05>
+        @return void
+        """
         # try:
         #     dep_path = '/www/server/panel/class/safe_warning'
         #     local_version_file = self.__path + '/version.pl'
@@ -306,72 +358,82 @@ class panelWarning:
         #     pass
 
     def set_ignore(self, args):
-        '''
-            @name 设置指定项忽略状态
-            @author hwliang<2020-08-04>
-            @param dict_obj {
-                m_name<string> 模块名称
-            }
-            @return dict
-        '''
+        """
+        @name 设置指定项忽略状态
+        @author hwliang<2020-08-04>
+        @param dict_obj {
+            m_name<string> 模块名称
+        }
+        @return dict
+        """
         m_name = args.m_name.strip()
-        ignore_file = self.__ignore + '/' + m_name + '.pl'
+        ignore_file = self.__ignore + "/" + m_name + ".pl"
         if os.path.exists(ignore_file):
             os.remove(ignore_file)
         else:
-            public.writeFile(ignore_file, '1')
+            public.writeFile(ignore_file, "1")
         return public.returnMsg(True, public.lang("successfully set!"))
 
     def check_find(self, args):
-        '''
-            @name 检测指定项
-            @author hwliang<2020-08-04>
-            @param dict_obj {
-                m_name<string> 模块名称
-            }
-            @return dict
-        '''
+        """
+        @name 检测指定项
+        @author hwliang<2020-08-04>
+        @param dict_obj {
+            m_name<string> 模块名称
+        }
+        @return dict
+        """
         try:
             m_name = args.m_name.strip()
-            p = public.get_modules('class/safe_warning')
+            p = public.get_modules("class/safe_warning")
             m_info = {
-                'title': p[m_name]._title,
-                'm_name': m_name,
-                'ps': p[m_name]._ps,
-                'version': p[m_name]._version,
-                'level': p[m_name]._level,
-                'ignore': p[m_name]._ignore,
-                'date': p[m_name]._date,
-                'tips': p[m_name]._tips,
-                'help': p[m_name]._help
+                "title": p[m_name]._title,
+                "m_name": m_name,
+                "ps": p[m_name]._ps,
+                "version": p[m_name]._version,
+                "level": p[m_name]._level,
+                "ignore": p[m_name]._ignore,
+                "date": p[m_name]._date,
+                "tips": p[m_name]._tips,
+                "help": p[m_name]._help,
             }
 
             # 解决已经在忽略列表中，但是如果仍然需要检查的话可以检查
-            ignore_file = self.__ignore + '/' + m_name + '.pl'
+            ignore_file = self.__ignore + "/" + m_name + ".pl"
             if os.path.exists(ignore_file):
                 from cachelib import SimpleCache
+
                 cache = SimpleCache(5000)
-                ikey = 'warning_list'
+                ikey = "warning_list"
                 cache.delete(ikey)
                 os.remove(ignore_file)
 
-            result_file = self.__result + '/' + m_name + '.pl'
+            result_file = self.__result + "/" + m_name + ".pl"
             s_time = time.time()
-            m_info['status'], m_info['msg'] = p[m_name].check_run()
-            m_info['taking'] = round(time.time() - s_time, 4)
-            m_info['check_time'] = int(time.time())
-            public.writeFile(result_file, json.dumps(
-                [m_info['status'], m_info['msg'], m_info['check_time'], m_info['taking']]))
+            m_info["status"], m_info["msg"] = p[m_name].check_run()
+            m_info["taking"] = round(time.time() - s_time, 4)
+            m_info["check_time"] = int(time.time())
+            public.writeFile(
+                result_file,
+                json.dumps(
+                    [
+                        m_info["status"],
+                        m_info["msg"],
+                        m_info["check_time"],
+                        m_info["taking"],
+                    ]
+                ),
+            )
             return public.returnMsg(True, public.lang("It has been retested."))
         except:
             return public.returnMsg(False, public.lang("Detection failed"))
 
     def system_scan(self):
-        '''
+        """
         一键扫描系统
         :param get:
         :return: dict
-        '''
+        """
         self.compare_md5()
         sys_version = self.get_sys_version()
 
@@ -394,11 +456,16 @@ class panelWarning:
         bar_num = 0  # 进度条初始化
         bar_limit = 0  # 进度条限制
         for vul in vul_list:
-            bar = ("%.2f" % (float(bar_num)/float(self.vul_num)*50))
+            bar = "%.2f" % (float(bar_num) / float(self.vul_num) * 50)
             # 限制进度条，限制写文件频率
             if int(float(bar)) >= bar_limit:
-                context = {"status": "{}".format(vul['cve_id']), "percentage": int(float(bar)), "count": self.discov_count, "score": self.score}
-                public.WriteFile(self.__path+'/bar.txt', json.dumps(context))
+                context = {
+                    "status": "{}".format(vul["cve_id"]),
+                    "percentage": int(float(bar)),
+                    "count": self.discov_count,
+                    "score": self.score,
+                }
+                public.WriteFile(self.__path + "/bar.txt", json.dumps(context))
                 self.dump_tmp_result()  # 发现漏洞，先保存一份临时的
                 bar_limit += 10
             bar_num += 1
@@ -406,13 +473,19 @@ class panelWarning:
             for v in vul["affected_list"]:
                 if v["manufacturer"] == sys_version:
                     tmp = 1  # 默认命中
-                    if not 'affected' in v: continue
-                    arr = v['affected'].split("Up to (excluding)\n                                                ")
-                    if len(arr) < 2: continue
+                    if not "affected" in v:
+                        continue
+                    arr = v["affected"].split(
+                        "Up to (excluding)\n                                                "
+                    )
+                    if len(arr) < 2:
+                        continue
                     vul_version = arr[1]
                     try:
                         for soft in v["softname"]:
-                            compare_result = self.version_compare(sys_product[soft], vul_version)
+                            compare_result = self.version_compare(
+                                sys_product[soft], vul_version
+                            )
                             if compare_result >= 0:
                                 tmp = 0  # 当有一个软件包版本不在漏洞范围内，则不命中
                                 break
@@ -424,7 +497,15 @@ class panelWarning:
                             for soft in v["softname"]:
                                 softname_dict[soft] = sys_product[soft]
                             level = self.get_score_risk(vul["score"])
-                            vul_dict = {key: vul[key] for key in ["cve_id", "vuln_name", "vuln_time", "vuln_solution"]}
+                            vul_dict = {
+                                key: vul[key]
+                                for key in [
+                                    "cve_id",
+                                    "vuln_name",
+                                    "vuln_time",
+                                    "vuln_solution",
+                                ]
+                            }
                             vul_dict["level"] = level
                             self.score -= level  # 扫描中的动态分数
                             if self.score < 0:
@@ -434,16 +515,20 @@ class panelWarning:
                             vul_dict["check_time"] = int(time.time())
                             vul_dict["reboot"] = ""
                             if "kernel" in [k for k in v["softname"]]:
-                                vul_dict["reboot"] = "This vulnerability is a kernel vulnerability, and you need to upgrade the kernel version yourself. It is recommended to make snapshots and backups before upgrading"
+                                vul_dict["reboot"] = (
+                                    "This vulnerability is a kernel vulnerability, and you need to upgrade the kernel version yourself. It is recommended to make snapshots and backups before upgrading"
+                                )
                                 reboot_count += 1
                             if vul["cve_id"] in ignore_list:
                                 new_ignore_list.append(vul_dict)
-                                self.tmp_data['ignore'].append(vul_dict)  # 添加到临时字典
+                                self.tmp_data["ignore"].append(
+                                    vul_dict
+                                )  # 添加到临时字典
                                 break
                             new_risk_list.append(vul_dict)
-                            self.tmp_data['risk'].append(vul_dict)  # 添加到临时字典
+                            self.tmp_data["risk"].append(vul_dict)  # 添加到临时字典
                             if vul_dict["reboot"]:
-                                self.tmp_data['is_autofix'].append(vul_dict["cve_id"])
+                                self.tmp_data["is_autofix"].append(vul_dict["cve_id"])
                             break
                         # cp_list.append(vul["cve_id"]+':    '+str([soft+'-'+sys_product[soft] for soft in v["softname"]])+'  >=  '+vul_version)
                     except Exception as e:
@@ -455,7 +540,7 @@ class panelWarning:
         # result_dict["reboot"] = self.__need_reboot
         # result_dict["error"] = error_list
         # result_dict["compare"] = cp_list
-        public.WriteFile(self.__path + '/system_scan_time', str(int(time.time())))
+        public.WriteFile(self.__path + "/system_scan_time", str(int(time.time())))
         public.WriteFile(self._vuln_result, json.dumps(result_dict))
         # try:
         #     public.WriteFile(self._vuln_result, json.dumps(result_dict))
@@ -465,21 +550,24 @@ class panelWarning:
 
     # 版本比较
     def version_compare(self, ver_a, ver_b):
-        '''
+        """
         比较版本大小
         :param ver_a: 软件版本
         :param ver_b: 漏洞版本
         :return: int 大于等于返回1或0，小于返回-1
-        '''
+        """
         sys_version = self.get_sys_version()
         if "ubuntu" in sys_version or "debian" in sys_version:
             if ver_b.startswith("1:"):
                 ver_b = ver_b[2:]
             # if ver_a.startswith("1:"):
             #     ver_a = ver_a[2:]
-            result = public.ExecShell("dpkg --compare-versions " + ver_a + " ge " + ver_b + " && echo true")
-            if 'warning' in result[1].strip(): return None
-            if 'true' in result[0].strip():
+            result = public.ExecShell(
+                "dpkg --compare-versions " + ver_a + " ge " + ver_b + " && echo true"
+            )
+            if "warning" in result[1].strip():
+                return None
+            if "true" in result[0].strip():
                 return 1
             else:
                 return -1
@@ -487,9 +575,10 @@ class panelWarning:
 
     def vercmp(self, first, second):
         import re
-        R_NONALNUMTILDE = re.compile(br"^([^a-zA-Z0-9~]*)(.*)$")
-        R_NUM = re.compile(br"^([\d]+)(.*)$")
-        R_ALPHA = re.compile(br"^([a-zA-Z]+)(.*)$")
+
+        R_NONALNUMTILDE = re.compile(rb"^([^a-zA-Z0-9~]*)(.*)$")
+        R_NUM = re.compile(rb"^([\d]+)(.*)$")
+        R_ALPHA = re.compile(rb"^([a-zA-Z]+)(.*)$")
         first = first.encode("ascii", "ignore")
         second = second.encode("ascii", "ignore")
         while first or second:
@@ -500,12 +589,12 @@ class panelWarning:
             if m1_head or m2_head:
                 continue
 
-            if first.startswith(b'~'):
-                if not second.startswith(b'~'):
+            if first.startswith(b"~"):
+                if not second.startswith(b"~"):
                     return -1
                 first, second = first[1:], second[1:]
                 continue
-            if second.startswith(b'~'):
+            if second.startswith(b"~"):
                 return 1
 
             if not first or not second:
@@ -531,8 +620,8 @@ class panelWarning:
             m2_head, second = m2.group(1), m2.group(2)
 
             if isnum:
-                m1_head = m1_head.lstrip(b'0')
-                m2_head = m2_head.lstrip(b'0')
+                m1_head = m1_head.lstrip(b"0")
+                m2_head = m2_head.lstrip(b"0")
 
                 m1hlen = len(m1_head)
                 m2hlen = len(m2_head)
@@ -556,10 +645,10 @@ class panelWarning:
 
     # 取系统版本
     def get_sys_version(self):
-        '''
+        """
         获取当前系统版本
         :return: string
-        '''
+        """
         sys_version = "None"
         if os.path.exists("/etc/redhat-release"):
             result = public.ReadFile("/etc/redhat-release")
@@ -587,10 +676,10 @@ class panelWarning:
         return sys_version
 
     def new_get_sys_product(self, flag=False):
-        '''
+        """
         新版获取系统软件包及版本{"name":"version"}
         @param flag bool 为True时直接扫一次
-        '''
+        """
         # 修复完成需要重新获取一次软件包版本
         if flag:
             sys_product = self.get_sys_product()
@@ -622,16 +711,24 @@ class panelWarning:
                             # 若rpm文件修改日期大于七天，则还是执行rpm检测
                             if self.is_file_too_old(self.product_version, 7):
                                 sys_product = self.get_sys_product()
-                                public.WriteFile(self.product_version, json.dumps(sys_product))
+                                public.WriteFile(
+                                    self.product_version, json.dumps(sys_product)
+                                )
                             else:
-                                sys_product = json.loads(public.ReadFile(self.product_version))
+                                sys_product = json.loads(
+                                    public.ReadFile(self.product_version)
+                                )
                         else:
                             sys_product = self.get_sys_product()
-                            public.WriteFile(self.product_version, json.dumps(sys_product))
+                            public.WriteFile(
+                                self.product_version, json.dumps(sys_product)
+                            )
                     # 不相等证明最近有用yum安装过新软件，更新文件并检测
                     else:
                         sys_product = self.get_sys_product()
-                        public.WriteFile(self.product_version, json.dumps(sys_product))  # 将软件包版本写入文件
+                        public.WriteFile(
+                            self.product_version, json.dumps(sys_product)
+                        )  # 将软件包版本写入文件
                         public.WriteFile(self.yum_time, new_modi_time)
             # 没有yum.log，则直接根据rpm文件修改日期
             else:
@@ -662,12 +759,24 @@ class panelWarning:
 
         # if sys_version == 'None':return public.returnMsg(False, public.lang("当前系统暂不支持"))
         if "centos" in sys_version:
-            result = public.ExecShell('rpm -qa --qf \'%{NAME};%{VERSION}-%{RELEASE}\\n\'')[0].strip().split('\n')
+            result = (
+                public.ExecShell("rpm -qa --qf '%{NAME};%{VERSION}-%{RELEASE}\\n'")[0]
+                .strip()
+                .split("\n")
+            )
         elif "ubuntu" in sys_version:
             # result1 = subprocess.check_output(['dpkg-query', '-W', '-f=${Package};${Version}\n']).decode('utf-8').strip().split('\n')
-            result = public.ExecShell('dpkg-query -W -f=\'${Package};${Version}\n\'')[0].strip().split('\n')
+            result = (
+                public.ExecShell("dpkg-query -W -f='${Package};${Version}\n'")[0]
+                .strip()
+                .split("\n")
+            )
         elif "debian" in sys_version:
-            result = public.ExecShell('dpkg-query -W -f=\'${Package};${Version}\n\'')[0].strip().split('\n')
+            result = (
+                public.ExecShell("dpkg-query -W -f='${Package};${Version}\n'")[0]
+                .strip()
+                .split("\n")
+            )
         elif sys_version == "None":
             return None
         else:
@@ -678,15 +787,15 @@ class panelWarning:
             except:
                 return None
         # product_version["kernel"] = subprocess.check_output(['uname', '-r']).decode('utf-8').strip().replace(".x86_64", "")
-        product_version["kernel"] = public.ExecShell('uname -r')[0].strip()
+        product_version["kernel"] = public.ExecShell("uname -r")[0].strip()
         return product_version
 
     def get_vuln_result(self):
-        '''
+        """
         获取上一次扫描结果
         :param get:
         :return: dict
-        '''
+        """
         d_risk = 0
         h_risk = 0
         m_risk = 0
@@ -696,24 +805,42 @@ class panelWarning:
         else:
             self.vul_num = len(self.get_vul_list())
         if not os.path.exists(self._vuln_result):
-            tmp_dict = {"vul_count": self.vul_num, "risk": [], "ignore": [],
-                        "count": {"serious": 0, "high_risk": 0, "moderate_risk": 0}, "msg": "",
-                        "repair_count": {"all_count": 0, "today_count": 0}, "all_check_time": "", "ignore_count": 0}
+            tmp_dict = {
+                "vul_count": self.vul_num,
+                "risk": [],
+                "ignore": [],
+                "count": {"serious": 0, "high_risk": 0, "moderate_risk": 0},
+                "msg": "",
+                "repair_count": {"all_count": 0, "today_count": 0},
+                "all_check_time": "",
+                "ignore_count": 0,
+            }
             if os.path.exists("/etc/redhat-release"):
                 result = public.ReadFile("/etc/redhat-release")
                 if "CentOS Linux release 8" in result:
                     # tmp_dict["msg"] = "当前系统【centos_8】官方已停止维护，为了安全起见，建议升级至centos 8 stream\n详情参考教程：https://www.bt.cn/bbs/thread-82931-1-1.html"
-                    tmp_dict["msg"] = "The current system [centos_8] has been officially stopped maintenance, for security purposes, it is recommended to upgrade to centos 8 stream"
+                    tmp_dict["msg"] = (
+                        "The current system [centos_8] has been officially stopped maintenance, for security purposes, it is recommended to upgrade to centos 8 stream"
+                    )
             return tmp_dict
-        if public.ReadFile(self._vuln_result) == '[]':
-            tmp_dict = {"vul_count": self.vul_num, "risk": [], "ignore": [],
-                        "count": {"serious": 0, "high_risk": 0, "moderate_risk": 0}, "msg": "",
-                        "repair_count": {"all_count": 0, "today_count": 0}, "all_check_time": "", "ignore_count": 0}
+        if public.ReadFile(self._vuln_result) == "[]":
+            tmp_dict = {
+                "vul_count": self.vul_num,
+                "risk": [],
+                "ignore": [],
+                "count": {"serious": 0, "high_risk": 0, "moderate_risk": 0},
+                "msg": "",
+                "repair_count": {"all_count": 0, "today_count": 0},
+                "all_check_time": "",
+                "ignore_count": 0,
+            }
             if os.path.exists("/etc/redhat-release"):
                 result = public.ReadFile("/etc/redhat-release")
                 if "CentOS Linux release 8" in result:
                     # tmp_dict["msg"] = "当前系统【centos_8】官方已停止维护，为了安全起见，建议升级至centos 8 stream\n详情参考教程：https://www.bt.cn/bbs/thread-82931-1-1.html"
-                    tmp_dict["msg"] = "The current system [centos_8] has been officially stopped maintenance, for security purposes, it is recommended to upgrade to centos 8 stream"
+                    tmp_dict["msg"] = (
+                        "The current system [centos_8] has been officially stopped maintenance, for security purposes, it is recommended to upgrade to centos 8 stream"
+                    )
             return tmp_dict
         result_dict = json.loads(public.ReadFile(self._vuln_result))
         old_risk_list = result_dict["risk"]
@@ -741,30 +868,41 @@ class panelWarning:
                 m_risk += 1
         list_sort = [3, 2, 1]  # 排序列表
         # result_dict["risk"] = old_risk_list
-        result_dict["risk"] = sorted(new_risk_list, key=lambda x: list_sort.index(x.get("level")))
+        result_dict["risk"] = sorted(
+            new_risk_list, key=lambda x: list_sort.index(x.get("level"))
+        )
         # result_dict["ignore"] = old_ignore_list
-        result_dict["ignore"] = sorted(new_ignore_list, key=lambda x: list_sort.index(x.get("level")))
+        result_dict["ignore"] = sorted(
+            new_ignore_list, key=lambda x: list_sort.index(x.get("level"))
+        )
         # result_dict["reboot"] = self.__need_reboot
-        result_dict["count"] = {"serious": d_risk, "high_risk": h_risk, "moderate_risk": m_risk}
+        result_dict["count"] = {
+            "serious": d_risk,
+            "high_risk": h_risk,
+            "moderate_risk": m_risk,
+        }
         result_dict["msg"] = ""
         result_dict["repair_count"] = self.count_repair(vul_list)
-        result_dict["all_check_time"] = public.ReadFile(self.__path + '/system_scan_time')
+        result_dict["all_check_time"] = public.ReadFile(
+            self.__path + "/system_scan_time"
+        )
         result_dict["ignore_count"] = len(tmp_ignore_list)
         if os.path.exists("/etc/redhat-release"):
             result = public.ReadFile("/etc/redhat-release")
             if "CentOS Linux release 8" in result:
-                result_dict[
-                    "msg"] = "The current system [centos_8] has been officially stopped maintenance, for security purposes, it is recommended to upgrade to centos 8 stream"
+                result_dict["msg"] = (
+                    "The current system [centos_8] has been officially stopped maintenance, for security purposes, it is recommended to upgrade to centos 8 stream"
+                )
         public.WriteFile(self._vuln_result, json.dumps(result_dict))
         return result_dict
 
     # 按分数评等级
     def get_score_risk(self, score):
-        '''
+        """
         拿到分数，返回危险等级
         :param score:
         :return: int 若没有符合的分数就报错，需要捕获异常
-        '''
+        """
         if float(score) >= 9.0:
             risk = 3
         elif float(score) >= 7.0:
@@ -780,11 +918,11 @@ class panelWarning:
         return json.loads(public.ReadFile(self._vuln_ignore))
 
     def set_vuln_ignore(self, args):
-        '''
+        """
         设置忽略指定cve，若已在列表里，则删除，不在列表里则添加
         :param args:
         :return: dict {status:true,msg:'设置成功/失败'}
-        '''
+        """
         cve_list = json.loads(args.cve_list.strip())
         ignore_list = self.get_ignore_list()
         for cl in cve_list:
@@ -800,11 +938,11 @@ class panelWarning:
         #     return public.returnMsg(False, public.lang("{}设置失败!", cve_list))
 
     def count_repair(self, now_list):
-        '''
+        """
         获取总共修复漏洞的数量以及今日修复漏洞数量
         :param now_list:
         :return: dict
-        '''
+        """
         cve_dict = {}
         if not os.path.exists(self.__repair_count):
             cve_dict["all_cve"] = now_list
@@ -826,11 +964,11 @@ class panelWarning:
         return public.format_date()
 
     def check_cve(self, args):
-        '''
+        """
         检测单个漏洞
         :param args:
         :return: dict
-        '''
+        """
         sys_product = self.get_sys_product()
         if not sys_product:
             return public.returnMsg(True, public.lang("Detection failed"))
@@ -844,7 +982,10 @@ class panelWarning:
                 tmp = 1  # 默认命中漏洞
                 cve["check_time"] = int(time.time())
                 for soft in list(cve["soft_name"].keys()):
-                    if self.version_compare(sys_product[soft], cve["vuln_version"]) >= 0:
+                    if (
+                        self.version_compare(sys_product[soft], cve["vuln_version"])
+                        >= 0
+                    ):
                         tmp = 0  # 当有一个软件包不命中，则为已修复
                         tmptmp = 0
                         break
@@ -855,7 +996,10 @@ class panelWarning:
                 tmp = 1  # 默认命中漏洞
                 cve["check_time"] = int(time.time())
                 for soft in list(cve["soft_name"].keys()):
-                    if self.version_compare(sys_product[soft], cve["vuln_version"]) >= 0:
+                    if (
+                        self.version_compare(sys_product[soft], cve["vuln_version"])
+                        >= 0
+                    ):
                         tmp = 0  # 当有一个软件包不命中，则为已修复
                         tmptmp = 0
                         break
@@ -870,11 +1014,12 @@ class panelWarning:
             return public.returnMsg(True, public.lang("It has been retested."))
 
     def compare_md5(self):
-        '''
+        """
         对比md5，更新漏洞库
         :return:
-        '''
+        """
         import requests
+
         # try:
         #    new_md5 = requests.get("https://www.bt.cn/vulscan_d11ad1fe99a5f078548b0ea355db42dc.txt").text
         # except:
@@ -883,26 +1028,35 @@ class panelWarning:
         # if old_md5 != new_md5 or not os.path.exists(self.__vul_list):
         if not os.path.exists(self.__vul_list):
             try:
-                public.downloadFile("{}/install/src/high_risk_vul.zip".format(public.get_url()),
-                                    self.__path + "/high_risk_vul.zip")
-                public.ExecShell("unzip -o {}/high_risk_vul.zip -d {}/".format(self.__path, self.__path))
+                public.downloadFile(
+                    "{}/install/src/high_risk_vul.zip".format(public.get_url()),
+                    self.__path + "/high_risk_vul.zip",
+                )
+                public.ExecShell(
+                    "unzip -o {}/high_risk_vul.zip -d {}/".format(
+                        self.__path, self.__path
+                    )
+                )
             except:
                 return 0
         return 1
 
     def get_logs(self, get):
-        '''
+        """
         获取升级日志
         :param get:
         :return: dict
-        '''
+        """
         import files
-        return public.returnMsg(True, files.files().GetLastLine(self.__path + '/log.txt', 20))
+
+        return public.returnMsg(
+            True, files.files().GetLastLine(self.__path + "/log.txt", 20)
+        )
 
     def record_times(self):
-        '''
+        """
         记录近七日扫描次数
-        '''
+        """
         date_obj = datetime.datetime.now()
         weekday = datetime.datetime.now().weekday()
         if not os.path.exists("/www/server/panel/data/warning_report/record.json"):
@@ -911,71 +1065,80 @@ class panelWarning:
                 last_date = (date_obj - datetime.timedelta(days=i)).strftime("%Y/%m/%d")
                 tmp["scan"].append({"date": last_date, "times": 0})
                 tmp["repair"].append({"date": last_date, "times": 0})
-            public.WriteFile("/www/server/panel/data/warning_report/record.json", json.dumps(tmp))
+            public.WriteFile(
+                "/www/server/panel/data/warning_report/record.json", json.dumps(tmp)
+            )
         with open("/www/server/panel/data/warning_report/record.json", "r") as f:
             record = json.load(f)
-        if record["scan"][weekday]["date"] == datetime.datetime.now().strftime("%Y/%m/%d"):
+        if record["scan"][weekday]["date"] == datetime.datetime.now().strftime(
+            "%Y/%m/%d"
+        ):
             record["scan"][weekday]["times"] += 1
         else:
-            record["scan"][weekday]["date"] = datetime.datetime.now().strftime("%Y/%m/%d")
+            record["scan"][weekday]["date"] = datetime.datetime.now().strftime(
+                "%Y/%m/%d"
+            )
             record["scan"][weekday]["times"] = 1
-        public.WriteFile("/www/server/panel/data/warning_report/record.json", json.dumps(record))
+        public.WriteFile(
+            "/www/server/panel/data/warning_report/record.json", json.dumps(record)
+        )
 
     def get_scan_bar(self, args):
-        '''
+        """
         获取扫描进度条
         @param args:
         @return: int
-        '''
-        if not os.path.exists(self.__path + '/bar.txt'):return 0
-        data = json.loads(public.ReadFile(self.__path + '/bar.txt'))
+        """
+        if not os.path.exists(self.__path + "/bar.txt"):
+            return 0
+        data = json.loads(public.ReadFile(self.__path + "/bar.txt"))
         return data
 
     def kill_get_list(self, args):
-        '''
+        """
         杀掉扫描进程
         @param args:
         @return:
-        '''
-        if not os.path.exists(self.__path + '/pid.txt'):
+        """
+        if not os.path.exists(self.__path + "/pid.txt"):
             return {"status": False, "msg": "Interrupt failure"}
-        pid = public.ReadFile(self.__path + '/pid.txt')
+        pid = public.ReadFile(self.__path + "/pid.txt")
         err = public.ExecShell("kill -9 {}".format(str(pid)))[1].strip()
         if err:
             return {"status": False, "msg": "Interrupt failure"}
         else:
-            public.WriteFile(self.__path + '/kill.pl', "True")
+            public.WriteFile(self.__path + "/kill.pl", "True")
             return {"status": True, "msg": "Interrupt successfully"}
 
     def dump_tmp_result(self):
-        '''
+        """
         动态保存结果
         @param args:
         @return:
-        '''
-        public.WriteFile(self.__path + '/tmp_result.json', json.dumps(self.tmp_data))
+        """
+        public.WriteFile(self.__path + "/tmp_result.json", json.dumps(self.tmp_data))
 
     def get_tmp_result(self, args):
-        '''
+        """
         获取中途中断结果
         @param args:
         @return:
-        '''
-        if not os.path.exists(self.__path + '/tmp_result.json'):
+        """
+        if not os.path.exists(self.__path + "/tmp_result.json"):
             return "err"
-        return json.loads(public.ReadFile(self.__path + '/tmp_result.json'))
+        return json.loads(public.ReadFile(self.__path + "/tmp_result.json"))
 
     def new_system_scan2(self):
-        '''
+        """
         新版系统dpkg软件包漏洞检测
-        '''
+        """
         if not os.path.exists(self.new_vul_list):
             return
         # 加载漏洞库文件
         try:
             vul_json = json.loads(public.ReadFile(self.new_vul_list))
-            packages_rule = vul_json['Packages']
-            detail = vul_json['Detail']
+            packages_rule = vul_json["Packages"]
+            detail = vul_json["Detail"]
         except Exception as e:
             return
         sys_product = self.new_get_sys_product()
@@ -1005,9 +1168,13 @@ class panelWarning:
                     if cp_result == -1:
                         if rule[1] not in systemscan_result:
                             systemscan_result[rule[1]] = detail[str(rule[1])]
-                            systemscan_result[rule[1]]["impact"] = [{"package": pk, "version": pk_ver, "vul_ver": vul_ver}]
+                            systemscan_result[rule[1]]["impact"] = [
+                                {"package": pk, "version": pk_ver, "vul_ver": vul_ver}
+                            ]
                         else:
-                            systemscan_result[rule[1]]["impact"].append({"package": pk, "version": pk_ver, "vul_ver": vul_ver})
+                            systemscan_result[rule[1]]["impact"].append(
+                                {"package": pk, "version": pk_ver, "vul_ver": vul_ver}
+                            )
 
         # 为了兼容旧版本再次做处理
         for sr in systemscan_result.values():
@@ -1027,16 +1194,33 @@ class panelWarning:
                 if impact["package"].startswith("kernel"):
                     is_kernel = True
                     continue
-                soft_list.append("{} Versions below {}".format(impact["package"]+"-"+impact["version"], impact["vul_ver"]))
+                soft_list.append(
+                    "{} Versions below {}".format(
+                        impact["package"] + "-" + impact["version"], impact["vul_ver"]
+                    )
+                )
                 pk_list.append(impact["package"])
             if is_kernel:
                 continue
-            one_risk["msg"] = "Security vulnerabilities are found in the following system software：<br>{}<br>Vulnerabilities involved：{}<br>Please refer to the official announcement for details：{}".format('<br>'.join(soft_list), '、'.join(sr["cve"]),sr["ref_url"])
-            one_risk["ps"] = "【{}】Linux system vulnerability security vulnerability number".format(sr["ref_id"])
-            one_risk["remind"] = "Fixing vulnerabilities has certain risks, so it is recommended to take a good system snapshot to prevent system operation from being affected."
+            one_risk["msg"] = (
+                "Security vulnerabilities are found in the following system software：<br>{}<br>Vulnerabilities involved：{}<br>Please refer to the official announcement for details：{}".format(
+                    "<br>".join(soft_list), "、".join(sr["cve"]), sr["ref_url"]
+                )
+            )
+            one_risk["ps"] = (
+                "【{}】Linux system vulnerability security vulnerability number".format(
+                    sr["ref_id"]
+                )
+            )
+            one_risk["remind"] = (
+                "Fixing vulnerabilities has certain risks, so it is recommended to take a good system snapshot to prevent system operation from being affected."
+            )
             one_risk["status"] = False
             one_risk["taking"] = 0.000001
-            one_risk["tips"] = ["Update the software to a safe version according to the risk description", "Or click [One-click Repair] to solve all security issues"]
+            one_risk["tips"] = [
+                "Update the software to a safe version according to the risk description",
+                "Or click [One-click Repair] to solve all security issues",
+            ]
             one_risk["version"] = 1
             one_risk["type"] = "vulnerability"
             one_risk["package"] = pk_list
@@ -1052,30 +1236,35 @@ class panelWarning:
             if self.score < 0:
                 self.score = 0
             # 扫描中的动态风险
-            self.tmp_data['risk'].append(one_risk)
+            self.tmp_data["risk"].append(one_risk)
             # 可修复项
-            self.tmp_data['is_autofix'].append(one_risk["m_name"])
+            self.tmp_data["is_autofix"].append(one_risk["m_name"])
 
     def new_system_scan(self):
-        '''
+        """
         新版系统rpm软件包漏洞检测
         提升扫描速度
         :param get:
         :return: dict
-        '''
+        """
 
         # 判断新漏洞库存不存在
         if not os.path.exists(self.new_vul_list):
             return
 
-        context = {"status": "Checking system software", "percentage": 0, "count": 0, "score": 100}
-        public.WriteFile(self.__path + '/bar.txt', json.dumps(context))
+        context = {
+            "status": "Checking system software",
+            "percentage": 0,
+            "count": 0,
+            "score": 100,
+        }
+        public.WriteFile(self.__path + "/bar.txt", json.dumps(context))
         sys_product = self.new_get_sys_product()
         # 加载漏洞库文件
         try:
             vul_json = json.loads(public.ReadFile(self.new_vul_list))
-            packages_rule = vul_json['Packages']
-            detail = vul_json['Detail']
+            packages_rule = vul_json["Packages"]
+            detail = vul_json["Detail"]
         except Exception as e:
             return
         if sys_product is None:
@@ -1099,15 +1288,21 @@ class panelWarning:
                     if cp_result == -1:
                         if rule[1] not in systemscan_result:
                             systemscan_result[rule[1]] = detail[str(rule[1])]
-                            systemscan_result[rule[1]]["impact"] = [{"package": pk, "version": pk_ver, "vul_ver": vul_ver}]
+                            systemscan_result[rule[1]]["impact"] = [
+                                {"package": pk, "version": pk_ver, "vul_ver": vul_ver}
+                            ]
                         else:
-                            systemscan_result[rule[1]]["impact"].append({"package": pk, "version": pk_ver, "vul_ver": vul_ver})
+                            systemscan_result[rule[1]]["impact"].append(
+                                {"package": pk, "version": pk_ver, "vul_ver": vul_ver}
+                            )
         # public.WriteFile("/tmp/centos7_result.json", json.dumps(systemscan_result, indent=4))
 
         # 为了兼容旧版本再次做处理
         for sr in systemscan_result.values():
             one_risk = {}
-            one_risk["title"] = "【{}】Linux system vulnerability security notice".format(sr["ref_id"])
+            one_risk["title"] = (
+                "【{}】Linux system vulnerability security notice".format(sr["ref_id"])
+            )
             one_risk["data"] = "2023-12-08"
             one_risk["help"] = ""
             one_risk["ignore"] = False
@@ -1122,16 +1317,31 @@ class panelWarning:
                 if impact["package"].startswith("kernel"):
                     is_kernel = True
                     continue
-                soft_list.append("{} Versions below {}".format(impact["package"]+"-"+impact["version"], impact["vul_ver"]))
+                soft_list.append(
+                    "{} Versions below {}".format(
+                        impact["package"] + "-" + impact["version"], impact["vul_ver"]
+                    )
+                )
                 pk_list.append(impact["package"])
             if is_kernel:
                 continue
-            one_risk["msg"] = "The following system software was found to have security vulnerabilities：<br>{}<br>Vulnerabilities involved：{}<br>Refer to the official announcement for details：{}".format('<br>'.join(soft_list), '、'.join(sr["cve"]),sr["ref_url"])
-            one_risk["ps"] = "【{}】Linux system vulnerability security notice".format(sr["ref_id"])
-            one_risk["remind"] = "Fixing vulnerabilities has certain risks, so it is recommended to take a good system snapshot to prevent system operation from being affected."
+            one_risk["msg"] = (
+                "The following system software was found to have security vulnerabilities：<br>{}<br>Vulnerabilities involved：{}<br>Refer to the official announcement for details：{}".format(
+                    "<br>".join(soft_list), "、".join(sr["cve"]), sr["ref_url"]
+                )
+            )
+            one_risk["ps"] = "【{}】Linux system vulnerability security notice".format(
+                sr["ref_id"]
+            )
+            one_risk["remind"] = (
+                "Fixing vulnerabilities has certain risks, so it is recommended to take a good system snapshot to prevent system operation from being affected."
+            )
             one_risk["status"] = False
             one_risk["taking"] = 0.000001
-            one_risk["tips"] = ["Update the software to a safe version according to the risk description", "Or click [One-click Repair] to solve all security issues"]
+            one_risk["tips"] = [
+                "Update the software to a safe version according to the risk description",
+                "Or click [One-click Repair] to solve all security issues",
+            ]
             one_risk["version"] = 1
             one_risk["type"] = "vulnerability"
             one_risk["package"] = pk_list
@@ -1147,9 +1357,9 @@ class panelWarning:
             if self.score < 0:
                 self.score = 0
             # 扫描中的动态风险
-            self.tmp_data['risk'].append(one_risk)
+            self.tmp_data["risk"].append(one_risk)
             # 可修复项
-            self.tmp_data['is_autofix'].append(one_risk["m_name"])
+            self.tmp_data["is_autofix"].append(one_risk["m_name"])
 
         # result_json = {
         #     "vul_count": len(detail),
@@ -1218,9 +1428,9 @@ class panelWarning:
         return days_old.days > days
 
     def adjust_ver(self, ver_a, ver_b):
-        '''
+        """
         确保两个版本主版本号统一，一方存在另一方不存在则删除主版本，要么都有，要么都没有
-        '''
+        """
         if ":" in ver_a:
             if ":" in ver_b:
                 ver_1 = ver_a
@@ -1236,9 +1446,9 @@ class panelWarning:
         return ver_1, ver_2
 
     def new_severity_to_num(self, severity):
-        '''
+        """
         将漏洞级别转变成数字
-        '''
+        """
         if severity == "Critical":
             return 3
         elif severity == "Important":
@@ -1289,9 +1499,11 @@ class Dpkg:
         try:
             epoch = int(version_str[0:e_index])
         except ValueError as ex:
-            print(f"Corrupt dpkg version '{version_str}': epochs can only be ints, and "
-                  "epochless versions cannot use the colon character.")
-        return epoch, version_str[e_index + 1:]
+            print(
+                f"Corrupt dpkg version '{version_str}': epochs can only be ints, and "
+                "epochless versions cannot use the colon character."
+            )
+        return epoch, version_str[e_index + 1 :]
 
     @staticmethod
     def get_upstream(version_str):
@@ -1300,7 +1512,7 @@ class Dpkg:
         except ValueError:
             return version_str, "0"
 
-        return version_str[0:d_index], version_str[d_index + 1:]
+        return version_str[0:d_index], version_str[d_index + 1 :]
 
     @staticmethod
     def split_full_version(version_str):
@@ -1379,7 +1591,9 @@ class Dpkg:
                 if i >= len(list2):
                     raise IndexError
                 if not isinstance(item, list2[i].__class__):
-                    print(f"Cannot compare '{item}' to {list2[i]}, something has gone horribly awry.")
+                    print(
+                        f"Cannot compare '{item}' to {list2[i]}, something has gone horribly awry."
+                    )
                 if item == list2[i]:
                     continue
                 if isinstance(item, int):
@@ -1419,16 +1633,16 @@ class Dpkg:
 
         return 0
 
+
 if __name__ == "__main__":
     # st = time.time()
     panel = panelWarning()
     # panel.new_system_scan()
-    public.WriteFile('/www/server/panel/data/warning/resultresult.json', json.dumps(panel._get_list()))
+    public.WriteFile(
+        "/www/server/panel/data/warning/resultresult.json",
+        json.dumps(panel._get_list()),
+    )
     # et = time.time()
-
-
-
-
 
 
 # #coding: utf-8

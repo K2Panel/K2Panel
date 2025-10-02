@@ -34,42 +34,74 @@ class main(sslBase):
         canonical_uri = "/"
         canonical_querystring = ""
         ct = "application/json; charset=utf-8"
-        canonical_headers = "content-type:%s\nhost:%s\nx-tc-action:%s\n" % (ct, self.endpoint, action.lower())
+        canonical_headers = "content-type:%s\nhost:%s\nx-tc-action:%s\n" % (
+            ct,
+            self.endpoint,
+            action.lower(),
+        )
         signed_headers = "content-type;host;x-tc-action"
         hashed_request_payload = hashlib.sha256(payload.encode("utf-8")).hexdigest()
-        canonical_request = (http_request_method + "\n" +
-                             canonical_uri + "\n" +
-                             canonical_querystring + "\n" +
-                             canonical_headers + "\n" +
-                             signed_headers + "\n" +
-                             hashed_request_payload)
+        canonical_request = (
+            http_request_method
+            + "\n"
+            + canonical_uri
+            + "\n"
+            + canonical_querystring
+            + "\n"
+            + canonical_headers
+            + "\n"
+            + signed_headers
+            + "\n"
+            + hashed_request_payload
+        )
         # ************* 步骤 2：拼接待签名字符串 *************
         credential_scope = date + "/" + "dnspod" + "/" + "tc3_request"
-        hashed_canonical_request = hashlib.sha256(canonical_request.encode("utf-8")).hexdigest()
-        string_to_sign = (self.algorithm + "\n" +
-                          str(timestamp) + "\n" +
-                          credential_scope + "\n" +
-                          hashed_canonical_request)
+        hashed_canonical_request = hashlib.sha256(
+            canonical_request.encode("utf-8")
+        ).hexdigest()
+        string_to_sign = (
+            self.algorithm
+            + "\n"
+            + str(timestamp)
+            + "\n"
+            + credential_scope
+            + "\n"
+            + hashed_canonical_request
+        )
+
         # ************* 步骤 3：计算签名 *************
         # 计算签名摘要函数
         def sign(key, msg):
             return hmac.new(key, msg.encode("utf-8"), hashlib.sha256).digest()
+
         secret_date = sign(("TC3" + self.secret_key).encode("utf-8"), date)
         secret_service = sign(secret_date, "dnspod")
         secret_signing = sign(secret_service, "tc3_request")
-        signature = hmac.new(secret_signing, string_to_sign.encode("utf-8"), hashlib.sha256).hexdigest()
+        signature = hmac.new(
+            secret_signing, string_to_sign.encode("utf-8"), hashlib.sha256
+        ).hexdigest()
         # ************* 步骤 4：拼接 Authorization *************
-        authorization = (self.algorithm + " " +
-                         "Credential=" + self.secret_id + "/" + credential_scope + ", " +
-                         "SignedHeaders=" + signed_headers + ", " +
-                         "Signature=" + signature)
+        authorization = (
+            self.algorithm
+            + " "
+            + "Credential="
+            + self.secret_id
+            + "/"
+            + credential_scope
+            + ", "
+            + "SignedHeaders="
+            + signed_headers
+            + ", "
+            + "Signature="
+            + signature
+        )
         headers = {
             "Authorization": authorization,
             "Content-Type": "application/json; charset=utf-8",
             "Host": self.endpoint,
             "X-TC-Action": action,
             "X-TC-Timestamp": str(timestamp),
-            "X-TC-Version": self.version
+            "X-TC-Version": self.version,
         }
         if region:
             headers["X-TC-Region"] = region
@@ -80,30 +112,32 @@ class main(sslBase):
     def create_dns_record(self, get):
         domain_name = get.domain_name
         domain_dns_value = get.domain_dns_value
-        record_type = 'TXT'
-        if 'record_type' in get:
+        record_type = "TXT"
+        if "record_type" in get:
             record_type = get.record_type
-        record_line = '默认'
-        if 'record_line' in get:
+        record_line = "默认"
+        if "record_line" in get:
             record_line = get.record_line
 
         domain_name, sub_domain, _ = self.extract_zone(domain_name)
 
         try:
-            params = json.dumps({
-                "Domain": domain_name,
-                "SubDomain": sub_domain,
-                "RecordType": record_type,
-                "RecordLine": record_line,
-                "Value": domain_dns_value,
-            })
+            params = json.dumps(
+                {
+                    "Domain": domain_name,
+                    "SubDomain": sub_domain,
+                    "RecordType": record_type,
+                    "RecordLine": record_line,
+                    "Value": domain_dns_value,
+                }
+            )
             headers = self.get_headers(get.dns_id, "CreateRecord", params)
             res = requests.post(self.host, headers=headers, data=params).json()
-            if "Error" in res['Response']:
-                return public.returnMsg(False, res['Response']["Error"]["Message"])
-            return public.returnMsg(True, '添加成功')
+            if "Error" in res["Response"]:
+                return public.returnMsg(False, res["Response"]["Error"]["Message"])
+            return public.returnMsg(True, "添加成功")
         except Exception as e:
-            return public.returnMsg(False, '添加失败，msg：{}'.format(e))
+            return public.returnMsg(False, "添加失败，msg：{}".format(e))
 
     def delete_dns_record(self, get):
         try:
@@ -111,50 +145,57 @@ class main(sslBase):
             RecordId = get.RecordId
             root_domain, _, sub_domain = self.extract_zone(domain_name)
 
-            params = json.dumps({
-                "Domain": root_domain,
-                "RecordId": int(RecordId)
-            })
+            params = json.dumps({"Domain": root_domain, "RecordId": int(RecordId)})
             headers = self.get_headers(get.dns_id, "DeleteRecord", params)
             res = requests.post(self.host, headers=headers, data=params).json()
-            if "Error" in res['Response']:
-                return public.returnMsg(False, res['Response']["Error"]["Message"])
-            return public.returnMsg(True, '删除成功!')
+            if "Error" in res["Response"]:
+                return public.returnMsg(False, res["Response"]["Error"]["Message"])
+            return public.returnMsg(True, "删除成功!")
         except Exception as e:
             return public.returnMsg(False, e)
 
     def get_dns_record(self, get):
 
         domain_name, _, sub_domain = self.extract_zone(get.domain_name)
-        params = json.dumps({
-            "Domain": domain_name,
-        })
+        params = json.dumps(
+            {
+                "Domain": domain_name,
+            }
+        )
 
         data = {}
         try:
             headers = self.get_headers(get.dns_id, "DescribeRecordList", params)
             json_data = requests.post(self.host, headers=headers, data=params).json()
-            json_data = json_data['Response']
+            json_data = json_data["Response"]
             if "Error" in json_data:
                 if json_data["Error"]["Code"] == "ResourceNotFound.NoDataOfRecord":
-                    data = {"info": {'record_total': 0}, "list": []}
+                    data = {"info": {"record_total": 0}, "list": []}
                 else:
                     data = json_data
             # if 'RecordList' in json_data:
             #     data['list'] = json_data['RecordList']
-            if 'RecordCountInfo' in json_data:
-                data['info'] = {
-                    "record_total": json_data['RecordCountInfo']['SubdomainCount']
+            if "RecordCountInfo" in json_data:
+                data["info"] = {
+                    "record_total": json_data["RecordCountInfo"]["SubdomainCount"]
                 }
             data["list"] = [
                 {
                     "RecordId": i["RecordId"],
-                    "name": i["Name"] + "." + domain_name if i["Name"] != '@' else domain_name,
+                    "name": (
+                        i["Name"] + "." + domain_name
+                        if i["Name"] != "@"
+                        else domain_name
+                    ),
                     "value": i["Value"],
                     "line": i["Line"],
                     "ttl": i["TTL"],
                     "type": i["Type"],
-                    "status": "启用" if i["Status"] == "ENABLE" else "暂停" if i["Status"] == "DISABLE" else i["Status"],
+                    "status": (
+                        "启用"
+                        if i["Status"] == "ENABLE"
+                        else "暂停" if i["Status"] == "DISABLE" else i["Status"]
+                    ),
                     "mx": i.get("MX"),
                     "updated_on": i["UpdatedOn"],
                     "remark": i.get("Remark") or "",
@@ -177,18 +218,20 @@ class main(sslBase):
         domain_name, sub_domain, _ = self.extract_zone(domain_name)
 
         try:
-            params = json.dumps({
-                "Domain": domain_name,
-                "SubDomain": sub_domain,
-                "RecordType": record_type,
-                "RecordLine": RecordLine,
-                "Value": domain_dns_value,
-                "RecordId": int(RecordId)
-            })
+            params = json.dumps(
+                {
+                    "Domain": domain_name,
+                    "SubDomain": sub_domain,
+                    "RecordType": record_type,
+                    "RecordLine": RecordLine,
+                    "Value": domain_dns_value,
+                    "RecordId": int(RecordId),
+                }
+            )
             headers = self.get_headers(get.dns_id, "ModifyRecord", params)
             res = requests.post(self.host, headers=headers, data=params).json()
-            if "Error" in res['Response']:
-                return public.returnMsg(False, res['Response']["Error"]["Message"])
-            return public.returnMsg(True, '修改成功!')
+            if "Error" in res["Response"]:
+                return public.returnMsg(False, res["Response"]["Error"]["Message"])
+            return public.returnMsg(True, "修改成功!")
         except Exception as e:
             return public.returnMsg(False, e)

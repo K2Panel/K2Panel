@@ -93,7 +93,11 @@ class AuroraDns(common.BaseDns):
                 )
             else:
                 self.logger.info(
-                    "Record " + subDomain + "." + domainSuffix + " not found. No record to delete."
+                    "Record "
+                    + subDomain
+                    + "."
+                    + domainSuffix
+                    + " not found. No record to delete."
                 )
 
         self.logger.info("delete_dns_record_success")

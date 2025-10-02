@@ -6,20 +6,26 @@ import os
 import typing
 
 import public
-from .regexplib import match_ipv4, match_ipv6, match_safe_path, match_based_host, match_email
+from .regexplib import (
+    match_ipv4,
+    match_ipv6,
+    match_safe_path,
+    match_based_host,
+    match_email,
+)
 from .exceptions import HintException
 from .structures import aap_t_simple_result
 
 
 class Param:
     __VALIDATE_OPTS = [
-        '>',
-        '<',
-        '>=',
-        '<=',
-        '=',
-        'in',
-        'not in',
+        ">",
+        "<",
+        ">=",
+        "<=",
+        "=",
+        "in",
+        "not in",
     ]
 
     def __init__(self, name: str):
@@ -32,258 +38,306 @@ class Param:
 
     def Require(self):
         """
-            必选参数
-            @return: self
+        必选参数
+        @return: self
         """
         self.__validate_rules.append(_RequireValidation(self.name))
         return self
 
     def Date(self):
         """
-            日期字符串
-            @return: self
+        日期字符串
+        @return: self
         """
         self.__validate_rules.append(_DateValidation(self.name))
         return self
 
     def Timestamp(self):
         """
-            Unix时间戳
-            @return: self
+        Unix时间戳
+        @return: self
         """
         self.__validate_rules.append(_TimestampValidation(self.name))
         return self
 
     def Url(self):
         """
-            URL
-            @return: self
+        URL
+        @return: self
         """
         self.__validate_rules.append(_UrlValidation(self.name))
         return self
 
     def Ip(self):
         """
-            IP地址
-            @return: self
+        IP地址
+        @return: self
         """
         self.__validate_rules.append(_IpValidation(self.name))
         return self
 
     def Ipv4(self):
         """
-            IPv4地址
-            @return: self
+        IPv4地址
+        @return: self
         """
         self.__validate_rules.append(_Ipv4Validation(self.name))
         return self
 
     def Ipv6(self):
         """
-            IPv6地址
-            @return: self
+        IPv6地址
+        @return: self
         """
         self.__validate_rules.append(_Ipv6Validation(self.name))
         return self
 
     def Host(self):
         """
-            主机地址（可以包含端口号）
-            @return: self
+        主机地址（可以包含端口号）
+        @return: self
         """
         self.__validate_rules.append(_HostValidation(self.name))
         return self
 
     def Port(self):
         """
-            端口号
-            @return: self
+        端口号
+        @return: self
         """
-        return self.Integer('between', [1, 65535])
+        return self.Integer("between", [1, 65535])
 
     def Json(self):
         """
-            JSON字符串
-            @return: self
+        JSON字符串
+        @return: self
         """
         self.__validate_rules.append(_JsonValidation(self.name))
         return self
 
     def Array(self):
         """
-            JSON-Array字符串
-            @return: self
+        JSON-Array字符串
+        @return: self
         """
         self.__validate_rules.append(_ArrayValidation(self.name))
         return self
 
     def Object(self):
         """
-            JSON-Object字符串
-            @return: self
+        JSON-Object字符串
+        @return: self
         """
         self.__validate_rules.append(_ObjectValidation(self.name))
         return self
 
     def List(self):
         """
-            限制参数数据类型：list
-            @return: self
+        限制参数数据类型：list
+        @return: self
         """
         self.__validate_rules.append(_ListValidation(self.name))
         return self
 
     def Tuple(self):
         """
-            限制参数数据类型：tuple
-            @return: self
+        限制参数数据类型：tuple
+        @return: self
         """
         self.__validate_rules.append(_TupleValidation(self.name))
         return self
 
     def Dict(self):
         """
-            限制参数数据类型：dict
-            @return: self
+        限制参数数据类型：dict
+        @return: self
         """
         self.__validate_rules.append(_DictValidation(self.name))
         return self
 
     def Bool(self):
         """
-            布尔值或boolean字符串 true/false
-            @return: self
+        布尔值或boolean字符串 true/false
+        @return: self
         """
         self.__validate_rules.append(_BoolValidation(self.name))
         return self
 
-    def String(self, opt: typing.Optional[str] = None, length_or_list: typing.Optional[typing.Union[int, typing.List[typing.Union[int, str]]]] = None):
+    def String(
+        self,
+        opt: typing.Optional[str] = None,
+        length_or_list: typing.Optional[
+            typing.Union[int, typing.List[typing.Union[int, str]]]
+        ] = None,
+    ):
         """
-            字符串
-            @param opt: str 运算符
-            @param length_or_list: int|list[int|str]|None 字符串长度或字符串集合
-            @return: self
+        字符串
+        @param opt: str 运算符
+        @param length_or_list: int|list[int|str]|None 字符串长度或字符串集合
+        @return: self
         """
         self.__validate_rules.append(_StringValidation(self.name, opt, length_or_list))
         return self
 
-    def Number(self, opt: typing.Optional[str] = None, num: typing.Optional[typing.Union[int, float, typing.List[typing.Union[int, float]]]] = None):
+    def Number(
+        self,
+        opt: typing.Optional[str] = None,
+        num: typing.Optional[
+            typing.Union[int, float, typing.List[typing.Union[int, float]]]
+        ] = None,
+    ):
         """
-            数值
-            @param opt: str 运算符
-            @param num: int 数值大小
-            @return: self
+        数值
+        @param opt: str 运算符
+        @param num: int 数值大小
+        @return: self
         """
         self.__validate_rules.append(_NumberValidation(self.name, opt, num))
         return self
 
-    def Integer(self, opt: typing.Optional[str] = None, num: typing.Optional[typing.Union[typing.Union[int, typing.List[int]]]] = None):
+    def Integer(
+        self,
+        opt: typing.Optional[str] = None,
+        num: typing.Optional[typing.Union[typing.Union[int, typing.List[int]]]] = None,
+    ):
         """
-            整数
-            @param opt: str 运算符
-            @param num: int 数值大小
-            @return: self
+        整数
+        @param opt: str 运算符
+        @param num: int 数值大小
+        @return: self
         """
         self.__validate_rules.append(_IntegerValidation(self.name, opt, num))
         return self
 
-    def Float(self, opt: typing.Optional[str] = None, num: typing.Optional[typing.Union[int, float, typing.List[typing.Union[int, float]]]] = None):
+    def Float(
+        self,
+        opt: typing.Optional[str] = None,
+        num: typing.Optional[
+            typing.Union[int, float, typing.List[typing.Union[int, float]]]
+        ] = None,
+    ):
         """
-            浮点数
-            @param opt: str 运算符
-            @param num: int 数值大小
-            @return: self
+        浮点数
+        @param opt: str 运算符
+        @param num: int 数值大小
+        @return: self
         """
         self.__validate_rules.append(_FloatValidation(self.name, opt, num))
         return self
 
-    def Alpha(self, opt: typing.Optional[str] = None, length_or_list: typing.Optional[typing.Union[int, typing.List[typing.Union[int, str]]]] = None):
+    def Alpha(
+        self,
+        opt: typing.Optional[str] = None,
+        length_or_list: typing.Optional[
+            typing.Union[int, typing.List[typing.Union[int, str]]]
+        ] = None,
+    ):
         """
-            纯字母
-            @param opt: str 运算符
-            @param length_or_list: int|list[int|str]|None 字符串长度或字符串集合
-            @return: self
+        纯字母
+        @param opt: str 运算符
+        @param length_or_list: int|list[int|str]|None 字符串长度或字符串集合
+        @return: self
         """
         self.__validate_rules.append(_AlphaValidation(self.name, opt, length_or_list))
         return self
 
-    def Alphanum(self, opt: typing.Optional[str] = None, length_or_list: typing.Optional[typing.Union[int, typing.List[typing.Union[int, str]]]] = None):
+    def Alphanum(
+        self,
+        opt: typing.Optional[str] = None,
+        length_or_list: typing.Optional[
+            typing.Union[int, typing.List[typing.Union[int, str]]]
+        ] = None,
+    ):
         """
-            字母+数字
-            @param opt: str 运算符
-            @param length_or_list: int|list[int|str]|None 字符串长度或字符串集合
-            @return: self
+        字母+数字
+        @param opt: str 运算符
+        @param length_or_list: int|list[int|str]|None 字符串长度或字符串集合
+        @return: self
         """
-        self.__validate_rules.append(_AlphanumValidation(self.name, opt, length_or_list))
+        self.__validate_rules.append(
+            _AlphanumValidation(self.name, opt, length_or_list)
+        )
         return self
 
     def Mobile(self):
         """
-            （中国）手机号码
-            @return: self
+        （中国）手机号码
+        @return: self
         """
         self.__validate_rules.append(_MobileValidation(self.name))
         return self
 
     def Email(self):
         """
-            邮箱地址
-            @return: self
+        邮箱地址
+        @return: self
         """
         self.__validate_rules.append(_EmailValidation(self.name))
         return self
 
     def Regexp(self, exp: str):
         """
-            正则表达式
-            @param exp: str 正则表达式
-            @return: self
+        正则表达式
+        @param exp: str 正则表达式
+        @return: self
         """
         self.__validate_rules.append(_RegexpValidation(self.name, exp))
         return self
 
     def File(self):
         """
-            文件上传
-            @return: self
+        文件上传
+        @return: self
         """
         self.__validate_rules.append(_FileValidation(self.name))
         return self
 
-    def Size(self, opt: typing.Optional[str] = None, size: typing.Optional[typing.Union[int, typing.List[int]]] = None):
+    def Size(
+        self,
+        opt: typing.Optional[str] = None,
+        size: typing.Optional[typing.Union[int, typing.List[int]]] = None,
+    ):
         """
-            上传文件大小
-            @param opt: str 运算符
-            @param size: int 上传文件大小bytes
-            @return: self
+        上传文件大小
+        @param opt: str 运算符
+        @param size: int 上传文件大小bytes
+        @return: self
         """
         self.__validate_rules.append(_SizeValidation(self.name, opt, size))
         return self
 
-    def Mime(self, opt: typing.Optional[str] = None, mime_type: typing.Optional[typing.Union[str, typing.List[str]]] = None):
+    def Mime(
+        self,
+        opt: typing.Optional[str] = None,
+        mime_type: typing.Optional[typing.Union[str, typing.List[str]]] = None,
+    ):
         """
-            上传文件Mimetype
-            @param opt: str 运算符
-            @param mime_type: str 上传文件Mimetype
-            @return: self
+        上传文件Mimetype
+        @param opt: str 运算符
+        @param mime_type: str 上传文件Mimetype
+        @return: self
         """
         self.__validate_rules.append(_MimeValidation(self.name, opt, mime_type))
         return self
 
-    def Ext(self, opt: typing.Optional[str] = None, ext: typing.Optional[typing.Union[str, typing.List[str]]] = None):
+    def Ext(
+        self,
+        opt: typing.Optional[str] = None,
+        ext: typing.Optional[typing.Union[str, typing.List[str]]] = None,
+    ):
         """
-            上传文件后缀名
-            @param opt: str 运算符
-            @param ext: str 上传文件后缀名
-            @return: self
+        上传文件后缀名
+        @param opt: str 运算符
+        @param ext: str 上传文件后缀名
+        @return: self
         """
         self.__validate_rules.append(_ExtValidation(self.name, opt, ext))
         return self
 
     def SafePath(self, force: bool = True):
         """
-            文件路径
-            @return: self
+        文件路径
+        @return: self
         """
         self.__validate_rules.append(_SafePathValidation(self.name, force))
         return self
@@ -297,25 +351,25 @@ class Param:
 
     def Trim(self):
         """
-            去除字符串两端空白字符
-            @return: self
+        去除字符串两端空白字符
+        @return: self
         """
         self.__filters.append(lambda x: str(x).strip())
         return self
 
     def Xss(self):
         """
-            XSS过滤
-            @return: self
+        XSS过滤
+        @return: self
         """
         self.__filters.append(_xssencode)
         return self
 
     def Filter(self, f: callable):
         """
-            自定义参数过滤器
-            @param f: callable func(x: any) -> any
-            @return: self
+        自定义参数过滤器
+        @param f: callable func(x: any) -> any
+        @return: self
         """
         self.__filters.append(f)
         return self
@@ -324,48 +378,59 @@ class Param:
 
     def do_validate(self, args: dict):
         """
-            执行验证器
-            @param args: dict 请求参数列表
-            @return: self
+        执行验证器
+        @param args: dict 请求参数列表
+        @return: self
         """
         if self.__nullable:
-            args = {k: args[k] for k in filter(lambda k: args[k] is not None, args.keys())}
+            args = {
+                k: args[k] for k in filter(lambda k: args[k] is not None, args.keys())
+            }
 
         for v in self.__validate_rules:
             v.validate(args)
 
         return self
 
-    def do_filter(self, val, extra_filters: typing.Union[typing.List[callable], typing.Tuple[callable]] = ()) -> any:
+    def do_filter(
+        self,
+        val,
+        extra_filters: typing.Union[typing.List[callable], typing.Tuple[callable]] = (),
+    ) -> any:
         """
-            执行参数过滤器
-            @param val: any
-            @param extra_filters: list[callable]|tuple[callable]
-            @return: any
+        执行参数过滤器
+        @param val: any
+        @param extra_filters: list[callable]|tuple[callable]
+        @return: any
         """
         from functools import reduce
-        return reduce(lambda x, y: y(x) if x is not None else x, list(extra_filters) + self.__filters, val)
+
+        return reduce(
+            lambda x, y: y(x) if x is not None else x,
+            list(extra_filters) + self.__filters,
+            val,
+        )
 
 
 class _ValidateRule:
     def validate(self, args: dict):
-        raise NotImplementedError('method validate() not implemented.')
+        raise NotImplementedError("method validate() not implemented.")
 
 
 class _RequireValidation(_ValidateRule):
     """
-        必选参数验证类
+    必选参数验证类
     """
 
     def __init__(self, name: str):
         self.name: str = name
-        self.errmsg: str = '{} is required'
+        self.errmsg: str = "{} is required"
 
     def validate(self, args: dict):
         if self.name in args:
             return
 
-        if 'FILES' in args and self.name in args['FILES']:
+        if "FILES" in args and self.name in args["FILES"]:
             return
 
         raise HintException(self.errmsg.format(self.name))
@@ -373,19 +438,21 @@ class _RequireValidation(_ValidateRule):
 
 class _DateValidation(_ValidateRule):
     """
-        日期字符串验证类
+    日期字符串验证类
     """
 
     def __init__(self, name: str):
         self.name: str = name
-        self.errmsg: str = '{} not valid datetime'
+        self.errmsg: str = "{} not valid datetime"
 
     def validate(self, args: dict):
         if self.name not in args:
             return
 
-        if re.match(r'^(?:\d{2}-\d{2}-\d{2}|\d{2}/\d{2}/\d{2})(?: \d{2}:\d{2}(?::\d{2})?)?$',
-                    str(args[self.name]).strip()):
+        if re.match(
+            r"^(?:\d{2}-\d{2}-\d{2}|\d{2}/\d{2}/\d{2})(?: \d{2}:\d{2}(?::\d{2})?)?$",
+            str(args[self.name]).strip(),
+        ):
             return
 
         raise HintException(self.errmsg.format(self.name))
@@ -393,18 +460,18 @@ class _DateValidation(_ValidateRule):
 
 class _TimestampValidation(_ValidateRule):
     """
-        Unix时间戳验证类
+    Unix时间戳验证类
     """
 
     def __init__(self, name: str):
         self.name: str = name
-        self.errmsg: str = '{} not valid timestamp'
+        self.errmsg: str = "{} not valid timestamp"
 
     def validate(self, args: dict):
         if self.name not in args:
             return
 
-        if re.match(r'^\d{10}$', str(args[self.name]).strip()):
+        if re.match(r"^\d{10}$", str(args[self.name]).strip()):
             return
 
         raise HintException(self.errmsg.format(self.name))
@@ -412,24 +479,26 @@ class _TimestampValidation(_ValidateRule):
 
 class _UrlValidation(_ValidateRule):
     """
-        URL地址验证类
+    URL地址验证类
     """
 
     def __init__(self, name: str):
         self.name: str = name
-        self.errmsg: str = '{} not valid URL'
+        self.errmsg: str = "{} not valid URL"
 
     def validate(self, args: dict):
         if self.name not in args:
             return
 
         regex_obj = re.compile(
-            r'^(?:http|ftp)s?://'
-            r'(?:(?:[A-Z0-9_](?:[A-Z0-9-_]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-_]{2,}\.?)|'
-            r'localhost|'
-            r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'
-            r'(?::\d+)?'
-            r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+            r"^(?:http|ftp)s?://"
+            r"(?:(?:[A-Z0-9_](?:[A-Z0-9-_]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-_]{2,}\.?)|"
+            r"localhost|"
+            r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})"
+            r"(?::\d+)?"
+            r"(?:/?|[/?]\S+)$",
+            re.IGNORECASE,
+        )
 
         if regex_obj.match(str(args[self.name]).strip()):
             return
@@ -439,12 +508,12 @@ class _UrlValidation(_ValidateRule):
 
 class _IpValidation(_ValidateRule):
     """
-        IP地址验证类
+    IP地址验证类
     """
 
     def __init__(self, name: str):
         self.name: str = name
-        self.errmsg: str = '{} not valid IP'
+        self.errmsg: str = "{} not valid IP"
 
     def validate(self, args: dict):
         if self.name not in args:
@@ -460,12 +529,12 @@ class _IpValidation(_ValidateRule):
 
 class _Ipv4Validation(_ValidateRule):
     """
-        IPv4地址验证类
+    IPv4地址验证类
     """
 
     def __init__(self, name: str):
         self.name: str = name
-        self.errmsg: str = '{} not valid IPv4'
+        self.errmsg: str = "{} not valid IPv4"
 
     def validate(self, args: dict):
         if self.name not in args:
@@ -479,12 +548,12 @@ class _Ipv4Validation(_ValidateRule):
 
 class _Ipv6Validation(_ValidateRule):
     """
-        IPv6地址验证类
+    IPv6地址验证类
     """
 
     def __init__(self, name: str):
         self.name: str = name
-        self.errmsg: str = '{} not valid IPv4'
+        self.errmsg: str = "{} not valid IPv4"
 
     def validate(self, args: dict):
         if self.name not in args:
@@ -498,12 +567,12 @@ class _Ipv6Validation(_ValidateRule):
 
 class _HostValidation(_ValidateRule):
     """
-        主机地址验证类
+    主机地址验证类
     """
 
     def __init__(self, name: str):
         self.name: str = name
-        self.errmsg: str = '{} not valid HOST'
+        self.errmsg: str = "{} not valid HOST"
 
     def validate(self, args: dict):
         if self.name not in args:
@@ -517,12 +586,12 @@ class _HostValidation(_ValidateRule):
 
 class _JsonValidation(_ValidateRule):
     """
-        JSON字符串验证类
+    JSON字符串验证类
     """
 
     def __init__(self, name: str):
         self.name: str = name
-        self.errmsg: str = '{} not valid JSON'
+        self.errmsg: str = "{} not valid JSON"
 
     def validate(self, args: dict):
         if self.name not in args:
@@ -539,12 +608,12 @@ class _JsonValidation(_ValidateRule):
 
 class _ArrayValidation(_ValidateRule):
     """
-        JSON-Array字符串验证类
+    JSON-Array字符串验证类
     """
 
     def __init__(self, name: str):
         self.name: str = name
-        self.errmsg: str = '{} not valid JSON Array'
+        self.errmsg: str = "{} not valid JSON Array"
 
     def validate(self, args: dict):
         if self.name not in args:
@@ -563,12 +632,12 @@ class _ArrayValidation(_ValidateRule):
 
 class _ObjectValidation(_ValidateRule):
     """
-        JSON-Object字符串验证类
+    JSON-Object字符串验证类
     """
 
     def __init__(self, name: str):
         self.name: str = name
-        self.errmsg: str = '{} not valid JSON Object'
+        self.errmsg: str = "{} not valid JSON Object"
 
     def validate(self, args: dict):
         if self.name not in args:
@@ -587,12 +656,12 @@ class _ObjectValidation(_ValidateRule):
 
 class _BoolValidation(_ValidateRule):
     """
-        bool字符串验证类
+    bool字符串验证类
     """
 
     def __init__(self, name: str):
         self.name: str = name
-        self.errmsg: str = '{} must be bool'
+        self.errmsg: str = "{} must be bool"
 
     def validate(self, args: dict):
         if self.name not in args:
@@ -600,7 +669,9 @@ class _BoolValidation(_ValidateRule):
 
         val = args[self.name]
 
-        if isinstance(val, bool) or re.match(r'^true|false$', str(args[self.name]).strip(), re.IGNORECASE):
+        if isinstance(val, bool) or re.match(
+            r"^true|false$", str(args[self.name]).strip(), re.IGNORECASE
+        ):
             return
 
         raise HintException(self.errmsg.format(self.name))
@@ -608,12 +679,12 @@ class _BoolValidation(_ValidateRule):
 
 class _ListValidation(_ValidateRule):
     """
-        list数据类型验证类
+    list数据类型验证类
     """
 
     def __init__(self, name: str):
         self.name: str = name
-        self.errmsg: str = '{} must be list'
+        self.errmsg: str = "{} must be list"
 
     def validate(self, args: dict):
         if self.name not in args:
@@ -627,12 +698,12 @@ class _ListValidation(_ValidateRule):
 
 class _TupleValidation(_ValidateRule):
     """
-        tuple数据类型验证类
+    tuple数据类型验证类
     """
 
     def __init__(self, name: str):
         self.name: str = name
-        self.errmsg: str = '{} must be tuple'
+        self.errmsg: str = "{} must be tuple"
 
     def validate(self, args: dict):
         if self.name not in args:
@@ -646,12 +717,12 @@ class _TupleValidation(_ValidateRule):
 
 class _DictValidation(_ValidateRule):
     """
-        dict数据类型验证类
+    dict数据类型验证类
     """
 
     def __init__(self, name: str):
         self.name: str = name
-        self.errmsg: str = '{} must be dict'
+        self.errmsg: str = "{} must be dict"
 
     def validate(self, args: dict):
         if self.name not in args:
@@ -665,10 +736,18 @@ class _DictValidation(_ValidateRule):
 
 class _OperationHelper:
     """
-        运算辅助类
+    运算辅助类
     """
 
-    def __init__(self, name: str, opt: typing.Optional[str], operand: typing.Optional[typing.Union[str, int, float, typing.List[typing.Union[str, int, float]]]], data_type):
+    def __init__(
+        self,
+        name: str,
+        opt: typing.Optional[str],
+        operand: typing.Optional[
+            typing.Union[str, int, float, typing.List[typing.Union[str, int, float]]]
+        ],
+        data_type,
+    ):
         self.name: str = name
         self.opt = opt
         self.operand = operand
@@ -689,21 +768,21 @@ class _OperationHelper:
         if self.operand is None:
             return
 
-        if self.opt == '=':
+        if self.opt == "=":
             self._eq(self._calc_num(val))
-        elif self.opt == '>':
+        elif self.opt == ">":
             self._gt(self._calc_num(val))
-        elif self.opt == '>=':
+        elif self.opt == ">=":
             self._gte(self._calc_num(val))
-        elif self.opt == '<':
+        elif self.opt == "<":
             self._lt(self._calc_num(val))
-        elif self.opt == '<=':
+        elif self.opt == "<=":
             self._lte(self._calc_num(val))
-        elif self.opt == 'between':
+        elif self.opt == "between":
             self._between(self._calc_num(val))
-        elif self.opt == 'in':
+        elif self.opt == "in":
             self._in(self.data_type(val))
-        elif self.opt == 'not in':
+        elif self.opt == "not in":
             self._not_in(self.data_type(val))
 
     def _calc_num(self, val: str) -> typing.Union[int, float]:
@@ -721,11 +800,23 @@ class _OperationHelper:
         if self.operand is None:
             return
 
-        if self.opt in ['=', '>', '<', '>=', '<='] and not isinstance(self.operand, int):
-            raise HintException('当运算符opt是 \'{}\' 时，运算数只能是int类型或float类型，当前类型 {}'.format(self.opt, type(self.operand)))
+        if self.opt in ["=", ">", "<", ">=", "<="] and not isinstance(
+            self.operand, int
+        ):
+            raise HintException(
+                "当运算符opt是 '{}' 时，运算数只能是int类型或float类型，当前类型 {}".format(
+                    self.opt, type(self.operand)
+                )
+            )
 
-        if self.opt in ['in', 'not in', 'between'] and not isinstance(self.operand, list):
-            raise HintException('当运算符opt是 \'{}\' 时，运算数只能是list类型，当前类型 {}'.format(self.opt, type(self.operand)))
+        if self.opt in ["in", "not in", "between"] and not isinstance(
+            self.operand, list
+        ):
+            raise HintException(
+                "当运算符opt是 '{}' 时，运算数只能是list类型，当前类型 {}".format(
+                    self.opt, type(self.operand)
+                )
+            )
 
     def _data_type_check(self):
         if self.data_type is str:
@@ -737,83 +828,130 @@ class _OperationHelper:
         if self.data_type is float:
             return
 
-        raise HintException('data_type只能是str、int、float 当前 {}'.format(self.data_type))
+        raise HintException(
+            "data_type只能是str、int、float 当前 {}".format(self.data_type)
+        )
 
     def _eq(self, num: typing.Union[int, float]):
         if num == self.operand:
             return
 
         raise HintException(
-            '{}{} must equal {}'.format(self.name, ' length' if isinstance(self.data_type, str) else '', self.operand))
+            "{}{} must equal {}".format(
+                self.name,
+                " length" if isinstance(self.data_type, str) else "",
+                self.operand,
+            )
+        )
 
     def _gt(self, num: typing.Union[int, float]):
         if num > self.operand:
             return
 
         raise HintException(
-            '{}{} must greater than {}'.format(self.name, ' length' if isinstance(self.data_type, str) else '',
-                                               self.operand))
+            "{}{} must greater than {}".format(
+                self.name,
+                " length" if isinstance(self.data_type, str) else "",
+                self.operand,
+            )
+        )
 
     def _gte(self, num: typing.Union[int, float]):
         if num >= self.operand:
             return
 
         raise HintException(
-            '{}{} must greater than or equal {}'.format(self.name, ' length' if isinstance(self.data_type, str) else '',
-                                                        self.operand))
+            "{}{} must greater than or equal {}".format(
+                self.name,
+                " length" if isinstance(self.data_type, str) else "",
+                self.operand,
+            )
+        )
 
     def _lt(self, num: typing.Union[int, float]):
         if num < self.operand:
             return
 
         raise HintException(
-            '{}{} must less than {}'.format(self.name, ' length' if isinstance(self.data_type, str) else '',
-                                            self.operand))
+            "{}{} must less than {}".format(
+                self.name,
+                " length" if isinstance(self.data_type, str) else "",
+                self.operand,
+            )
+        )
 
     def _lte(self, num: typing.Union[int, float]):
         if num <= self.operand:
             return
 
         raise HintException(
-            '{}{} must less than or equal {}'.format(self.name, ' length' if isinstance(self.data_type, str) else '',
-                                                     self.operand))
+            "{}{} must less than or equal {}".format(
+                self.name,
+                " length" if isinstance(self.data_type, str) else "",
+                self.operand,
+            )
+        )
 
     def _between(self, num: typing.Union[int, float]):
         if len(self.operand) != 2:
-            raise HintException('当运算符opt是 \'between\' 时，运算数只能是list类型，并且list的长度只能是2，当前list长度 {}'.format(len(self.operand)))
+            raise HintException(
+                "当运算符opt是 'between' 时，运算数只能是list类型，并且list的长度只能是2，当前list长度 {}".format(
+                    len(self.operand)
+                )
+            )
 
         if num >= self.operand[0] and num <= self.operand[1]:
             return
 
         raise HintException(
-            '{}{} must between {} and {}'.format(self.name, ' length' if isinstance(self.data_type, str) else '',
-                                                 self.operand[0], self.operand[1]))
+            "{}{} must between {} and {}".format(
+                self.name,
+                " length" if isinstance(self.data_type, str) else "",
+                self.operand[0],
+                self.operand[1],
+            )
+        )
 
     def _in(self, item: typing.Union[int, float, str]):
         if len(self.operand) < 1:
-            raise HintException('当运算符opt是 \'{}\' 时，运算数只能是list类型，并且list的长度必须大于0，当前list长度 0'.format(self.opt))
+            raise HintException(
+                "当运算符opt是 '{}' 时，运算数只能是list类型，并且list的长度必须大于0，当前list长度 0".format(
+                    self.opt
+                )
+            )
 
         if item in self.operand:
             return
 
-        raise HintException('{} must in {}'.format(self.name, self.operand))
+        raise HintException("{} must in {}".format(self.name, self.operand))
 
     def _not_in(self, item: typing.Union[int, float, str]):
         if len(self.operand) < 1:
-            raise HintException('当运算符opt是 \'{}\' 时，运算数只能是list类型，并且list的长度必须大于0，当前list长度 0'.format(self.opt))
+            raise HintException(
+                "当运算符opt是 '{}' 时，运算数只能是list类型，并且list的长度必须大于0，当前list长度 0".format(
+                    self.opt
+                )
+            )
 
         if item in self.operand:
-            raise HintException('{} must not in {}'.format(self.name, self.operand))
+            raise HintException("{} must not in {}".format(self.name, self.operand))
 
 
 class _StringValidation(_ValidateRule):
     """
-        字符串验证类
+    字符串验证类
     """
 
-    def __init__(self, name: str, opt: typing.Optional[str] = None, v: typing.Optional[typing.Union[int, typing.List[typing.Union[int, str]]]] = None):
+    def __init__(
+        self,
+        name: str,
+        opt: typing.Optional[str] = None,
+        v: typing.Optional[
+            typing.Union[int, typing.List[typing.Union[int, str]]]
+        ] = None,
+    ):
         self.name: str = name
-        self.errmsg: str = '{} must be string'
+        self.errmsg: str = "{} must be string"
         self.op = _OperationHelper(name, opt, v, str)
 
     def validate(self, args: dict):
@@ -831,12 +969,19 @@ class _StringValidation(_ValidateRule):
 
 class _NumberValidation(_ValidateRule):
     """
-        数字验证类
+    数字验证类
     """
 
-    def __init__(self, name: str, opt: typing.Optional[str] = None, num: typing.Optional[typing.Union[int, float, typing.List[typing.Union[int, float]]]] = None):
+    def __init__(
+        self,
+        name: str,
+        opt: typing.Optional[str] = None,
+        num: typing.Optional[
+            typing.Union[int, float, typing.List[typing.Union[int, float]]]
+        ] = None,
+    ):
         self.name: str = name
-        self.errmsg: str = '{} must be number'
+        self.errmsg: str = "{} must be number"
         self.op = _OperationHelper(name, opt, num, float)
 
     def validate(self, args: dict):
@@ -854,12 +999,17 @@ class _NumberValidation(_ValidateRule):
 
 class _IntegerValidation(_ValidateRule):
     """
-        整数验证类
+    整数验证类
     """
 
-    def __init__(self, name: str, opt: typing.Optional[str] = None, num: typing.Optional[typing.Union[int, typing.List[int]]] = None):
+    def __init__(
+        self,
+        name: str,
+        opt: typing.Optional[str] = None,
+        num: typing.Optional[typing.Union[int, typing.List[int]]] = None,
+    ):
         self.name: str = name
-        self.errmsg: str = '{} must be integer'
+        self.errmsg: str = "{} must be integer"
         self.op = _OperationHelper(name, opt, num, int)
 
     def validate(self, args: dict):
@@ -877,12 +1027,17 @@ class _IntegerValidation(_ValidateRule):
 
 class _FloatValidation(_ValidateRule):
     """
-        浮点数验证类
+    浮点数验证类
     """
 
-    def __init__(self, name: str, opt: typing.Optional[str] = None, num: typing.Optional[typing.Union[float, typing.List[float]]] = None):
+    def __init__(
+        self,
+        name: str,
+        opt: typing.Optional[str] = None,
+        num: typing.Optional[typing.Union[float, typing.List[float]]] = None,
+    ):
         self.name: str = name
-        self.errmsg: str = '{} must be float'
+        self.errmsg: str = "{} must be float"
         self.op = _OperationHelper(name, opt, num, float)
 
     def validate(self, args: dict):
@@ -900,12 +1055,19 @@ class _FloatValidation(_ValidateRule):
 
 class _AlphaValidation(_ValidateRule):
     """
-        纯字母验证类
+    纯字母验证类
     """
 
-    def __init__(self, name: str, opt: typing.Optional[str] = None, v: typing.Optional[typing.Union[int, typing.List[typing.Union[int, str]]]] = None):
+    def __init__(
+        self,
+        name: str,
+        opt: typing.Optional[str] = None,
+        v: typing.Optional[
+            typing.Union[int, typing.List[typing.Union[int, str]]]
+        ] = None,
+    ):
         self.name: str = name
-        self.errmsg: str = '{} must be alpha'
+        self.errmsg: str = "{} must be alpha"
         self.op = _OperationHelper(name, opt, v, str)
 
     def validate(self, args: dict):
@@ -914,7 +1076,7 @@ class _AlphaValidation(_ValidateRule):
 
         s = str(args[self.name]).strip()
 
-        if re.match(r'^[a-zA-Z]+$', s):
+        if re.match(r"^[a-zA-Z]+$", s):
             self.op.do(s)
             return
 
@@ -923,12 +1085,19 @@ class _AlphaValidation(_ValidateRule):
 
 class _AlphanumValidation(_ValidateRule):
     """
-        字母数字验证类
+    字母数字验证类
     """
 
-    def __init__(self, name: str, opt: typing.Optional[str] = None, v: typing.Optional[typing.Union[int, typing.List[typing.Union[int, str]]]] = None):
+    def __init__(
+        self,
+        name: str,
+        opt: typing.Optional[str] = None,
+        v: typing.Optional[
+            typing.Union[int, typing.List[typing.Union[int, str]]]
+        ] = None,
+    ):
         self.name: str = name
-        self.errmsg: str = '{} must be alphanum'
+        self.errmsg: str = "{} must be alphanum"
         self.op = _OperationHelper(name, opt, v, str)
 
     def validate(self, args: dict):
@@ -937,7 +1106,7 @@ class _AlphanumValidation(_ValidateRule):
 
         s = str(args[self.name]).strip()
 
-        if re.match(r'^[a-zA-Z0-9]+$', s):
+        if re.match(r"^[a-zA-Z0-9]+$", s):
             self.op.do(s)
             return
 
@@ -946,12 +1115,12 @@ class _AlphanumValidation(_ValidateRule):
 
 class _MobileValidation(_ValidateRule):
     """
-        （中国）手机号码验证类
+    （中国）手机号码验证类
     """
 
     def __init__(self, name: str):
         self.name: str = name
-        self.errmsg: str = '{} not valid mobile'
+        self.errmsg: str = "{} not valid mobile"
 
     def validate(self, args: dict):
         if self.name not in args:
@@ -959,7 +1128,7 @@ class _MobileValidation(_ValidateRule):
 
         s = str(args[self.name]).strip()
 
-        if re.match(r'^1[3-9]\d{9}$', s):
+        if re.match(r"^1[3-9]\d{9}$", s):
             return
 
         raise HintException(self.errmsg.format(self.name))
@@ -967,12 +1136,12 @@ class _MobileValidation(_ValidateRule):
 
 class _EmailValidation(_ValidateRule):
     """
-        邮箱地址验证类
+    邮箱地址验证类
     """
 
     def __init__(self, name: str):
         self.name: str = name
-        self.errmsg: str = '{} not valid email'
+        self.errmsg: str = "{} not valid email"
 
     def validate(self, args: dict):
         if self.name not in args:
@@ -988,12 +1157,12 @@ class _EmailValidation(_ValidateRule):
 
 class _RegexpValidation(_ValidateRule):
     """
-        正则表达式验证类
+    正则表达式验证类
     """
 
     def __init__(self, name: str, regexp: str):
         self.name: str = name
-        self.errmsg: str = '{} not success verified by regexp'
+        self.errmsg: str = "{} not success verified by regexp"
         self.regexp: str = regexp
 
     def validate(self, args: dict):
@@ -1010,15 +1179,15 @@ class _RegexpValidation(_ValidateRule):
 
 class _FileValidation(_ValidateRule):
     """
-        文件上传验证类
+    文件上传验证类
     """
 
     def __init__(self, name: str):
         self.name: str = name
-        self.errmsg: str = '{} not valid file'
+        self.errmsg: str = "{} not valid file"
 
     def validate(self, args: dict):
-        if 'FILES' in args and self.name in args['FILES']:
+        if "FILES" in args and self.name in args["FILES"]:
             return
 
         raise HintException(self.errmsg.format(self.name))
@@ -1026,62 +1195,77 @@ class _FileValidation(_ValidateRule):
 
 class _SizeValidation(_ValidateRule):
     """
-        文件大小验证类
+    文件大小验证类
     """
 
-    def __init__(self, name: str, opt: typing.Optional[str] = None, size: typing.Optional[typing.Union[int, typing.List[int]]] = None):
+    def __init__(
+        self,
+        name: str,
+        opt: typing.Optional[str] = None,
+        size: typing.Optional[typing.Union[int, typing.List[int]]] = None,
+    ):
         self.name: str = name
         self.op = _OperationHelper(name, opt, size, int)
 
     def validate(self, args: dict):
-        if 'FILES' not in args or self.name not in args['FILES']:
+        if "FILES" not in args or self.name not in args["FILES"]:
             return
 
-        self.op.do(args['FILES'][self.name].content_length)
+        self.op.do(args["FILES"][self.name].content_length)
 
 
 class _MimeValidation(_ValidateRule):
     """
-        文件mimetype验证类
+    文件mimetype验证类
     """
 
-    def __init__(self, name: str, opt: typing.Optional[str] = None, mime_type: typing.Optional[typing.Union[str, typing.List[str]]] = None):
+    def __init__(
+        self,
+        name: str,
+        opt: typing.Optional[str] = None,
+        mime_type: typing.Optional[typing.Union[str, typing.List[str]]] = None,
+    ):
         self.name: str = name
         self.op = _OperationHelper(name, opt, mime_type, str)
 
     def validate(self, args: dict):
-        if 'FILES' not in args or self.name not in args['FILES']:
+        if "FILES" not in args or self.name not in args["FILES"]:
             return
 
-        self.op.do(args['FILES'][self.name].mimetype)
+        self.op.do(args["FILES"][self.name].mimetype)
 
 
 class _ExtValidation(_ValidateRule):
     """
-        文件后缀名验证类
+    文件后缀名验证类
     """
 
-    def __init__(self, name: str, opt: typing.Optional[str] = None, ext: typing.Optional[typing.Union[str, typing.List[str]]] = None):
+    def __init__(
+        self,
+        name: str,
+        opt: typing.Optional[str] = None,
+        ext: typing.Optional[typing.Union[str, typing.List[str]]] = None,
+    ):
         self.name: str = name
         self.op = _OperationHelper(name, opt, ext, str)
 
     def validate(self, args: dict):
-        if 'FILES' not in args or self.name not in args['FILES']:
+        if "FILES" not in args or self.name not in args["FILES"]:
             return
 
-        f = args['FILES'][self.name]
+        f = args["FILES"][self.name]
 
         self.op.do(os.path.splitext(f.filename)[-1])
 
 
 class _SafePathValidation(_ValidateRule):
     """
-        文件路径名验证类
+    文件路径名验证类
     """
 
     def __init__(self, name: str, force: bool):
         self.name: str = name
-        self.errmsg = '{} not safe path'
+        self.errmsg = "{} not safe path"
         self.force = force
 
     def validate(self, args: dict):
@@ -1096,27 +1280,27 @@ class _SafePathValidation(_ValidateRule):
 
 def trim_filter() -> callable:
     """
-        获取Trim参数过滤器
-        @return: callable
+    获取Trim参数过滤器
+    @return: callable
     """
     return lambda x: str(x).strip() if isinstance(x, str) else x
 
 
 def xss_filter() -> callable:
     """
-        获取XSS参数过滤器
-        @return: callable
+    获取XSS参数过滤器
+    @return: callable
     """
     return _xssencode
 
 
 def _is_ipv4(ip: str) -> bool:
-    '''
-        @name 是否是IPV4地址
-        @author hwliang
-        @param ip<string> IP地址
-        @return True/False
-    '''
+    """
+    @name 是否是IPV4地址
+    @author hwliang
+    @param ip<string> IP地址
+    @return True/False
+    """
     # 验证基本格式
     if not match_ipv4.match(ip):
         return False
@@ -1135,12 +1319,12 @@ def _is_ipv4(ip: str) -> bool:
 
 
 def _is_ipv6(ip: str) -> bool:
-    '''
-        @name 是否为IPv6地址
-        @author hwliang
-        @param ip<string> 地址
-        @return True/False
-    '''
+    """
+    @name 是否为IPv6地址
+    @author hwliang
+    @param ip<string> 地址
+    @return True/False
+    """
     # 验证基本格式
     if not match_ipv6.match(ip):
         return False
@@ -1155,36 +1339,77 @@ def _is_ipv6(ip: str) -> bool:
 
 def _xssencode(text: str) -> str:
     """
-        XSS过滤
-        @param text: str
-        @return bool
+    XSS过滤
+    @param text: str
+    @return bool
     """
     try:
         from cgi import html
-        list = ['`', '~', '&', '#', '/', '*', '$', '@', '<', '>', '\"', '\'', ';', '%', ',', '.', '\\u']
+
+        list = [
+            "`",
+            "~",
+            "&",
+            "#",
+            "/",
+            "*",
+            "$",
+            "@",
+            "<",
+            ">",
+            '"',
+            "'",
+            ";",
+            "%",
+            ",",
+            ".",
+            "\\u",
+        ]
         ret = []
         for i in text:
             if i in list:
-                i = ''
+                i = ""
             ret.append(i)
-        str_convert = ''.join(ret)
+        str_convert = "".join(ret)
         text2 = html.escape(str_convert, quote=True)
         return text2
     except:
-        return text.replace('&', '&amp;').replace('"', '&quot;').replace('<', '&lt;').replace('>', '&gt;')
+        return (
+            text.replace("&", "&amp;")
+            .replace('"', "&quot;")
+            .replace("<", "&lt;")
+            .replace(">", "&gt;")
+        )
 
 
-def _is_safe_path(path: str, force: bool=True) -> bool:
+def _is_safe_path(path: str, force: bool = True) -> bool:
     """
-        文件路径过滤
-        @param path: str
-        @param force: bool
-        @return: bool
+    文件路径过滤
+    @param path: str
+    @param force: bool
+    @return: bool
     """
     if len(path) > 256:
         return False
 
-    checks = ['..', './', '\\', '%', '$', '^', '&', '*', '~', '"', "'", ';', '|', '{', '}', '`']
+    checks = [
+        "..",
+        "./",
+        "\\",
+        "%",
+        "$",
+        "^",
+        "&",
+        "*",
+        "~",
+        '"',
+        "'",
+        ";",
+        "|",
+        "{",
+        "}",
+        "`",
+    ]
 
     for c in checks:
         if path.find(c) > -1:
@@ -1199,10 +1424,10 @@ def _is_safe_path(path: str, force: bool=True) -> bool:
 
 def _is_number(s) -> bool:
     """
-        @name 判断输入参数是否一个数字
-        @author Zhj<2022-07-18>
-        @param  s<string|integer|float> 输入参数
-        @return bool
+    @name 判断输入参数是否一个数字
+    @author Zhj<2022-07-18>
+    @param  s<string|integer|float> 输入参数
+    @return bool
     """
     try:
         float(s)
@@ -1212,6 +1437,7 @@ def _is_number(s) -> bool:
 
     try:
         import unicodedata
+
         unicodedata.numeric(s)
         return True
     except (TypeError, ValueError):
@@ -1222,9 +1448,9 @@ def _is_number(s) -> bool:
 
 def _is_int(s) -> bool:
     """
-        判断输入是否是整数
-        @param s: any
-        @return bool
+    判断输入是否是整数
+    @param s: any
+    @return bool
     """
     try:
         int(s)
@@ -1237,9 +1463,9 @@ def _is_int(s) -> bool:
 
 def _is_float(s) -> bool:
     """
-        判断输入是否是浮点数
-        @param s: any
-        @return bool
+    判断输入是否是浮点数
+    @param s: any
+    @return bool
     """
     try:
         float(s)
@@ -1252,9 +1478,9 @@ def _is_float(s) -> bool:
 
 def _get_number_data_type(s):
     """
-        获取数字的数据类型
-        @param s<string> 输入参数
-        @return int|float
+    获取数字的数据类型
+    @param s<string> 输入参数
+    @return int|float
     """
     try:
         int(s)
@@ -1267,7 +1493,11 @@ def _get_number_data_type(s):
 
 # 参数验证器
 class Validator:
-    def __init__(self, rules: typing.Union[typing.Tuple[Param], typing.List[Param]], raise_exc: bool = True):
+    def __init__(
+        self,
+        rules: typing.Union[typing.Tuple[Param], typing.List[Param]],
+        raise_exc: bool = True,
+    ):
         self.__RULES = list(rules)
         self.__RAISE_EXC = raise_exc
 
@@ -1282,7 +1512,7 @@ class Validator:
 
             return aap_t_simple_result(False, str(e))
 
-        return aap_t_simple_result(True, 'ok')
+        return aap_t_simple_result(True, "ok")
 
     # 参数列表过滤
     def filter(self, args: dict) -> typing.Dict:

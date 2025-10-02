@@ -1,7 +1,7 @@
 try:
-	import urllib.parse as urlparse
+    import urllib.parse as urlparse
 except:
-	import urlparse
+    import urlparse
 
 import requests
 
@@ -9,12 +9,13 @@ from . import common
 
 
 class DNSPodDns(common.BaseDns):
-    """
-    """
+    """ """
 
     dns_provider_name = "dnspod"
 
-    def __init__(self, DNSPOD_ID, DNSPOD_API_KEY, DNSPOD_API_BASE_URL="https://dnsapi.cn/"):
+    def __init__(
+        self, DNSPOD_ID, DNSPOD_API_KEY, DNSPOD_API_BASE_URL="https://dnsapi.cn/"
+    ):
         self.DNSPOD_ID = DNSPOD_ID
         self.DNSPOD_API_KEY = DNSPOD_API_KEY
         self.DNSPOD_API_BASE_URL = DNSPOD_API_BASE_URL
@@ -91,11 +92,14 @@ class DNSPodDns(common.BaseDns):
             "subdomain": subdomain,
             "record_type": "TXT",
         }
-        list_dns_response = requests.post(url, data=body, timeout=self.HTTP_TIMEOUT).json()
+        list_dns_response = requests.post(
+            url, data=body, timeout=self.HTTP_TIMEOUT
+        ).json()
         if list_dns_response["status"]["code"] != "1":
             self.logger.error(
                 "list_dns_record_response. status_code={0}. message={1}".format(
-                    list_dns_response["status"]["code"], list_dns_response["status"]["message"]
+                    list_dns_response["status"]["code"],
+                    list_dns_response["status"]["message"],
                 )
             )
         for i in range(0, len(list_dns_response["records"])):

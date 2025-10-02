@@ -55,11 +55,10 @@ except ImportError:
         pass
 
 
-PSL_URL = 'https://publicsuffix.org/list/public_suffix_list.dat'
+PSL_URL = "https://publicsuffix.org/list/public_suffix_list.dat"
 
 BASE_DIR = path.dirname(__file__)
-PSL_FILE = path.join(BASE_DIR, 'public_suffix_list.dat')
-
+PSL_FILE = path.join(BASE_DIR, "public_suffix_list.dat")
 
 
 class PublicSuffixList(object):
@@ -85,7 +84,7 @@ class PublicSuffixList(object):
         """
         # Note: we test for None as we accept empty lists as inputs
         if psl_file is None or isinstance(psl_file, str):
-            with codecs.open(psl_file or PSL_FILE, 'r', encoding='utf8') as psl:
+            with codecs.open(psl_file or PSL_FILE, "r", encoding="utf8") as psl:
                 psl = psl.readlines()
         else:
             # assume file-like
@@ -142,13 +141,13 @@ class PublicSuffixList(object):
         :param rule: string, line of public suffixlist
         :return: None
         """
-        if rule.startswith('!'):
+        if rule.startswith("!"):
             negate = 1
             rule = rule[1:]
         else:
             negate = 0
 
-        parts = rule.split('.')
+        parts = rule.split(".")
         self._find_node(root, parts)[0] = negate
 
     def _simplify(self, node):
@@ -190,13 +189,13 @@ class PublicSuffixList(object):
 
         for line in fp:
             line = line.strip()
-            if not line or line.startswith('//'):
+            if not line or line.startswith("//"):
                 continue
             if idna:
-                line = line.encode('idna').decode()
+                line = line.encode("idna").decode()
             tlds.append(line)
 
-            self._add_rule(root, line.split()[0].lstrip('.'))
+            self._add_rule(root, line.split()[0].lstrip("."))
 
         return root
 
@@ -230,10 +229,10 @@ class PublicSuffixList(object):
         children = parent[1]
 
         if depth <= len(parts) and children:
-            for name in ('*', parts[-depth]):
+            for name in ("*", parts[-depth]):
                 child = children.get(name, None)
                 if child is not None:
-                    if wildcard or name != '*':
+                    if wildcard or name != "*":
                         if child in (0, 1):
                             negate = child
                         else:
@@ -268,13 +267,13 @@ class PublicSuffixList(object):
         if strict and tld is None:
             return None
 
-        parts = domain.lower().strip('.').split('.')
-        num_of_tld_parts = 0 if tld is None else tld.count('.') + 1
+        parts = domain.lower().strip(".").split(".")
+        num_of_tld_parts = 0 if tld is None else tld.count(".") + 1
 
         if len(parts) <= num_of_tld_parts:
             return tld
         else:
-            return '.'.join(parts[-(num_of_tld_parts + 1):])
+            return ".".join(parts[-(num_of_tld_parts + 1) :])
 
     def get_public_suffix(self, domain, wildcard=True, strict=False):
         """
@@ -301,18 +300,16 @@ class PublicSuffixList(object):
         """
         if not domain:
             return None
-        parts = domain.lower().strip('.').split('.')
+        parts = domain.lower().strip(".").split(".")
         hits = [None] * len(parts)
-        if strict and (
-            self.root in (0, 1) or parts[-1] not in self.root[1].keys()
-        ):
+        if strict and (self.root in (0, 1) or parts[-1] not in self.root[1].keys()):
             return None
 
         self._lookup_node(hits, 1, self.root, parts, wildcard)
 
         for i, what in enumerate(hits):
             if what is not None and what == 0:
-                return '.'.join(parts[i:])
+                return ".".join(parts[i:])
 
 
 _PSL = None
@@ -376,10 +373,10 @@ def get_public_suffix(domain, psl_file=None, wildcard=True, idna=True, strict=Fa
     The file format is described at http://publicsuffix.org/
     """
     warnings.warn(
-        'This function returns the private suffix, SLD, or registrable domain. '
-        'This equivalent to function get_sld(). '
-        'To get the public suffix itself, use get_tld().',
-        UserWarning
+        "This function returns the private suffix, SLD, or registrable domain. "
+        "This equivalent to function get_sld(). "
+        "To get the public suffix itself, use get_tld().",
+        UserWarning,
     )
     return get_sld(domain, psl_file, wildcard, idna, strict)
 
@@ -389,12 +386,12 @@ def fetch():
     Return a file-like object for the latest public suffix list downloaded from
     publicsuffix.org
     """
-    req = Request(PSL_URL, headers={'User-Agent': 'python-publicsuffix2'})
+    req = Request(PSL_URL, headers={"User-Agent": "python-publicsuffix2"})
     res = urlopen(req)
     try:
         encoding = res.headers.get_content_charset()
     except AttributeError:
-        encoding = res.headers.getparam('charset')
+        encoding = res.headers.getparam("charset")
     f = codecs.getreader(encoding)(res)
     return f
 
@@ -402,7 +399,11 @@ def fetch():
 def update_dat():
     import os
     import time
-    if not os.path.exists(PSL_FILE) or os.path.getmtime(PSL_FILE) < time.time() - 86400 * 30:
+
+    if (
+        not os.path.exists(PSL_FILE)
+        or os.path.getmtime(PSL_FILE) < time.time() - 86400 * 30
+    ):
         try:
             f = fetch()
             f_dat = f.read()
@@ -410,7 +411,7 @@ def update_dat():
             return
 
         if os.path.exists(PSL_FILE) and len(f_dat) < os.path.getsize(PSL_FILE) // 10:
-            print('Public Suffix List is too small, not updating')
+            print("Public Suffix List is too small, not updating")
 
-        with open(PSL_FILE, 'w') as fp:
+        with open(PSL_FILE, "w") as fp:
             fp.write(f_dat)

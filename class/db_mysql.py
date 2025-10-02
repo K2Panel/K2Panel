@@ -24,6 +24,7 @@ except ImportError:
 
 # 2025/5/29 同步国内
 
+
 class panelMysql:
     DB_ERROR = None
 
@@ -38,7 +39,7 @@ class panelMysql:
             "write_timeout": 60,
             "unix_socket": None,
         }
-        self.__DB_PREFIX = ''
+        self.__DB_PREFIX = ""
         self.__DB_CONN = None
         self.__DB_CUR = None
         self.__DB_ERR = None
@@ -59,7 +60,7 @@ class panelMysql:
         self.__DB_PREFIX = prefix
         return self
 
-    def set_host(self, host, port, name, user, password, prefix='', **kwargs):
+    def set_host(self, host, port, name, user, password, prefix="", **kwargs):
         self.__CONN_KWARGS["host"] = host
         self.__CONN_KWARGS["port"] = int(port)
         self.__CONN_KWARGS["user"] = str(user)
@@ -94,11 +95,13 @@ class panelMysql:
                 self.__CONN_KWARGS["port"] == "3306"
 
             if self.__CONN_KWARGS["password"] is None:
-                self.__CONN_KWARGS["password"] = public.M("config").where("id=?", (1,)).getField("mysql_root")
+                self.__CONN_KWARGS["password"] = (
+                    public.M("config").where("id=?", (1,)).getField("mysql_root")
+                )
 
             password_str = str(self.__CONN_KWARGS["password"])
             if any(ord(char) > 255 for char in password_str):
-                encoded_password = self.__CONN_KWARGS["password"].encode('utf-8')
+                encoded_password = self.__CONN_KWARGS["password"].encode("utf-8")
                 self.__CONN_KWARGS["password"] = encoded_password
 
         try:
@@ -108,38 +111,79 @@ class panelMysql:
         except Exception as err:
             self.__DB_ERR = err
             self._ex = err
-            if self.__CONN_KWARGS["user"] == "root" and str(self.__CONN_KWARGS["host"]).lower() == "localhost":
+            if (
+                self.__CONN_KWARGS["user"] == "root"
+                and str(self.__CONN_KWARGS["host"]).lower() == "localhost"
+            ):
                 exec_sql = "/usr/bin/mysql --user=root --password='{password}' --default-character-set=utf8 -e 'SET sql_notes = 0;{sql}'"
-                if str(err).find("Access denied for user 'root'@'::1'") != -1 or str(err).find(
-                        "Host '::1' is not allowed to connect") != -1:
+                if (
+                    str(err).find("Access denied for user 'root'@'::1'") != -1
+                    or str(err).find("Host '::1' is not allowed to connect") != -1
+                ):
                     sql = "drop user `root`@`::1`;'"
-                    public.ExecShell(exec_sql.format(password=self.__CONN_KWARGS["password"], sql=sql),
-                                     env={"MYSQL_PWD": self.__CONN_KWARGS["password"]})
-                    sql = "create user `root`@`::1` identified by \"{root_password}\";'".format(
-                        root_password=self.__CONN_KWARGS["password"])
-                    public.ExecShell(exec_sql.format(password=self.__CONN_KWARGS["password"], sql=sql),
-                                     env={"MYSQL_PWD": self.__CONN_KWARGS["password"]})
+                    public.ExecShell(
+                        exec_sql.format(
+                            password=self.__CONN_KWARGS["password"], sql=sql
+                        ),
+                        env={"MYSQL_PWD": self.__CONN_KWARGS["password"]},
+                    )
+                    sql = 'create user `root`@`::1` identified by "{root_password}";\''.format(
+                        root_password=self.__CONN_KWARGS["password"]
+                    )
+                    public.ExecShell(
+                        exec_sql.format(
+                            password=self.__CONN_KWARGS["password"], sql=sql
+                        ),
+                        env={"MYSQL_PWD": self.__CONN_KWARGS["password"]},
+                    )
                     sql = "grant all privileges on *.* to `root`@`::1`;'"
-                    public.ExecShell(exec_sql.format(password=self.__CONN_KWARGS["password"], sql=sql),
-                                     env={"MYSQL_PWD": self.__CONN_KWARGS["password"]})
+                    public.ExecShell(
+                        exec_sql.format(
+                            password=self.__CONN_KWARGS["password"], sql=sql
+                        ),
+                        env={"MYSQL_PWD": self.__CONN_KWARGS["password"]},
+                    )
                     sql = "flush privileges;'"
-                    public.ExecShell(exec_sql.format(password=self.__CONN_KWARGS["password"], sql=sql),
-                                     env={"MYSQL_PWD": self.__CONN_KWARGS["password"]})
-                elif str(err).find("Access denied for user 'root'@'127.0.0.1'") != -1 or str(err).find(
-                        "Host '127.0.0.1' is not allowed to connect") != -1:
+                    public.ExecShell(
+                        exec_sql.format(
+                            password=self.__CONN_KWARGS["password"], sql=sql
+                        ),
+                        env={"MYSQL_PWD": self.__CONN_KWARGS["password"]},
+                    )
+                elif (
+                    str(err).find("Access denied for user 'root'@'127.0.0.1'") != -1
+                    or str(err).find("Host '127.0.0.1' is not allowed to connect") != -1
+                ):
                     sql = "drop user `root`@`127.0.0.1`;'"
-                    public.ExecShell(exec_sql.format(password=self.__CONN_KWARGS["password"], sql=sql),
-                                     env={"MYSQL_PWD": self.__CONN_KWARGS["password"]})
-                    sql = "create user `root`@`127.0.0.1` identified by \"{root_password}\";'".format(
-                        root_password=self.__CONN_KWARGS["password"])
-                    public.ExecShell(exec_sql.format(password=self.__CONN_KWARGS["password"], sql=sql),
-                                     env={"MYSQL_PWD": self.__CONN_KWARGS["password"]})
+                    public.ExecShell(
+                        exec_sql.format(
+                            password=self.__CONN_KWARGS["password"], sql=sql
+                        ),
+                        env={"MYSQL_PWD": self.__CONN_KWARGS["password"]},
+                    )
+                    sql = 'create user `root`@`127.0.0.1` identified by "{root_password}";\''.format(
+                        root_password=self.__CONN_KWARGS["password"]
+                    )
+                    public.ExecShell(
+                        exec_sql.format(
+                            password=self.__CONN_KWARGS["password"], sql=sql
+                        ),
+                        env={"MYSQL_PWD": self.__CONN_KWARGS["password"]},
+                    )
                     sql = "grant all privileges on *.* to `root`@`127.0.0.1`;'"
-                    public.ExecShell(exec_sql.format(password=self.__CONN_KWARGS["password"], sql=sql),
-                                     env={"MYSQL_PWD": self.__CONN_KWARGS["password"]})
+                    public.ExecShell(
+                        exec_sql.format(
+                            password=self.__CONN_KWARGS["password"], sql=sql
+                        ),
+                        env={"MYSQL_PWD": self.__CONN_KWARGS["password"]},
+                    )
                     sql = "flush privileges;'"
-                    public.ExecShell(exec_sql.format(password=self.__CONN_KWARGS["password"], sql=sql),
-                                     env={"MYSQL_PWD": self.__CONN_KWARGS["password"]})
+                    public.ExecShell(
+                        exec_sql.format(
+                            password=self.__CONN_KWARGS["password"], sql=sql
+                        ),
+                        env={"MYSQL_PWD": self.__CONN_KWARGS["password"]},
+                    )
 
                 try:
                     self.__DB_CONN = pymysql.connect(**self.__CONN_KWARGS)
@@ -154,6 +198,7 @@ class panelMysql:
                 if sys.version_info[0] != 2:
                     pymysql.install_as_MySQLdb()
                 import MySQLdb
+
                 if sys.version_info[0] == 2:
                     reload(MySQLdb)
             except:
@@ -165,16 +210,24 @@ class panelMysql:
                     self._ex = err
                     return False
             if self.__CONN_KWARGS["host"] == "localhost":
-                self.__DB_CONN = MySQLdb.connect(host=self.__CONN_KWARGS["host"], port=self.__CONN_KWARGS["port"],
-                                                 user=self.__CONN_KWARGS["user"],
-                                                 passwd=str(self.__CONN_KWARGS["password"]), charset="utf8",
-                                                 connect_timeout=self.__CONN_KWARGS["connect_timeout"],
-                                                 unix_socket=self.__CONN_KWARGS["unix_socket"])
+                self.__DB_CONN = MySQLdb.connect(
+                    host=self.__CONN_KWARGS["host"],
+                    port=self.__CONN_KWARGS["port"],
+                    user=self.__CONN_KWARGS["user"],
+                    passwd=str(self.__CONN_KWARGS["password"]),
+                    charset="utf8",
+                    connect_timeout=self.__CONN_KWARGS["connect_timeout"],
+                    unix_socket=self.__CONN_KWARGS["unix_socket"],
+                )
             else:
-                self.__DB_CONN = MySQLdb.connect(host=self.__CONN_KWARGS["host"], port=self.__CONN_KWARGS["port"],
-                                                 user=self.__CONN_KWARGS["user"],
-                                                 passwd=str(self.__CONN_KWARGS["password"]), charset="utf8",
-                                                 connect_timeout=self.__CONN_KWARGS["connect_timeout"])
+                self.__DB_CONN = MySQLdb.connect(
+                    host=self.__CONN_KWARGS["host"],
+                    port=self.__CONN_KWARGS["port"],
+                    user=self.__CONN_KWARGS["user"],
+                    passwd=str(self.__CONN_KWARGS["password"]),
+                    charset="utf8",
+                    connect_timeout=self.__CONN_KWARGS["connect_timeout"],
+                )
             self.__DB_CUR = self.__DB_CONN.cursor()
             return True
         except MySQLdb.Error as err:
@@ -228,31 +281,40 @@ class panelMysql:
     def select(self):
         # 查询数据集
         self.__GetConn()
-        if not self.__DB_CUR: return self.__DB_ERR
+        if not self.__DB_CUR:
+            return self.__DB_ERR
         try:
             self.__get_columns()
-            sql = "SELECT " + self.__OPT_FIELD + " FROM " + self.__DB_TABLE + self.__OPT_WHERE + self.__OPT_ORDER + self.__OPT_LIMIT
+            sql = (
+                "SELECT "
+                + self.__OPT_FIELD
+                + " FROM "
+                + self.__DB_TABLE
+                + self.__OPT_WHERE
+                + self.__OPT_ORDER
+                + self.__OPT_LIMIT
+            )
             self.__DB_CUR.execute(sql, self.__OPT_PARAM)
             data = self.__DB_CUR.fetchall()
             # 构造字典系列
             if self.__OPT_FIELD != "*":
-                fields = self.__format_field(self.__OPT_FIELD.split(','))
+                fields = self.__format_field(self.__OPT_FIELD.split(","))
                 tmp = []
                 for row in data:
                     i = 0
                     tmp1 = {}
                     for key in fields:
-                        tmp1[key.strip('`')] = row[i]
+                        tmp1[key.strip("`")] = row[i]
                         i += 1
                     tmp.append(tmp1)
-                    del (tmp1)
+                    del tmp1
                 data = tmp
-                del (tmp)
+                del tmp
             else:
                 # 将元组转换成列表
                 tmp = list(map(list, data))
                 data = tmp
-                del (tmp)
+                del tmp
             self.__close()
             return data
         except Exception as ex:
@@ -265,9 +327,10 @@ class panelMysql:
 
     def __format_field(self, field):
         import re
+
         fields = []
         for key in field:
-            s_as = re.search(r'\s+as\s+', key, flags=re.IGNORECASE)
+            s_as = re.search(r"\s+as\s+", key, flags=re.IGNORECASE)
             if s_as:
                 as_tip = s_as.group()
                 key = key.split(as_tip)[1]
@@ -275,14 +338,18 @@ class panelMysql:
         return fields
 
     def __get_columns(self):
-        if self.__OPT_FIELD == '*':
+        if self.__OPT_FIELD == "*":
             tmp_cols = self.query(
-                "select COLUMN_NAME from information_schema.COLUMNS where table_name = '{}' and table_schema = '{}';"
-                .format(self.__DB_TABLE, self.__DB_NAME), False)
+                "select COLUMN_NAME from information_schema.COLUMNS where table_name = '{}' and table_schema = '{}';".format(
+                    self.__DB_TABLE, self.__DB_NAME
+                ),
+                False,
+            )
             cols = []
             for col in tmp_cols:
-                cols.append('`' + col[0] + '`')
-            if len(cols) > 0: self.__OPT_FIELD = ','.join(cols)
+                cols.append("`" + col[0] + "`")
+            if len(cols) > 0:
+                self.__OPT_FIELD = ",".join(cols)
 
     def getField(self, keyName):
         # 取回指定字段
@@ -323,10 +390,19 @@ class panelMysql:
         self.__DB_CONN.text_factory = str
         try:
             values = ""
-            for key in keys.split(','):
+            for key in keys.split(","):
                 values += "%s,"
-            values = values[0:len(values) - 1]
-            sql = "INSERT INTO " + self.__DB_TABLE + "(" + keys + ") " + "VALUES(" + values + ")"
+            values = values[0 : len(values) - 1]
+            sql = (
+                "INSERT INTO "
+                + self.__DB_TABLE
+                + "("
+                + keys
+                + ") "
+                + "VALUES("
+                + values
+                + ")"
+            )
             self.__DB_CUR.execute(sql, self.__to_tuple(param))
             id = self.__DB_CUR.lastrowid
             self.__close()
@@ -338,13 +414,15 @@ class panelMysql:
 
     # 插入数据
     def insert(self, pdata):
-        if not pdata: return False
+        if not pdata:
+            return False
         keys, param = self.__format_pdata(pdata)
         return self.add(keys, param)
 
     # 更新数据
     def update(self, pdata):
-        if not pdata: return False
+        if not pdata:
+            return False
         keys, param = self.__format_pdata(pdata)
         return self.save(keys, param)
 
@@ -354,7 +432,7 @@ class panelMysql:
         keys_tmp = []
         for k in keys:
             keys_tmp.append("`{}`".format(k))
-        keys_str = ','.join(keys_tmp)
+        keys_str = ",".join(keys_tmp)
 
         param = []
         for k in keys:
@@ -368,10 +446,19 @@ class panelMysql:
         self.__DB_CONN.text_factory = str
         try:
             values = ""
-            for key in keys.split(','):
+            for key in keys.split(","):
                 values += "%s,"
-            values = values[0:len(values) - 1]
-            sql = "INSERT INTO " + self.__DB_TABLE + "(" + keys + ") " + "VALUES(" + values + ")"
+            values = values[0 : len(values) - 1]
+            sql = (
+                "INSERT INTO "
+                + self.__DB_TABLE
+                + "("
+                + keys
+                + ") "
+                + "VALUES("
+                + values
+                + ")"
+            )
             result = self.__DB_CUR.execute(sql, self.__to_tuple(param))
             return True
         except Exception as ex:
@@ -388,9 +475,9 @@ class panelMysql:
         self.__DB_CONN.text_factory = str
         try:
             opt = ""
-            for key in keys.split(','):
+            for key in keys.split(","):
                 opt += key + "=%s,"
-            opt = opt[0:len(opt) - 1]
+            opt = opt[0 : len(opt) - 1]
             sql = "UPDATE " + self.__DB_TABLE + " SET " + opt + self.__OPT_WHERE
 
             # 处理拼接WHERE与UPDATE参数
@@ -426,7 +513,8 @@ class panelMysql:
 
     def execute(self, sql, param=()):
         # 执行SQL语句返回受影响行
-        if not self.__GetConn(): return self.__DB_ERR
+        if not self.__GetConn():
+            return self.__DB_ERR
         try:
             if param:
                 self.__OPT_PARAM = list(self.__to_tuple(param))
@@ -442,7 +530,8 @@ class panelMysql:
 
     def query(self, sql, is_close=True, param=()):
         # 执行SQL语句返回数据集
-        if not self.__GetConn(): return self.__DB_ERR
+        if not self.__GetConn():
+            return self.__DB_ERR
         try:
             if param:
                 self.__OPT_PARAM = list(self.__to_tuple(param))
@@ -452,7 +541,8 @@ class panelMysql:
             result = self.__DB_CUR.fetchall()
             # 将元组转换成列表
             data = list(map(list, result))
-            if is_close: self.__Close()
+            if is_close:
+                self.__Close()
             return data
         except Exception as ex:
             self._ex = ex

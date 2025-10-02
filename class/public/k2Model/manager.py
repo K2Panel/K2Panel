@@ -24,7 +24,7 @@ def _builtin(check_engine: Engine = None) -> bool:
         conn = check_engine.connect(":memory:")
         cursor = conn.cursor()
         cursor.execute("SELECT json_extract('{\"a\": 1}', '$.a')")
-        cursor.execute("SELECT COUNT(*) FROM json_each('{\"a\":1, \"b\":2}')")
+        cursor.execute('SELECT COUNT(*) FROM json_each(\'{"a":1, "b":2}\')')
         conn.close()
         return True
     except:
@@ -34,11 +34,13 @@ def _builtin(check_engine: Engine = None) -> bool:
 def _get_engine() -> tuple[bool, Engine]:
     try:
         import pysqlite3 as engine
+
         flag = True
     except:
         try:
             os.system("btpip install pysqlite3-binary")
             import pysqlite3 as engine
+
             flag = True
         except:
             engine = Engine
@@ -131,7 +133,9 @@ class Operator:
                 if not isinstance(items_to_search, list):
                     items_to_search = [items_to_search]
                 if not items_to_search:  # 如果搜索列表为空
-                    return True if op_str == "contains" else False  # AND(empty)=True, OR(empty)=False
+                    return (
+                        True if op_str == "contains" else False
+                    )  # AND(empty)=True, OR(empty)=False
 
                 match_results = []
                 for item in items_to_search:
@@ -145,7 +149,9 @@ class Operator:
 
                     match_results.append(found)
 
-                return all(match_results) if op_str == "contains" else any(match_results)
+                return (
+                    all(match_results) if op_str == "contains" else any(match_results)
+                )
 
         except TypeError:  # 比较不兼容的类型
             return False
@@ -159,7 +165,8 @@ class Operator:
                 break
         else:
             raise HintException(
-                "%s's fields %s is not support compare value type: %s" % (self._model_class.__name__, key, val)
+                "%s's fields %s is not support compare value type: %s"
+                % (self._model_class.__name__, key, val)
             )
 
     def __generate_road(self, road):
@@ -203,7 +210,9 @@ class Operator:
                 return None, False
         return current_val, True
 
-    def __compare_operator(self, key: str, compare: str, val: Any, is_json: bool, sp_compare: tuple):
+    def __compare_operator(
+        self, key: str, compare: str, val: Any, is_json: bool, sp_compare: tuple
+    ):
         def __contains_and_or(v: list, connector: str):
             if not v:
                 return ("1=1" if connector == "AND" else "1=0"), []
@@ -212,7 +221,9 @@ class Operator:
             for item in v:
                 if self._flag is True and not isinstance(item, (dict, list)):
                     # simple val
-                    conditions.append(f"EXISTS(SELECT 1 FROM json_each({key}) WHERE value = ?)")
+                    conditions.append(
+                        f"EXISTS(SELECT 1 FROM json_each({key}) WHERE value = ?)"
+                    )
                     params.append(item)
                 else:
                     # other | complicated val
@@ -297,7 +308,11 @@ class Operator:
             if self._flag:
                 path = self.__generate_road(road)
                 sql, params = self.__compare_operator(
-                    f"json_extract({self._tb}.{key}, '{path}')", compare, val, is_json, sp_compare
+                    f"json_extract({self._tb}.{key}, '{path}')",
+                    compare,
+                    val,
+                    is_json,
+                    sp_compare,
                 )
                 return sql, params
 
@@ -411,7 +426,9 @@ class Operator:
             field = parts[0]
 
             if not field or not self._fields.get(field):
-                raise HintException("%s's fields is not found: '%s'" % (self._model_class.__name__, k))
+                raise HintException(
+                    "%s's fields is not found: '%s'" % (self._model_class.__name__, k)
+                )
 
             compare = None
             roads = []
@@ -423,7 +440,9 @@ class Operator:
 
             yield field, compare, roads, v
 
-    def reducer_process(self, condition: Dict[str, Any]) -> Generator[tuple[str, list[Any] | Any], Any, None]:
+    def reducer_process(
+        self, condition: Dict[str, Any]
+    ) -> Generator[tuple[str, list[Any] | Any], Any, None]:
         for key, compare, road, val in self.__parse_condition(condition):
             if self._serializes and key in self._serializes:
                 val = self._serializes[key].serialized(value=val, forward=True)
@@ -433,7 +452,9 @@ class Operator:
             else:
                 if val is None:
                     raise HintException("do not try to use 'None' value to compare.")
-                sql, params = self.__compare_reducer(key=key, compare=compare, road=road, val=val)
+                sql, params = self.__compare_reducer(
+                    key=key, compare=compare, road=road, val=val
+                )
 
             if sql:
                 yield sql, params
@@ -445,6 +466,7 @@ class Q:
     AND优先级大于OR, 括号改变优先级
     example: model.object.filter( Q(a=1) & (Q(b=2) | Q(c=3)) )
     """
+
     AND = "AND"
     OR = "OR"
 
@@ -463,12 +485,16 @@ class Q:
 
     def __and__(self, other):
         if not isinstance(other, Q):
-            raise HintException(f"unsupported operand type(s) for &: 'Q' and '{type(other)}'")
+            raise HintException(
+                f"unsupported operand type(s) for &: 'Q' and '{type(other)}'"
+            )
         return Q(self, other, _connector=Q.AND)
 
     def __or__(self, other):
         if not isinstance(other, Q):
-            raise HintException(f"unsupported operand type(s) for |: 'Q' and '{type(other)}'")
+            raise HintException(
+                f"unsupported operand type(s) for |: 'Q' and '{type(other)}'"
+            )
         return Q(self, other, _connector=Q.OR)
 
     def resolve(self, operator, query):
@@ -535,12 +561,10 @@ class QuerySet(Generic[M]):
             if index.stop is None:
                 # not stop, get all
                 self.__execute()
-                return self._cache[start: index.stop]
+                return self._cache[start : index.stop]
             limit = max(0, index.stop - start)
             q = self._clone_q.skip(start).limit(limit)
-            return [
-                self._gen_M(r) for r in q.select() or []
-            ]
+            return [self._gen_M(r) for r in q.select() or []]
         return None
 
     def __add__(self, other: "QuerySet") -> Iterable:
@@ -562,7 +586,7 @@ class QuerySet(Generic[M]):
     def _gen_M(self, data) -> M:
         return self._model_class(
             _field_filter=self._field_filter,
-            **self._model_class._serialized_data(data, self._field_filter)
+            **self._model_class._serialized_data(data, self._field_filter),
         )
 
     def __execute(self) -> Optional[List[M]]:
@@ -571,9 +595,7 @@ class QuerySet(Generic[M]):
                 if len(self._query._SqliteEasy__OPT_FIELD._Field__FIELDS) == 0:
                     self._query.field(f"`{self._tb}`.*")
 
-                self._cache = [
-                    self._gen_M(i) for i in self._query.select() or []
-                ]
+                self._cache = [self._gen_M(i) for i in self._query.select() or []]
             except Exception as e:
                 print("db query error => %s" % str(e))
                 raise HintException(e)
@@ -631,8 +653,13 @@ class QuerySet(Generic[M]):
         :return: QuerySet
         """
         reduce(
-            lambda q, c: q.order(f"{self._tb}.{c[1:]}", "DESC") if c[:1] == "-"
-            else q.order(f"{self._tb}.{c}"), args, self._query
+            lambda q, c: (
+                q.order(f"{self._tb}.{c[1:]}", "DESC")
+                if c[:1] == "-"
+                else q.order(f"{self._tb}.{c}")
+            ),
+            args,
+            self._query,
         )
         return self
 
@@ -699,7 +726,8 @@ class QuerySet(Generic[M]):
             return 0
         serlz = self._model_class._get_serialized()
         body = {
-            k: (serlz[k].serialized(v, True) if k in serlz else v) for k, v in target.items()
+            k: (serlz[k].serialized(v, True) if k in serlz else v)
+            for k, v in target.items()
         }
         return self._query.update(body)
 
@@ -750,10 +778,13 @@ class aaObjects(Generic[M]):
     """
     管理器
     """
+
     __m_map__ = {}
 
     def __new__(cls, args):
-        if hasattr(args, "__table_name__") and not cls.__m_map__.get(args.__table_name__):
+        if hasattr(args, "__table_name__") and not cls.__m_map__.get(
+            args.__table_name__
+        ):
             cls.__m_map__[args.__table_name__] = aaMigrate(args).run_migrate()
         return super(aaObjects, cls).__new__(cls)
 
@@ -782,13 +813,9 @@ class aaObjects(Generic[M]):
         :return 插入的数据
         """
         model_obj = self._model(**data)
-        insert_res = self._insert(
-            model_obj._validate(raise_exp=raise_exp)
-        )
+        insert_res = self._insert(model_obj._validate(raise_exp=raise_exp))
         if insert_res:
-            return {
-                self._model.__primary_key__: insert_res, **model_obj.as_dict()
-            }
+            return {self._model.__primary_key__: insert_res, **model_obj.as_dict()}
         else:
             if raise_exp:
                 raise HintException(insert_res)
@@ -840,6 +867,7 @@ class aaMigrate:
     """
     同步表字段
     """
+
     NULL_MAP = {False: "NOT NULL", True: "NULL"}
 
     def __init__(self, model: M):
@@ -855,17 +883,15 @@ class aaMigrate:
         """
         if not self.__model:
             raise PanelError("Model is None")
-        if not hasattr(self.__model, '__db_name__'):
+        if not hasattr(self.__model, "__db_name__"):
             raise PanelError(f"{self.__model.__class__.__name__} need 'db_name'")
-        if not hasattr(self.__model, '__table_name__'):
+        if not hasattr(self.__model, "__table_name__"):
             raise PanelError(f"{self.__model.__class__.__name__} need 'table_name'")
-        if not hasattr(self.__model, '__fields__'):
+        if not hasattr(self.__model, "__fields__"):
             raise PanelError(f"{self.__model.__class__.__name__} need 'fields'")
 
         try:
-            self.__client = Db(
-                db_name=self.__model.__db_name__, engine=_ENGINE
-            )
+            self.__client = Db(db_name=self.__model.__db_name__, engine=_ENGINE)
             self.__table_exists()
             self.__index_exists()
         except Exception as e:
@@ -901,14 +927,18 @@ class aaMigrate:
         sql = f"""CREATE TABLE IF NOT EXISTS `{tb_name}` ({field_sql});"""
         return sql
 
-    def __fields_exist(self, add_fields_map: dict = None, del_fields: set = None, set_db: set = None) -> None:
+    def __fields_exist(
+        self, add_fields_map: dict = None, del_fields: set = None, set_db: set = None
+    ) -> None:
         """
         字段处理
         """
         if not del_fields:
             for k, v in add_fields_map.items():
-                add_sql = (f"ALTER TABLE `{self.__table}` "
-                           f"ADD COLUMN `{k}` {v.field_type} {v.default_val_sql} {self.NULL_MAP.get(v.null)};")
+                add_sql = (
+                    f"ALTER TABLE `{self.__table}` "
+                    f"ADD COLUMN `{k}` {v.field_type} {v.default_val_sql} {self.NULL_MAP.get(v.null)};"
+                )
                 self.__query.execute(add_sql)
         else:
             if set_db:
@@ -923,14 +953,19 @@ class aaMigrate:
                         format_keys = ", ".join(
                             [f"`{k}`" for k in set_db if k not in del_fields]
                         )
-                        copy_sql = (f"INSERT INTO `{temp_tb}` ({format_keys}) "
-                                    f"SELECT {format_keys} FROM `{self.__table}`;")
+                        copy_sql = (
+                            f"INSERT INTO `{temp_tb}` ({format_keys}) "
+                            f"SELECT {format_keys} FROM `{self.__table}`;"
+                        )
                         self.__query.execute(copy_sql)
                         self.__query.execute(f"DROP TABLE IF EXISTS `{self.__table}`;")
-                        self.__query.execute(f"ALTER TABLE `{temp_tb}` RENAME TO `{self.__table}`;")
+                        self.__query.execute(
+                            f"ALTER TABLE `{temp_tb}` RENAME TO `{self.__table}`;"
+                        )
                         self.__query.commit()
                     except Exception as e:
                         import traceback
+
                         print(traceback.format_exc())
                         self.__query.rollback()
                         raise e
@@ -940,7 +975,10 @@ class aaMigrate:
         表迁移
         """
         self.__query = self.__client.query().table("sqlite_master")
-        if self.__query.where("type=? AND name=?", ("table", self.__table)).count() != 1:
+        if (
+            self.__query.where("type=? AND name=?", ("table", self.__table)).count()
+            != 1
+        ):
             sql = self.__new_tb_transform_sql(self.__table)
             if sql:
                 self.__query.execute(sql)
@@ -956,7 +994,9 @@ class aaMigrate:
     def __trans_index_key(self, index_info: tuple | str) -> str:
         def __if_raise_error(item: str):
             if not self.__model._get_fields().get(item):
-                raise PanelError(f"create index error, '{item}' is not in model's fields")
+                raise PanelError(
+                    f"create index error, '{item}' is not in model's fields"
+                )
 
         col_sql = ""
         if isinstance(index_info, tuple):
@@ -967,7 +1007,9 @@ class aaMigrate:
             __if_raise_error(index_info)
             col_sql = f"`{index_info}`"
         else:
-            raise PanelError("model's index error, should be like ['key1', ('key2', 'key3')]")
+            raise PanelError(
+                "model's index error, should be like ['key1', ('key2', 'key3')]"
+            )
         return col_sql.rstrip(",")
 
     def __index_exists(self) -> bool | None:
@@ -979,9 +1021,11 @@ class aaMigrate:
                 return True
             self.__query.table(self.__table)
             cur = self.__query.query(f"PRAGMA index_list(`{self.__table}`);") or []
-            current_index = [
-                x.get("name") for x in cur if str(x.get("origin", "c")).lower() == "c"
-            ] if cur else []
+            current_index = (
+                [x.get("name") for x in cur if str(x.get("origin", "c")).lower() == "c"]
+                if cur
+                else []
+            )
             sql_statements = []
             wanted = set()
             for index_info in self.__model.__index_keys__:
@@ -1008,9 +1052,7 @@ class aaMigrate:
                     sql_statements.append(f"DROP INDEX IF EXISTS `{index}`;")
 
             if sql_statements:
-                self.__query.execute_script(
-                    " ".join(sql_statements)
-                )
+                self.__query.execute_script(" ".join(sql_statements))
             return True
         except:
             pass
@@ -1023,6 +1065,7 @@ class aaManager:
                 return aaObjects(cls)
             except Exception:
                 import traceback
+
                 raise PanelError(traceback.format_exc())
         raise RuntimeError(
             f"object manager can't accessible from '{cls.__name__}' instances"

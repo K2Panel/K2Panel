@@ -1,6 +1,7 @@
 """
 Hurricane Electric DNS Support
 """
+
 import json
 
 try:

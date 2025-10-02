@@ -13,14 +13,14 @@ class main(sslBase):
         super().__init__()
 
     def __init_data(self, data):
-        self.CLOUDFLARE_EMAIL = data['E-Mail']
-        self.CLOUDFLARE_API_KEY = data['API Key']
-        self.CLOUDFLARE_API_BASE_URL = 'https://api.cloudflare.com/client/v4/'
+        self.CLOUDFLARE_EMAIL = data["E-Mail"]
+        self.CLOUDFLARE_API_KEY = data["API Key"]
+        self.CLOUDFLARE_API_BASE_URL = "https://api.cloudflare.com/client/v4/"
         self.HTTP_TIMEOUT = 65  # seconds
 
         self.headers = {
             "X-Auth-Email": self.CLOUDFLARE_EMAIL,
-            "X-Auth-Key": self.CLOUDFLARE_API_KEY
+            "X-Auth-Key": self.CLOUDFLARE_API_KEY,
         }
 
     def get_dns_record(self, get):
@@ -33,12 +33,14 @@ class main(sslBase):
         try:
             zone_dic = self.get_zoneid_dic(get)
             zone_id = zone_dic[root_domain]
-            url = urljoin(self.CLOUDFLARE_API_BASE_URL, "zones/{}/dns_records".format(zone_id))
-            response = requests.get(url, headers=self.headers, timeout=self.HTTP_TIMEOUT).json()
+            url = urljoin(
+                self.CLOUDFLARE_API_BASE_URL, "zones/{}/dns_records".format(zone_id)
+            )
+            response = requests.get(
+                url, headers=self.headers, timeout=self.HTTP_TIMEOUT
+            ).json()
             data = {
-                "info": {
-                    'record_total': response['result_info']['total_count']
-                },
+                "info": {"record_total": response["result_info"]["total_count"]},
                 "list": [
                     {
                         "RecordId": i["id"],
@@ -54,7 +56,7 @@ class main(sslBase):
                         "remark": i.get("comment") or "",
                     }
                     for i in response["result"]
-                ]
+                ],
             }
 
         except Exception as e:
@@ -73,33 +75,39 @@ class main(sslBase):
         root_domain, sub_domain, _ = self.extract_zone(domain_name)
         body = {
             "content": get.domain_dns_value,
-            "name": sub_domain or '@',
-            "type": get.record_type if 'record_type' in get else 'TXT'
+            "name": sub_domain or "@",
+            "type": get.record_type if "record_type" in get else "TXT",
         }
         # CAA记录特殊处理
-        if record_type == 'CAA':
-            values = domain_dns_value.split(' ')
+        if record_type == "CAA":
+            values = domain_dns_value.split(" ")
             if len(values) != 3 or values[1] not in ("issue", "issuewild", "iodef"):
-                return public.returnMsg(False, '解析记录格式错误，请检查后重试')
+                return public.returnMsg(False, "解析记录格式错误，请检查后重试")
             body["data"] = {
-                    "flags": values[0],
-                    "tag": values[1],
-                    "value": values[2].replace('"', ''),
-                }
+                "flags": values[0],
+                "tag": values[1],
+                "value": values[2].replace('"', ""),
+            }
 
         try:
             zone_dic = self.get_zoneid_dic(get)
             zone_id = zone_dic.get(root_domain)
             if not zone_id:
-                return public.returnMsg(False, '此域名配置的dns账号不正确')
-            url = urljoin(self.CLOUDFLARE_API_BASE_URL, "zones/{}/dns_records".format(zone_id))
-            response = requests.post(url, headers=self.headers, json=body, timeout=self.HTTP_TIMEOUT)
+                return public.returnMsg(False, "此域名配置的dns账号不正确")
+            url = urljoin(
+                self.CLOUDFLARE_API_BASE_URL, "zones/{}/dns_records".format(zone_id)
+            )
+            response = requests.post(
+                url, headers=self.headers, json=body, timeout=self.HTTP_TIMEOUT
+            )
             if response.status_code == 200:
-                return public.returnMsg(True, '添加成功')
+                return public.returnMsg(True, "添加成功")
             else:
-                return public.returnMsg(False, '添加失败，{}'.format(self.get_error(response.text)))
+                return public.returnMsg(
+                    False, "添加失败，{}".format(self.get_error(response.text))
+                )
         except Exception as e:
-            return public.returnMsg(False, '添加失败，msg：{}'.format(e))
+            return public.returnMsg(False, "添加失败，msg：{}".format(e))
 
     def delete_dns_record(self, get):
         domain_name = get.domain_name
@@ -114,15 +122,20 @@ class main(sslBase):
             zone_dic = self.get_zoneid_dic(get)
             zone_id = zone_dic.get(root_domain)
             if not zone_id:
-                return public.returnMsg(False, '此域名配置的dns账号不正确')
-            url = urljoin(self.CLOUDFLARE_API_BASE_URL, "zones/{}/dns_records/{}".format(zone_id, RecordId))
-            response = requests.delete(url, headers=self.headers, timeout=self.HTTP_TIMEOUT)
+                return public.returnMsg(False, "此域名配置的dns账号不正确")
+            url = urljoin(
+                self.CLOUDFLARE_API_BASE_URL,
+                "zones/{}/dns_records/{}".format(zone_id, RecordId),
+            )
+            response = requests.delete(
+                url, headers=self.headers, timeout=self.HTTP_TIMEOUT
+            )
             if response.status_code == 200:
-                return public.returnMsg(True, '删除成功')
+                return public.returnMsg(True, "删除成功")
             else:
                 return public.returnMsg(False, self.get_error(response.text))
         except Exception as e:
-            return public.returnMsg(False, '删除失败，msg：{}'.format(e))
+            return public.returnMsg(False, "删除失败，msg：{}".format(e))
 
     def get_zoneid_dic(self, get):
         dns_id = get.dns_id
@@ -130,7 +143,9 @@ class main(sslBase):
 
         url = urljoin(self.CLOUDFLARE_API_BASE_URL, "zones?status=active&per_page=1000")
         try:
-            response = requests.get(url, headers=self.headers, timeout=self.HTTP_TIMEOUT)
+            response = requests.get(
+                url, headers=self.headers, timeout=self.HTTP_TIMEOUT
+            )
             data = response.json()
             return {i["name"]: i["id"] for i in data["result"]}
         except:
@@ -149,33 +164,40 @@ class main(sslBase):
 
         body = {
             "content": get.domain_dns_value,
-            "name": sub_domain or '@',
+            "name": sub_domain or "@",
             "type": get.record_type,
         }
 
         # CAA记录特殊处理
-        if record_type == 'CAA':
-            values = domain_dns_value.split(' ')
+        if record_type == "CAA":
+            values = domain_dns_value.split(" ")
             if len(values) != 3:
-                return public.returnMsg(False, '解析记录格式错误，请检查后重试')
+                return public.returnMsg(False, "解析记录格式错误，请检查后重试")
             body["data"] = {
-                    "flags": values[0],
-                    "tag": values[1],
-                    "value": values[2].replace('"', ''),
-                }
+                "flags": values[0],
+                "tag": values[1],
+                "value": values[2].replace('"', ""),
+            }
         try:
             zone_dic = self.get_zoneid_dic(get)
             zone_id = zone_dic.get(root_domain)
             if not zone_id:
-                return public.returnMsg(False, '此域名配置的dns账号不正确')
-            url = urljoin(self.CLOUDFLARE_API_BASE_URL, "zones/{}/dns_records/{}".format(zone_id, RecordId))
-            response = requests.patch(url, headers=self.headers, json=body, timeout=self.HTTP_TIMEOUT)
+                return public.returnMsg(False, "此域名配置的dns账号不正确")
+            url = urljoin(
+                self.CLOUDFLARE_API_BASE_URL,
+                "zones/{}/dns_records/{}".format(zone_id, RecordId),
+            )
+            response = requests.patch(
+                url, headers=self.headers, json=body, timeout=self.HTTP_TIMEOUT
+            )
             if response.status_code == 200:
-                return public.returnMsg(True, '修改成功')
+                return public.returnMsg(True, "修改成功")
             else:
-                return public.returnMsg(False, '修改失败，{}'.format(self.get_error(response.text)))
+                return public.returnMsg(
+                    False, "修改失败，{}".format(self.get_error(response.text))
+                )
         except Exception as e:
-            return public.returnMsg(False, '修改失败，msg：{}'.format(e))
+            return public.returnMsg(False, "修改失败，msg：{}".format(e))
 
     def get_error(self, error):
         if "Record does not exist" in error:

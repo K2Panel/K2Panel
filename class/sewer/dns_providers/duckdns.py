@@ -1,7 +1,7 @@
 try:
-	import urllib.parse as urlparse
+    import urllib.parse as urlparse
 except:
-	import urlparse
+    import urlparse
 import requests
 
 from . import common
@@ -33,7 +33,9 @@ class DuckDNSDns(common.BaseDns):
 
         url = urlparse.urljoin(self.DUCKDNS_API_BASE_URL, "update")
 
-        payload = dict([("domains", domain_name), ("token", self.duckdns_token), payload_end_arg])
+        payload = dict(
+            [("domains", domain_name), ("token", self.duckdns_token), payload_end_arg]
+        )
         update_duckdns_dns_record_response = requests.get(
             url, params=payload, timeout=self.HTTP_TIMEOUT
         )
@@ -45,7 +47,10 @@ class DuckDNSDns(common.BaseDns):
             )
         )
 
-        if update_duckdns_dns_record_response.status_code != 200 or normalized_response != "OK":
+        if (
+            update_duckdns_dns_record_response.status_code != 200
+            or normalized_response != "OK"
+        ):
             # raise error so that we do not continue to make calls to DuckDNS
             # server
             raise ValueError(
@@ -57,7 +62,9 @@ class DuckDNSDns(common.BaseDns):
         self.logger.info("{0}_success".format(logger_info))
 
     def create_dns_record(self, domain_name, domain_dns_value):
-        self._common_dns_record("create_dns_record", domain_name, ("txt", domain_dns_value))
+        self._common_dns_record(
+            "create_dns_record", domain_name, ("txt", domain_dns_value)
+        )
 
     def delete_dns_record(self, domain_name, domain_dns_value):
         self._common_dns_record("delete_dns_record", domain_name, ("clear", "true"))

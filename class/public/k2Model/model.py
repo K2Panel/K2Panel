@@ -18,7 +18,9 @@ def generate_table_name(class_name: str) -> str:
     """
     驼峰名转表名
     """
-    return ''.join(['_' + c.lower() if c.isupper() else c for c in class_name]).lstrip('_')
+    return "".join(["_" + c.lower() if c.isupper() else c for c in class_name]).lstrip(
+        "_"
+    )
 
 
 class aaMetaClass(type):
@@ -40,7 +42,7 @@ class aaMetaClass(type):
         return new_class
 
     def __setattr__(cls, key, value):
-        if key == '__abstract__':
+        if key == "__abstract__":
             raise AttributeError("can't set attribute '__abstract__'")
         return super().__setattr__(key, value)
 
@@ -53,17 +55,25 @@ class aaMetaClass(type):
                 if k in fields:
                     raise HintException(f"model {name} field '{k}' is already defined")
                 if k in COMPARE:
-                    raise HintException(f"model {name} field '{k}' is compare field, please change the name")
+                    raise HintException(
+                        f"model {name} field '{k}' is compare field, please change the name"
+                    )
                 if k.startswith("_"):
-                    raise HintException(f"model {name} field '{k}' is not support start with '_'")
+                    raise HintException(
+                        f"model {name} field '{k}' is not support start with '_'"
+                    )
                 fields[k] = v
                 if v.primary_key:
                     if pk:
-                        raise HintException(f"model {name} can only have one primary key")
+                        raise HintException(
+                            f"model {name} can only have one primary key"
+                        )
                     else:
                         pk = k
         if not pk:
-            raise HintException(f"sth wrong with {name}'s primary key, please check the model")
+            raise HintException(
+                f"sth wrong with {name}'s primary key, please check the model"
+            )
         setattr(obj, "__primary_key__", pk)
         setattr(obj, "__fields__", fields)
 
@@ -90,7 +100,7 @@ class aaCusModel(metaclass=aaMetaClass):
 
     def __init__(self, **kwargs):
         if self.__abstract__ is True:
-            raise RuntimeError(f'{self.__class__.__name__} class can not be init')
+            raise RuntimeError(f"{self.__class__.__name__} class can not be init")
         self._field_filter = kwargs.pop("_field_filter", None)
         for f, v in self._generate_init(kwargs, all_flag=True):
             setattr(self, f.field_name, v)
@@ -102,10 +112,15 @@ class aaCusModel(metaclass=aaMetaClass):
             self._dirty_fields.add(field_name)
 
     def _generate_init(self, val_data: dict, all_flag: bool = False) -> Generator:
-        fields_map = self._get_fields() if all_flag else {
-            k: v for k, v in self._get_fields().items()
-            if k in val_data or (hasattr(v, "dynamic") and v.auto_now is True)
-        }
+        fields_map = (
+            self._get_fields()
+            if all_flag
+            else {
+                k: v
+                for k, v in self._get_fields().items()
+                if k in val_data or (hasattr(v, "dynamic") and v.auto_now is True)
+            }
+        )
 
         for name, field in fields_map.items():
             default_val = field.get_default_val()
@@ -133,7 +148,9 @@ class aaCusModel(metaclass=aaMetaClass):
     @lru_cache(maxsize=32)
     def _get_serialized(cls) -> dict:
         return {
-            k: replace_dataclass(v) for k, v in cls._get_fields().items() if v.serialized is not None
+            k: replace_dataclass(v)
+            for k, v in cls._get_fields().items()
+            if v.serialized is not None
         }
 
     @classmethod
@@ -158,6 +175,7 @@ class aaModel(aaCusModel):
             index = ["status"]  索引
 
     """
+
     __abstract__: bool = True
     __destroyed: bool = False
     id: int = None
@@ -189,7 +207,9 @@ class aaModel(aaCusModel):
 
     @classmethod
     @check_destroyed
-    def _serialized_data(cls, data: Optional[dict | list], _field_filter=None) -> Optional[dict | list]:
+    def _serialized_data(
+        cls, data: Optional[dict | list], _field_filter=None
+    ) -> Optional[dict | list]:
         if isinstance(data, list):
             return [cls._output(d, _field_filter) for d in data]
         elif isinstance(data, dict):
@@ -198,7 +218,9 @@ class aaModel(aaCusModel):
             return data
 
     @check_destroyed
-    def _validate(self, target: dict = None, raise_exp: bool = True) -> Optional[Dict[str, Any]]:
+    def _validate(
+        self, target: dict = None, raise_exp: bool = True
+    ) -> Optional[Dict[str, Any]]:
         """
         模型验证, 返回序列化后的结果
         """
@@ -211,7 +233,9 @@ class aaModel(aaCusModel):
                     setattr(self, f.field_name, cur_val)
                 # 2, check type and return serialized
                 if f.model_check_type(target=cur_val, raise_exp=raise_exp) is True:
-                    body[f.field_name] = f.serialized(cur_val, True) if f.serialized else cur_val
+                    body[f.field_name] = (
+                        f.serialized(cur_val, True) if f.serialized else cur_val
+                    )
                 else:
                     # if not raise_exp and check is False, return {}
                     return None
@@ -247,7 +271,7 @@ class aaModel(aaCusModel):
         :return: model object 字段类型异常等问题返回 None
         """
         if self.__class__.__abstract__ is True:
-            raise RuntimeError(f'{self.__class__.__name__} class can not be save')
+            raise RuntimeError(f"{self.__class__.__name__} class can not be save")
         try:
             cls = self.__class__
             primary_key = cls.__primary_key__
@@ -282,6 +306,7 @@ class aaModel(aaCusModel):
             return None
         except Exception as e:
             import traceback
+
             print(traceback.format_exc())
             raise HintException(e)
         finally:

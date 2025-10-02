@@ -13,10 +13,11 @@ import cryptography
 
 from . import __version__ as sewer_version
 from .config import ACME_DIRECTORY_URL_PRODUCTION
+
 try:
     requests.packages.urllib3.disable_warnings()
-except:pass
-
+except:
+    pass
 
 
 class Client(object):
@@ -161,10 +162,15 @@ class Client(object):
         self.logger.debug("get_acme_endpoints")
         headers = {"User-Agent": self.User_Agent}
         get_acme_endpoints = requests.get(
-            self.ACME_DIRECTORY_URL, timeout=self.ACME_REQUEST_TIMEOUT, headers=headers,verify=False
+            self.ACME_DIRECTORY_URL,
+            timeout=self.ACME_REQUEST_TIMEOUT,
+            headers=headers,
+            verify=False,
         )
         self.logger.debug(
-            "get_acme_endpoints_response. status_code={0}".format(get_acme_endpoints.status_code)
+            "get_acme_endpoints_response. status_code={0}".format(
+                get_acme_endpoints.status_code
+            )
         )
         if get_acme_endpoints.status_code not in [200, 201]:
             raise ValueError(
@@ -219,7 +225,9 @@ class Client(object):
         X509Req.set_pubkey(pk)
         X509Req.set_version(2)
         X509Req.sign(pk, self.digest)
-        return OpenSSL.crypto.dump_certificate_request(OpenSSL.crypto.FILETYPE_ASN1, X509Req)
+        return OpenSSL.crypto.dump_certificate_request(
+            OpenSSL.crypto.FILETYPE_ASN1, X509Req
+        )
 
     def acme_register(self):
         """
@@ -252,7 +260,8 @@ class Client(object):
         acme_register_response = self.make_signed_acme_request(url=url, payload=payload)
         self.logger.debug(
             "acme_register_response. status_code={0}. response={1}".format(
-                acme_register_response.status_code, self.log_response(acme_register_response)
+                acme_register_response.status_code,
+                self.log_response(acme_register_response),
             )
         )
 
@@ -295,7 +304,9 @@ class Client(object):
 
         payload = {"identifiers": identifiers}
         url = self.ACME_NEW_ORDER_URL
-        apply_for_cert_issuance_response = self.make_signed_acme_request(url=url, payload=payload)
+        apply_for_cert_issuance_response = self.make_signed_acme_request(
+            url=url, payload=payload
+        )
         self.logger.debug(
             "apply_for_cert_issuance_response. status_code={0}. response={1}".format(
                 apply_for_cert_issuance_response.status_code,
@@ -332,7 +343,7 @@ class Client(object):
         self.logger.info("get_identifier_authorization")
         headers = {"User-Agent": self.User_Agent}
         get_identifier_authorization_response = requests.get(
-            url, timeout=self.ACME_REQUEST_TIMEOUT, headers=headers,verify=False
+            url, timeout=self.ACME_REQUEST_TIMEOUT, headers=headers, verify=False
         )
         self.logger.debug(
             "get_identifier_authorization_response. status_code={0}. response={1}".format(
@@ -367,7 +378,9 @@ class Client(object):
         }
 
         self.logger.debug(
-            "get_identifier_authorization_success. identifier_auth={0}".format(identifier_auth)
+            "get_identifier_authorization_success. identifier_auth={0}".format(
+                identifier_auth
+            )
         )
         self.logger.info("get_identifier_authorization_success")
         return identifier_auth
@@ -375,7 +388,9 @@ class Client(object):
     def get_keyauthorization(self, dns_token):
         self.logger.debug("get_keyauthorization")
         acme_header_jwk_json = json.dumps(
-            self.get_acme_header("GET_THUMBPRINT")["jwk"], sort_keys=True, separators=(",", ":")
+            self.get_acme_header("GET_THUMBPRINT")["jwk"],
+            sort_keys=True,
+            separators=(",", ":"),
         )
         acme_thumbprint = self.calculate_safe_base64(
             hashlib.sha256(acme_header_jwk_json.encode("utf8")).digest()
@@ -403,15 +418,18 @@ class Client(object):
         client via the "errors" field in the challenge and the Retry-After
         """
         self.logger.info("check_authorization_status")
-        desired_status = desired_status or ["pending", "valid","invalid"]
+        desired_status = desired_status or ["pending", "valid", "invalid"]
         number_of_checks = 0
         while True:
             headers = {"User-Agent": self.User_Agent}
             check_authorization_status_response = requests.get(
-                authorization_url, timeout=self.ACME_REQUEST_TIMEOUT, headers=headers,verify=False
+                authorization_url,
+                timeout=self.ACME_REQUEST_TIMEOUT,
+                headers=headers,
+                verify=False,
             )
             a_auth = check_authorization_status_response.json()
-            print(type(a_auth),a_auth)
+            print(type(a_auth), a_auth)
             authorization_status = a_auth["status"]
             number_of_checks = number_of_checks + 1
             self.logger.debug(
@@ -426,30 +444,28 @@ class Client(object):
                         number_of_checks,
                         self.ACME_AUTH_STATUS_MAX_CHECKS,
                         self.ACME_AUTH_STATUS_WAIT_PERIOD,
-                        json.dumps(a_auth)
+                        json.dumps(a_auth),
                     )
                 )
-            print(authorization_status,desired_status)
+            print(authorization_status, desired_status)
             if authorization_status in desired_status:
                 if authorization_status == "invalid":
                     try:
                         import panelLets
-                        if 'error' in a_auth['challenges'][0]:
-                            ret_title = a_auth['challenges'][0]['error']['detail']
-                        elif 'error' in a_auth['challenges'][1]:
-                            ret_title = a_auth['challenges'][1]['error']['detail']
-                        elif 'error' in a_auth['challenges'][2]:
-                            ret_title = a_auth['challenges'][2]['error']['detail']
+
+                        if "error" in a_auth["challenges"][0]:
+                            ret_title = a_auth["challenges"][0]["error"]["detail"]
+                        elif "error" in a_auth["challenges"][1]:
+                            ret_title = a_auth["challenges"][1]["error"]["detail"]
+                        elif "error" in a_auth["challenges"][2]:
+                            ret_title = a_auth["challenges"][2]["error"]["detail"]
                         else:
                             ret_title = str(a_auth)
                         ret_title = panelLets.panelLets().get_error(ret_title)
                     except:
                         ret_title = str(a_auth)
                     raise StopIteration(
-                        "{0} >>>> {1}".format(
-                            ret_title,
-                            json.dumps(a_auth)
-                        )
+                        "{0} >>>> {1}".format(ret_title, json.dumps(a_auth))
                     )
                 break
             else:
@@ -476,7 +492,9 @@ class Client(object):
         """
         self.logger.info("respond_to_challenge")
         payload = {"keyAuthorization": "{0}".format(acme_keyauthorization)}
-        respond_to_challenge_response = self.make_signed_acme_request(dns_challenge_url, payload)
+        respond_to_challenge_response = self.make_signed_acme_request(
+            dns_challenge_url, payload
+        )
         self.logger.debug(
             "respond_to_challenge_response. status_code={0}. response={1}".format(
                 respond_to_challenge_response.status_code,
@@ -502,7 +520,9 @@ class Client(object):
         """
         self.logger.info("send_csr")
         payload = {"csr": self.calculate_safe_base64(self.csr)}
-        send_csr_response = self.make_signed_acme_request(url=finalize_url, payload=payload)
+        send_csr_response = self.make_signed_acme_request(
+            url=finalize_url, payload=payload
+        )
         self.logger.debug(
             "send_csr_response. status_code={0}. response={1}".format(
                 send_csr_response.status_code, self.log_response(send_csr_response)
@@ -550,7 +570,9 @@ class Client(object):
 
     def sign_message(self, message):
         self.logger.debug("sign_message")
-        pk = OpenSSL.crypto.load_privatekey(OpenSSL.crypto.FILETYPE_PEM, self.account_key.encode())
+        pk = OpenSSL.crypto.load_privatekey(
+            OpenSSL.crypto.FILETYPE_PEM, self.account_key.encode()
+        )
         return OpenSSL.crypto.sign(pk, message.encode("utf8"), self.digest)
 
     def get_nonce(self):
@@ -562,7 +584,10 @@ class Client(object):
         self.logger.debug("get_nonce")
         headers = {"User-Agent": self.User_Agent}
         response = requests.get(
-            self.ACME_GET_NONCE_URL, timeout=self.ACME_REQUEST_TIMEOUT, headers=headers,verify=False
+            self.ACME_GET_NONCE_URL,
+            timeout=self.ACME_REQUEST_TIMEOUT,
+            headers=headers,
+            verify=False,
         )
         nonce = response.headers["Replay-Nonce"]
         return nonce
@@ -609,12 +634,18 @@ class Client(object):
         """
         self.logger.debug("get_acme_header")
         header = {"alg": "RS256", "nonce": self.get_nonce(), "url": url}
-        
-        if url in [self.ACME_NEW_ACCOUNT_URL, self.ACME_REVOKE_CERT_URL, "GET_THUMBPRINT"]:
-            private_key = cryptography.hazmat.primitives.serialization.load_pem_private_key(
-                self.account_key.encode(),
-                password=None,
-                backend=cryptography.hazmat.backends.default_backend(),
+
+        if url in [
+            self.ACME_NEW_ACCOUNT_URL,
+            self.ACME_REVOKE_CERT_URL,
+            "GET_THUMBPRINT",
+        ]:
+            private_key = (
+                cryptography.hazmat.primitives.serialization.load_pem_private_key(
+                    self.account_key.encode(),
+                    password=None,
+                    backend=cryptography.hazmat.backends.default_backend(),
+                )
             )
             public_key_public_numbers = private_key.public_key().public_numbers()
             # private key public exponent in hex format
@@ -630,7 +661,7 @@ class Client(object):
             header["jwk"] = jwk
         else:
             header["kid"] = self.kid
-        print('h:',url,header)
+        print("h:", url, header)
         return header
 
     def make_signed_acme_request(self, url, payload):
@@ -639,19 +670,31 @@ class Client(object):
         payload = self.stringfy_items(payload)
 
         if payload in ["GET_Z_CHALLENGE", "DOWNLOAD_Z_CERTIFICATE"]:
-            response = requests.get(url, timeout=self.ACME_REQUEST_TIMEOUT, headers=headers,verify=False)
+            response = requests.get(
+                url, timeout=self.ACME_REQUEST_TIMEOUT, headers=headers, verify=False
+            )
         else:
             payload64 = self.calculate_safe_base64(json.dumps(payload))
             protected = self.get_acme_header(url)
             protected64 = self.calculate_safe_base64(json.dumps(protected))
-            signature = self.sign_message(message="{0}.{1}".format(protected64, payload64))  # bytes
+            signature = self.sign_message(
+                message="{0}.{1}".format(protected64, payload64)
+            )  # bytes
             signature64 = self.calculate_safe_base64(signature)  # str
             data = json.dumps(
-                {"protected": protected64, "payload": payload64, "signature": signature64}
+                {
+                    "protected": protected64,
+                    "payload": payload64,
+                    "signature": signature64,
+                }
             )
             headers.update({"Content-Type": "application/jose+json"})
             response = requests.post(
-                url, data=data.encode("utf8"), timeout=self.ACME_REQUEST_TIMEOUT, headers=headers ,verify=False
+                url,
+                data=data.encode("utf8"),
+                timeout=self.ACME_REQUEST_TIMEOUT,
+                headers=headers,
+                verify=False,
             )
         return response
 
@@ -670,7 +713,9 @@ class Client(object):
                 dns_token = identifier_auth["dns_token"]
                 dns_challenge_url = identifier_auth["dns_challenge_url"]
 
-                acme_keyauthorization, domain_dns_value = self.get_keyauthorization(dns_token)
+                acme_keyauthorization, domain_dns_value = self.get_keyauthorization(
+                    dns_token
+                )
                 self.dns_class.create_dns_record(dns_name, domain_dns_value)
                 dns_names_to_delete.append(
                     {"dns_name": dns_name, "domain_dns_value": domain_dns_value}
@@ -691,9 +736,13 @@ class Client(object):
                 # response. The authorization can be in the "valid" state before submitting
                 # a challenge response if there was a previous authorization for these hosts
                 # that was successfully validated, still cached by the server.
-                auth_status_response = self.check_authorization_status(i["authorization_url"])
+                auth_status_response = self.check_authorization_status(
+                    i["authorization_url"]
+                )
                 if auth_status_response.json()["status"] == "pending":
-                    self.respond_to_challenge(i["acme_keyauthorization"], i["dns_challenge_url"])
+                    self.respond_to_challenge(
+                        i["acme_keyauthorization"], i["dns_challenge_url"]
+                    )
 
             for i in responders:
                 # Before sending a CSR, we need to make sure the server has completed the
@@ -703,7 +752,9 @@ class Client(object):
             certificate_url = self.send_csr(finalize_url)
             certificate = self.download_certificate(certificate_url)
         except Exception as e:
-            self.logger.error("Error: Unable to issue certificate. error={0}".format(str(e)))
+            self.logger.error(
+                "Error: Unable to issue certificate. error={0}".format(str(e))
+            )
             raise e
         finally:
             for i in dns_names_to_delete:

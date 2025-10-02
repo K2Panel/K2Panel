@@ -8,10 +8,10 @@ from .model import k2Model
 __version__ = "1.1.3"
 
 __all__ = [
-              "__version__",
-              # "DictFileModel",
-              # "ListFileModel",
-              "QueryProperty",
-              "aaModel",
-              "Q",
-          ] + fields.__all__
+    "__version__",
+    # "DictFileModel",
+    # "ListFileModel",
+    "QueryProperty",
+    "aaModel",
+    "Q",
+] + fields.__all__

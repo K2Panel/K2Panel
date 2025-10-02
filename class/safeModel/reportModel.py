@@ -14,17 +14,20 @@ import sys
 from safeModel.base import safeBase
 
 # Use dynamic path instead of hardcoded /www/server/panel
-_panel_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+_panel_path = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+)
 if os.path.exists("/www/server/panel"):
     _panel_path = "/www/server/panel"
 os.chdir(_panel_path)
 sys.path.append("class/")
 import public, config, datetime
 
+
 class main(safeBase):
-    __path = '/www/server/panel/data/warning_report'
-    __risk = __path + '/risk'
-    __data = __path + '/data.json'
+    __path = "/www/server/panel/data/warning_report"
+    __risk = __path + "/risk"
+    __data = __path + "/data.json"
     new_result = "/www/server/panel/data/warning/resultresult.json"
     data = []
     final_obj = {}
@@ -48,9 +51,9 @@ class main(safeBase):
             os.makedirs(self.__path, 384)
 
     def get_report(self, get):
-        '''
-            将检测数据，填充到html，并展示检测报告数据
-        '''
+        """
+        将检测数据，填充到html，并展示检测报告数据
+        """
         public.set_module_logs("report", "get_report")
         self.cve_list = []
         self.high_warn_list = []
@@ -61,7 +64,10 @@ class main(safeBase):
         # data = json.loads(public.readFile(self.__data))
         # 获取最新的检测结果
         if not os.path.exists(self.new_result):
-            return public.returnMsg(False, "No test results found, please perform a homepage security risk scan first")
+            return public.returnMsg(
+                False,
+                "No test results found, please perform a homepage security risk scan first",
+            )
         cve_result = json.loads(public.ReadFile(self.new_result))
 
         first = {}
@@ -124,37 +130,41 @@ class main(safeBase):
         #             self.low_warn_list.append(d)
 
         if self.high_warn + self.high_cve > 1:
-            total_level = 'High'
-            level_color = 'High'
+            total_level = "High"
+            level_color = "High"
         elif self.mid_warn + self.mid_cve > 10 or self.high_warn + self.high_cve == 1:
-            total_level = 'Medium'
-            level_color = 'Medium'
+            total_level = "Medium"
+            level_color = "Medium"
         else:
-            total_level = 'Low'
-            level_color = 'Low'
+            total_level = "Low"
+            level_color = "Low"
         # self.cve_num = self.high_cve + self.mid_cve + self.low_cve
         level_reason = "The server has not identified any significant security risks and continues to maintain them!"
         if total_level == "High":
-            level_reason = "There are high-risk security risks or system vulnerabilities on the server, which may lead to hacker intrusion,<span style=\"" \
-                           "font-size: 1.1em;font-weight: 700;color: red;\">Please fix as soon as possible！</span>"
+            level_reason = (
+                'There are high-risk security risks or system vulnerabilities on the server, which may lead to hacker intrusion,<span style="'
+                'font-size: 1.1em;font-weight: 700;color: red;">Please fix as soon as possible！</span>'
+            )
         if total_level == "High":
-            level_reason = "The server has identified potential security risks，<span style=\"" \
-                           "font-size: 1.1em;font-weight: 700;color: red;\">Suggest repairing as soon as possible！</span>"
-        warn_level = 'Low'
+            level_reason = (
+                'The server has identified potential security risks，<span style="'
+                'font-size: 1.1em;font-weight: 700;color: red;">Suggest repairing as soon as possible！</span>'
+            )
+        warn_level = "Low"
         if self.high_warn > 0:
-            warn_level = 'High'
+            warn_level = "High"
             first_warn = "Identify {} high-risk safety risks".format(self.high_warn)
         elif self.mid_warn > 5:
-            warn_level = 'Medium'
+            warn_level = "Medium"
             first_warn = "Discovering numerous security risks with moderate threats"
         else:
             first_warn = "No significant security risks were identified"
-        cve_level = 'Low'
+        cve_level = "Low"
         if self.cve_num > 1:
-            cve_level = 'High'
+            cve_level = "High"
             first_cve = "Discovered {} system vulnerabilities".format(self.cve_num)
         elif self.cve_num == 1:
-            cve_level = 'Medium'
+            cve_level = "Medium"
             first_cve = "Discovered a small number of system vulnerabilities"
         else:
             first_cve = "No system vulnerabilities found"
@@ -162,7 +172,7 @@ class main(safeBase):
         long_date = cve_result["check_time"]  # 带有时间的检测日期
         date_obj = datetime.datetime.strptime(long_date, "%Y/%m/%d %H:%M:%S")
         second["date"] = date_obj.strftime("%Y/%m/%d")
-        second["last_date"] = cve_result.get('check_time', '')
+        second["last_date"] = cve_result.get("check_time", "")
         second["level_color"] = level_color
         second["total_level"] = total_level
         second["level_reason"] = level_reason
@@ -194,11 +204,17 @@ class main(safeBase):
         third["last_day"] = (date_obj - datetime.timedelta(days=6)).strftime("%d")
         third["month"] = date_obj.strftime("%m")
         third["day"] = date_obj.strftime("%d")
-        third["second_warn"] = "Daily login panel and routine server security risk detection."
+        third["second_warn"] = (
+            "Daily login panel and routine server security risk detection."
+        )
         if self.cve_num > 0:
-            third["second_cve"] = "Perform vulnerability scans on system kernel versions and popular applications to identify potential vulnerability risks."
+            third["second_cve"] = (
+                "Perform vulnerability scans on system kernel versions and popular applications to identify potential vulnerability risks."
+            )
         else:
-            third["second_cve"] = "Vulnerability scanning was conducted on the system kernel version and popular applications, and no vulnerability risks were found."
+            third["second_cve"] = (
+                "Vulnerability scanning was conducted on the system kernel version and popular applications, and no vulnerability risks were found."
+            )
         third["repair"] = "Perform one click repair to solve security issues."
         fourth = {}
 
@@ -236,8 +252,8 @@ class main(safeBase):
                     "name": str(hwl["msg"]),
                     "level": "High Risk",
                     "ps": str(hwl["ps"]),
-                    "tips": '\n'.join(hwl["tips"]),
-                    "auto": self.is_autofix1(hwl["m_name"])
+                    "tips": "\n".join(hwl["tips"]),
+                    "auto": self.is_autofix1(hwl["m_name"]),
                 }
             )
             num += 1
@@ -250,8 +266,8 @@ class main(safeBase):
                     "name": mwl["msg"],
                     "level": "Medium Risk",
                     "ps": mwl["ps"],
-                    "tips": '\n'.join(mwl["tips"]),
-                    "auto": self.is_autofix1(mwl["m_name"])
+                    "tips": "\n".join(mwl["tips"]),
+                    "auto": self.is_autofix1(mwl["m_name"]),
                 }
             )
             num += 1
@@ -259,13 +275,13 @@ class main(safeBase):
         focus_cve_list = []
         for cl in self.cve_list:
             tmp_cve = {
-                    "num": num,
-                    "name": cl["m_name"],
-                    "level": "High Risk",
-                    "ps": cl["ps"],
-                    "tips": '\n'.join(cl["tips"]),
-                    "auto": "Support"
-                }
+                "num": num,
+                "name": cl["m_name"],
+                "level": "High Risk",
+                "ps": cl["ps"],
+                "tips": "\n".join(cl["tips"]),
+                "auto": "Support",
+            }
             if cl["level"] == 2:
                 tmp_cve["name"] = cl["m_name"]
                 tmp_cve["level"] = "Medium Risk"
@@ -285,8 +301,8 @@ class main(safeBase):
                     "name": str(lwl["msg"]),
                     "level": "Low Risk",
                     "ps": str(lwl["ps"]),
-                    "tips": '\n'.join(lwl["tips"]),
-                    "auto": self.is_autofix1(lwl["m_name"])
+                    "tips": "\n".join(lwl["tips"]),
+                    "auto": self.is_autofix1(lwl["m_name"]),
                 }
             )
             num += 1
@@ -300,8 +316,8 @@ class main(safeBase):
                         "name": ig["msg"],
                         "level": "Ignore items",
                         "ps": ig["ps"],
-                        "tips": '\n'.join(ig["tips"]),
-                        "auto": self.is_autofix(ig)
+                        "tips": "\n".join(ig["tips"]),
+                        "auto": self.is_autofix(ig),
                     }
                 )
             elif "cve_id" in ig:
@@ -311,13 +327,22 @@ class main(safeBase):
                         "name": ig["cve_id"],
                         "level": "Ignore items",
                         "ps": ig["vuln_name"],
-                        "tips": "Upgrade the 【{}】 version to {} or a higher version.".format('、'.join(ig["soft_name"]), ig["vuln_version"]),
-                        "auto": self.is_autofix(ig)
+                        "tips": "Upgrade the 【{}】 version to {} or a higher version.".format(
+                            "、".join(ig["soft_name"]), ig["vuln_version"]
+                        ),
+                        "auto": self.is_autofix(ig),
                     }
                 )
             num += 1
         sixth["ignore_list"] = ignore_list
-        self.final_obj = {"first": first, "second": second, "third": third, "fourth": fourth, "fifth": fifth, "sixth": sixth}
+        self.final_obj = {
+            "first": first,
+            "second": second,
+            "third": third,
+            "fourth": fourth,
+            "fifth": fifth,
+            "sixth": sixth,
+        }
 
         # 添加恶意文件扫描数据
         # from projectModelV2 import safecloudModel,scanningModel,safe_detectModel
@@ -325,53 +350,78 @@ class main(safeBase):
         from projectModelV2.scanningModel import main as scanning_Model
         from projectModelV2.safe_detectModel import main as safe_detect_Model
 
-
         safecloud = safecloud_Model()  # 只获取前1000条恶意文件
-        malicious_files = safecloud.get_webshell_result({'p': 1, 'limit': 1000})
-        if malicious_files.get('status',0) == 0:
-            self.final_obj['malicious_files'] = malicious_files.get('message', {})
+        malicious_files = safecloud.get_webshell_result({"p": 1, "limit": 1000})
+        if malicious_files.get("status", 0) == 0:
+            self.final_obj["malicious_files"] = malicious_files.get("message", {})
         else:
-            self.final_obj['malicious_files'] = {'status': False, 'msg': 'Failed to retrieve malicious files'}
+            self.final_obj["malicious_files"] = {
+                "status": False,
+                "msg": "Failed to retrieve malicious files",
+            }
 
         # 启动网站漏洞扫描
-        website_vulnerabilities = scanning_Model().startScan(' ')
-        if website_vulnerabilities.get('status', 0) == 0:
-            self.final_obj['website_vulnerabilities'] = website_vulnerabilities.get('message', {})
-            self.final_obj['website_vulnerabilities']['status'] = True
+        website_vulnerabilities = scanning_Model().startScan(" ")
+        if website_vulnerabilities.get("status", 0) == 0:
+            self.final_obj["website_vulnerabilities"] = website_vulnerabilities.get(
+                "message", {}
+            )
+            self.final_obj["website_vulnerabilities"]["status"] = True
         else:
-            self.final_obj['website_vulnerabilities'] = {'status': False, 'msg': 'Failed to retrieve website vulnerabilities'}
+            self.final_obj["website_vulnerabilities"] = {
+                "status": False,
+                "msg": "Failed to retrieve website vulnerabilities",
+            }
 
         # 服务器漏洞检测
         try:
             server_security_list = self.read_log_file()
-            server_security = safe_detect_Model().get_safe_count('')
+            server_security = safe_detect_Model().get_safe_count("")
 
-            if server_security['status'] == 0:
-                server_security_count = server_security.get('message', {})
+            if server_security["status"] == 0:
+                server_security_count = server_security.get("message", {})
             else:
                 server_security_count = {}
 
-            self.final_obj['server_security'] = {'status': True, 'server_security_list': server_security_list, 'server_security_count':server_security_count}
+            self.final_obj["server_security"] = {
+                "status": True,
+                "server_security_list": server_security_list,
+                "server_security_count": server_security_count,
+            }
         except Exception as e:
-            self.final_obj['server_security'] = {'status': False, 'server_security_list': [], 'server_security_count': {}}
+            self.final_obj["server_security"] = {
+                "status": False,
+                "server_security_list": [],
+                "server_security_count": {},
+            }
 
         # 添加总评分
-        total_score = safecloud.get_safe_overview(' ')
-        if total_score.get('status', 0) == 0:
-            self.final_obj['second']['level'] = total_score.get('message', {})['level']
+        total_score = safecloud.get_safe_overview(" ")
+        if total_score.get("status", 0) == 0:
+            self.final_obj["second"]["level"] = total_score.get("message", {})["level"]
 
         # 合并cve与漏洞风险项
-        self.final_obj['fourth']['high_warn'] = str(int(self.final_obj['fourth']['high_warn']) + int(self.final_obj['fourth']['high_cve']))
-        self.final_obj['fourth']['mid_warn'] = str(int(self.final_obj['fourth']['mid_warn']) + int(self.final_obj['fourth']['mid_cve']))
-        self.final_obj['fourth']['low_warn'] = str(int(self.final_obj['fourth']['low_warn']) + int(self.final_obj['fourth']['low_cve']))
+        self.final_obj["fourth"]["high_warn"] = str(
+            int(self.final_obj["fourth"]["high_warn"])
+            + int(self.final_obj["fourth"]["high_cve"])
+        )
+        self.final_obj["fourth"]["mid_warn"] = str(
+            int(self.final_obj["fourth"]["mid_warn"])
+            + int(self.final_obj["fourth"]["mid_cve"])
+        )
+        self.final_obj["fourth"]["low_warn"] = str(
+            int(self.final_obj["fourth"]["low_warn"])
+            + int(self.final_obj["fourth"]["low_cve"])
+        )
 
-        return  public.return_message(0,0, self.final_obj)
+        return public.return_message(0, 0, self.final_obj)
 
     def read_log_file(self):
         import ast
+
         result_list = []
         try:
-            with open("/www/server/panel/data/safe_detect_dict.log", 'r') as file:
+            with open("/www/server/panel/data/safe_detect_dict.log", "r") as file:
                 for line in file:
                     # 去除行尾的换行符
                     line = line.strip()

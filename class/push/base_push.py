@@ -1,4 +1,4 @@
-#coding: utf-8
+# coding: utf-8
 # +-------------------------------------------------------------------
 # | K2Panel
 # +-------------------------------------------------------------------
@@ -7,16 +7,18 @@
 # | Author: baozi <baozi@binarjoinanalyticnl.nl>
 # | Author: baozi
 # +-------------------------------------------------------------------
-import sys,os,re,json
+import sys, os, re, json
 
-import public,panelPush, time
+import public, panelPush, time
 from datetime import datetime, timedelta
 
 try:
     from BTPanel import cache
-except :
+except:
     from cachelib import SimpleCache
+
     cache = SimpleCache()
+
 
 class base_push:
 

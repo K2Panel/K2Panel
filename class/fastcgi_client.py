@@ -6,6 +6,7 @@ import random
 import re
 import sys
 
+
 class fastcgi_client:
     __FCGI_VERSION = 1
 
@@ -61,58 +62,65 @@ class fastcgi_client:
             return False
         return True
 
-    def _chr(self,num):
+    def _chr(self, num):
         if sys.version_info[0] == 3:
-            return chr(num).encode('latin1')
+            return chr(num).encode("latin1")
         return chr(num)
 
-    def _ord(self,sbody):
+    def _ord(self, sbody):
         if sys.version_info[0] == 3:
             return sbody
         return ord(sbody)
 
     def __encodeFastCGIRecord(self, fcgi_type, content, requestid):
-        if type(content) == str: content = content.encode()
+        if type(content) == str:
+            content = content.encode()
         length = len(content)
 
-        return self._chr(self.__FCGI_VERSION) \
-               + self._chr(fcgi_type) \
-               + self._chr((requestid >> 8) & 0xFF) \
-               + self._chr(requestid & 0xFF) \
-               + self._chr((length >> 8) & 0xFF) \
-               + self._chr(length & 0xFF) \
-               + self._chr(0) \
-               + self._chr(0) \
-               + content
+        return (
+            self._chr(self.__FCGI_VERSION)
+            + self._chr(fcgi_type)
+            + self._chr((requestid >> 8) & 0xFF)
+            + self._chr(requestid & 0xFF)
+            + self._chr((length >> 8) & 0xFF)
+            + self._chr(length & 0xFF)
+            + self._chr(0)
+            + self._chr(0)
+            + content
+        )
 
     def __encodeNameValueParams(self, name, value):
         nLen = len(str(name))
         vLen = len(str(value))
-        record = b''
+        record = b""
         if nLen < 128:
             record += self._chr(nLen)
         else:
-            record += self._chr((nLen >> 24) | 0x80) \
-                      + self._chr((nLen >> 16) & 0xFF) \
-                      + self._chr((nLen >> 8) & 0xFF) \
-                      + self._chr(nLen & 0xFF)
+            record += (
+                self._chr((nLen >> 24) | 0x80)
+                + self._chr((nLen >> 16) & 0xFF)
+                + self._chr((nLen >> 8) & 0xFF)
+                + self._chr(nLen & 0xFF)
+            )
         if vLen < 128:
             record += self._chr(vLen)
         else:
-            record += self._chr((vLen >> 24) | 0x80) \
-                      + self._chr((vLen >> 16) & 0xFF) \
-                      + self._chr((vLen >> 8) & 0xFF) \
-                      + self._chr(vLen & 0xFF)
+            record += (
+                self._chr((vLen >> 24) | 0x80)
+                + self._chr((vLen >> 16) & 0xFF)
+                + self._chr((vLen >> 8) & 0xFF)
+                + self._chr(vLen & 0xFF)
+            )
         return record + str(name).encode() + str(value).encode()
 
     def __decodeFastCGIHeader(self, stream):
         header = dict()
-        header['version'] = self._ord(stream[0])
-        header['type'] = self._ord(stream[1])
-        header['requestId'] = (self._ord(stream[2]) << 8) + self._ord(stream[3])
-        header['contentLength'] = (self._ord(stream[4]) << 8) + self._ord(stream[5])
-        header['paddingLength'] = self._ord(stream[6])
-        header['reserved'] = self._ord(stream[7])
+        header["version"] = self._ord(stream[0])
+        header["type"] = self._ord(stream[1])
+        header["requestId"] = (self._ord(stream[2]) << 8) + self._ord(stream[3])
+        header["contentLength"] = (self._ord(stream[4]) << 8) + self._ord(stream[5])
+        header["paddingLength"] = self._ord(stream[6])
+        header["reserved"] = self._ord(stream[7])
         return header
 
     def __decodeFastCGIRecord(self):
@@ -121,53 +129,61 @@ class fastcgi_client:
             return False
         else:
             record = self.__decodeFastCGIHeader(header)
-            record['content'] = b''
-            if 'contentLength' in record.keys():
-                contentLength = int(record['contentLength'])
+            record["content"] = b""
+            if "contentLength" in record.keys():
+                contentLength = int(record["contentLength"])
                 buffer = self.sock.recv(contentLength)
 
                 while contentLength and buffer:
                     contentLength -= len(buffer)
-                    record['content'] += buffer
-            if 'paddingLength' in record.keys():
-                skiped = self.sock.recv(int(record['paddingLength']))
+                    record["content"] += buffer
+            if "paddingLength" in record.keys():
+                skiped = self.sock.recv(int(record["paddingLength"]))
             return record
 
-    def request(self, nameValuePairs={}, post=''):
+    def request(self, nameValuePairs={}, post=""):
         if not self.__connect():
-            raise Exception('Connection service failed, please check if the specified service is started!')
+            raise Exception(
+                "Connection service failed, please check if the specified service is started!"
+            )
             return
 
         requestId = random.randint(1, (1 << 16) - 1)
         self.requests[requestId] = dict()
         request = b""
-        beginFCGIRecordContent = self._chr(0) \
-                                 + self._chr(self.__FCGI_ROLE_RESPONDER) \
-                                 + self._chr(self.keepalive) \
-                                 + self._chr(0) * 5
-        request += self.__encodeFastCGIRecord(self.__FCGI_TYPE_BEGIN,
-                                              beginFCGIRecordContent, requestId)
+        beginFCGIRecordContent = (
+            self._chr(0)
+            + self._chr(self.__FCGI_ROLE_RESPONDER)
+            + self._chr(self.keepalive)
+            + self._chr(0) * 5
+        )
+        request += self.__encodeFastCGIRecord(
+            self.__FCGI_TYPE_BEGIN, beginFCGIRecordContent, requestId
+        )
 
-        paramsRecord = b''
+        paramsRecord = b""
 
         if nameValuePairs:
             v_items = sorted(nameValuePairs.items())
-            for (name, value) in v_items:
+            for name, value in v_items:
                 paramsRecord += self.__encodeNameValueParams(name, value)
 
-
         if paramsRecord:
-            request += self.__encodeFastCGIRecord(self.__FCGI_TYPE_PARAMS, paramsRecord, requestId)
+            request += self.__encodeFastCGIRecord(
+                self.__FCGI_TYPE_PARAMS, paramsRecord, requestId
+            )
 
-        request += self.__encodeFastCGIRecord(self.__FCGI_TYPE_PARAMS, b'', requestId)
+        request += self.__encodeFastCGIRecord(self.__FCGI_TYPE_PARAMS, b"", requestId)
 
         if post:
-            request += self.__encodeFastCGIRecord(self.__FCGI_TYPE_STDIN, post, requestId)
-        request += self.__encodeFastCGIRecord(self.__FCGI_TYPE_STDIN, b'', requestId)
+            request += self.__encodeFastCGIRecord(
+                self.__FCGI_TYPE_STDIN, post, requestId
+            )
+        request += self.__encodeFastCGIRecord(self.__FCGI_TYPE_STDIN, b"", requestId)
 
         self.sock.send(request)
-        self.requests[requestId]['state'] = self.FCGI_STATE_SEND
-        self.requests[requestId]['response'] = b''
+        self.requests[requestId]["state"] = self.FCGI_STATE_SEND
+        self.requests[requestId]["response"] = b""
         return self.__waitForResponse(requestId)
 
     def __waitForResponse(self, requestId):
@@ -175,22 +191,25 @@ class fastcgi_client:
             response = self.__decodeFastCGIRecord()
             if not response:
                 break
-            if response['type'] == self.__FCGI_TYPE_STDOUT \
-                    or response['type'] == self.__FCGI_TYPE_STDERR:
-                if response['type'] == self.__FCGI_TYPE_STDERR:
-                    self.requests['state'] = self.FCGI_STATE_ERROR
-                if requestId == int(response['requestId']):
-                    self.requests[requestId]['response'] += response['content']
-            if response['type'] == self.FCGI_STATE_SUCCESS:
+            if (
+                response["type"] == self.__FCGI_TYPE_STDOUT
+                or response["type"] == self.__FCGI_TYPE_STDERR
+            ):
+                if response["type"] == self.__FCGI_TYPE_STDERR:
+                    self.requests["state"] = self.FCGI_STATE_ERROR
+                if requestId == int(response["requestId"]):
+                    self.requests[requestId]["response"] += response["content"]
+            if response["type"] == self.FCGI_STATE_SUCCESS:
                 self.requests[requestId]
-        if self.requests[requestId]['response'].find(b'\r\n\r\n') != -1:
+        if self.requests[requestId]["response"].find(b"\r\n\r\n") != -1:
             tmp = b""
-            tmp2 = self.requests[requestId]['response'].split(b'\r\n\r\n')
+            tmp2 = self.requests[requestId]["response"].split(b"\r\n\r\n")
             for i in range(len(tmp2)):
-                if i == 0: continue
-                tmp += tmp2[i] + b'\r\n\r\n'
-            self.requests[requestId]['response'] = tmp.strip()
-        return self.requests[requestId]['response']
+                if i == 0:
+                    continue
+                tmp += tmp2[i] + b"\r\n\r\n"
+            self.requests[requestId]["response"] = tmp.strip()
+        return self.requests[requestId]["response"]
 
     def __repr__(self):
         return "fastcgi connect host:{} port:{}".format(self.host, self.port)

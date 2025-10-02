@@ -3,13 +3,13 @@ import struct
 
 # varint编码 -> bytes
 def _varint_encode(num):
-    res = b''
+    res = b""
 
     while num > 127:
-        res += struct.pack('B', 0x80 | (num & 0x7f))
+        res += struct.pack("B", 0x80 | (num & 0x7F))
         num >>= 7
 
-    res += struct.pack('B', num)
+    res += struct.pack("B", num)
 
     return res
 
@@ -22,7 +22,7 @@ def _varint_decode(bs):
         if n > len(bs) - 1:
             break
 
-        res |= (bs[n] & 0x7f) << shift
+        res |= (bs[n] & 0x7F) << shift
         if (bs[n] & 0x80) == 0:
             break
 

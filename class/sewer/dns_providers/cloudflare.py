@@ -1,7 +1,7 @@
 try:
-	import urllib.parse as urlparse
+    import urllib.parse as urlparse
 except:
-	import urlparse
+    import urlparse
 
 import requests
 
@@ -9,8 +9,7 @@ from . import common
 
 
 class CloudFlareDns(common.BaseDns):
-    """
-    """
+    """ """
 
     dns_provider_name = "cloudflare"
 
@@ -35,10 +34,17 @@ class CloudFlareDns(common.BaseDns):
     def find_dns_zone(self, domain_name):
         self.logger.debug("find_dns_zone")
         url = urlparse.urljoin(self.CLOUDFLARE_API_BASE_URL, "zones?status=active")
-        headers = {"X-Auth-Email": self.CLOUDFLARE_EMAIL, "X-Auth-Key": self.CLOUDFLARE_API_KEY}
-        find_dns_zone_response = requests.get(url, headers=headers, timeout=self.HTTP_TIMEOUT)
+        headers = {
+            "X-Auth-Email": self.CLOUDFLARE_EMAIL,
+            "X-Auth-Key": self.CLOUDFLARE_API_KEY,
+        }
+        find_dns_zone_response = requests.get(
+            url, headers=headers, timeout=self.HTTP_TIMEOUT
+        )
         self.logger.debug(
-            "find_dns_zone_response. status_code={0}".format(find_dns_zone_response.status_code)
+            "find_dns_zone_response. status_code={0}".format(
+                find_dns_zone_response.status_code
+            )
         )
         if find_dns_zone_response.status_code != 200:
             raise ValueError(
@@ -73,7 +79,10 @@ class CloudFlareDns(common.BaseDns):
             self.CLOUDFLARE_API_BASE_URL,
             "zones/{0}/dns_records".format(self.CLOUDFLARE_DNS_ZONE_ID),
         )
-        headers = {"X-Auth-Email": self.CLOUDFLARE_EMAIL, "X-Auth-Key": self.CLOUDFLARE_API_KEY}
+        headers = {
+            "X-Auth-Email": self.CLOUDFLARE_EMAIL,
+            "X-Auth-Key": self.CLOUDFLARE_API_KEY,
+        }
         body = {
             "type": "TXT",
             "name": "_acme-challenge" + "." + domain_name + ".",
@@ -112,7 +121,10 @@ class CloudFlareDns(common.BaseDns):
                 return {}
 
         delete_dns_record_response = MockResponse()
-        headers = {"X-Auth-Email": self.CLOUDFLARE_EMAIL, "X-Auth-Key": self.CLOUDFLARE_API_KEY}
+        headers = {
+            "X-Auth-Email": self.CLOUDFLARE_EMAIL,
+            "X-Auth-Key": self.CLOUDFLARE_API_KEY,
+        }
 
         dns_name = "_acme-challenge" + "." + domain_name
         list_dns_payload = {"type": "TXT", "name": dns_name}
@@ -122,16 +134,24 @@ class CloudFlareDns(common.BaseDns):
         )
 
         list_dns_response = requests.get(
-            list_dns_url, params=list_dns_payload, headers=headers, timeout=self.HTTP_TIMEOUT
+            list_dns_url,
+            params=list_dns_payload,
+            headers=headers,
+            timeout=self.HTTP_TIMEOUT,
         )
 
         for i in range(0, len(list_dns_response.json()["result"])):
             dns_record_id = list_dns_response.json()["result"][i]["id"]
             url = urllib.parse.urljoin(
                 self.CLOUDFLARE_API_BASE_URL,
-                "zones/{0}/dns_records/{1}".format(self.CLOUDFLARE_DNS_ZONE_ID, dns_record_id),
+                "zones/{0}/dns_records/{1}".format(
+                    self.CLOUDFLARE_DNS_ZONE_ID, dns_record_id
+                ),
             )
-            headers = {"X-Auth-Email": self.CLOUDFLARE_EMAIL, "X-Auth-Key": self.CLOUDFLARE_API_KEY}
+            headers = {
+                "X-Auth-Email": self.CLOUDFLARE_EMAIL,
+                "X-Auth-Key": self.CLOUDFLARE_API_KEY,
+            }
             delete_dns_record_response = requests.delete(
                 url, headers=headers, timeout=self.HTTP_TIMEOUT
             )
@@ -152,4 +172,3 @@ class CloudFlareDns(common.BaseDns):
                 )
 
         self.logger.info("delete_dns_record_success")
-

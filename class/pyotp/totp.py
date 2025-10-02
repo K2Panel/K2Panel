@@ -7,17 +7,19 @@ from . import utils
 from .otp import OTP
 from .compat import str
 
+
 class TOTP(OTP):
     """
     Handler for time-based OTP counters.
     """
+
     def __init__(self, *args, **kwargs):
         """
         :param interval: the time interval in seconds
             for OTP. This defaults to 30.
         :type interval: int
         """
-        self.interval = kwargs.pop('interval', 30)
+        self.interval = kwargs.pop("interval", 30)
         super(TOTP, self).__init__(*args, **kwargs)
 
     def at(self, for_time, counter_offset=0):
@@ -83,9 +85,14 @@ class TOTP(OTP):
         :returns: provisioning URI
         :rtype: str
         """
-        return utils.build_uri(self.secret, name, issuer_name=issuer_name,
-                               algorithm=self.digest().name,
-                               digits=self.digits, period=self.interval)
+        return utils.build_uri(
+            self.secret,
+            name,
+            issuer_name=issuer_name,
+            algorithm=self.digest().name,
+            digits=self.digits,
+            period=self.interval,
+        )
 
     def timecode(self, for_time):
         i = time.mktime(for_time.timetuple())

@@ -13,29 +13,35 @@ class main(sslBase):
         super().__init__()
 
     def __init_data(self, data):
-        self.api_url = 'https://api.west.cn/api/v2/domain/'
+        self.api_url = "https://api.west.cn/api/v2/domain/"
         #    账号
         self.user_name = data["user_name"]
         #    api 密码
         self.api_password = data["api_password"]
-        self.headers = {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'}
+        self.headers = {
+            "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
+        }
 
     def get_params(self):
         timestamp = str(time.time() * 1000)
-        token = hashlib.md5((self.user_name + self.api_password + timestamp).encode("utf-8")).hexdigest()
+        token = hashlib.md5(
+            (self.user_name + self.api_password + timestamp).encode("utf-8")
+        ).hexdigest()
         return {"username": self.user_name, "token": token, "time": timestamp}
 
     def _request(self, dns_id, body):
         self.__init_data(self.get_dns_data(None)[dns_id])
         params = self.get_params()
         try:
-            res = requests.post(self.api_url, headers=self.headers, params=params, data=body)
+            res = requests.post(
+                self.api_url, headers=self.headers, params=params, data=body
+            )
 
             if res.status_code != 200:
                 return False, res.text
             json_data = res.json()
-            if json_data['result'] != 200:
-                return False, json_data['msg']
+            if json_data["result"] != 200:
+                return False, json_data["msg"]
             return True, json_data
         except Exception as e:
             return False, e
@@ -57,14 +63,18 @@ class main(sslBase):
         try:
             flag, res = self._request(get.dns_id, body)
 
-            data = {"list": [], "info": {"record_total": res['data']['total']}}
+            data = {"list": [], "info": {"record_total": res["data"]["total"]}}
             if not flag:
                 data = {}
-            for record in res['data']["items"]:
+            for record in res["data"]["items"]:
                 data["list"].append(
                     {
                         "RecordId": record["id"],
-                        "name": record["item"] + "." + domain_name if record["item"] != "@" else domain_name,
+                        "name": (
+                            record["item"] + "." + domain_name
+                            if record["item"] != "@"
+                            else domain_name
+                        ),
                         "value": record["value"],
                         "line": record["line"] if record["line"] else "默认",
                         "ttl": record["ttl"],
@@ -82,8 +92,8 @@ class main(sslBase):
 
     def create_dns_record(self, get):
         domain_name, sub_domain, _ = self.extract_zone(get.domain_name)
-        record_type = 'TXT'
-        if 'record_type' in get:
+        record_type = "TXT"
+        if "record_type" in get:
             record_type = get.record_type
         body = {
             "act": "adddnsrecord",
@@ -98,10 +108,10 @@ class main(sslBase):
         try:
             flag, res = self._request(get.dns_id, body)
             if not flag:
-                return public.returnMsg(False, '添加失败：{}'.format(res))
+                return public.returnMsg(False, "添加失败：{}".format(res))
             return public.returnMsg(True, "添加成功")
         except Exception as e:
-            return public.returnMsg(False, '添加失败：{}'.format(e))
+            return public.returnMsg(False, "添加失败：{}".format(e))
 
     def delete_dns_record(self, get):
         domain_name, _, sub_domain = self.extract_zone(get.domain_name)
@@ -114,10 +124,10 @@ class main(sslBase):
         try:
             flag, res = self._request(get.dns_id, body)
             if not flag:
-                return public.returnMsg(False, '删除失败：{}'.format(res))
+                return public.returnMsg(False, "删除失败：{}".format(res))
             return public.returnMsg(True, "删除成功")
         except Exception as e:
-            return public.returnMsg(False, '删除失败：{}'.format(e))
+            return public.returnMsg(False, "删除失败：{}".format(e))
 
     def update_dns_record(self, get):
         # 不能修改主机记录和类型
@@ -135,12 +145,7 @@ class main(sslBase):
         try:
             flag, res = self._request(get.dns_id, body)
             if not flag:
-                return public.returnMsg(False, '修改失败：{}'.format(res))
+                return public.returnMsg(False, "修改失败：{}".format(res))
             return public.returnMsg(True, "修改成功")
         except Exception as e:
-            return public.returnMsg(False, '修改失败：{}'.format(e))
-
-
-
-
-
+            return public.returnMsg(False, "修改失败：{}".format(e))

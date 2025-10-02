@@ -1,20 +1,21 @@
-#coding: utf-8
-import os,sys,time,json
-panelPath = os.getenv('BT_PANEL')
+# coding: utf-8
+import os, sys, time, json
+
+panelPath = os.getenv("BT_PANEL")
 if not panelPath:
     panelPath = "/www/server/panel"
 os.chdir(panelPath)
 if not panelPath + "/class/" in sys.path:
     sys.path.insert(0, panelPath + "/class/")
-import public,re
+import public, re
+
 
 class logsBase:
 
     def __init__(self):
         pass
 
-
-    def find_line_str(self,_line,search):
+    def find_line_str(self, _line, search):
         """
         @name 查找字符串
         """
@@ -25,25 +26,25 @@ class logsBase:
             return True
         return False
 
-
-    def return_line_area(self,logs_list,ip_list):
+    def return_line_area(self, logs_list, ip_list):
         """
         @name 日志行返回归属地
         """
-        if len(logs_list) <= 0: return logs_list
-        n_data = '\r\n'.join(logs_list)
+        if len(logs_list) <= 0:
+            return logs_list
+        n_data = "\r\n".join(logs_list)
         res = public.get_ips_area(ip_list)
         for ip in ip_list:
-            area = 'Unknown'
-            if 'status' in res:
-                area = '**** (Professional version exclusive)'
+            area = "Unknown"
+            if "status" in res:
+                area = "**** (Professional version exclusive)"
             elif ip in res:
-                area = res[ip]['info']
-            n_data = n_data.replace(ip,'{}({})'.format(ip,area))
-        log_list = n_data.split('\r\n')
+                area = res[ip]["info"]
+            n_data = n_data.replace(ip, "{}({})".format(ip, area))
+        log_list = n_data.split("\r\n")
         return log_list
 
-    def GetNumLines(self,path, num, p=1,search = None):
+    def GetNumLines(self, path, num, p=1, search=None):
         """
         @name 取文件指定尾行数
         @param path 文件路径
@@ -56,14 +57,17 @@ class logsBase:
         max_len = 1024 * 128 * 1024
         try:
             from html import escape
-            if not os.path.exists(path): return ""
+
+            if not os.path.exists(path):
+                return ""
             start_line = (p - 1) * num
             count = start_line + num
-            fp = open(path, 'rb')
+            fp = open(path, "rb")
 
             buf = ""
             fp.seek(-1, 2)
-            if fp.read(1) == "\n": fp.seek(-1, 2)
+            if fp.read(1) == "\n":
+                fp.seek(-1, 2)
             data = []
             total_len = 0
             b = True
@@ -76,12 +80,12 @@ class logsBase:
                     pos = fp.tell()
                     if newline_pos != -1:
                         if n >= start_line:
-                            line = buf[newline_pos + 1:]
+                            line = buf[newline_pos + 1 :]
 
                             is_res = True
                             if search:
                                 is_res = False
-                                if line.find(search) >= 0 or re.search(search,line):
+                                if line.find(search) >= 0 or re.search(search, line):
                                     is_res = True
 
                             if is_res:
@@ -106,24 +110,29 @@ class logsBase:
                         t_buf = fp.read(to_read)
                         if pyVersion == 3:
                             try:
-                                if type(t_buf) == bytes: t_buf = t_buf.decode('utf-8',errors='ignore')
+                                if type(t_buf) == bytes:
+                                    t_buf = t_buf.decode("utf-8", errors="ignore")
                             except:
                                 try:
-                                    if type(t_buf) == bytes: t_buf = t_buf.decode('gbk',errors='ignore')
+                                    if type(t_buf) == bytes:
+                                        t_buf = t_buf.decode("gbk", errors="ignore")
                                 except:
                                     t_buf = str(t_buf)
                         buf = t_buf + buf
                         fp.seek(-to_read, 1)
                         if pos - to_read == 0:
                             buf = "\n" + buf
-                    if total_len >= max_len: break
-                if not b: break
+                    if total_len >= max_len:
+                        break
+                if not b:
+                    break
             fp.close()
             result = "\n".join(data)
 
-            if not result: raise Exception('null')
+            if not result:
+                raise Exception("null")
         except:
-            result = ''
+            result = ""
             if len(result) > max_len:
                 result = result[-max_len:]
 
@@ -133,9 +142,11 @@ class logsBase:
                 return json.loads(result).strip()
             except:
                 if pyVersion == 2:
-                    result = result.decode('utf8', errors='ignore')
+                    result = result.decode("utf8", errors="ignore")
                 else:
-                    result = result.encode('utf-8', errors='ignore').decode("utf-8", errors="ignore")
+                    result = result.encode("utf-8", errors="ignore").decode(
+                        "utf-8", errors="ignore"
+                    )
             return result.strip()
         except:
             return ""

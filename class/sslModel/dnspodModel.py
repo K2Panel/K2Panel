@@ -4,6 +4,7 @@ from urllib.parse import urlparse
 from urllib.parse import urljoin
 import public
 
+
 class main(sslBase):
     dns_provider_name = "dnspod"
     _type = 0  # 0:lest 1：锐成
@@ -11,15 +12,15 @@ class main(sslBase):
     def __init__(self):
         super().__init__()
 
-    def __init_data(self,data):
+    def __init_data(self, data):
 
-        self.DNSPOD_ID = data['ID']
-        self.DNSPOD_API_KEY = data['Token']
-        self.DNSPOD_API_BASE_URL = 'https://dnsapi.cn/'
+        self.DNSPOD_ID = data["ID"]
+        self.DNSPOD_API_KEY = data["Token"]
+        self.DNSPOD_API_BASE_URL = "https://dnsapi.cn/"
         self.HTTP_TIMEOUT = 65  # seconds
         self.DNSPOD_LOGIN = "{0},{1}".format(self.DNSPOD_ID, self.DNSPOD_API_KEY)
 
-    def create_dns_record(self,get):
+    def create_dns_record(self, get):
         """
         @name 创建dns记录
         @param get.dns_id dns_id
@@ -29,8 +30,8 @@ class main(sslBase):
         dns_id = get.dns_id
         domain_name = get.domain_name
         domain_dns_value = get.domain_dns_value
-        record_type = 'TXT'
-        if 'record_type' in get:
+        record_type = "TXT"
+        if "record_type" in get:
             record_type = get.record_type
 
         self.__init_data(self.get_dns_data(None)[dns_id])
@@ -38,7 +39,7 @@ class main(sslBase):
 
         return self.add_record(domain_name, subd, domain_dns_value, record_type)
 
-    def delete_dns_record(self,get):
+    def delete_dns_record(self, get):
         """
         @name 删除dns记录
         @param get.dns_id dns_id
@@ -53,14 +54,14 @@ class main(sslBase):
         try:
             domain_name, subd, _ = self.extract_zone(domain_name)
             res = self.remove_record(domain_name, RecordId)
-            if res["status"]["code"] != '1':
+            if res["status"]["code"] != "1":
                 return public.returnMsg(False, res["status"]["message"])
         except Exception as e:
             return public.returnMsg(False, e)
 
-        return public.returnMsg(True, '删除成功')
+        return public.returnMsg(True, "删除成功")
 
-    def get_dns_record(self,get):
+    def get_dns_record(self, get):
         """
         @name 获取dns记录
         @param get.dns_id dns_id
@@ -83,20 +84,28 @@ class main(sslBase):
         }
 
         try:
-            list_dns_response = requests.post(url, data=body, timeout=self.HTTP_TIMEOUT).json()
+            list_dns_response = requests.post(
+                url, data=body, timeout=self.HTTP_TIMEOUT
+            ).json()
         except:
             list_dns_response = {}
         data = {}
         if list_dns_response.get("status", {}).get("code") == "10":
-            data = {"info": {'record_total': 0}, "list": []}
-        if 'records' in list_dns_response:
-            for i in list_dns_response['records']:
-                i['name'] = i['name'] + "." + domain_name if i['name'] != '@' else domain_name
-                i['RecordId'] = i['id']
-                i["status"] = "启用" if i["status"] == "enable" else "暂停" if i["status"] == "disable" else i["status"]
-            data['list'] = list_dns_response['records']
-        if 'info' in list_dns_response:
-            data['info'] = list_dns_response['info']
+            data = {"info": {"record_total": 0}, "list": []}
+        if "records" in list_dns_response:
+            for i in list_dns_response["records"]:
+                i["name"] = (
+                    i["name"] + "." + domain_name if i["name"] != "@" else domain_name
+                )
+                i["RecordId"] = i["id"]
+                i["status"] = (
+                    "启用"
+                    if i["status"] == "enable"
+                    else "暂停" if i["status"] == "disable" else i["status"]
+                )
+            data["list"] = list_dns_response["records"]
+        if "info" in list_dns_response:
+            data["info"] = list_dns_response["info"]
         if not data:
             data = list_dns_response
         self.set_record_data({domain_name: data})
@@ -130,7 +139,7 @@ class main(sslBase):
                     response=create_dnspod_dns_record_response["status"]["message"],
                 )
             )
-        return public.returnMsg(True, '添加成功')
+        return public.returnMsg(True, "添加成功")
 
     def remove_record(self, domain_name, RecordId):
         rootdomain = domain_name
@@ -142,9 +151,7 @@ class main(sslBase):
             "domain": rootdomain,
             "record_id": RecordId,
         }
-        return requests.post(
-            urlr, data=bodyr, timeout=self.HTTP_TIMEOUT
-        ).json()
+        return requests.post(urlr, data=bodyr, timeout=self.HTTP_TIMEOUT).json()
 
     def add_record_for_creat_site(self, domain, server_ip):
         domain_name, zone, _ = self.extract_zone(domain)
@@ -170,10 +177,8 @@ class main(sslBase):
             "mx ": get.mx,
         }
         try:
-            res = requests.post(
-                url, data=body, timeout=self.HTTP_TIMEOUT
-            ).json()
-            if res["status"]["code"] != '1':
+            res = requests.post(url, data=body, timeout=self.HTTP_TIMEOUT).json()
+            if res["status"]["code"] != "1":
                 return public.returnMsg(False, res["status"]["message"])
 
             return public.returnMsg(True, "修改成功")
