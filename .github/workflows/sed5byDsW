@@ -181,10 +181,10 @@ jobs:
           curl -f http://localhost:5000/ || curl -f http://localhost:5000/health || exit 1
           
           # عرض logs
-          docker logs aapanel-test
+          docker logs k2panel-test
           
           # إيقاف وحذف الحاوية
-          docker stop aapanel-test
-          docker rm aapanel-test
+          docker stop k2panel-test
+          docker rm k2panel-test
           
           echo "✅ Image test passed!"

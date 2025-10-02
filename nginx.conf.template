@@ -1,5 +1,5 @@
 # ================================================================
-# nginx Configuration Template for aaPanel
+# nginx Configuration Template for K2Panel
 # ================================================================
 # هذا الملف هو template يمكن استخدامه لإعداد nginx في بيئة الإنتاج
 # استخدم السكريبت setup_nginx.sh لتطبيق هذا الملف
@@ -12,7 +12,7 @@
 # ================================================================
 
 # Upstream definition - التطبيق الرئيسي
-upstream aapanel_app {
+upstream k2panel_app {
     # Application server (Gunicorn)
     server 127.0.0.1:${APP_PORT} fail_timeout=0;
     
@@ -59,7 +59,7 @@ server {
     server_name ${DOMAIN} www.${DOMAIN};
     
     # Root directory (for static files if needed)
-    root /var/www/aapanel;
+    root /var/www/k2panel;
     
     # ============================================================
     # SSL/TLS Configuration - أمان عالي
@@ -161,7 +161,7 @@ server {
         limit_conn conn_limit 10;
         
         include proxy_params;
-        proxy_pass http://aapanel_app;
+        proxy_pass http://k2panel_app;
     }
     
     # Login endpoint - حماية إضافية
@@ -169,14 +169,14 @@ server {
         limit_req zone=login_limit burst=5 nodelay;
         
         include proxy_params;
-        proxy_pass http://aapanel_app;
+        proxy_pass http://k2panel_app;
     }
     
     # ============================================================
-    # WebSocket Support - دعم WebSocket (مهم لـ aaPanel)
+    # WebSocket Support - دعم WebSocket (مهم لـ K2Panel)
     # ============================================================
     location /ws/ {
-        proxy_pass http://aapanel_app;
+        proxy_pass http://k2panel_app;
         
         # WebSocket headers
         proxy_http_version 1.1;
@@ -216,7 +216,7 @@ server {
         proxy_set_header X-Forwarded-Port $server_port;
         
         # Proxy settings
-        proxy_pass http://aapanel_app;
+        proxy_pass http://k2panel_app;
         proxy_redirect off;
         proxy_buffering off;
         
@@ -231,7 +231,7 @@ server {
     # ============================================================
     location /health {
         access_log off;
-        proxy_pass http://aapanel_app;
+        proxy_pass http://k2panel_app;
         proxy_set_header Host $host;
     }
     
@@ -243,12 +243,12 @@ server {
     
     location = /404.html {
         internal;
-        root /var/www/aapanel/errors;
+        root /var/www/k2panel/errors;
     }
     
     location = /50x.html {
         internal;
-        root /var/www/aapanel/errors;
+        root /var/www/k2panel/errors;
     }
     
     # ============================================================

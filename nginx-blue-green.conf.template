@@ -101,7 +101,7 @@ server {
     }
     
     # ==================================================================
-    # WebSocket Support - لميزات aaPanel التفاعلية
+    # WebSocket Support - لميزات K2Panel التفاعلية
     # ==================================================================
     location /ws/ {
         proxy_pass http://k2panel_backend;
@@ -202,14 +202,14 @@ server {
 # ==============================================================================
 #
 # 1. نسخ هذا الملف:
-#    sudo cp nginx-blue-green.conf.template /etc/nginx/sites-available/aapanel
+#    sudo cp nginx-blue-green.conf.template /etc/nginx/sites-available/k2panel
 #
 # 2. استبدال المتغيرات:
-#    sudo sed -i 's/${DOMAIN}/your-domain.com/g' /etc/nginx/sites-available/aapanel
-#    sudo sed -i 's/${ACTIVE_PORT}/5001/g' /etc/nginx/sites-available/aapanel
+#    sudo sed -i 's/${DOMAIN}/your-domain.com/g' /etc/nginx/sites-available/k2panel
+#    sudo sed -i 's/${ACTIVE_PORT}/5001/g' /etc/nginx/sites-available/k2panel
 #
 # 3. تفعيل الموقع:
-#    sudo ln -s /etc/nginx/sites-available/aapanel /etc/nginx/sites-enabled/
+#    sudo ln -s /etc/nginx/sites-available/k2panel /etc/nginx/sites-enabled/
 #
 # 4. اختبار التكوين:
 #    sudo nginx -t
@@ -218,8 +218,8 @@ server {
 #    sudo systemctl reload nginx
 #
 # 6. للتبديل بين Blue و Green:
-#    - Blue (port 5001): sudo sed -i 's/server 127.0.0.1:[0-9]\+;/server 127.0.0.1:5001;/g' /etc/nginx/sites-available/aapanel
-#    - Green (port 5002): sudo sed -i 's/server 127.0.0.1:[0-9]\+;/server 127.0.0.1:5002;/g' /etc/nginx/sites-available/aapanel
+#    - Blue (port 5001): sudo sed -i 's/server 127.0.0.1:[0-9]\+;/server 127.0.0.1:5001;/g' /etc/nginx/sites-available/k2panel
+#    - Green (port 5002): sudo sed -i 's/server 127.0.0.1:[0-9]\+;/server 127.0.0.1:5002;/g' /etc/nginx/sites-available/k2panel
 #    - ثم: sudo systemctl reload nginx
 #
 # ==============================================================================

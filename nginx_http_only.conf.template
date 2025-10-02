@@ -1,11 +1,11 @@
 # ================================================================
-# nginx HTTP-Only Configuration Template for aaPanel
+# nginx HTTP-Only Configuration Template for K2Panel
 # ================================================================
 # هذا الملف يُستخدم للمرحلة الأولى من الإعداد (قبل الحصول على SSL)
 # ================================================================
 
 # Upstream definition
-upstream aapanel_app {
+upstream k2panel_app {
     server 127.0.0.1:${APP_PORT} fail_timeout=0;
     keepalive 32;
 }
@@ -19,7 +19,7 @@ server {
     server_name ${DOMAIN} www.${DOMAIN};
     
     # Root directory
-    root /var/www/aapanel;
+    root /var/www/k2panel;
     
     # Logging
     access_log /var/log/nginx/k2panel_access.log;
@@ -43,13 +43,13 @@ server {
     # Proxy to application
     location @proxy_to_app {
         include proxy_params;
-        proxy_pass http://aapanel_app;
+        proxy_pass http://k2panel_app;
     }
     
     # Health check
     location /health {
         access_log off;
         include proxy_params;
-        proxy_pass http://aapanel_app;
+        proxy_pass http://k2panel_app;
     }
 }

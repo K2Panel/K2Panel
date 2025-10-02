@@ -23,7 +23,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  DEPLOY_PATH: /opt/aapanel
+  DEPLOY_PATH: /opt/k2panel
 
 jobs:
   deploy:
