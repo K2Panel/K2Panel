@@ -34,7 +34,6 @@ jobs:
     
     environment: 
       name: ${{ github.event.inputs.environment || 'production' }}
-      url: https://${{ secrets.VPS_DOMAIN }}
     
     steps:
       # ==================== الخطوة 1: Checkout الكود ====================
