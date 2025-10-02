@@ -463,7 +463,17 @@ docker-compose -f docker-compose.green.yml logs -f
 VPS_SSH_KEY          # المفتاح الخاص للـ SSH
 VPS_HOST             # IP أو domain للـ VPS
 VPS_USER             # اسم المستخدم (مثال: deploy)
+VPS_HOST_FINGERPRINT # 🔐 بصمة الخادم (للحماية من MITM) - جديد وإلزامي
 VPS_DOMAIN           # النطاق (مثال: k2panel.example.com)
+```
+
+**🔐 للحصول على VPS_HOST_FINGERPRINT:**
+```bash
+# من جهازك المحلي أو من VPS نفسه
+ssh-keyscan -H YOUR_VPS_IP 2>/dev/null | ssh-keygen -lf - | awk '{print $2}'
+
+# مثال للناتج:
+# SHA256:abcdef1234567890abcdef1234567890abcdef1234567890abcdef
 ```
 
 **📚 للمزيد:** راجع [DEPLOYMENT_SECRETS.md](./DEPLOYMENT_SECRETS.md)

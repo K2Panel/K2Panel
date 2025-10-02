@@ -55,14 +55,33 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+          
+          # جلب host key وإنفاذ التحقق من البصمة
+          SCANNED_KEY=$(ssh-keyscan -H ${{ secrets.VPS_HOST }} 2>/dev/null)
+          if [ -z "$SCANNED_KEY" ]; then
+            echo "❌ Failed to get host key from server"
+            exit 1
+          fi
+          
+          # التحقق من البصمة (إلزامي للأمان)
+          ACTUAL_FINGERPRINT=$(echo "$SCANNED_KEY" | ssh-keygen -lf - | awk '{print $2}')
+          if [ "$ACTUAL_FINGERPRINT" != "${{ secrets.VPS_HOST_FINGERPRINT }}" ]; then
+            echo "❌ Host fingerprint mismatch!"
+            echo "   Expected: ${{ secrets.VPS_HOST_FINGERPRINT }}"
+            echo "   Actual: $ACTUAL_FINGERPRINT"
+            echo "⚠️  SECURITY ALERT: Possible MITM attack detected!"
+            exit 1
+          fi
+          echo "✅ Host fingerprint verified"
+          
+          echo "$SCANNED_KEY" >> ~/.ssh/known_hosts
 
       # ==================== الخطوة 3: نسخ ملفات Blue-Green ====================
       - name: Copy Blue-Green deployment files
         run: |
           # نسخ docker-compose files (shared + blue + green)
           scp -i ~/.ssh/deploy_key \
-            -o StrictHostKeyChecking=no \
+            -o StrictHostKeyChecking=yes \
             docker-compose.shared.yml \
             docker-compose.blue.yml \
             docker-compose.green.yml \
@@ -73,7 +92,7 @@ jobs:
       - name: Copy deployment scripts
         run: |
           scp -i ~/.ssh/deploy_key \
-            -o StrictHostKeyChecking=no \
+            -o StrictHostKeyChecking=yes \
             blue-green-deploy.sh \
             switch.sh \
             nginx-blue-green.conf.template \
@@ -81,7 +100,7 @@ jobs:
           
           # جعل السكريبتات قابلة للتنفيذ
           ssh -i ~/.ssh/deploy_key \
-            -o StrictHostKeyChecking=no \
+            -o StrictHostKeyChecking=yes \
             ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
             "chmod +x ${{ env.DEPLOY_PATH }}/blue-green-deploy.sh ${{ env.DEPLOY_PATH }}/switch.sh"
 
@@ -120,7 +139,7 @@ jobs:
           TARGET_ENV: ${{ steps.detect.outputs.target_env }}
         run: |
           ssh -i ~/.ssh/deploy_key \
-            -o StrictHostKeyChecking=no \
+            -o StrictHostKeyChecking=yes \
             ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'ENDSSH'
           
           # الانتقال لمجلد النشر
@@ -214,7 +233,7 @@ jobs:
           echo "⚠️  Deployment failed, initiating rollback..."
           
           ssh -i ~/.ssh/deploy_key \
-            -o StrictHostKeyChecking=no \
+            -o StrictHostKeyChecking=yes \
             ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'ENDSSH'
           
           cd ${{ env.DEPLOY_PATH }}

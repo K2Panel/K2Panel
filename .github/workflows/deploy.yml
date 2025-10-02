@@ -47,7 +47,26 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
+          
+          # جلب host key وإنفاذ التحقق من البصمة
+          SCANNED_KEY=$(ssh-keyscan -H ${{ secrets.VPS_HOST }} 2>/dev/null)
+          if [ -z "$SCANNED_KEY" ]; then
+            echo "❌ Failed to get host key from server"
+            exit 1
+          fi
+          
+          # التحقق من البصمة (إلزامي للأمان)
+          ACTUAL_FINGERPRINT=$(echo "$SCANNED_KEY" | ssh-keygen -lf - | awk '{print $2}')
+          if [ "$ACTUAL_FINGERPRINT" != "${{ secrets.VPS_HOST_FINGERPRINT }}" ]; then
+            echo "❌ Host fingerprint mismatch!"
+            echo "   Expected: ${{ secrets.VPS_HOST_FINGERPRINT }}"
+            echo "   Actual: $ACTUAL_FINGERPRINT"
+            echo "⚠️  SECURITY ALERT: Possible MITM attack detected!"
+            exit 1
+          fi
+          echo "✅ Host fingerprint verified"
+          
+          echo "$SCANNED_KEY" >> ~/.ssh/known_hosts
 
       # ==================== الخطوة 2.5: التحقق من المتغيرات الحرجة ====================
       - name: Validate critical environment variables
@@ -77,6 +96,14 @@ jobs:
             echo "✅ VPS_SSH_KEY is set"
           fi
           
+          if [ -z "${{ secrets.VPS_HOST_FINGERPRINT }}" ]; then
+            echo "❌ VPS_HOST_FINGERPRINT is not set in GitHub secrets"
+            echo "⚠️  This secret is REQUIRED for MITM protection"
+            VALIDATION_FAILED=1
+          else
+            echo "✅ VPS_HOST_FINGERPRINT is set"
+          fi
+          
           if [ -z "${{ secrets.VPS_DOMAIN }}" ]; then
             echo "❌ VPS_DOMAIN is not set in GitHub secrets"
             VALIDATION_FAILED=1
@@ -88,7 +115,7 @@ jobs:
           echo ""
           echo "🔍 Validating SECRET_KEY on VPS..."
           ssh -i ~/.ssh/deploy_key \
-            -o StrictHostKeyChecking=no \
+            -o StrictHostKeyChecking=yes \
             ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'ENDSSH'
           
           cd ${{ env.DEPLOY_PATH }}
@@ -166,7 +193,7 @@ jobs:
       - name: Backup current configuration
         run: |
           ssh -i ~/.ssh/deploy_key \
-            -o StrictHostKeyChecking=no \
+            -o StrictHostKeyChecking=yes \
             ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'ENDSSH'
           cd ${{ env.DEPLOY_PATH }}
           
@@ -183,14 +210,14 @@ jobs:
       - name: Copy deployment files to VPS
         run: |
           scp -i ~/.ssh/deploy_key \
-            -o StrictHostKeyChecking=no \
+            -o StrictHostKeyChecking=yes \
             docker-compose.prod.yml \
             .env.example \
             ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ env.DEPLOY_PATH }}/
           
           # استبدال بالملف الجديد
           ssh -i ~/.ssh/deploy_key \
-            -o StrictHostKeyChecking=no \
+            -o StrictHostKeyChecking=yes \
             ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
             "cd ${{ env.DEPLOY_PATH }} && mv docker-compose.prod.yml docker-compose.yml && echo '✅ Deployed new docker-compose.yml'"
 
@@ -198,12 +225,12 @@ jobs:
       - name: Copy deploy script
         run: |
           scp -i ~/.ssh/deploy_key \
-            -o StrictHostKeyChecking=no \
+            -o StrictHostKeyChecking=yes \
             deploy.sh \
             ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ env.DEPLOY_PATH }}/
           
           ssh -i ~/.ssh/deploy_key \
-            -o StrictHostKeyChecking=no \
+            -o StrictHostKeyChecking=yes \
             ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
             "chmod +x ${{ env.DEPLOY_PATH }}/deploy.sh"
 
@@ -212,7 +239,7 @@ jobs:
         id: deploy
         run: |
           ssh -i ~/.ssh/deploy_key \
-            -o StrictHostKeyChecking=no \
+            -o StrictHostKeyChecking=yes \
             ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'ENDSSH'
           
           # الانتقال لمجلد النشر
@@ -260,7 +287,7 @@ jobs:
           echo "⚠️  Deployment failed, initiating rollback..."
           
           ssh -i ~/.ssh/deploy_key \
-            -o StrictHostKeyChecking=no \
+            -o StrictHostKeyChecking=yes \
             ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'ENDSSH'
           
           cd ${{ env.DEPLOY_PATH }}

@@ -313,7 +313,19 @@ VPS_SSH_KEY: |
   -----BEGIN OPENSSH PRIVATE KEY-----
   ... your SSH private key ...
   -----END OPENSSH PRIVATE KEY-----
+VPS_HOST_FINGERPRINT: SHA256:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  # 🔐 جديد وإلزامي
 VPS_DOMAIN: your-domain.com
+```
+
+**🔐 للحصول على VPS_HOST_FINGERPRINT:**
+```bash
+ssh-keyscan -H YOUR_VPS_IP 2>/dev/null | ssh-keygen -lf - | awk '{print $2}'
+```
+
+**📋 اختبار الاتصال قبل النشر:**
+```bash
+# في GitHub: Actions → Test VPS Connection → Run workflow
+# تأكد من نجاح جميع الفحوصات قبل النشر
 ```
 
 ---

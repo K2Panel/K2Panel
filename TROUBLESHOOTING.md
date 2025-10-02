@@ -381,6 +381,85 @@ ssh -i ~/.ssh/id_rsa user@vps-ip
 
 ---
 
+### المشكلة: Host Fingerprint Mismatch (جديد) 🔐
+
+**الأعراض**:
+```
+❌ Host fingerprint mismatch!
+⚠️ SECURITY ALERT: Possible MITM attack detected!
+```
+
+**السبب المحتمل**:
+- إعادة تثبيت VPS
+- تغيير SSH host keys
+- هجوم MITM (نادر لكن ممكن)
+
+**الحل**:
+```bash
+# 1. تأكد من أن التغيير متوقع (مثل: إعادة بناء VPS)
+
+# 2. احصل على البصمة الجديدة
+ssh-keyscan -H YOUR_VPS_IP 2>/dev/null | ssh-keygen -lf - | awk '{print $2}'
+
+# 3. حدّث VPS_HOST_FINGERPRINT في GitHub
+# Settings > Secrets and variables > Actions > VPS_HOST_FINGERPRINT
+
+# 4. أعد تشغيل الـ workflow
+```
+
+---
+
+### المشكلة: VPS_HOST_FINGERPRINT غير موجود (جديد) 🔐
+
+**الأعراض**:
+```
+❌ VPS_HOST_FINGERPRINT is not set
+⚠️ Security Warning: Host fingerprint verification is REQUIRED
+```
+
+**الحل**:
+```bash
+# 1. احصل على بصمة VPS
+ssh-keyscan -H YOUR_VPS_IP 2>/dev/null | ssh-keygen -lf - | awk '{print $2}'
+
+# الناتج سيكون مثل:
+# SHA256:abcdef1234567890abcdef1234567890abcdef1234567890abcdef
+
+# 2. أضفها كـ Secret في GitHub
+# Settings > Secrets and variables > Actions > New repository secret
+# Name: VPS_HOST_FINGERPRINT
+# Value: (الصق البصمة من الخطوة 1)
+
+# 3. اختبر الاتصال
+# Actions > Test VPS Connection > Run workflow
+```
+
+---
+
+### المشكلة: فشل اختبار اتصال VPS
+
+**الأعراض**:
+```
+❌ Connection test failed!
+```
+
+**الحل**:
+```bash
+# استخدم workflow اختبار الاتصال للتشخيص
+# Actions > Test VPS Connection > Run workflow
+
+# سيفحص:
+# ✅ جميع GitHub Secrets موجودة
+# ✅ اتصال SSH يعمل
+# ✅ بصمة الخادم صحيحة (MITM protection)
+# ✅ Docker مثبت
+# ✅ مسار النشر موجود
+
+# تابع رسائل الخطأ في logs واتبع الإرشادات
+```
+
+---
+
 ### المشكلة: فشل Health Check
 
 **الأعراض**:

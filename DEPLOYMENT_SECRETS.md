@@ -32,6 +32,24 @@ This document describes all the GitHub Secrets required for automated deployment
 - **Example**: `root` or `deploy` or `ubuntu`
 - **Recommendation**: Use a non-root user with sudo privileges
 
+#### `VPS_HOST_FINGERPRINT` 🔐 **NEW - REQUIRED**
+- **Description**: SSH host fingerprint for MITM protection
+- **Format**: SSH fingerprint (e.g., `SHA256:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`)
+- **Purpose**: Prevents Man-in-the-Middle (MITM) attacks during SSH connections
+- **How to get**:
+  ```bash
+  # Method 1: From your local machine (Recommended)
+  ssh-keyscan -H YOUR_VPS_IP 2>/dev/null | ssh-keygen -lf - | awk '{print $2}'
+  
+  # Method 2: From VPS (after first SSH connection)
+  ssh YOUR_VPS_IP
+  ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub | awk '{print $2}'
+  
+  # Example output:
+  # SHA256:abcdef1234567890abcdef1234567890abcdef1234567890abcdef
+  ```
+- **⚠️ Security Warning**: This secret is **MANDATORY** for all deployments. The workflow will fail if not set.
+
 #### `VPS_DOMAIN`
 - **Description**: Public domain name for the application
 - **Format**: Domain name (without protocol)
@@ -117,7 +135,27 @@ docker-compose --version
    - ✅ Wait timer (optional)
    - ✅ Deployment branches: `main` only
 
-### Step 4: Test Deployment
+### Step 4: Test SSH Connection (NEW)
+
+Before deployment, test your VPS connection and verify all secrets:
+
+1. Go to: **Actions** → **Test VPS Connection**
+2. Click **Run workflow**
+3. Click **Run workflow**
+4. Verify all checks pass:
+   - ✅ All GitHub Secrets are configured
+   - ✅ SSH connection successful
+   - ✅ Host fingerprint verified (MITM protection)
+   - ✅ Docker and Docker Compose installed
+   - ✅ Deployment directory exists
+
+If the test fails:
+- Check the error messages in the workflow logs
+- Verify your secrets are correctly set
+- Ensure VPS has Docker installed
+- Confirm SSH key is properly configured
+
+### Step 5: Test Deployment
 
 #### Manual Trigger
 1. Go to: **Actions** → **Deploy to VPS**
@@ -252,6 +290,40 @@ ssh -vvv -i ~/.ssh/k2panel_deploy deploy@your-vps-ip
 
 # Check SSH key permissions
 chmod 600 ~/.ssh/k2panel_deploy
+```
+
+### Issue: Host Fingerprint Mismatch
+```bash
+# Error: "Host fingerprint mismatch! Possible MITM attack detected"
+
+# This means the VPS fingerprint changed. This could happen if:
+# 1. VPS was reinstalled/rebuilt
+# 2. SSH host keys were regenerated
+# 3. Someone is performing MITM attack (rare but possible)
+
+# Solution:
+# 1. Verify this is expected (VPS rebuild, etc.)
+# 2. Get new fingerprint from VPS
+ssh-keyscan -H YOUR_VPS_IP 2>/dev/null | ssh-keygen -lf - | awk '{print $2}'
+
+# 3. Update VPS_HOST_FINGERPRINT secret in GitHub
+# Settings → Secrets and variables → Actions → Update VPS_HOST_FINGERPRINT
+```
+
+### Issue: VPS_HOST_FINGERPRINT Not Set
+```bash
+# Error: "VPS_HOST_FINGERPRINT is not set"
+
+# The workflow now requires this secret for security
+
+# Solution:
+# 1. Get fingerprint from your VPS
+ssh-keyscan -H YOUR_VPS_IP 2>/dev/null | ssh-keygen -lf - | awk '{print $2}'
+
+# 2. Add it to GitHub Secrets
+# Settings → Secrets and variables → Actions → New repository secret
+# Name: VPS_HOST_FINGERPRINT
+# Value: (paste the fingerprint output from step 1)
 ```
 
 ### Issue: Docker Permission Denied
