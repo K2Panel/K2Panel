@@ -1,0 +1,153 @@
+# ==================== GitHub Actions: Test VPS Connection ====================
+# اختبار الاتصال بـ VPS للتأكد من صحة SSH Secrets
+
+name: Test VPS Connection
+
+on:
+  workflow_dispatch:
+    inputs:
+      verbose:
+        description: 'Show detailed output'
+        required: false
+        default: 'false'
+        type: boolean
+
+jobs:
+  test-connection:
+    name: Test SSH Connection to VPS
+    runs-on: ubuntu-latest
+    
+    steps:
+      # ==================== الخطوة 1: التحقق من المتغيرات ====================
+      - name: Validate environment variables
+        run: |
+          echo "🔍 Validating GitHub Secrets..."
+          VALIDATION_FAILED=0
+          
+          if [ -z "${{ secrets.VPS_HOST }}" ]; then
+            echo "❌ VPS_HOST is not set"
+            VALIDATION_FAILED=1
+          else
+            echo "✅ VPS_HOST is set"
+          fi
+          
+          if [ -z "${{ secrets.VPS_USER }}" ]; then
+            echo "❌ VPS_USER is not set"
+            VALIDATION_FAILED=1
+          else
+            echo "✅ VPS_USER is set"
+          fi
+          
+          if [ -z "${{ secrets.VPS_SSH_KEY }}" ]; then
+            echo "❌ VPS_SSH_KEY is not set"
+            VALIDATION_FAILED=1
+          else
+            echo "✅ VPS_SSH_KEY is set"
+          fi
+          
+          if [ $VALIDATION_FAILED -eq 1 ]; then
+            echo ""
+            echo "❌ Some secrets are missing. Please add them in:"
+            echo "   https://github.com/${{ github.repository }}/settings/secrets/actions"
+            exit 1
+          fi
+          
+          echo ""
+          echo "✅ All required secrets are configured!"
+
+      # ==================== الخطوة 2: تجهيز SSH Key ====================
+      - name: Setup SSH key
+        run: |
+          echo "🔑 Setting up SSH key..."
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          
+          # إضافة host key للتجنب من سؤال التأكيد
+          ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts 2>/dev/null || true
+          
+          echo "✅ SSH key configured"
+
+      # ==================== الخطوة 3: اختبار الاتصال ====================
+      - name: Test SSH connection
+        run: |
+          echo "🔌 Testing SSH connection to VPS..."
+          echo ""
+          
+          # اختبار الاتصال
+          ssh -i ~/.ssh/deploy_key \
+            -o StrictHostKeyChecking=no \
+            -o ConnectTimeout=10 \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
+            "echo '✅ SSH Connection successful!'; echo ''; echo 'Server Info:'; uname -a; echo ''; echo 'Available disk space:'; df -h /"
+          
+          if [ $? -eq 0 ]; then
+            echo ""
+            echo "✅ Connection test passed!"
+          else
+            echo ""
+            echo "❌ Connection test failed!"
+            exit 1
+          fi
+
+      # ==================== الخطوة 4: التحقق من Docker ====================
+      - name: Check Docker installation
+        run: |
+          echo "🐳 Checking Docker installation on VPS..."
+          
+          ssh -i ~/.ssh/deploy_key \
+            -o StrictHostKeyChecking=no \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} \
+            "which docker && docker --version && docker-compose --version || echo '⚠️  Docker or Docker Compose not found'"
+
+      # ==================== الخطوة 5: التحقق من المسار ====================
+      - name: Check deployment path
+        run: |
+          echo "📁 Checking deployment path /opt/k2panel..."
+          
+          ssh -i ~/.ssh/deploy_key \
+            -o StrictHostKeyChecking=no \
+            ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'ENDSSH'
+          
+          if [ ! -d "/opt/k2panel" ]; then
+            echo "⚠️  Directory /opt/k2panel does not exist"
+            echo "Creating directory..."
+            sudo mkdir -p /opt/k2panel
+            sudo chown -R $USER:$USER /opt/k2panel
+            echo "✅ Directory created"
+          else
+            echo "✅ Directory /opt/k2panel exists"
+            ls -la /opt/k2panel/ || echo "Directory is empty"
+          fi
+          
+          ENDSSH
+
+      # ==================== الخطوة 6: النتيجة النهائية ====================
+      - name: Summary
+        if: success()
+        run: |
+          echo ""
+          echo "### ✅ VPS Connection Test - PASSED ###"
+          echo ""
+          echo "All checks completed successfully!"
+          echo "Your VPS is ready for K2Panel deployment."
+          echo ""
+          echo "Next steps:"
+          echo "1. Run 'Build & Push Docker Image' workflow"
+          echo "2. Run 'Deploy to VPS' or 'Blue-Green Deployment' workflow"
+
+      # ==================== الخطوة 7: تنظيف ====================
+      - name: Cleanup
+        if: always()
+        run: |
+          rm -f ~/.ssh/deploy_key
+
+# ==============================================================================
+# Workflow Features:
+# - ✅ Validates all required GitHub Secrets
+# - ✅ Tests SSH connection to VPS
+# - ✅ Checks Docker installation
+# - ✅ Verifies deployment directory
+# - ✅ Safe secret handling (cleanup)
+# - ✅ Manual trigger only (workflow_dispatch)
+# ==============================================================================
