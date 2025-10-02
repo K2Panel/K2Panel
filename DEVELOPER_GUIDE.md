@@ -2,13 +2,13 @@
 
 <div align="center">
 
-[![aaPanel](https://img.shields.io/badge/aaPanel-aaPanel-blue)](https://github.com/aaPanel/aaPanel)
+[![K2Panel](https://img.shields.io/badge/K2Panel-K2Panel-blue)](https://github.com/K2Panel/K2Panel)
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
 [![Flask](https://img.shields.io/badge/flask-2.2.5-green.svg)](https://flask.palletsprojects.com/)
 
-**دليل شامل للبدء بتطوير aaPanel**
+**دليل شامل للبدء بتطوير K2Panel**
 
-**Comprehensive guide to start developing aaPanel**
+**Comprehensive guide to start developing K2Panel**
 
 </div>
 
@@ -32,11 +32,11 @@
 
 ## 🌟 نظرة عامة - Overview
 
-### ما هو aaPanel؟
+### ما هو K2Panel؟
 
-**aaPanel** هي لوحة تحكم خادم قوية وسهلة الاستخدام مبنية بـ Python/Flask.
+**K2Panel** هي لوحة تحكم خادم قوية وسهلة الاستخدام مبنية بـ Python/Flask.
 
-**aaPanel** is a powerful and user-friendly server control panel built with Python/Flask.
+**K2Panel** is a powerful and user-friendly server control panel built with Python/Flask.
 
 ### التقنيات المستخدمة - Tech Stack
 
@@ -138,8 +138,8 @@ pip install virtualenv
 
 ```bash
 # 1️⃣ استنسخ المشروع - Clone the repository
-git clone https://github.com/aaPanel/aaPanel.git
-cd aaPanel
+git clone https://github.com/K2Panel/K2Panel.git
+cd K2Panel
 
 # 2️⃣ أنشئ بيئة افتراضية - Create virtual environment
 python3 -m venv pyenv
@@ -169,8 +169,8 @@ http://localhost:5000
 
 ```bash
 # 1️⃣ استنسخ المشروع - Clone the repository
-git clone https://github.com/aaPanel/aaPanel.git
-cd aaPanel
+git clone https://github.com/K2Panel/K2Panel.git
+cd K2Panel
 
 # 2️⃣ أنشئ ملف .env - Create .env file
 cp .env.example .env
@@ -215,7 +215,7 @@ python runserver.py
 ### الهيكل العام - Overall Structure
 
 ```
-aaPanel/
+K2Panel/
 │
 ├── 📁 BTPanel/                  # التطبيق الرئيسي - Main application
 │   ├── __init__.py             # تهيئة Flask app
@@ -357,7 +357,7 @@ python runserver.py
 
 # سيعرض - Will display:
 # ============================================================
-# 🚀 بدء تشغيل aaPanel
+# 🚀 بدء تشغيل K2Panel
 # ============================================================
 # البيئة: development
 # المضيف: 0.0.0.0
@@ -484,10 +484,10 @@ SESSION_SECRET_KEY=dev-session-secret-key
 # DATABASE_URL=sqlite:///data/db/bt.db
 
 # أو PostgreSQL إذا أردت - Or PostgreSQL if you want
-# DATABASE_URL=postgresql://user:password@localhost:5432/aapanel_dev
+# DATABASE_URL=postgresql://user:password@localhost:5432/k2panel_dev
 
 # أو MySQL - Or MySQL
-# DATABASE_URL=mysql://user:password@localhost:3306/aapanel_dev
+# DATABASE_URL=mysql://user:password@localhost:3306/k2panel_dev
 
 # ==================== Redis (اختياري - optional) ====================
 # REDIS_URL=redis://localhost:6379/0
@@ -517,14 +517,14 @@ sudo apt install postgresql postgresql-contrib
 # 2. أنشئ قاعدة بيانات
 # Create database
 sudo -u postgres psql
-CREATE DATABASE aapanel_dev;
-CREATE USER aapanel_user WITH PASSWORD 'secure_password';
-GRANT ALL PRIVILEGES ON DATABASE aapanel_dev TO aapanel_user;
+CREATE DATABASE k2panel_dev;
+CREATE USER k2panel_user WITH PASSWORD 'secure_password';
+GRANT ALL PRIVILEGES ON DATABASE k2panel_dev TO k2panel_user;
 \q
 
 # 3. حدّث DATABASE_URL في .env
 # Update DATABASE_URL in .env
-DATABASE_URL=postgresql://aapanel_user:secure_password@localhost:5432/aapanel_dev
+DATABASE_URL=postgresql://k2panel_user:secure_password@localhost:5432/k2panel_dev
 
 # 4. شغّل migrations
 # Run migrations
@@ -803,7 +803,7 @@ def hello() -> Dict[str, Any]:
         Dict[str, Any]: رسالة ترحيب - Welcome message
     """
     return jsonify({
-        'message': 'Hello from aaPanel!',
+        'message': 'Hello from K2Panel!',
         'status': 'success'
     })
 
@@ -1196,10 +1196,10 @@ sqlite3 data/db/bt.db
 
 ### قنوات الدعم - Support Channels
 
-- 💬 **GitHub Discussions**: https://github.com/aaPanel/aaPanel/discussions
-- 📧 **Email**: support@aapanel.com
-- 🌐 **Website**: https://www.aapanel.com
-- 📖 **Documentation**: https://doc.aapanel.com
+- 💬 **GitHub Discussions**: https://github.com/K2Panel/K2Panel/discussions
+- 📧 **Email**: support@k2panel.com
+- 🌐 **Website**: https://www.k2panel.com
+- 📖 **Documentation**: https://doc.k2panel.com
 
 ### قبل طلب المساعدة - Before Asking for Help
 
@@ -1218,7 +1218,7 @@ Provide the following information:
 **البيئة - Environment:**
 - OS: Ubuntu 22.04
 - Python: 3.12.0
-- aaPanel Version: 1.0.0
+- K2Panel Version: 1.0.0
 
 **الوصف - Description:**
 وصف واضح للمشكلة
@@ -1252,8 +1252,8 @@ Clear description of the issue
 
 **Best wishes on your development journey! 🚀**
 
-**صُنع بـ ❤️ من قبل مجتمع aaPanel**
+**صُنع بـ ❤️ من قبل مجتمع K2Panel**
 
-**Made with ❤️ by the aaPanel Community**
+**Made with ❤️ by the K2Panel Community**
 
 </div>

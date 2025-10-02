@@ -1,4 +1,4 @@
-# 🔧 دليل استكشاف الأخطاء وإصلاحها - aaPanel
+# 🔧 دليل استكشاف الأخطاء وإصلاحها - K2Panel
 
 ## 📋 جدول المحتويات
 1. [مشاكل التشغيل الأساسية](#مشاكل-التشغيل-الأساسية)
@@ -287,7 +287,7 @@ ERROR [5/5] RUN pip install -r requirements.txt
 docker system prune -a
 
 # 2. استخدم --no-cache
-docker build --no-cache -t aapanel:latest .
+docker build --no-cache -t k2panel:latest .
 
 # 3. تحقق من requirements.txt
 cat requirements.txt
@@ -315,13 +315,13 @@ docker ps -a
 docker logs <container-id>
 
 # 2. شغل بوضع interactive للتشخيص
-docker run -it aapanel:latest /bin/bash
+docker run -it k2panel:latest /bin/bash
 
 # 3. تحقق من CMD/ENTRYPOINT
-docker inspect aapanel:latest | grep -A5 Cmd
+docker inspect k2panel:latest | grep -A5 Cmd
 
 # 4. اختبر الأمر يدوياً
-docker run -it aapanel:latest python runserver.py
+docker run -it k2panel:latest python runserver.py
 ```
 
 ---
@@ -339,7 +339,7 @@ docker ps
 # تأكد من PORTS column
 
 # 2. تحقق من port mapping
-docker run -p 5000:5000 aapanel:latest
+docker run -p 5000:5000 k2panel:latest
 
 # 3. افحص الشبكة
 docker network ls
@@ -415,10 +415,10 @@ curl http://localhost:5000/health/ready
 **الحل**:
 ```bash
 # 1. تحقق من النسخ المتاحة
-docker images | grep aapanel
+docker images | grep k2panel
 
 # 2. شغل النسخة القديمة يدوياً
-docker run -p 5000:5000 aapanel:v1.0.0
+docker run -p 5000:5000 k2panel:v1.0.0
 
 # 3. راجع سكريبت rollback
 cat scripts/rollback.sh
@@ -459,7 +459,7 @@ pip install py-spy
 py-spy record -o profile.svg -- python runserver.py
 
 # 5. راجع nginx caching
-cat /etc/nginx/sites-available/aapanel
+cat /etc/nginx/sites-available/k2panel
 ```
 
 ---
@@ -482,7 +482,7 @@ docker stats
 workers = 2  # بدلاً من 4
 
 # 3. أضف limits في Docker
-docker run -m 512m aapanel:latest
+docker run -m 512m k2panel:latest
 
 # 4. في docker-compose.yml
 services:
@@ -516,7 +516,7 @@ sudo certbot renew
 
 # 3. تحقق من nginx config
 sudo nginx -t
-cat /etc/nginx/sites-available/aapanel
+cat /etc/nginx/sites-available/k2panel
 
 # 4. راجع المسارات
 ls -la /etc/letsencrypt/live/yourdomain.com/
@@ -551,7 +551,7 @@ cat requirements.txt
 pip install package-name==safe-version
 
 # 5. أعد بناء Docker image
-docker build -t aapanel:latest .
+docker build -t k2panel:latest .
 ```
 
 ---
@@ -612,7 +612,7 @@ docker-compose logs prometheus
 docker-compose restart prometheus
 
 # 7. تحقق من Docker network
-docker network inspect aapanel_network
+docker network inspect k2panel_network
 ```
 
 ---
@@ -629,7 +629,7 @@ docker network inspect aapanel_network
 # افتح: Configuration > Data Sources > Prometheus > Test
 
 # 2. تحقق من اتصال Prometheus
-docker exec -it aapanel_grafana ping prometheus
+docker exec -it k2panel_grafana ping prometheus
 
 # 3. تحقق من URL datasource
 # يجب أن يكون: http://prometheus:9090
@@ -666,7 +666,7 @@ curl http://localhost:5000/health/ready
 curl http://localhost:5000/health/metrics
 
 # 3. تحقق من port mapping
-docker port aapanel_app
+docker port k2panel_app
 
 # 4. افحص logs التطبيق
 docker-compose logs app | grep -i "health"
@@ -690,10 +690,10 @@ docker-compose logs app | grep -i "health"
 docker-compose exec grafana ls -la /etc/grafana/provisioning/dashboards/
 
 # 2. تحقق من Dashboard JSON
-cat grafana-dashboard-aapanel.json
+cat grafana-dashboard-k2panel.json
 
 # 3. اختبر PromQL queries يدوياً
-curl -g 'http://localhost:9090/api/v1/query?query=aapanel_cpu_percent'
+curl -g 'http://localhost:9090/api/v1/query?query=k2panel_cpu_percent'
 
 # 4. أعد تحميل Dashboard
 # في Grafana: Dashboard Settings > JSON Model > Save
@@ -724,7 +724,7 @@ docker-compose ps loki
 # 2. اختبر Loki API
 curl http://loki:3100/ready
 # من داخل container:
-docker exec -it aapanel_app curl http://loki:3100/ready
+docker exec -it k2panel_app curl http://loki:3100/ready
 
 # 3. تحقق من logs
 docker-compose logs loki | tail -50
@@ -740,7 +740,7 @@ docker-compose exec loki cat /etc/loki/local-config.yaml
 docker-compose restart loki
 
 # 7. تحقق من Docker volumes
-docker volume inspect aapanel_loki_data
+docker volume inspect k2panel_loki_data
 ```
 
 ---
@@ -763,13 +763,13 @@ curl http://localhost:9080/targets
 docker-compose logs promtail | tail -50
 
 # 4. تحقق من Docker socket mount
-docker inspect aapanel_promtail | grep -A 5 "docker.sock"
+docker inspect k2panel_promtail | grep -A 5 "docker.sock"
 
 # يجب أن ترى:
 # /var/run/docker.sock:/var/run/docker.sock:ro
 
 # 5. تحقق من volumes
-docker inspect aapanel_promtail | grep -A 10 Mounts
+docker inspect k2panel_promtail | grep -A 10 Mounts
 
 # 6. تحقق من صلاحيات logs/
 ls -la logs/
@@ -793,12 +793,12 @@ cat promtail-config.yml
 ```bash
 # 1. اختبر LogQL query بسيطة
 # في Grafana Explore:
-{job="aapanel"}
+{job="k2panel"}
 
 # 2. تحقق من labels المتاحة
 curl -G -s "http://loki:3100/loki/api/v1/label/job/values"
 # من داخل container:
-docker exec -it aapanel_app curl -G -s "http://loki:3100/loki/api/v1/label/job/values"
+docker exec -it k2panel_app curl -G -s "http://loki:3100/loki/api/v1/label/job/values"
 
 # 3. تحقق من JSON formatting في logs
 tail -f logs/app.log
@@ -813,7 +813,7 @@ docker-compose exec app env | grep LOG_
 # LOG_LEVEL=INFO
 
 # 5. اختبر query مع time range
-# في Explore: {job="aapanel"} [5m]
+# في Explore: {job="k2panel"} [5m]
 
 # 6. راجع Dashboard queries
 # Dashboard > Panel > Edit > Query
@@ -844,7 +844,7 @@ df -h /var/lib/docker/volumes
 docker system df -v | grep loki
 
 # 5. تنظيف يدوي (حذر!)
-docker exec -it aapanel_loki sh
+docker exec -it k2panel_loki sh
 find /tmp/loki -type f -mtime +7 -delete
 exit
 
@@ -916,7 +916,7 @@ cat .env | grep SLACK_WEBHOOK_URL
 
 # 2. اختبر webhook يدوياً
 curl -X POST -H 'Content-type: application/json' \
-  --data '{"text":"Test from aaPanel"}' \
+  --data '{"text":"Test from K2Panel"}' \
   $SLACK_WEBHOOK_URL
 
 # 3. تحقق من alertmanager.yml
@@ -958,7 +958,7 @@ import smtplib
 from email.mime.text import MIMEText
 import os
 
-msg = MIMEText("Test from aaPanel Alertmanager")
+msg = MIMEText("Test from K2Panel Alertmanager")
 msg['Subject'] = "Test Alert"
 msg['From'] = os.getenv('ALERT_EMAIL_FROM')
 msg['To'] = os.getenv('ALERT_EMAIL_TO')
@@ -1007,8 +1007,8 @@ docker-compose restart alertmanager
 
 # 2. زيادة thresholds في prometheus-rules.yml
 # مثلاً للـ CPU:
-# من: aapanel_cpu_percent > 80
-# إلى: aapanel_cpu_percent > 85
+# من: k2panel_cpu_percent > 80
+# إلى: k2panel_cpu_percent > 85
 
 # 3. زيادة for duration
 # من: for: 5m
@@ -1112,7 +1112,7 @@ docker-compose logs green_app | grep -i "health"
 # قد يكون health check يفشل بسبب migrations غير مطبقة
 
 # 8. اختبر في حاوية مؤقتة
-docker run --rm --network aapanel_network alpine/curl \
+docker run --rm --network k2panel_network alpine/curl \
   curl http://green_app:5000/health/ready
 ```
 
@@ -1130,12 +1130,12 @@ docker run --rm --network aapanel_network alpine/curl \
 cat /etc/nginx/conf.d/upstream.conf
 
 # يجب أن يحتوي على:
-# upstream aapanel_backend {
+# upstream k2panel_backend {
 #     server blue_app:5000;  # أو green_app:5000
 # }
 
 # 2. تحقق من Docker network
-docker network inspect aapanel_network
+docker network inspect k2panel_network
 
 # 3. تحقق من أسماء containers
 docker-compose ps | grep app
@@ -1145,10 +1145,10 @@ docker exec -it nginx ping blue_app
 docker exec -it nginx ping green_app
 
 # 5. تحقق من nginx.conf
-cat /etc/nginx/sites-available/aapanel
+cat /etc/nginx/sites-available/k2panel
 
 # 6. أعد بناء upstream.conf
-echo "upstream aapanel_backend {
+echo "upstream k2panel_backend {
     server green_app:5000;
 }" | sudo tee /etc/nginx/conf.d/upstream.conf
 
@@ -1180,7 +1180,7 @@ docker-compose ps blue_app green_app
 sudo ./scripts/switch_blue_green.sh blue
 
 # 4. تحقق من docker images
-docker images | grep aapanel
+docker images | grep k2panel
 
 # يجب أن ترى versions متعددة
 
@@ -1215,12 +1215,12 @@ python backups/backup_manager.py --restore backup_latest.tar.gz
    docker --version
    
    # حالة الخدمات
-   systemctl status aapanel
+   systemctl status k2panel
    docker ps -a
    
    # السجلات
    tail -100 logs/error.log
-   journalctl -u aapanel -n 100
+   journalctl -u k2panel -n 100
    ```
 
 2. **عزل المشكلة**:
@@ -1250,7 +1250,7 @@ python backups/backup_manager.py --restore backup_latest.tar.gz
 ### إعادة تشغيل كاملة:
 ```bash
 # أوقف كل شيء
-sudo systemctl stop aapanel
+sudo systemctl stop k2panel
 docker-compose down
 
 # نظف
@@ -1259,7 +1259,7 @@ rm -rf __pycache__
 
 # ابدأ من جديد
 docker-compose up --build -d
-sudo systemctl start aapanel
+sudo systemctl start k2panel
 ```
 
 ### استعادة من backup:

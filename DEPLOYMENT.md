@@ -1,4 +1,4 @@
-# 🚀 دليل النشر الشامل - aaPanel Deployment Guide
+# 🚀 دليل النشر الشامل - K2Panel Deployment Guide
 
 ## 📋 جدول المحتويات
 
@@ -14,7 +14,7 @@
 
 ## 🌟 نظرة عامة
 
-هذا الدليل الشامل يغطي جميع خيارات النشر المتاحة لتطبيق **aaPanel**:
+هذا الدليل الشامل يغطي جميع خيارات النشر المتاحة لتطبيق **K2Panel**:
 
 ### 🎯 بيئات النشر المدعومة
 
@@ -75,7 +75,7 @@ sudo -v
 ping -c 3 google.com
 
 # 5. نطاق (domain) للـ SSL
-# مثال: aapanel.example.com
+# مثال: k2panel.example.com
 ```
 
 ### المتغيرات البيئية المطلوبة
@@ -179,8 +179,8 @@ python runserver.py
 
 ```bash
 # 1. Clone المشروع
-git clone https://github.com/yourusername/aapanel.git
-cd aapanel
+git clone https://github.com/yourusername/k2panel.git
+cd k2panel
 
 # 2. إنشاء virtualenv
 python3 -m venv venv
@@ -264,8 +264,8 @@ sudo usermod -aG docker $USER
 
 ```bash
 # 1. Clone المشروع
-git clone https://github.com/yourusername/aapanel.git
-cd aapanel
+git clone https://github.com/yourusername/k2panel.git
+cd k2panel
 
 # 2. إعداد .env
 cp .env.production.example .env
@@ -304,7 +304,7 @@ curl http://localhost:5000/health
 ```bash
 # 1. نقل التطبيق إلى المسار القياسي
 sudo mkdir -p /www/server
-sudo mv aapanel /www/server/panel
+sudo mv k2panel /www/server/panel
 cd /www/server/panel
 
 # 2. تشغيل سكريبت الإعداد
@@ -318,7 +318,7 @@ sudo ./setup_systemd.sh
 # ✅ بدء التشغيل
 
 # 3. التحقق من الحالة
-sudo systemctl status aapanel
+sudo systemctl status k2panel
 ```
 
 **📚 للمزيد:** راجع [SYSTEMD_SETUP.md](./SYSTEMD_SETUP.md)
@@ -333,7 +333,7 @@ cd /www/server/panel
 sudo ./setup_nginx.sh
 
 # سيطلب منك:
-# - اسم النطاق (مثال: aapanel.example.com)
+# - اسم النطاق (مثال: k2panel.example.com)
 # - البريد الإلكتروني لـ Let's Encrypt
 # - تأكيد إعداد SSL
 
@@ -357,10 +357,10 @@ curl https://your-domain.com/health
 curl -I https://your-domain.com
 
 # 3. تحقق من الخدمات
-sudo systemctl status aapanel nginx
+sudo systemctl status k2panel nginx
 
 # 4. افحص السجلات
-sudo journalctl -u aapanel -f
+sudo journalctl -u k2panel -f
 sudo tail -f /var/log/nginx/access.log
 ```
 
@@ -405,8 +405,8 @@ docker-compose -f docker-compose.blue.yml up -d
 docker-compose -f docker-compose.blue.yml ps
 
 # 4. إعداد Nginx للـ Blue-Green
-sudo cp nginx-blue-green.conf.template /etc/nginx/sites-available/aapanel
-sudo sed -i "s/\${DOMAIN}/your-domain.com/g" /etc/nginx/sites-available/aapanel
+sudo cp nginx-blue-green.conf.template /etc/nginx/sites-available/k2panel
+sudo sed -i "s/\${DOMAIN}/your-domain.com/g" /etc/nginx/sites-available/k2panel
 
 # 5. فعّل البيئة الزرقاء أولاً
 echo "blue" | sudo tee /etc/nginx/.active_environment
@@ -463,7 +463,7 @@ docker-compose -f docker-compose.green.yml logs -f
 VPS_SSH_KEY          # المفتاح الخاص للـ SSH
 VPS_HOST             # IP أو domain للـ VPS
 VPS_USER             # اسم المستخدم (مثال: deploy)
-VPS_DOMAIN           # النطاق (مثال: aapanel.example.com)
+VPS_DOMAIN           # النطاق (مثال: k2panel.example.com)
 ```
 
 **📚 للمزيد:** راجع [DEPLOYMENT_SECRETS.md](./DEPLOYMENT_SECRETS.md)
@@ -591,7 +591,7 @@ curl -X POST http://localhost:9093/api/v1/alerts -H "Content-Type: application/j
 
 ```bash
 # 1. تحقق من Loki
-docker exec -it aapanel_app curl http://loki:3100/ready
+docker exec -it k2panel_app curl http://loki:3100/ready
 
 # 2. تحقق من Promtail
 curl http://localhost:9080/targets
@@ -599,7 +599,7 @@ curl http://localhost:9080/targets
 # 3. اختبر logging في Grafana
 # افتح: http://localhost:3000
 # اذهب إلى: Explore > Loki
-# Query: {job="aapanel"}
+# Query: {job="k2panel"}
 ```
 
 ### 6. Backup Verification
@@ -657,7 +657,7 @@ curl https://your-domain.com/health
 
 ```bash
 # 1. أوقف الخدمة
-sudo systemctl stop aapanel
+sudo systemctl stop k2panel
 
 # 2. ارجع إلى commit سابق
 git log --oneline  # اختر commit
@@ -672,10 +672,10 @@ pip install -r requirements.txt
 deactivate
 
 # 4. أعد تشغيل الخدمة
-sudo systemctl start aapanel
+sudo systemctl start k2panel
 
 # 5. تحقق من الحالة
-sudo systemctl status aapanel
+sudo systemctl status k2panel
 curl https://your-domain.com/health
 ```
 
@@ -685,14 +685,14 @@ curl https://your-domain.com/health
 
 ```bash
 # 1. اعرض Images المتاحة
-docker images | grep aapanel
+docker images | grep k2panel
 
 # 2. أوقف Container الحالي
 docker-compose down
 
 # 3. غيّر image tag في docker-compose.yml
-# من: image: aapanel:v2.0.0
-# إلى: image: aapanel:v1.9.0
+# من: image: k2panel:v2.0.0
+# إلى: image: k2panel:v1.9.0
 
 nano docker-compose.yml
 
@@ -712,7 +712,7 @@ curl http://localhost:5000/health
 # ⚠️ استخدم هذا فقط في حالات الطوارئ!
 
 # 1. أوقف جميع الخدمات
-sudo systemctl stop aapanel nginx
+sudo systemctl stop k2panel nginx
 docker-compose down
 
 # 2. استعد قاعدة البيانات
@@ -725,7 +725,7 @@ python backups/backup_manager.py --restore backup_latest.tar.gz
 tar -xzf backups/files_backup_latest.tar.gz -C /www/server/panel
 
 # 4. أعد تشغيل الخدمات
-sudo systemctl start aapanel nginx
+sudo systemctl start k2panel nginx
 # أو
 docker-compose up -d
 
@@ -921,7 +921,7 @@ curl https://your-domain.com/health
 2. **افحص السجلات:**
    ```bash
    # Systemd
-   sudo journalctl -u aapanel -f
+   sudo journalctl -u k2panel -f
    
    # Docker
    docker-compose logs -f

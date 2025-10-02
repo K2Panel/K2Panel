@@ -2,7 +2,7 @@
 
 ## نظرة عامة
 
-نظام نسخ احتياطي شامل وآمن لـ aaPanel مع تشفير SHA-256 + HMAC وحماية متقدمة ضد الهجمات.
+نظام نسخ احتياطي شامل وآمن لـ K2Panel مع تشفير SHA-256 + HMAC وحماية متقدمة ضد الهجمات.
 
 ## ✨ المزايا الرئيسية
 
@@ -301,45 +301,45 @@ echo "SECRET_KEY=$(python -c 'import secrets; print(secrets.token_hex(32))')" >>
 crontab -e
 
 # نسخة احتياطية يومية عند 2 صباحاً
-0 2 * * * cd /opt/aapanel && python backups/backup_manager.py >> logs/backup.log 2>&1
+0 2 * * * cd /opt/k2panel && python backups/backup_manager.py >> logs/backup.log 2>&1
 
 # نسخة احتياطية كل 6 ساعات
-0 */6 * * * cd /opt/aapanel && python backups/backup_manager.py
+0 */6 * * * cd /opt/k2panel && python backups/backup_manager.py
 
 # نسخة احتياطية أسبوعية (الأحد 3 صباحاً)
-0 3 * * 0 cd /opt/aapanel && python backups/backup_manager.py --keep 30
+0 3 * * 0 cd /opt/k2panel && python backups/backup_manager.py --keep 30
 ```
 
 ### باستخدام systemd Timer
 
 ```bash
 # إنشاء service
-sudo nano /etc/systemd/system/aapanel-backup.service
+sudo nano /etc/systemd/system/k2panel-backup.service
 ```
 
 ```ini
 [Unit]
-Description=aaPanel Backup Service
+Description=K2Panel Backup Service
 After=network.target
 
 [Service]
 Type=oneshot
-User=aapanel
-WorkingDirectory=/opt/aapanel
-ExecStart=/usr/bin/python3 /opt/aapanel/backups/backup_manager.py
+User=k2panel
+WorkingDirectory=/opt/k2panel
+ExecStart=/usr/bin/python3 /opt/k2panel/backups/backup_manager.py
 StandardOutput=journal
 StandardError=journal
 ```
 
 ```bash
 # إنشاء timer
-sudo nano /etc/systemd/system/aapanel-backup.timer
+sudo nano /etc/systemd/system/k2panel-backup.timer
 ```
 
 ```ini
 [Unit]
-Description=aaPanel Backup Timer
-Requires=aapanel-backup.service
+Description=K2Panel Backup Timer
+Requires=k2panel-backup.service
 
 [Timer]
 OnCalendar=daily
@@ -353,11 +353,11 @@ WantedBy=timers.target
 ```bash
 # تفعيل
 sudo systemctl daemon-reload
-sudo systemctl enable aapanel-backup.timer
-sudo systemctl start aapanel-backup.timer
+sudo systemctl enable k2panel-backup.timer
+sudo systemctl start k2panel-backup.timer
 
 # التحقق من الحالة
-sudo systemctl status aapanel-backup.timer
+sudo systemctl status k2panel-backup.timer
 ```
 
 ## 📊 الإحصائيات والمراقبة
@@ -369,7 +369,7 @@ sudo systemctl status aapanel-backup.timer
 tail -f logs/backup_manager.log
 
 # logs systemd
-journalctl -u aapanel-backup.service -f
+journalctl -u k2panel-backup.service -f
 ```
 
 ### مراقبة المساحة
@@ -382,7 +382,7 @@ du -sh backups/
 ls -lhS backups/backup_*.tar.gz | head -5
 
 # مساحة القرص المتاحة
-df -h | grep /opt/aapanel
+df -h | grep /opt/k2panel
 ```
 
 ## 🚨 استكشاف الأخطاء
@@ -494,4 +494,4 @@ python backups/backup_manager.py  # نسخة جديدة v2
 
 **آخر تحديث:** 1 أكتوبر 2025  
 **الإصدار:** 2.0 (SHA-256 + HMAC)  
-**المسؤول:** فريق aaPanel
+**المسؤول:** فريق K2Panel

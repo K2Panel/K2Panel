@@ -1,8 +1,8 @@
-# 🌐 دليل إعداد Nginx لـ aaPanel
+# 🌐 دليل إعداد Nginx لـ K2Panel
 
 ## 📋 نظرة عامة
 
-هذا الدليل يشرح كيفية إعداد Nginx كـ reverse proxy لتطبيق aaPanel في بيئة الإنتاج (VPS). التهيئة تتضمن:
+هذا الدليل يشرح كيفية إعداد Nginx كـ reverse proxy لتطبيق K2Panel في بيئة الإنتاج (VPS). التهيئة تتضمن:
 
 - ✅ Reverse proxy للتطبيق
 - ✅ دعم SSL/TLS (HTTPS)
@@ -47,12 +47,12 @@
 #### 1. تحميل الملفات إلى VPS
 ```bash
 # نسخ الملفات إلى الخادم
-scp nginx.conf.template nginx_http_only.conf.template proxy_params setup_nginx.sh user@your-vps:/home/user/aapanel/
+scp nginx.conf.template nginx_http_only.conf.template proxy_params setup_nginx.sh user@your-vps:/home/user/k2panel/
 ```
 
 #### 2. تشغيل السكريبت
 ```bash
-cd /home/user/aapanel
+cd /home/user/k2panel
 sudo ./setup_nginx.sh
 ```
 
@@ -97,7 +97,7 @@ sudo apt install -y nginx certbot python3-certbot-nginx
 
 #### 2. إنشاء المجلدات
 ```bash
-sudo mkdir -p /var/www/aapanel/errors
+sudo mkdir -p /var/www/k2panel/errors
 sudo mkdir -p /var/www/certbot
 ```
 
@@ -124,13 +124,13 @@ sed -e "s/\${DOMAIN}/$DOMAIN/g" \
     -e "s/\${APP_PORT}/$APP_PORT/g" \
     -e "s|\${SSL_CERT}|$SSL_CERT|g" \
     -e "s|\${SSL_KEY}|$SSL_KEY|g" \
-    nginx.conf.template | sudo tee /etc/nginx/sites-available/aapanel
+    nginx.conf.template | sudo tee /etc/nginx/sites-available/k2panel
 ```
 
 #### 5. تفعيل الموقع
 ```bash
 # إنشاء symlink
-sudo ln -sf /etc/nginx/sites-available/aapanel /etc/nginx/sites-enabled/
+sudo ln -sf /etc/nginx/sites-available/k2panel /etc/nginx/sites-enabled/
 
 # إزالة الموقع الافتراضي
 sudo rm -f /etc/nginx/sites-enabled/default
@@ -267,10 +267,10 @@ sudo systemctl status nginx
 ### مراجعة السجلات
 ```bash
 # سجل الوصول
-sudo tail -f /var/log/nginx/aapanel_access.log
+sudo tail -f /var/log/nginx/k2panel_access.log
 
 # سجل الأخطاء
-sudo tail -f /var/log/nginx/aapanel_error.log
+sudo tail -f /var/log/nginx/k2panel_error.log
 
 # جميع سجلات nginx
 sudo journalctl -u nginx -f
@@ -311,7 +311,7 @@ sudo netstat -tulpn | grep :443
 ### المشكلة: 502 Bad Gateway
 ```bash
 # التحقق من التطبيق
-sudo systemctl status aapanel
+sudo systemctl status k2panel
 curl http://127.0.0.1:5000/health
 ```
 

@@ -1,7 +1,7 @@
-# دليل استخدام Docker لتطبيق aaPanel
+# دليل استخدام Docker لتطبيق K2Panel
 
 ## المقدمة
-هذا الدليل يشرح كيفية بناء وتشغيل تطبيق aaPanel باستخدام Docker.
+هذا الدليل يشرح كيفية بناء وتشغيل تطبيق K2Panel باستخدام Docker.
 
 ## المتطلبات الأساسية
 - Docker 20.10 أو أحدث
@@ -11,17 +11,17 @@
 
 ### بناء أساسي:
 ```bash
-docker build -t aapanel:latest .
+docker build -t k2panel:latest .
 ```
 
 ### بناء مع tag محدد:
 ```bash
-docker build -t aapanel:v1.0.0 .
+docker build -t k2panel:v1.0.0 .
 ```
 
 ### فحص حجم الصورة:
 ```bash
-docker images aapanel:latest
+docker images k2panel:latest
 ```
 
 ## متغيرات البيئة
@@ -45,7 +45,7 @@ docker images aapanel:latest
 ## إعداد Volumes (مهم)
 
 ⚠️ **الأذونات المطلوبة:**
-الحاوية تعمل كمستخدم غير root (aapanel:1000)، لذلك يجب إعداد الأذونات:
+الحاوية تعمل كمستخدم غير root (k2panel:1000)، لذلك يجب إعداد الأذونات:
 
 ```bash
 # إنشاء المجلدات على الـ host
@@ -62,7 +62,7 @@ chmod -R 755 data logs
 
 ### تشغيل بسيط:
 ```bash
-docker run -d -p 5000:5000 --name aapanel aapanel:latest
+docker run -d -p 5000:5000 --name k2panel k2panel:latest
 ```
 
 ### تشغيل مع volumes للبيانات:
@@ -71,8 +71,8 @@ docker run -d \
   -p 5000:5000 \
   -v $(pwd)/data:/app/data \
   -v $(pwd)/logs:/app/logs \
-  --name aapanel \
-  aapanel:latest
+  --name k2panel \
+  k2panel:latest
 ```
 
 ### تشغيل مع متغيرات بيئة (Development):
@@ -83,8 +83,8 @@ docker run -d \
   -e ENVIRONMENT=development \
   -v $(pwd)/data:/app/data \
   -v $(pwd)/logs:/app/logs \
-  --name aapanel \
-  aapanel:latest
+  --name k2panel \
+  k2panel:latest
 ```
 
 **ملاحظة**: في بيئة Development، يتم توليد SECRET_KEY تلقائياً.
@@ -99,8 +99,8 @@ docker run -d \
   -e SESSION_SECRET_KEY="your-session-key" \
   -v $(pwd)/data:/app/data \
   -v $(pwd)/logs:/app/logs \
-  --name aapanel \
-  aapanel:latest
+  --name k2panel \
+  k2panel:latest
 ```
 
 ⚠️ **تنبيه مهم للإنتاج:**
@@ -112,8 +112,8 @@ docker run -d \
 
 ### فحص حالة الحاوية:
 ```bash
-docker ps | grep aapanel
-docker logs aapanel
+docker ps | grep k2panel
+docker logs k2panel
 ```
 
 ### فحص endpoint:
@@ -135,31 +135,31 @@ wscat -c ws://localhost:5000/sock_shell
 
 ### إيقاف وإزالة:
 ```bash
-docker stop aapanel
-docker rm aapanel
+docker stop k2panel
+docker rm k2panel
 ```
 
 ### الدخول إلى الحاوية:
 ```bash
-docker exec -it aapanel /bin/bash
+docker exec -it k2panel /bin/bash
 ```
 
 ### عرض السجلات:
 ```bash
-docker logs -f aapanel
+docker logs -f k2panel
 ```
 
 ## استكشاف الأخطاء
 
 ### الحاوية لا تبدأ:
-1. فحص السجلات: `docker logs aapanel`
+1. فحص السجلات: `docker logs k2panel`
 2. التحقق من المنفذ: `lsof -i :5000`
 3. التحقق من الأذونات على volumes
 
 ### مشاكل WebSocket:
 - التأكد من استخدام GeventWebSocketWorker
 - التحقق من headers في الطلب
-- فحص السجلات: `docker logs aapanel | grep -i websocket`
+- فحص السجلات: `docker logs k2panel | grep -i websocket`
 
 ### مشاكل النسخ الاحتياطية:
 - **فشل HMAC/Checksum عند الاستعادة:**
@@ -180,7 +180,7 @@ docker logs -f aapanel
 1. عدم تشغيل كـ root (تم تطبيقه)
 2. استخدام secrets management للبيانات الحساسة
 3. تحديث الصورة بانتظام
-4. فحص الثغرات: `docker scan aapanel:latest`
+4. فحص الثغرات: `docker scan k2panel:latest`
 
 ### Production Deployment:
 - ⚠️ لا تُشغّل مباشرة على 0.0.0.0:5000 في الإنتاج
@@ -194,5 +194,5 @@ docker logs -f aapanel
 - **Architecture**: Multi-stage build
 - **Web Server**: Gunicorn + GeventWebSocketWorker
 - **Port**: 5000
-- **User**: aapanel (UID/GID: 1000)
+- **User**: k2panel (UID/GID: 1000)
 - **Health Check**: /health (fallback: /)

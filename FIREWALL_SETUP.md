@@ -1,8 +1,8 @@
-# 🔥 دليل UFW Firewall الشامل لـ aaPanel
+# 🔥 دليل UFW Firewall الشامل لـ K2Panel
 
 ## 📋 نظرة عامة
 
-هذا الدليل يوفر معلومات شاملة حول إعداد وإدارة UFW (Uncomplicated Firewall) في تطبيق aaPanel، بما في ذلك:
+هذا الدليل يوفر معلومات شاملة حول إعداد وإدارة UFW (Uncomplicated Firewall) في تطبيق K2Panel، بما في ذلك:
 
 - ✅ إعداد UFW تلقائياً
 - ✅ حماية من هجمات Brute Force (SSH rate limiting)

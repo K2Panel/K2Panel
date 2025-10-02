@@ -1,4 +1,4 @@
-# دليل نظام Migrations الشامل - aaPanel
+# دليل نظام Migrations الشامل - K2Panel
 
 ## 📋 نظرة عامة
 

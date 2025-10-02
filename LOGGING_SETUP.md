@@ -2,7 +2,7 @@
 
 ## نظرة عامة
 
-تم إعداد نظام **Centralized Logging** شامل لـ aaPanel باستخدام:
+تم إعداد نظام **Centralized Logging** شامل لـ K2Panel باستخدام:
 
 - **Grafana Loki** - نظام تخزين واستعلام السجلات
 - **Promtail** - عميل جمع السجلات
@@ -39,7 +39,7 @@
 
 ```
 ┌─────────────────────────────────────────────────┐
-│              aaPanel Application                 │
+│              K2Panel Application                 │
 │         (Structured JSON Logging)                │
 │         ↓                                        │
 │    /app/logs/app.log                            │
@@ -81,7 +81,7 @@
 │                 Grafana                          │
 │            (Port 3000)                           │
 │         - Visualizes logs                        │
-│         - Dashboard: "aaPanel Logs"              │
+│         - Dashboard: "K2Panel Logs"              │
 │         - Search & filter                        │
 └─────────────────────────────────────────────────┘
 ```
@@ -120,15 +120,15 @@ docker-compose up -d
 docker-compose ps
 
 # يجب أن ترى:
-# - aapanel_loki (healthy)
-# - aapanel_promtail (running)
-# - aapanel_grafana (healthy)
+# - k2panel_loki (healthy)
+# - k2panel_promtail (running)
+# - k2panel_grafana (healthy)
 
 # 5. افتح Grafana
 # URL: http://localhost:3000
 # تسجيل الدخول: credentials من .env (GRAFANA_ADMIN_USER/PASSWORD)
 
-# 6. انتقل إلى Dashboard "aaPanel Logs - Loki Dashboard"
+# 6. انتقل إلى Dashboard "K2Panel Logs - Loki Dashboard"
 ```
 
 ### 2. بيئة Blue-Green Deployment
@@ -141,9 +141,9 @@ docker-compose -f docker-compose.shared.yml up -d
 docker-compose -f docker-compose.shared.yml ps
 
 # يجب أن ترى:
-# - aapanel_loki_shared (healthy)
-# - aapanel_promtail_shared (running)
-# - aapanel_grafana_shared (healthy)
+# - k2panel_loki_shared (healthy)
+# - k2panel_promtail_shared (running)
+# - k2panel_grafana_shared (healthy)
 
 # 3. شغّل البيئة الزرقاء أو الخضراء
 docker-compose -f docker-compose.blue.yml up -d
@@ -176,13 +176,13 @@ Loki **لا يوجد له port binding خارجي** لأسباب أمنية. ي�
 # افتح http://localhost:3000 → Explore → Loki datasource
 
 # Option 2: استخدم docker exec للوصول من داخل container
-docker exec -it aapanel_app sh
+docker exec -it k2panel_app sh
 curl http://loki:3100/ready
 
 # Option 3: استخدم port forwarding مؤقت (للتطوير فقط)
-docker run --rm --network aapanel_network alpine/curl \
+docker run --rm --network k2panel_network alpine/curl \
   -G -s "http://loki:3100/loki/api/v1/query" \
-  --data-urlencode 'query={job="aapanel"}'
+  --data-urlencode 'query={job="k2panel"}'
 ```
 
 **⚠️ لا تقم بإضافة port binding لـ Loki في Production!**  
@@ -203,7 +203,7 @@ curl http://localhost:9080/targets
 
 1. افتح Grafana: `http://localhost:3000`
 2. سجّل الدخول بالـ credentials من `.env`
-3. انتقل إلى **Dashboards** → **aaPanel Logs - Loki Dashboard**
+3. انتقل إلى **Dashboards** → **K2Panel Logs - Loki Dashboard**
 
 **Dashboard Panels:**
 - **Log Rate by Level** - معدل السجلات حسب المستوى
@@ -232,49 +232,49 @@ LogQL هي لغة الاستعلام في Loki (مشابهة لـ PromQL).
 #### 1. جميع سجلات التطبيق
 
 ```logql
-{job="aapanel"}
+{job="k2panel"}
 ```
 
 #### 2. سجلات الأخطاء فقط
 
 ```logql
-{job="aapanel"} | json | level="ERROR"
+{job="k2panel"} | json | level="ERROR"
 ```
 
 #### 3. سجلات تحتوي على نص معين
 
 ```logql
-{job="aapanel"} |= "database connection"
+{job="k2panel"} |= "database connection"
 ```
 
 #### 4. سجلات من module معين
 
 ```logql
-{job="aapanel"} | json | module="auth"
+{job="k2panel"} | json | module="auth"
 ```
 
 #### 5. سجلات من Docker container معين
 
 ```logql
-{job="docker", container_name="aapanel_app"}
+{job="docker", container_name="k2panel_app"}
 ```
 
 #### 6. معدل الأخطاء في آخر 5 دقائق
 
 ```logql
-sum(rate({job="aapanel"} | json | level="ERROR" [5m]))
+sum(rate({job="k2panel"} | json | level="ERROR" [5m]))
 ```
 
 #### 7. عدد السجلات حسب المستوى
 
 ```logql
-sum by (level) (count_over_time({job="aapanel"} | json [1h]))
+sum by (level) (count_over_time({job="k2panel"} | json [1h]))
 ```
 
 #### 8. سجلات مع exceptions
 
 ```logql
-{job="aapanel"} | json | exception != ""
+{job="k2panel"} | json | exception != ""
 ```
 
 #### 9. أبطأ 10 requests (إذا كان log يحتوي على duration)
@@ -282,7 +282,7 @@ sum by (level) (count_over_time({job="aapanel"} | json [1h]))
 ```logql
 topk(10, 
   sum by (function) (
-    avg_over_time({job="aapanel"} | json | unwrap duration [5m])
+    avg_over_time({job="k2panel"} | json | unwrap duration [5m])
   )
 )
 ```
@@ -290,7 +290,7 @@ topk(10,
 #### 10. تصفية متقدمة
 
 ```logql
-{job="aapanel"} 
+{job="k2panel"} 
 | json 
 | level=~"ERROR|CRITICAL" 
 | module!="test" 
@@ -313,7 +313,7 @@ topk(10,
 ### Pipeline Stages في Grafana
 
 ```logql
-{job="aapanel"} 
+{job="k2panel"} 
 | json                              # Parse JSON
 | level="ERROR"                     # Filter by level
 | line_format "{{.message}}"        # Format output
@@ -376,14 +376,14 @@ docker-compose logs promtail
 curl http://localhost:9080/targets
 
 # تحقق من Docker socket mount
-docker inspect aapanel_promtail | grep -A 5 "docker.sock"
+docker inspect k2panel_promtail | grep -A 5 "docker.sock"
 ```
 
 **الحلول:**
 
 ```bash
 # تحقق من أن volumes موصولة بشكل صحيح
-docker inspect aapanel_promtail | grep -A 10 Mounts
+docker inspect k2panel_promtail | grep -A 10 Mounts
 
 # تحقق من صلاحيات الملفات
 ls -la /var/lib/docker/containers
@@ -438,10 +438,10 @@ docker-compose restart app
 
 ```bash
 # تحقق من حجم البيانات
-docker exec aapanel_loki du -sh /tmp/loki
+docker exec k2panel_loki du -sh /tmp/loki
 
 # تحقق من استخدام الذاكرة
-docker stats aapanel_loki
+docker stats k2panel_loki
 ```
 
 **الحلول:**
@@ -459,7 +459,7 @@ compactor:
 ### 5. Dashboard فارغ في Grafana
 
 **الأعراض:**
-- Dashboard "aaPanel Logs" لا يعرض بيانات
+- Dashboard "K2Panel Logs" لا يعرض بيانات
 - "No data" في جميع panels
 
 **التشخيص:**
@@ -507,7 +507,7 @@ loki:
 loki:
   # No ports section
   networks:
-    - aapanel_network
+    - k2panel_network
 ```
 
 ### 2. Promtail Docker Socket Access
@@ -596,7 +596,7 @@ logger.info("User logged in", extra={
 
 هذا يسمح بالبحث:
 ```logql
-{job="aapanel"} | json | user_id="123"
+{job="k2panel"} | json | user_id="123"
 ```
 
 ### 3. لا تُسجّل معلومات حساسة
@@ -657,7 +657,7 @@ ls -lh logs/
 
 ```yaml
 # في Grafana Alerting
-{job="aapanel"} | json | level="CRITICAL"
+{job="k2panel"} | json | level="CRITICAL"
 # Alert when: count > 0 in last 5 minutes
 ```
 
@@ -687,10 +687,10 @@ ls -lh logs/
 
 ```logql
 # ✅ سريع - استخدام labels
-{job="aapanel", level="ERROR"}
+{job="k2panel", level="ERROR"}
 
 # ❌ بطيء - البحث في message
-{job="aapanel"} |= "error"
+{job="k2panel"} |= "error"
 ```
 
 ---
@@ -707,7 +707,7 @@ docker-compose stop loki
 
 # نسخ البيانات
 docker run --rm \
-  -v aapanel_loki_data:/data \
+  -v k2panel_loki_data:/data \
   -v $(pwd)/backups:/backup \
   alpine tar czf /backup/loki-backup-$(date +%Y%m%d).tar.gz /data
 
@@ -722,12 +722,12 @@ docker-compose start loki
 docker-compose stop loki
 
 # حذف البيانات القديمة
-docker volume rm aapanel_loki_data
-docker volume create aapanel_loki_data
+docker volume rm k2panel_loki_data
+docker volume create k2panel_loki_data
 
 # استعادة البيانات
 docker run --rm \
-  -v aapanel_loki_data:/data \
+  -v k2panel_loki_data:/data \
   -v $(pwd)/backups:/backup \
   alpine tar xzf /backup/loki-backup-20240101.tar.gz -C /
 
@@ -741,7 +741,7 @@ Loki ينظف البيانات تلقائياً حسب `retention_period`، لك
 
 ```bash
 # دخول إلى Loki container
-docker exec -it aapanel_loki sh
+docker exec -it k2panel_loki sh
 
 # حذف ملفات قديمة (مثال)
 find /tmp/loki -type f -mtime +30 -delete
@@ -779,8 +779,8 @@ docker-compose pull loki promtail
 docker-compose up -d loki promtail
 
 # تحقق من النسخة
-docker exec aapanel_loki loki --version
-docker exec aapanel_promtail promtail --version
+docker exec k2panel_loki loki --version
+docker exec k2panel_promtail promtail --version
 ```
 
 ### 5. Performance Tuning
@@ -820,7 +820,7 @@ limits_config:
 
 ```bash
 # logcli - CLI tool لـ Loki
-docker run grafana/logcli:latest --addr=http://loki:3100 query '{job="aapanel"}'
+docker run grafana/logcli:latest --addr=http://loki:3100 query '{job="k2panel"}'
 
 # loki-canary - أداة testing
 docker run grafana/loki-canary:latest -addr=http://loki:3100
@@ -909,4 +909,4 @@ A: نعم، Loki مستقر ويستخدم في production من شركات كب�
 
 **تم إعداد هذا الدليل بتاريخ:** 2024-01-01  
 **النسخة:** 1.0  
-**المؤلف:** aaPanel DevOps Team
+**المؤلف:** K2Panel DevOps Team

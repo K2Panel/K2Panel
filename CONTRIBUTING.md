@@ -2,12 +2,12 @@
 
 <div align="center">
 
-[![aaPanel](https://img.shields.io/badge/aaPanel-aaPanel-blue)](https://github.com/aaPanel/aaPanel)
+[![K2Panel](https://img.shields.io/badge/K2Panel-K2Panel-blue)](https://github.com/K2Panel/K2Panel)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
-**مرحباً بك في مجتمع aaPanel! نحن سعداء بمساهمتك 🎉**
+**مرحباً بك في مجتمع K2Panel! نحن سعداء بمساهمتك 🎉**
 
-Welcome to the aaPanel community! We're excited to have your contribution 🎉
+Welcome to the K2Panel community! We're excited to have your contribution 🎉
 
 </div>
 
@@ -55,7 +55,7 @@ We are committed to providing a welcoming and inclusive environment for everyone
 
 If you experience or witness unacceptable behavior, please report it via:
 
-- 📧 Email: conduct@aapanel.com
+- 📧 Email: conduct@k2panel.com
 - 📝 GitHub Issues (للمشاكل العامة)
 
 ---
@@ -101,12 +101,12 @@ We welcome all types of contributions:
 ```bash
 # انتقل إلى صفحة المشروع على GitHub واضغط "Fork"
 # Go to the project page on GitHub and click "Fork"
-https://github.com/aaPanel/aaPanel
+https://github.com/K2Panel/K2Panel
 
 # ثم استنسخ fork الخاص بك
 # Then clone your fork
-git clone https://github.com/YOUR_USERNAME/aaPanel.git
-cd aaPanel
+git clone https://github.com/YOUR_USERNAME/K2Panel.git
+cd K2Panel
 ```
 
 ### 2️⃣ أضف Remote للمشروع الأصلي - Add Upstream Remote
@@ -114,7 +114,7 @@ cd aaPanel
 ```bash
 # أضف المشروع الأصلي كـ upstream
 # Add the original repository as upstream
-git remote add upstream https://github.com/aaPanel/aaPanel.git
+git remote add upstream https://github.com/K2Panel/K2Panel.git
 
 # تحقق من الـ remotes
 # Verify remotes
@@ -767,7 +767,7 @@ When modifying Docker:
 ```bash
 # اختبر Docker build
 # Test Docker build
-docker build -t aapanel-test .
+docker build -t k2panel-test .
 
 # اختبر docker-compose
 # Test docker-compose
@@ -814,9 +814,9 @@ When updating documentation:
 
 ## 🙏 شكراً لك - Thank You!
 
-شكراً لك على مساهمتك في aaPanel! 🎉
+شكراً لك على مساهمتك في K2Panel! 🎉
 
-Thank you for contributing to aaPanel! 🎉
+Thank you for contributing to K2Panel! 🎉
 
 نحن نقدّر وقتك وجهدك في تحسين هذا المشروع.
 
@@ -831,17 +831,17 @@ We appreciate your time and effort in improving this project.
 
 ### اتصل بنا - Contact Us
 
-- 💬 GitHub Discussions: https://github.com/aaPanel/aaPanel/discussions
-- 📧 Email: support@aapanel.com
-- 🌐 Website: https://www.aapanel.com
-- 📖 Documentation: https://doc.aapanel.com
+- 💬 GitHub Discussions: https://github.com/K2Panel/K2Panel/discussions
+- 📧 Email: support@k2panel.com
+- 🌐 Website: https://www.k2panel.com
+- 📖 Documentation: https://doc.k2panel.com
 
 ---
 
 <div align="center">
 
-**صُنع بـ ❤️ من قبل مجتمع aaPanel**
+**صُنع بـ ❤️ من قبل مجتمع K2Panel**
 
-**Made with ❤️ by the aaPanel Community**
+**Made with ❤️ by the K2Panel Community**
 
 </div>

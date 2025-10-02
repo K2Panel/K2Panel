@@ -1,4 +1,4 @@
-# 🔵🟢 Blue-Green Deployment Guide - aaPanel
+# 🔵🟢 Blue-Green Deployment Guide - K2Panel
 
 ## 📋 جدول المحتويات
 
@@ -169,7 +169,7 @@ docker-compose.green.yml   # تكوين البيئة الخضراء
 ```
 
 **الاختلافات الرئيسية:**
-- **Container name**: `aapanel_app_blue` vs `aapanel_app_green`
+- **Container name**: `k2panel_app_blue` vs `k2panel_app_green`
 - **Port mapping**: `5001:5000` vs `5002:5000`
 - **Environment**: `APP_COLOR=blue` vs `APP_COLOR=green`
 - **Data volume**: `app_data_blue` vs `app_data_green` (عزل كامل)
@@ -228,8 +228,8 @@ curl --version
 ssh user@your-vps-ip
 
 # إنشاء مجلد النشر
-sudo mkdir -p /opt/aapanel
-cd /opt/aapanel
+sudo mkdir -p /opt/k2panel
+cd /opt/k2panel
 
 # نسخ الملفات المطلوبة (من GitHub أو محلياً)
 # سيتم نسخها تلقائياً عبر GitHub Actions
@@ -250,11 +250,11 @@ nano .env
 ```bash
 # Docker Registry
 REGISTRY=ghcr.io
-IMAGE_NAME=owner/aapanel
+IMAGE_NAME=owner/k2panel
 IMAGE_TAG=latest
 
 # Database
-POSTGRES_USER=aapanel_user
+POSTGRES_USER=k2panel_user
 POSTGRES_PASSWORD=your_secure_password
 POSTGRES_DB=production_db
 
@@ -267,14 +267,14 @@ SECRET_KEY=your_secret_key_here
 
 ```bash
 # نسخ template
-sudo cp nginx-blue-green.conf.template /etc/nginx/sites-available/aapanel
+sudo cp nginx-blue-green.conf.template /etc/nginx/sites-available/k2panel
 
 # استبدال المتغيرات
-sudo sed -i 's/${DOMAIN}/your-domain.com/g' /etc/nginx/sites-available/aapanel
-sudo sed -i 's/${ACTIVE_PORT}/5001/g' /etc/nginx/sites-available/aapanel
+sudo sed -i 's/${DOMAIN}/your-domain.com/g' /etc/nginx/sites-available/k2panel
+sudo sed -i 's/${ACTIVE_PORT}/5001/g' /etc/nginx/sites-available/k2panel
 
 # تفعيل الموقع
-sudo ln -s /etc/nginx/sites-available/aapanel /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/k2panel /etc/nginx/sites-enabled/
 
 # اختبار التكوين
 sudo nginx -t
@@ -345,14 +345,14 @@ VPS_DOMAIN: your-domain.com
 ```bash
 # الاتصال بالـ VPS
 ssh user@your-vps-ip
-cd /opt/aapanel
+cd /opt/k2panel
 
 # الخطوة 1: بدء Shared Services (PostgreSQL + Redis)
 docker-compose -f docker-compose.shared.yml up -d
 
 # الخطوة 2: تصدير المتغيرات
 export REGISTRY=ghcr.io
-export IMAGE_NAME=owner/aapanel
+export IMAGE_NAME=owner/k2panel
 export IMAGE_TAG=latest
 
 # تشغيل Blue-Green deployment
@@ -388,7 +388,7 @@ export IMAGE_TAG=latest
 cat .active_environment
 
 # معرفة الحاويات الجارية
-docker ps | grep aapanel
+docker ps | grep k2panel
 
 # فحص logs
 docker-compose -f docker-compose.blue.yml logs --tail=50 app-blue
@@ -477,8 +477,8 @@ sudo nginx -t
 sudo tail -50 /var/log/nginx/error.log
 
 # 3. التحقق من الصلاحيات
-ls -l /etc/nginx/sites-available/aapanel
-ls -l /etc/nginx/sites-enabled/aapanel
+ls -l /etc/nginx/sites-available/k2panel
+ls -l /etc/nginx/sites-enabled/k2panel
 
 # 4. إعادة تحميل nginx يدوياً
 sudo systemctl reload nginx
@@ -498,7 +498,7 @@ could not connect to server: Connection refused
 docker ps | grep postgres
 
 # 2. فحص logs
-docker logs aapanel_postgres_shared
+docker logs k2panel_postgres_shared
 
 # 3. التحقق من المتغيرات في .env
 cat .env | grep POSTGRES
@@ -549,7 +549,7 @@ docker run --rm ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} --version
 
 ```bash
 # ✅ راقب logs في الوقت الفعلي
-tail -f /var/log/nginx/aapanel_access.log
+tail -f /var/log/nginx/k2panel_access.log
 
 # ✅ راقب metrics (CPU, Memory)
 docker stats
@@ -729,7 +729,7 @@ curl http://your-vps:5002/
    docker-compose -f docker-compose.<color>.yml logs
 
    # Nginx logs
-   sudo tail -100 /var/log/nginx/aapanel_error.log
+   sudo tail -100 /var/log/nginx/k2panel_error.log
 
    # System logs
    sudo journalctl -u docker -n 100
@@ -738,7 +738,7 @@ curl http://your-vps:5002/
 2. **فحص الحالة:**
    ```bash
    # Docker containers
-   docker ps -a | grep aapanel
+   docker ps -a | grep k2panel
 
    # Nginx status
    sudo systemctl status nginx

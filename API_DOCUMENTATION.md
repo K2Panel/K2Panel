@@ -1,8 +1,8 @@
-# 📚 aaPanel API Documentation
+# 📚 K2Panel API Documentation
 
 ## نظرة عامة
 
-توثيق شامل لـ Health & Monitoring API الخاص بـ aaPanel.
+توثيق شامل لـ Health & Monitoring API الخاص بـ K2Panel.
 
 ---
 
@@ -20,9 +20,9 @@
 
 ## 🎯 مقدمة
 
-### ما هو aaPanel Health API؟
+### ما هو K2Panel Health API؟
 
-aaPanel Health API يوفر **3 نقاط نهاية (endpoints) للمراقبة والصحة**:
+K2Panel Health API يوفر **3 نقاط نهاية (endpoints) للمراقبة والصحة**:
 
 | Endpoint | الوصف | الحالة |
 |----------|--------|--------|
@@ -505,7 +505,7 @@ monitor_metrics(interval=30)
 
 ```yaml
 scrape_configs:
-  - job_name: 'aapanel'
+  - job_name: 'k2panel'
     scrape_interval: 15s
     metrics_path: '/health/metrics'
     static_configs:
@@ -527,7 +527,7 @@ scrape_configs:
 # health_monitor.sh - مراقبة صحة التطبيق
 
 ENDPOINT="http://localhost:5000/health/ready"
-LOG_FILE="/var/log/aapanel/health_monitor.log"
+LOG_FILE="/var/log/k2panel/health_monitor.log"
 
 while true; do
     RESPONSE=$(curl -s -w "\n%{http_code}" "$ENDPOINT")
@@ -558,7 +558,7 @@ import time
 from datetime import datetime
 
 METRICS_URL = 'http://localhost:5000/health/metrics'
-OUTPUT_FILE = '/var/log/aapanel/metrics.jsonl'
+OUTPUT_FILE = '/var/log/k2panel/metrics.jsonl'
 
 def collect_and_save():
     """جمع وحفظ metrics"""
@@ -610,7 +610,7 @@ def send_slack_alert(message):
     webhook_url = 'https://hooks.slack.com/services/YOUR/WEBHOOK/URL'
     payload = {
         'text': message,
-        'username': 'aaPanel Monitor',
+        'username': 'K2Panel Monitor',
         'icon_emoji': ':warning:'
     }
     requests.post(webhook_url, json=payload)
@@ -666,20 +666,20 @@ if __name__ == '__main__':
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: aapanel
+  name: k2panel
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: aapanel
+      app: k2panel
   template:
     metadata:
       labels:
-        app: aapanel
+        app: k2panel
     spec:
       containers:
-      - name: aapanel
-        image: ghcr.io/your-org/aapanel:latest
+      - name: k2panel
+        image: ghcr.io/your-org/k2panel:latest
         ports:
         - containerPort: 5000
           name: http
@@ -723,11 +723,11 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: aapanel-metrics
+  name: k2panel-metrics
 spec:
   selector:
     matchLabels:
-      app: aapanel
+      app: k2panel
   endpoints:
   - port: http
     path: /health/metrics

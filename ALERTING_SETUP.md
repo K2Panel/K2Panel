@@ -2,7 +2,7 @@
 
 ## نظرة عامة - Overview
 
-تم إعداد نظام تنبيهات شامل لـ aaPanel باستخدام **Prometheus Alertmanager**. هذا النظام يوفر:
+تم إعداد نظام تنبيهات شامل لـ K2Panel باستخدام **Prometheus Alertmanager**. هذا النظام يوفر:
 
 - ✅ تنبيهات فورية عند حدوث مشاكل (CPU, Memory, Disk, Database, Redis)
 - ✅ إشعارات عبر Slack و Email
@@ -32,7 +32,7 @@
 
 ```
 ┌─────────────────────────────────────────────────┐
-│                   aaPanel App                    │
+│                   K2Panel App                    │
 │            (Port 5000)                           │
 │         /health/metrics endpoint                 │
 │         - CPU, Memory, Disk                      │
@@ -124,9 +124,9 @@ docker-compose logs alertmanager | grep "expand-env"
 
 | Alert Name | Condition | Duration | Severity | Description |
 |------------|-----------|----------|----------|-------------|
-| **ApplicationDown** | up{job="aapanel"} == 0 | 1 minute | critical | التطبيق متوقف |
-| **DatabaseUnhealthy** | aapanel_db_healthy == 0 | 2 minutes | critical | قاعدة البيانات غير متاحة |
-| **RedisUnhealthy** | aapanel_redis_healthy == 0 | 2 minutes | critical | Redis غير متاح |
+| **ApplicationDown** | up{job="k2panel"} == 0 | 1 minute | critical | التطبيق متوقف |
+| **DatabaseUnhealthy** | k2panel_db_healthy == 0 | 2 minutes | critical | قاعدة البيانات غير متاحة |
+| **RedisUnhealthy** | k2panel_redis_healthy == 0 | 2 minutes | critical | Redis غير متاح |
 
 ### 3. Performance Alerts - تنبيهات الأداء
 
@@ -150,7 +150,7 @@ docker-compose logs alertmanager | grep "expand-env"
 2. انقر على **"Create New App"**
 3. اختر **"From scratch"**
 4. أدخل:
-   - **App Name**: `aaPanel Alerts` (أو أي اسم تريده)
+   - **App Name**: `K2Panel Alerts` (أو أي اسم تريده)
    - **Workspace**: اختر workspace الخاص بك
 5. انقر **"Create App"**
 
@@ -180,7 +180,7 @@ SLACK_WEBHOOK_URL=https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXX
 ```bash
 # اختبار يدوي للـ webhook
 curl -X POST -H 'Content-type: application/json' \
-  --data '{"text":"🔔 Test alert from aaPanel!"}' \
+  --data '{"text":"🔔 Test alert from K2Panel!"}' \
   YOUR_SLACK_WEBHOOK_URL
 ```
 
@@ -214,7 +214,7 @@ ALERT_EMAIL_TO=admin@yourdomain.com
 3. اذهب إلى **App Passwords**: https://myaccount.google.com/apppasswords
 4. اختر:
    - **App**: `Mail`
-   - **Device**: `Other (Custom name)` → اكتب `aaPanel Alerts`
+   - **Device**: `Other (Custom name)` → اكتب `K2Panel Alerts`
 5. انقر **"Generate"**
 6. انسخ كلمة المرور المكونة من 16 حرف (بدون مسافات)
 7. استخدمها كـ `SMTP_PASSWORD` في `.env`
@@ -283,7 +283,7 @@ smtp_port = 587
 username = "your-email@gmail.com"
 password = "your-app-password"
 
-msg = MIMEText("Test email from aaPanel Alertmanager")
+msg = MIMEText("Test email from K2Panel Alertmanager")
 msg['Subject'] = "Test Alert"
 msg['From'] = username
 msg['To'] = "admin@yourdomain.com"
@@ -364,12 +364,12 @@ docker-compose logs -f alertmanager prometheus
 docker-compose ps
 
 # يجب أن تشاهد:
-# - aapanel_app (healthy)
-# - aapanel_prometheus (healthy)
-# - aapanel_alertmanager (healthy)
-# - aapanel_grafana (healthy)
-# - aapanel_postgres (healthy)
-# - aapanel_redis (healthy)
+# - k2panel_app (healthy)
+# - k2panel_prometheus (healthy)
+# - k2panel_alertmanager (healthy)
+# - k2panel_grafana (healthy)
+# - k2panel_postgres (healthy)
+# - k2panel_redis (healthy)
 ```
 
 ### 6. الوصول للواجهات
@@ -400,7 +400,7 @@ curl -s http://localhost:9090/api/v1/rules | jq '.data.groups[].rules[] | {alert
 
 ```bash
 # إنشاء حمل CPU عالٍ لمدة 6 دقائق (يكفي لتفعيل التنبيه)
-docker exec -it aapanel_app bash -c "
+docker exec -it k2panel_app bash -c "
 for i in {1..6}; do
   stress --cpu 4 --timeout 60s &
   echo 'Minute $i of 6...'
@@ -433,7 +433,7 @@ curl -X POST http://localhost:9093/api/v1/alerts -H "Content-Type: application/j
     "labels": {
       "alertname": "TestAlert",
       "severity": "warning",
-      "service": "aapanel",
+      "service": "k2panel",
       "instance": "test"
     },
     "annotations": {
@@ -477,7 +477,7 @@ curl http://localhost:9090/api/v1/rules | jq '.data.groups[].file'
 curl http://localhost:5000/health/metrics | jq
 
 # تحقق من metrics في Prometheus
-curl -g 'http://localhost:9090/api/v1/query?query=up{job="aapanel"}'
+curl -g 'http://localhost:9090/api/v1/query?query=up{job="k2panel"}'
 ```
 
 **3. تحقق من سجلات Prometheus:**
@@ -487,7 +487,7 @@ docker-compose logs prometheus | grep -i "error\|warn"
 
 **4. تحقق من syntax القواعد:**
 ```bash
-docker exec -it aapanel_prometheus promtool check rules /etc/prometheus/rules/prometheus-rules.yml
+docker exec -it k2panel_prometheus promtool check rules /etc/prometheus/rules/prometheus-rules.yml
 ```
 
 ### المشكلة 2: الإشعارات لا ترسل (Notifications Not Sent)
@@ -525,7 +525,7 @@ curl -X POST -H 'Content-type: application/json' \
 **5. اختبار SMTP:**
 ```bash
 # استخدم swaks (SMTP test tool)
-docker run --rm --network aapanel_network \
+docker run --rm --network k2panel_network \
   catatnight/postfix \
   swaks --to $ALERT_EMAIL_TO \
         --from $ALERT_EMAIL_FROM \
@@ -586,7 +586,7 @@ route:
 **3. تعديل thresholds في prometheus-rules.yml:**
 ```yaml
 # مثلاً: زيادة CPU threshold
-expr: aapanel_cpu_percent > 85  # بدلاً من 80
+expr: k2panel_cpu_percent > 85  # بدلاً من 80
 ```
 
 ### المشكلة 5: التنبيهات لا تُحَل (Alerts Don't Resolve)
@@ -624,7 +624,7 @@ docker-compose restart prometheus
 
 ```bash
 # تحقق من healthcheck يدوياً
-docker exec -it aapanel_alertmanager wget --spider -q http://localhost:9093/-/healthy
+docker exec -it k2panel_alertmanager wget --spider -q http://localhost:9093/-/healthy
 echo $?  # يجب أن يكون 0
 
 # إذا فشل، تحقق من السجلات
@@ -641,13 +641,13 @@ docker-compose logs alertmanager
 
 ```yaml
 # ❌ سيء: استخدام نفس القيم لكل البيئات
-expr: aapanel_cpu_percent > 80
+expr: k2panel_cpu_percent > 80
 
 # ✅ جيد: تخصيص حسب البيئة
 # Production: 85%
 # Staging: 90%
 # Development: 95%
-expr: aapanel_cpu_percent > 85
+expr: k2panel_cpu_percent > 85
 ```
 
 **كيف تحدد Thresholds المناسبة:**
@@ -665,7 +665,7 @@ expr: aapanel_cpu_percent > 85
 # ✅ استخدم `for` duration مناسب
 # لا تنبه على ارتفاع مؤقت لمدة ثواني
 - alert: HighCPUUsage
-  expr: aapanel_cpu_percent > 80
+  expr: k2panel_cpu_percent > 80
   for: 5m  # انتظر 5 دقائق قبل التنبيه
 
 # ✅ استخدم inhibition rules
@@ -709,7 +709,7 @@ annotations:
 
 # ✅ جيد: annotations واضحة وقابلة للتنفيذ
 annotations:
-  summary: "High CPU usage detected on aaPanel"
+  summary: "High CPU usage detected on K2Panel"
   description: "CPU usage is {{ $value }}% (threshold: 80%) for more than 5 minutes on {{ $labels.instance }}"
   impact: "Application performance may be degraded"
   action: "Check running processes with 'top' or 'htop', consider scaling resources"
@@ -723,7 +723,7 @@ annotations:
 ```yaml
 labels:
   severity: warning       # الأهمية
-  service: aapanel       # الخدمة
+  service: k2panel       # الخدمة
   category: resources    # الفئة (resources, database, cache)
   team: platform         # الفريق المسؤول
   environment: production # البيئة
@@ -827,7 +827,7 @@ location /alertmanager/ {
 ```yaml
 # في docker-compose.yml
 networks:
-  aapanel_network:
+  k2panel_network:
     driver: bridge
     internal: false  # أو true للعزل الكامل
 

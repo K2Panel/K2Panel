@@ -2,7 +2,7 @@
 
 ## نظرة عامة
 
-تم إعداد نظام مراقبة شامل لـ aaPanel باستخدام **Prometheus** لجمع المقاييس و **Grafana** لعرض البيانات. هذا النظام يوفر:
+تم إعداد نظام مراقبة شامل لـ K2Panel باستخدام **Prometheus** لجمع المقاييس و **Grafana** لعرض البيانات. هذا النظام يوفر:
 
 - ✅ مراقبة فورية للأداء (CPU, Memory, Disk)
 - ✅ مراقبة قاعدة البيانات (اتصالات، وقت الاستجابة)
@@ -31,7 +31,7 @@
 
 ```
 ┌─────────────────────────────────────────────────┐
-│                   aaPanel App                    │
+│                   K2Panel App                    │
 │            (Port 5000)                           │
 │         /health/metrics endpoint                 │
 └────────────────┬────────────────────────────────┘
@@ -61,7 +61,7 @@
 |-------|--------|
 | `prometheus.yml` | تكوين Prometheus الرئيسي |
 | `grafana-datasource.yml` | تكوين مصدر البيانات لـ Grafana |
-| `grafana-dashboard-aapanel.json` | Dashboard الرئيسي لـ aaPanel |
+| `grafana-dashboard-k2panel.json` | Dashboard الرئيسي لـ K2Panel |
 | `grafana-dashboard-provisioning.yml` | تكوين التحميل التلقائي للـ dashboards |
 | `docker-compose.yml` | إعداد الخدمات في Docker |
 
@@ -152,9 +152,9 @@ global:
   evaluation_interval: 15s   # تقييم القواعد كل 15 ثانية
 
 scrape_configs:
-  # مراقبة aaPanel
-  - job_name: 'aapanel'
-    scrape_interval: 10s     # أسرع لـ aaPanel
+  # مراقبة K2Panel
+  - job_name: 'k2panel'
+    scrape_interval: 10s     # أسرع لـ K2Panel
     metrics_path: '/health/metrics'
     static_configs:
       - targets: ['app:5000']
@@ -165,33 +165,33 @@ scrape_configs:
 Prometheus يجمع المقاييس التالية من `/health/metrics`:
 
 #### مقاييس النظام (System Metrics)
-- `aapanel_cpu_percent` - استخدام CPU (%)
-- `aapanel_memory_percent` - استخدام الذاكرة (%)
-- `aapanel_disk_percent` - استخدام القرص (%)
+- `k2panel_cpu_percent` - استخدام CPU (%)
+- `k2panel_memory_percent` - استخدام الذاكرة (%)
+- `k2panel_disk_percent` - استخدام القرص (%)
 
 #### مقاييس قاعدة البيانات (Database Metrics)
-- `aapanel_db_pool_active_connections` - الاتصالات النشطة
-- `aapanel_db_pool_idle_connections` - الاتصالات الخاملة
-- `aapanel_db_response_time_ms` - وقت استجابة DB (ms)
+- `k2panel_db_pool_active_connections` - الاتصالات النشطة
+- `k2panel_db_pool_idle_connections` - الاتصالات الخاملة
+- `k2panel_db_response_time_ms` - وقت استجابة DB (ms)
 
 #### مقاييس Redis (Redis Metrics)
-- `aapanel_redis_connected` - حالة اتصال Redis
-- `aapanel_redis_response_time_ms` - وقت استجابة Redis (ms)
+- `k2panel_redis_connected` - حالة اتصال Redis
+- `k2panel_redis_response_time_ms` - وقت استجابة Redis (ms)
 
 ### 3. الاستعلامات الشائعة (PromQL)
 
 ```promql
 # معدل استخدام CPU
-rate(aapanel_cpu_percent[5m])
+rate(k2panel_cpu_percent[5m])
 
 # متوسط وقت استجابة DB
-avg_over_time(aapanel_db_response_time_ms[5m])
+avg_over_time(k2panel_db_response_time_ms[5m])
 
 # عدد اتصالات DB الكلي
-aapanel_db_pool_active_connections + aapanel_db_pool_idle_connections
+k2panel_db_pool_active_connections + k2panel_db_pool_idle_connections
 
 # معدل تغيير الذاكرة
-delta(aapanel_memory_percent[1h])
+delta(k2panel_memory_percent[1h])
 ```
 
 ---
@@ -212,7 +212,7 @@ datasources:
 
 ### 2. Dashboard التلقائي
 
-Dashboard `aaPanel System Monitoring` يتم تحميله تلقائياً ويحتوي على:
+Dashboard `K2Panel System Monitoring` يتم تحميله تلقائياً ويحتوي على:
 
 #### الـ Panels
 
@@ -250,7 +250,7 @@ Dashboard `aaPanel System Monitoring` يتم تحميله تلقائياً وي�
 # 2. اذهب إلى Dashboards > New Dashboard
 # 3. أضف Panel جديد
 # 4. اختر Prometheus كـ Data Source
-# 5. أدخل PromQL query (مثال: aapanel_cpu_percent)
+# 5. أدخل PromQL query (مثال: k2panel_cpu_percent)
 # 6. احفظ Dashboard
 ```
 
@@ -258,9 +258,9 @@ Dashboard `aaPanel System Monitoring` يتم تحميله تلقائياً وي�
 
 ## 🎯 الـ Dashboards
 
-### Dashboard الرئيسي: aaPanel System Monitoring
+### Dashboard الرئيسي: K2Panel System Monitoring
 
-**المسار**: `Dashboards > aaPanel > aaPanel System Monitoring`
+**المسار**: `Dashboards > K2Panel > K2Panel System Monitoring`
 
 **الميزات**:
 - ✅ Auto-refresh كل 10 ثوانٍ
@@ -338,13 +338,13 @@ docker-compose logs grafana
 ```bash
 # 1. تحقق من Docker network
 docker network ls
-docker network inspect aapanel_network
+docker network inspect k2panel_network
 
 # 2. تحقق من أن Prometheus يعمل
 docker-compose ps prometheus
 
 # 3. ping من داخل Grafana container
-docker exec -it aapanel_grafana ping prometheus
+docker exec -it k2panel_grafana ping prometheus
 ```
 
 ### المشكلة 4: بيانات قديمة فقط
@@ -410,7 +410,7 @@ location /grafana/ {
 ```yaml
 # في prometheus.yml
 scrape_configs:
-  - job_name: 'aapanel'
+  - job_name: 'k2panel'
     basic_auth:
       username: 'monitoring_user'
       password: 'secure_password'
@@ -531,13 +531,13 @@ curl http://localhost:3000/api/health
 ```bash
 # Backup Prometheus data
 docker run --rm \
-  -v aapanel_prometheus_data:/data \
+  -v k2panel_prometheus_data:/data \
   -v $(pwd)/backups:/backup \
   alpine tar czf /backup/prometheus-$(date +%Y%m%d).tar.gz /data
 
 # Backup Grafana data
 docker run --rm \
-  -v aapanel_grafana_data:/data \
+  -v k2panel_grafana_data:/data \
   -v $(pwd)/backups:/backup \
   alpine tar czf /backup/grafana-$(date +%Y%m%d).tar.gz /data
 ```

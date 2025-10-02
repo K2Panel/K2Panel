@@ -1,8 +1,8 @@
-# aaPanel Database Migrations
+# K2Panel Database Migrations
 
 ## نظرة عامة
 
-هذا المجلد يحتوي على نظام إدارة migrations لقاعدة بيانات aaPanel باستخدام Alembic.
+هذا المجلد يحتوي على نظام إدارة migrations لقاعدة بيانات K2Panel باستخدام Alembic.
 
 ## الملفات الرئيسية
 

@@ -1,4 +1,4 @@
-# 🔒 Security Hardening Guide - aaPanel
+# 🔒 Security Hardening Guide - K2Panel
 
 ## 📋 جدول المحتويات
 
@@ -309,7 +309,7 @@ sudo yum install -y audit
 
 # File Changes
 -w /etc/ -p wa -k etc_changes
--w /www/server/panel/ -p wa -k aapanel_changes
+-w /www/server/panel/ -p wa -k k2panel_changes
 
 # Network Activity
 -a always,exit -F arch=b64 -S socket -S connect -k network
@@ -420,10 +420,10 @@ sudo chage -d 0 username
 | `/etc/ssh/sshd_config` | 600 | root:root |
 | `/etc/sudoers` | 440 | root:root |
 
-### aaPanel Directories
+### K2Panel Directories
 
 ```bash
-# aaPanel main directory
+# K2Panel main directory
 sudo chown -R www:www /www/server/panel
 sudo chmod 750 /www/server/panel
 
@@ -718,7 +718,7 @@ sudo tail -f /var/log/secure      # CentOS/RHEL
 # Audit logs
 sudo tail -f /var/log/audit/audit.log
 
-# aaPanel logs
+# K2Panel logs
 sudo tail -f /www/server/panel/logs/error.log
 ```
 

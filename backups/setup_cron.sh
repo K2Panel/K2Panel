@@ -127,8 +127,8 @@ case $choice in
         echo -e "${GREEN}⚙️  إعداد Systemd Timer...${NC}"
         
         # ملفات systemd
-        SERVICE_FILE="/etc/systemd/system/aapanel-backup.service"
-        TIMER_FILE="/etc/systemd/system/aapanel-backup.timer"
+        SERVICE_FILE="/etc/systemd/system/k2panel-backup.service"
+        TIMER_FILE="/etc/systemd/system/k2panel-backup.timer"
         
         # التحقق من صلاحيات root
         if [ "$EUID" -ne 0 ]; then
@@ -142,7 +142,7 @@ case $choice in
         # إنشاء service file
         cat > "$SERVICE_FILE" << EOF
 [Unit]
-Description=aaPanel Automatic Backup Service
+Description=K2Panel Automatic Backup Service
 After=network.target
 
 [Service]
@@ -160,8 +160,8 @@ EOF
         # إنشاء timer file
         cat > "$TIMER_FILE" << EOF
 [Unit]
-Description=aaPanel Automatic Backup Timer
-Requires=aapanel-backup.service
+Description=K2Panel Automatic Backup Timer
+Requires=k2panel-backup.service
 
 [Timer]
 OnCalendar=daily
@@ -176,8 +176,8 @@ EOF
         systemctl daemon-reload
         
         # تفعيل وتشغيل timer
-        systemctl enable aapanel-backup.timer
-        systemctl start aapanel-backup.timer
+        systemctl enable k2panel-backup.timer
+        systemctl start k2panel-backup.timer
         
         echo ""
         echo -e "${GREEN}======================================================================${NC}"
@@ -186,14 +186,14 @@ EOF
         echo -e "${GREEN}======================================================================${NC}"
         echo ""
         echo -e "${BLUE}📅 الجدولة:${NC} يومياً الساعة 3:00 صباحاً (Daily at 3:00 AM)"
-        echo -e "${BLUE}🔧 Service:${NC} aapanel-backup.service"
-        echo -e "${BLUE}⏲️  Timer:${NC} aapanel-backup.timer"
+        echo -e "${BLUE}🔧 Service:${NC} k2panel-backup.service"
+        echo -e "${BLUE}⏲️  Timer:${NC} k2panel-backup.timer"
         echo ""
         echo -e "${YELLOW}💡 أوامر مفيدة:${NC}"
-        echo -e "  • حالة Timer: ${BLUE}systemctl status aapanel-backup.timer${NC}"
+        echo -e "  • حالة Timer: ${BLUE}systemctl status k2panel-backup.timer${NC}"
         echo -e "  • عرض الجدولة: ${BLUE}systemctl list-timers${NC}"
-        echo -e "  • تشغيل يدوي: ${BLUE}systemctl start aapanel-backup.service${NC}"
-        echo -e "  • مراقبة السجل: ${BLUE}journalctl -u aapanel-backup.service -f${NC}"
+        echo -e "  • تشغيل يدوي: ${BLUE}systemctl start k2panel-backup.service${NC}"
+        echo -e "  • مراقبة السجل: ${BLUE}journalctl -u k2panel-backup.service -f${NC}"
         echo ""
         ;;
         
@@ -214,9 +214,9 @@ EOF
         echo ""
         
         # التحقق من systemd timer
-        if systemctl list-timers 2>/dev/null | grep -q "aapanel-backup.timer"; then
+        if systemctl list-timers 2>/dev/null | grep -q "k2panel-backup.timer"; then
             echo -e "${GREEN}✓ Systemd Timer موجود:${NC}"
-            systemctl status aapanel-backup.timer --no-pager
+            systemctl status k2panel-backup.timer --no-pager
         else
             echo -e "${YELLOW}ℹ️  لا يوجد Systemd Timer للنسخ الاحتياطي${NC}"
         fi
@@ -235,14 +235,14 @@ EOF
         fi
         
         # حذف systemd timer
-        if systemctl list-timers 2>/dev/null | grep -q "aapanel-backup.timer"; then
+        if systemctl list-timers 2>/dev/null | grep -q "k2panel-backup.timer"; then
             if [ "$EUID" -ne 0 ]; then
                 echo -e "${YELLOW}⚠️  يجب تشغيل كـ root لحذف Systemd Timer${NC}"
             else
-                systemctl stop aapanel-backup.timer
-                systemctl disable aapanel-backup.timer
-                rm -f /etc/systemd/system/aapanel-backup.service
-                rm -f /etc/systemd/system/aapanel-backup.timer
+                systemctl stop k2panel-backup.timer
+                systemctl disable k2panel-backup.timer
+                rm -f /etc/systemd/system/k2panel-backup.service
+                rm -f /etc/systemd/system/k2panel-backup.timer
                 systemctl daemon-reload
                 echo -e "${GREEN}✓ تم حذف Systemd Timer${NC}"
             fi

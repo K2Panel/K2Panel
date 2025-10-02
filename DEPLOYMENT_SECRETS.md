@@ -12,13 +12,13 @@ This document describes all the GitHub Secrets required for automated deployment
 - **How to get**:
   ```bash
   # Generate a new SSH key pair (if you don't have one)
-  ssh-keygen -t ed25519 -C "github-actions@aapanel" -f ~/.ssh/aapanel_deploy
+  ssh-keygen -t ed25519 -C "github-actions@k2panel" -f ~/.ssh/k2panel_deploy
   
   # Copy the private key (this goes to GitHub Secrets)
-  cat ~/.ssh/aapanel_deploy
+  cat ~/.ssh/k2panel_deploy
   
   # Copy the public key to VPS
-  ssh-copy-id -i ~/.ssh/aapanel_deploy.pub user@your-vps-ip
+  ssh-copy-id -i ~/.ssh/k2panel_deploy.pub user@your-vps-ip
   ```
 
 #### `VPS_HOST`
@@ -35,7 +35,7 @@ This document describes all the GitHub Secrets required for automated deployment
 #### `VPS_DOMAIN`
 - **Description**: Public domain name for the application
 - **Format**: Domain name (without protocol)
-- **Example**: `aapanel.example.com`
+- **Example**: `k2panel.example.com`
 
 ### 2. Docker Registry Access
 
@@ -72,19 +72,19 @@ passwd deploy
 ```bash
 # On your local machine or GitHub Actions runner
 # Copy the public key to VPS
-ssh-copy-id -i ~/.ssh/aapanel_deploy.pub deploy@your-vps-ip
+ssh-copy-id -i ~/.ssh/k2panel_deploy.pub deploy@your-vps-ip
 
 # Test SSH connection
-ssh -i ~/.ssh/aapanel_deploy deploy@your-vps-ip
+ssh -i ~/.ssh/k2panel_deploy deploy@your-vps-ip
 ```
 
 #### 2.3 Prepare Deployment Directory
 
 ```bash
 # On VPS
-sudo mkdir -p /opt/aapanel
-sudo chown deploy:deploy /opt/aapanel
-cd /opt/aapanel
+sudo mkdir -p /opt/k2panel
+sudo chown deploy:deploy /opt/k2panel
+cd /opt/k2panel
 
 # Create .env file
 nano .env
@@ -131,7 +131,7 @@ docker-compose --version
 
 ## Environment Variables on VPS
 
-Ensure your `/opt/aapanel/.env` file contains:
+Ensure your `/opt/k2panel/.env` file contains:
 
 ```bash
 # Application
@@ -141,7 +141,7 @@ PORT=5000
 
 # Database
 DATABASE_URL=postgresql://user:password@postgres:5432/production_db
-POSTGRES_USER=aapanel_user
+POSTGRES_USER=k2panel_user
 POSTGRES_PASSWORD=strong-password-here
 POSTGRES_DB=production_db
 
@@ -149,7 +149,7 @@ POSTGRES_DB=production_db
 REDIS_URL=redis://redis:6379/0
 
 # Domain
-DOMAIN=aapanel.example.com
+DOMAIN=k2panel.example.com
 ```
 
 ### 🔐 SECRET_KEY Requirements (IMPORTANT!)
@@ -181,7 +181,7 @@ openssl rand -hex 32
 head -c 32 /dev/urandom | base64 | tr -d '\n=' && echo
 
 # Add to .env
-echo "SECRET_KEY=$(python3 -c 'import secrets; print(secrets.token_hex(32))')" >> /opt/aapanel/.env
+echo "SECRET_KEY=$(python3 -c 'import secrets; print(secrets.token_hex(32))')" >> /opt/k2panel/.env
 ```
 
 #### ⚠️ Backup System Impact
@@ -213,14 +213,14 @@ The backup system uses SECRET_KEY for HMAC-SHA256 verification:
 # ⚠️ If you MUST change SECRET_KEY:
 
 # 1. Backup current SECRET_KEY
-echo "OLD_SECRET_KEY=$(grep SECRET_KEY /opt/aapanel/.env)" >> /opt/aapanel/.env.backup
+echo "OLD_SECRET_KEY=$(grep SECRET_KEY /opt/k2panel/.env)" >> /opt/k2panel/.env.backup
 
 # 2. Restore important backups with old key
 python backups/backup_manager.py --restore backup_important.tar.gz
 
 # 3. Change SECRET_KEY
 NEW_KEY=$(python3 -c 'import secrets; print(secrets.token_hex(32))')
-sed -i "s/SECRET_KEY=.*/SECRET_KEY=$NEW_KEY/" /opt/aapanel/.env
+sed -i "s/SECRET_KEY=.*/SECRET_KEY=$NEW_KEY/" /opt/k2panel/.env
 
 # 4. Create new backups with new key
 python backups/backup_manager.py
@@ -248,10 +248,10 @@ python backups/backup_manager.py
 ### Issue: SSH Connection Failed
 ```bash
 # Debug SSH connection
-ssh -vvv -i ~/.ssh/aapanel_deploy deploy@your-vps-ip
+ssh -vvv -i ~/.ssh/k2panel_deploy deploy@your-vps-ip
 
 # Check SSH key permissions
-chmod 600 ~/.ssh/aapanel_deploy
+chmod 600 ~/.ssh/k2panel_deploy
 ```
 
 ### Issue: Docker Permission Denied
@@ -280,7 +280,7 @@ curl -v http://localhost:5000/health
 The deployment script automatically rolls back on failure. Check logs:
 ```bash
 # On VPS
-cd /opt/aapanel
+cd /opt/k2panel
 docker-compose logs --tail=100
 ```
 
@@ -289,7 +289,7 @@ docker-compose logs --tail=100
 ### Viewing Logs
 ```bash
 # On VPS
-cd /opt/aapanel
+cd /opt/k2panel
 
 # View all logs
 docker-compose logs -f
@@ -301,7 +301,7 @@ docker-compose logs -f app
 ### Manual Rollback
 ```bash
 # If automatic rollback fails
-cd /opt/aapanel
+cd /opt/k2panel
 
 # Stop current version
 docker-compose down
@@ -332,4 +332,4 @@ For issues or questions:
 ---
 
 **Last Updated**: September 30, 2025  
-**Maintained By**: aaPanel Team
+**Maintained By**: K2Panel Team

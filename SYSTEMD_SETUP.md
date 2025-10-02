@@ -1,8 +1,8 @@
-# 🔧 دليل إعداد systemd Service - aaPanel
+# 🔧 دليل إعداد systemd Service - K2Panel
 
 ## 📋 نظرة عامة
 
-هذا الدليل يشرح كيفية إعداد وتشغيل aaPanel كـ **systemd service** على خوادم الإنتاج (VPS/Dedicated). systemd service يوفر:
+هذا الدليل يشرح كيفية إعداد وتشغيل K2Panel كـ **systemd service** على خوادم الإنتاج (VPS/Dedicated). systemd service يوفر:
 
 - ✅ **بدء تلقائي** عند إقلاع النظام
 - ✅ **إعادة تشغيل تلقائية** عند الفشل
@@ -18,7 +18,7 @@
 - ✅ خادم Linux مع systemd (Ubuntu 18.04+, CentOS 7+, Debian 9+)
 - ✅ Python 3.8+
 - ✅ صلاحيات root
-- ✅ aaPanel مثبت في `/www/server/panel`
+- ✅ K2Panel مثبت في `/www/server/panel`
 
 ### خطوات التثبيت:
 
@@ -97,37 +97,37 @@ sudo chown -R www:www /www/server/panel/venv
 
 ```bash
 # نسخ ملف الخدمة
-sudo cp aapanel.service /etc/systemd/system/
+sudo cp k2panel.service /etc/systemd/system/
 
 # إعادة تحميل systemd
 sudo systemctl daemon-reload
 
 # تفعيل البدء التلقائي
-sudo systemctl enable aapanel.service
+sudo systemctl enable k2panel.service
 
 # بدء الخدمة
-sudo systemctl start aapanel.service
+sudo systemctl start k2panel.service
 ```
 
 ### 5. التحقق من الحالة
 
 ```bash
 # عرض حالة الخدمة
-sudo systemctl status aapanel.service
+sudo systemctl status k2panel.service
 
 # عرض السجلات
-sudo journalctl -u aapanel.service -f
+sudo journalctl -u k2panel.service -f
 ```
 
 ---
 
-## 📄 شرح ملف aapanel.service
+## 📄 شرح ملف k2panel.service
 
 ### القسم [Unit]
 ```ini
 [Unit]
-Description=aaPanel - Server Management Control Panel
-Documentation=https://www.aapanel.com/
+Description=K2Panel - Server Management Control Panel
+Documentation=https://www.k2panel.com/
 After=network.target postgresql.service mysql.service redis.service
 Wants=network-online.target
 ```
@@ -261,54 +261,54 @@ TimeoutStopSec=30
 
 ```bash
 # بدء الخدمة
-sudo systemctl start aapanel
+sudo systemctl start k2panel
 
 # إيقاف الخدمة
-sudo systemctl stop aapanel
+sudo systemctl stop k2panel
 
 # إعادة تشغيل الخدمة
-sudo systemctl restart aapanel
+sudo systemctl restart k2panel
 
 # إعادة تحميل الإعدادات (بدون downtime)
-sudo systemctl reload aapanel
+sudo systemctl reload k2panel
 
 # عرض الحالة
-sudo systemctl status aapanel
+sudo systemctl status k2panel
 
 # تفعيل البدء التلقائي
-sudo systemctl enable aapanel
+sudo systemctl enable k2panel
 
 # تعطيل البدء التلقائي
-sudo systemctl disable aapanel
+sudo systemctl disable k2panel
 ```
 
 ### مراقبة السجلات
 
 ```bash
 # عرض السجلات الحية
-sudo journalctl -u aapanel -f
+sudo journalctl -u k2panel -f
 
 # عرض آخر 100 سطر
-sudo journalctl -u aapanel -n 100
+sudo journalctl -u k2panel -n 100
 
 # عرض سجلات اليوم
-sudo journalctl -u aapanel --since today
+sudo journalctl -u k2panel --since today
 
 # عرض سجلات آخر ساعة
-sudo journalctl -u aapanel --since "1 hour ago"
+sudo journalctl -u k2panel --since "1 hour ago"
 
 # عرض سجلات مع أولوية الخطأ فقط
-sudo journalctl -u aapanel -p err
+sudo journalctl -u k2panel -p err
 
 # تصفية بكلمة مفتاحية
-sudo journalctl -u aapanel | grep "ERROR"
+sudo journalctl -u k2panel | grep "ERROR"
 ```
 
 ### فحص الأداء
 
 ```bash
 # عرض استخدام الموارد
-sudo systemctl show aapanel --property=MainPID
+sudo systemctl show k2panel --property=MainPID
 ps aux | grep <PID>
 
 # عرض عدد الاتصالات
@@ -326,7 +326,7 @@ sudo systemd-cgtop -1
 
 ```bash
 # 1. إيقاف الخدمة
-sudo systemctl stop aapanel
+sudo systemctl stop k2panel
 
 # 2. تحديث الكود
 cd /www/server/panel
@@ -341,7 +341,7 @@ deactivate
 # /www/server/panel/venv/bin/pip install -r requirements.txt
 
 # 4. بدء الخدمة
-sudo systemctl start aapanel
+sudo systemctl start k2panel
 ```
 
 **ملاحظة:** تأكد دائماً من تثبيت الاعتماديات **داخل virtualenv** لضمان عمل الخدمة بشكل صحيح.
@@ -350,13 +350,13 @@ sudo systemctl start aapanel
 
 ```bash
 # 1. تعديل الملف
-sudo nano /etc/systemd/system/aapanel.service
+sudo nano /etc/systemd/system/k2panel.service
 
 # 2. إعادة تحميل systemd
 sudo systemctl daemon-reload
 
 # 3. إعادة تشغيل الخدمة
-sudo systemctl restart aapanel
+sudo systemctl restart k2panel
 ```
 
 ### Rolling Update (بدون downtime)
@@ -375,7 +375,7 @@ deactivate
 # /www/server/panel/venv/bin/pip install -r requirements.txt
 
 # 2. إعادة تحميل Gunicorn بلطف
-sudo systemctl reload aapanel
+sudo systemctl reload k2panel
 
 # أو إرسال إشارة USR2
 sudo kill -USR2 $(cat /www/server/panel/logs/panel.pid)
@@ -391,15 +391,15 @@ sudo kill -USR2 $(cat /www/server/panel/logs/panel.pid)
 
 **الأعراض:**
 ```
-sudo systemctl status aapanel
-● aapanel.service - failed
+sudo systemctl status k2panel
+● k2panel.service - failed
 ```
 
 **الحلول:**
 
 1. **فحص السجلات:**
 ```bash
-sudo journalctl -u aapanel -n 50 --no-pager
+sudo journalctl -u k2panel -n 50 --no-pager
 ```
 
 2. **التحقق من المتغيرات:**
@@ -430,7 +430,7 @@ sudo -u www venv/bin/gunicorn --bind 0.0.0.0:8888 BTPanel:app
 
 1. **زيادة max-requests:**
 ```ini
-# في aapanel.service
+# في k2panel.service
 --max-requests 500
 --max-requests-jitter 50
 ```
@@ -444,7 +444,7 @@ MemoryMax=2G
 
 3. **فحص الأخطاء:**
 ```bash
-sudo journalctl -u aapanel -p err -n 100
+sudo journalctl -u k2panel -p err -n 100
 ```
 
 ### المشكلة 3: البدء التلقائي لا يعمل
@@ -452,13 +452,13 @@ sudo journalctl -u aapanel -p err -n 100
 **الحل:**
 ```bash
 # التأكد من التفعيل
-sudo systemctl enable aapanel
+sudo systemctl enable k2panel
 
 # التحقق من الحالة
-sudo systemctl is-enabled aapanel
+sudo systemctl is-enabled k2panel
 
 # التحقق من التبعيات
-sudo systemctl list-dependencies aapanel
+sudo systemctl list-dependencies k2panel
 ```
 
 ### المشكلة 4: أداء ضعيف
@@ -565,7 +565,7 @@ RestartSec=5
 ✅ **مراقبة السجلات:**
 ```bash
 # إعداد تنبيه تلقائي
-sudo journalctl -u aapanel -p err -f | mail -s "aaPanel Error" admin@example.com
+sudo journalctl -u k2panel -p err -f | mail -s "K2Panel Error" admin@example.com
 ```
 
 ### 4. الصيانة
@@ -573,7 +573,7 @@ sudo journalctl -u aapanel -p err -f | mail -s "aaPanel Error" admin@example.com
 ✅ **نسخ احتياطية منتظمة:**
 ```bash
 # Backup service file
-sudo cp /etc/systemd/system/aapanel.service /root/backups/
+sudo cp /etc/systemd/system/k2panel.service /root/backups/
 
 # نسخ احتياطي للتطبيق والبيانات (SHA-256 + HMAC)
 python backups/backup_manager.py
@@ -582,7 +582,7 @@ python backups/backup_manager.py
 
 ✅ **تدوير السجلات:**
 ```bash
-# في /etc/logrotate.d/aapanel
+# في /etc/logrotate.d/k2panel
 /www/server/panel/logs/*.log {
     daily
     rotate 14
@@ -591,7 +591,7 @@ python backups/backup_manager.py
     notifempty
     missingok
     postrotate
-        systemctl reload aapanel > /dev/null 2>&1 || true
+        systemctl reload k2panel > /dev/null 2>&1 || true
     endscript
 }
 ```
@@ -599,7 +599,7 @@ python backups/backup_manager.py
 ✅ **مراقبة دورية:**
 ```bash
 # Cron job للمراقبة
-*/5 * * * * systemctl is-active --quiet aapanel || systemctl restart aapanel
+*/5 * * * * systemctl is-active --quiet k2panel || systemctl restart k2panel
 ```
 
 ---
@@ -643,7 +643,7 @@ def health_ready():
 ### Systemd Health Check
 
 ```ini
-# في aapanel.service
+# في k2panel.service
 [Service]
 # Health check كل 30 ثانية
 ExecStartPost=/usr/bin/curl -f http://localhost:8888/health/live || exit 1
@@ -656,7 +656,7 @@ ExecStartPost=/usr/bin/curl -f http://localhost:8888/health/live || exit 1
 ### Nginx Configuration
 
 ```nginx
-upstream aapanel_backend {
+upstream k2panel_backend {
     server 127.0.0.1:8888;
     keepalive 64;
 }
@@ -666,7 +666,7 @@ server {
     server_name panel.example.com;
     
     location / {
-        proxy_pass http://aapanel_backend;
+        proxy_pass http://k2panel_backend;
         include /etc/nginx/proxy_params;
     }
 }
@@ -675,9 +675,9 @@ server {
 ### تفعيل systemd socket activation
 
 ```ini
-# aapanel.socket
+# k2panel.socket
 [Unit]
-Description=aaPanel Socket
+Description=K2Panel Socket
 
 [Socket]
 ListenStream=8888
@@ -725,7 +725,7 @@ WantedBy=sockets.target
 ### في حالة المشاكل:
 
 1. 📖 راجع قسم "استكشاف الأخطاء" في هذا الدليل
-2. 🔍 افحص السجلات: `sudo journalctl -u aapanel -n 100`
+2. 🔍 افحص السجلات: `sudo journalctl -u k2panel -n 100`
 3. 📝 راجع TROUBLESHOOTING.md
 4. 💬 استشر الفريق الفني
 
