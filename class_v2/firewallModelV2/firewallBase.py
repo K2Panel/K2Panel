@@ -98,7 +98,7 @@ class Base(object):
         else:
             return public.return_message(-1, 0,
                                          '<a style="color:red;">Error: Setting failed, sysctl.conf is not writable! </a><br>'
-                                         '1. If aApanel [System Hardening] is installed, please close it first<br>'
+                                         '1. If K2Panel [System Hardening] is installed, please close it first<br>'
                                          '2. If Cloud Lock is installed, please turn off the [System Collagen] function<br>'
                                          '3. If a security dog is installed, please turn off the [System Protection] function<br>'
                                          '4. If you use other security software, please uninstall it first<br>'

@@ -2039,7 +2039,7 @@ def login():
         _breaking_through_obj = breaking_through.main()
         limit_login = _breaking_through_obj.get_login_limit()
         if limit_login:
-            return public.return_msg_gettext(False, 'Aapanel explosion-proof limit, cancel command: bt 33'), json_header
+            return public.return_msg_gettext(False, 'K2Panel explosion-proof limit, cancel command: bt 33'), json_header
 
         if is_auth_path:
             g.auth_error = True

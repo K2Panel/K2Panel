@@ -411,8 +411,8 @@ class SafeCloudTask(BaseTask):
     def __init__(self):
         super().__init__()
         self.source_name = "safe_cloud_hinge"
-        self.title = "Aapanel Cloud Security Center Alarm"
-        self.template_name = "Aapanel Cloud Security Center Alarm"
+        self.title = "K2Panel Cloud Security Center Alarm"
+        self.template_name = "K2Panel Cloud Security Center Alarm"
 
         self._safe_cloud_conf: Optional[dict] = None
 
@@ -501,7 +501,7 @@ class SafeCloudTask(BaseTask):
         @param task_data: 通过check_args后生成的告警参数字典
         @return: 返回一个关键词字符串
         """
-        return 'Aapanel Cloud Security Center Alarm'
+        return 'K2Panel Cloud Security Center Alarm'
 
     def get_push_data(self, task_id: str, task_data: dict) -> Optional[dict]:
         """

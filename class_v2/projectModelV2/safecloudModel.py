@@ -2303,7 +2303,7 @@ class main(projectBase):
                 SafeCloudTask.do_send(
                     msg_list=alert_msg,
                     wx_msg="Detected {} webshell files".format(len(file_paths)),
-                    wx_thing_type="Aapanel Cloud Security Center - Webshell Alert"
+                    wx_thing_type="K2Panel Cloud Security Center - Webshell Alert"
                 )
             except Exception as e:
                 pass
@@ -2339,7 +2339,7 @@ class main(projectBase):
                 SafeCloudTask.do_send(
                     msg_list=test_msg,
                     wx_msg="Security alert test message",
-                    wx_thing_type="Aapanel Cloud Security Center - Test Alert"
+                    wx_thing_type="K2Panel Cloud Security Center - Test Alert"
                 )
                 return public.returnMsg(True, 'Test message sent successfully')
             except Exception as e:

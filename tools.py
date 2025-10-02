@@ -812,7 +812,7 @@ def bt_cli(u_input = 0):
         _config['username_status']=False
         public.writeFile(_config_file,json.dumps(_config))
         public.ExecShell('rm -f /www/server/panel/data/limit_login.pl')
-        print("|-Aapanel explosion-proof has been turned off")
+        print("|-K2Panel explosion-proof has been turned off")
 
 # 旧的插件系统升级到新的插件系统
 def upgrade_plugins():

@@ -9118,7 +9118,7 @@ def escape_sql_str(s: str) -> str:
 
 # 组装multipart/form-data数据
 def build_multipart(data: typing.Dict) -> aap_t_http_multipart:
-    boundary = b'----AapanelFormBoundary' + GetRandomString(16).encode('utf-8')
+    boundary = b'----K2PanelFormBoundary' + GetRandomString(16).encode('utf-8')
     body = b''
 
     # 标准的HTTP请求报文是使用\r\n换行
