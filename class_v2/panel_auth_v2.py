@@ -21,14 +21,10 @@ class panelAuth:
     """
     نظام المصادقة V2 - تم استبداله بـ Stubs
     نظام الترخيص القديم تم إزالته، هذه الوظائف تُرجع قيماً افتراضية محلية
-    """
     
-    __request_url = None
-    __product_list_path = 'data/product_list.pl'
-    __product_bay_path = 'data/product_bay.pl'
-    __product_id = '100000011'
-    __official_url = ""  # تم تعطيل الاتصال بالخادم الخارجي
-    __failed_connect_server = 'Failed to connect to the server!'
+    Legacy licensing system has been removed. All cloud communication disabled.
+    Methods return local defaults only.
+    """
 
     def create_serverid(self, get):
         """
