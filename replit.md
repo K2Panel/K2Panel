@@ -69,7 +69,7 @@ The project uses Python 3.12 and the Flask framework, served with Gunicorn in pr
 **Task: Renaming Application from aaPanel to K2Panel** ✅ Completed
 - **Objective:** Complete rebranding from aaPanel to K2Panel
 - **Repository:** https://github.com/K2Panel/K2Panel
-- **Domain:** binarjoinanalyticnl.nl
+- **Domain:** k2panel.online
 - **Logo:** Updated to K2Panel branding with new logo image
 - **Achievements:**
   - ✅ Renamed service file: aapanel.service → k2panel.service

@@ -307,8 +307,8 @@ This project is proprietary. See LICENSE file for details.
 ## 📞 Support
 
 - 📚 [Documentation](./DEPLOYMENT.md)
-- 🐛 [Issues](https://github.com/YOUR_USERNAME/k2panel/issues)
-- 💬 [Discussions](https://github.com/YOUR_USERNAME/k2panel/discussions)
+- 🐛 [Issues](https://github.com/K2Panel/K2Panel/issues)
+- 💬 [Discussions](https://github.com/K2Panel/K2Panel/discussions)
 
 ---
 
@@ -332,7 +332,7 @@ This project is proprietary. See LICENSE file for details.
 <p>Built with ❤️ for developers who value automation, security, and reliability</p>
 
 <p>
-  <a href="https://github.com/YOUR_USERNAME/k2panel"><strong>⭐ Star this repo</strong></a> if you find it useful!
+  <a href="https://github.com/K2Panel/K2Panel"><strong>⭐ Star this repo</strong></a> if you find it useful!
 </p>
 
 <br>

@@ -4,7 +4,7 @@
 ## K2Panel Server Management Software
 
 Copyright (c) 2015-2025 K2Panel  
-Website: https://k2panel.com  
+Website: https://k2panel.online  
 All rights reserved.
 
 ## Ownership
@@ -39,15 +39,15 @@ This software is protected by:
 ## Contact
 
 For licensing inquiries, please contact:
-- Email: support@k2panel.com
-- Website: https://k2panel.com
-- Legal Department: legal@k2panel.com
+- Email: support@k2panel.online
+- Website: https://k2panel.online
+- Legal Department: legal@k2panel.online
 
 ## Development Team
 
 K2Panel Development Team  
 K2Panel Corporation  
-Email: support@k2panel.com
+Email: support@k2panel.online
 
 ---
 

@@ -10,9 +10,9 @@
 
 </div>
 <p align="center">
-  <a href="https://binarjoinanalyticnl.nl">Official Website</a> | 
+  <a href="https://k2panel.online">Official Website</a> | 
   <a href="https://github.com/K2Panel/K2Panel">GitHub Repository</a> |
-  <a href="https://binarjoinanalyticnl.nl/demo">Demo</a>
+  <a href="https://k2panel.online/demo">Demo</a>
 </p>
 
 ## About K2Panel
@@ -24,7 +24,7 @@
 
 ## Demo
 
-Demo：https://binarjoinanalyticnl.nl/demo<br/>
+Demo：https://k2panel.online/demo<br/>
 username: k2panel<br/>
 password: k2panel
 

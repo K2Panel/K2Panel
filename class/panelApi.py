@@ -3,7 +3,7 @@
 # | K2Panel - Server Management Panel
 # +-------------------------------------------------------------------
 # | Copyright (c) 2015-2025 K2Panel Corporation
-# | Website: https://k2panel.com
+# | Website: https://k2panel.online
 # | All rights reserved.
 # +-------------------------------------------------------------------
 # | Author: K2Panel Development Team <support@k2panel.com>
