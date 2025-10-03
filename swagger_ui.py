@@ -12,7 +12,7 @@ Swagger UI Integration
 from flask import Blueprint, send_from_directory, render_template_string
 import os
 
-swagger_ui_bp = Blueprint('swagger_ui', __name__, url_prefix='/api/docs')
+swagger_ui_bp = Blueprint("swagger_ui", __name__, url_prefix="/api/docs")
 
 # HTML template for Swagger UI
 SWAGGER_UI_HTML = """
@@ -74,7 +74,7 @@ SWAGGER_UI_HTML = """
 """
 
 
-@swagger_ui_bp.route('/')
+@swagger_ui_bp.route("/")
 def swagger_ui_index():
     """
     عرض واجهة Swagger UI
@@ -82,7 +82,7 @@ def swagger_ui_index():
     return render_template_string(SWAGGER_UI_HTML)
 
 
-@swagger_ui_bp.route('/openapi.yaml')
+@swagger_ui_bp.route("/openapi.yaml")
 def openapi_spec():
     """
     تقديم ملف OpenAPI YAML
@@ -90,60 +90,62 @@ def openapi_spec():
     # البحث عن ملف openapi.yaml في المجلد الجذري للمشروع
     # استخدام المسار الصحيح بدون dirname مزدوج
     project_root = os.path.dirname(os.path.abspath(__file__))
-    openapi_path = os.path.join(project_root, 'openapi.yaml')
-    
+    openapi_path = os.path.join(project_root, "openapi.yaml")
+
     if os.path.exists(openapi_path):
-        return send_from_directory(project_root, 'openapi.yaml', mimetype='text/yaml')
+        return send_from_directory(project_root, "openapi.yaml", mimetype="text/yaml")
     else:
         return {
-            'error': 'OpenAPI specification not found',
-            'message': 'Please ensure openapi.yaml exists in the project root'
+            "error": "OpenAPI specification not found",
+            "message": "Please ensure openapi.yaml exists in the project root",
         }, 404
 
 
-@swagger_ui_bp.route('/openapi.json')
+@swagger_ui_bp.route("/openapi.json")
 def openapi_spec_json():
     """
     تقديم ملف OpenAPI بصيغة JSON (اختياري)
     """
     import yaml
     import json
-    
+
     project_root = os.path.dirname(os.path.abspath(__file__))
-    openapi_path = os.path.join(project_root, 'openapi.yaml')
-    
+    openapi_path = os.path.join(project_root, "openapi.yaml")
+
     if not os.path.exists(openapi_path):
-        return {
-            'error': 'OpenAPI specification not found'
-        }, 404
-    
+        return {"error": "OpenAPI specification not found"}, 404
+
     try:
-        with open(openapi_path, 'r', encoding='utf-8') as f:
+        with open(openapi_path, "r", encoding="utf-8") as f:
             openapi_dict = yaml.safe_load(f)
-        return json.dumps(openapi_dict, ensure_ascii=False, indent=2), 200, {'Content-Type': 'application/json'}
+        return (
+            json.dumps(openapi_dict, ensure_ascii=False, indent=2),
+            200,
+            {"Content-Type": "application/json"},
+        )
     except Exception as e:
         return {
-            'error': 'Failed to parse OpenAPI specification',
-            'message': str(e)
+            "error": "Failed to parse OpenAPI specification",
+            "message": str(e),
         }, 500
 
 
 def register_swagger_ui(app):
     """
     تسجيل Swagger UI مع Flask app
-    
+
     Args:
         app: Flask application instance
-        
+
     Usage:
         from swagger_ui import register_swagger_ui
         register_swagger_ui(app)
-        
+
         # ستكون الواجهة متاحة على:
         # http://localhost:5000/api/docs/
     """
     app.register_blueprint(swagger_ui_bp)
-    
+
     # إضافة رسالة في السجل
     app.logger.info("Swagger UI registered at /api/docs/")
 
@@ -152,17 +154,21 @@ def register_swagger_ui(app):
 def enable_cors_for_swagger(app):
     """
     تفعيل CORS للسماح بالوصول إلى Swagger UI من نطاقات مختلفة
-    
+
     Args:
         app: Flask application instance
     """
     from flask import make_response
-    
+
     @app.after_request
     def after_request(response):
         # السماح فقط لـ Swagger UI routes
-        if '/api/docs' in str(response.headers.get('Location', '')):
-            response.headers.add('Access-Control-Allow-Origin', '*')
-            response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-            response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+        if "/api/docs" in str(response.headers.get("Location", "")):
+            response.headers.add("Access-Control-Allow-Origin", "*")
+            response.headers.add(
+                "Access-Control-Allow-Headers", "Content-Type,Authorization"
+            )
+            response.headers.add(
+                "Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS"
+            )
         return response

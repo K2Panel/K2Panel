@@ -16,7 +16,7 @@ from datetime import datetime
 from flask import jsonify, Blueprint
 from typing import Dict, Any, Tuple
 
-health_bp = Blueprint('health', __name__, url_prefix='/health')
+health_bp = Blueprint("health", __name__, url_prefix="/health")
 
 app_start_time = time.time()
 
@@ -29,16 +29,17 @@ def get_uptime() -> float:
 def check_database() -> Tuple[bool, str]:
     """
     فحص اتصال قاعدة البيانات
-    
+
     Returns:
         Tuple[bool, str]: (حالة الصحة, رسالة)
     """
     from flask import current_app
-    db_pool = current_app.config.get('DB_POOL')
-    
+
+    db_pool = current_app.config.get("DB_POOL")
+
     if not db_pool:
         return False, "Database pool not available"
-    
+
     try:
         is_healthy = db_pool.health_check()
         if is_healthy:
@@ -52,27 +53,28 @@ def check_database() -> Tuple[bool, str]:
 def check_redis() -> Tuple[bool, str]:
     """
     فحص اتصال Redis
-    
+
     Returns:
         Tuple[bool, str]: (حالة الصحة, رسالة)
     """
     from flask import current_app
     from config_factory import get_config
-    
+
     try:
         config = get_config()
     except Exception:
         return True, "Redis check skipped (no config)"
-    
+
     if not config:
         return True, "Redis check skipped (no config)"
-    
-    redis_url = getattr(config, 'CACHE_REDIS_URL', None)
+
+    redis_url = getattr(config, "CACHE_REDIS_URL", None)
     if not redis_url:
         return True, "Redis not configured"
-    
+
     try:
         import redis
+
         r = redis.from_url(redis_url, socket_connect_timeout=2)
         r.ping()
         return True, "Redis connected"
@@ -82,20 +84,25 @@ def check_redis() -> Tuple[bool, str]:
         return False, f"Redis error: {str(e)}"
 
 
-@health_bp.route('/live', methods=['GET'])
+@health_bp.route("/live", methods=["GET"])
 def liveness():
     """
     Liveness Probe - يتحقق من أن التطبيق يعمل
     يرجع دائماً 200 OK إذا كان التطبيق قيد التشغيل
     """
-    return jsonify({
-        'status': 'alive',
-        'timestamp': datetime.utcnow().isoformat(),
-        'uptime_seconds': get_uptime()
-    }), 200
+    return (
+        jsonify(
+            {
+                "status": "alive",
+                "timestamp": datetime.utcnow().isoformat(),
+                "uptime_seconds": get_uptime(),
+            }
+        ),
+        200,
+    )
 
 
-@health_bp.route('/ready', methods=['GET'])
+@health_bp.route("/ready", methods=["GET"])
 def readiness():
     """
     Readiness Probe - يتحقق من أن التطبيق جاهز لاستقبال الطلبات
@@ -103,80 +110,78 @@ def readiness():
     """
     checks = {}
     all_healthy = True
-    
+
     db_healthy, db_message = check_database()
-    checks['database'] = {
-        'status': 'healthy' if db_healthy else 'unhealthy',
-        'message': db_message
+    checks["database"] = {
+        "status": "healthy" if db_healthy else "unhealthy",
+        "message": db_message,
     }
     all_healthy = all_healthy and db_healthy
-    
+
     redis_healthy, redis_message = check_redis()
-    checks['redis'] = {
-        'status': 'healthy' if redis_healthy else 'unhealthy',
-        'message': redis_message
+    checks["redis"] = {
+        "status": "healthy" if redis_healthy else "unhealthy",
+        "message": redis_message,
     }
     all_healthy = all_healthy and redis_healthy
-    
+
     response = {
-        'status': 'ready' if all_healthy else 'not_ready',
-        'timestamp': datetime.utcnow().isoformat(),
-        'uptime_seconds': get_uptime(),
-        'checks': checks
+        "status": "ready" if all_healthy else "not_ready",
+        "timestamp": datetime.utcnow().isoformat(),
+        "uptime_seconds": get_uptime(),
+        "checks": checks,
     }
-    
+
     status_code = 200 if all_healthy else 503
     return jsonify(response), status_code
 
 
-@health_bp.route('/metrics', methods=['GET'])
+@health_bp.route("/metrics", methods=["GET"])
 def metrics():
     """
     Prometheus Metrics - إحصائيات ومقاييس التطبيق
     """
     from flask import current_app
-    
+
     metrics_data = {
-        'uptime_seconds': get_uptime(),
-        'timestamp': datetime.utcnow().isoformat(),
-        'system': {
-            'cpu_percent': psutil.cpu_percent(interval=0.1),
-            'memory_percent': psutil.virtual_memory().percent,
-            'disk_percent': psutil.disk_usage('/').percent
-        }
+        "uptime_seconds": get_uptime(),
+        "timestamp": datetime.utcnow().isoformat(),
+        "system": {
+            "cpu_percent": psutil.cpu_percent(interval=0.1),
+            "memory_percent": psutil.virtual_memory().percent,
+            "disk_percent": psutil.disk_usage("/").percent,
+        },
     }
-    
-    db_pool = current_app.config.get('DB_POOL')
-    if db_pool and hasattr(db_pool, 'stats'):
+
+    db_pool = current_app.config.get("DB_POOL")
+    if db_pool and hasattr(db_pool, "stats"):
         db_stats = db_pool.stats.get_stats()
-        metrics_data['database'] = {
-            'connections_created': db_stats.get('connections_created', 0),
-            'connections_closed': db_stats.get('connections_closed', 0),
-            'total_queries': db_stats.get('total_queries', 0),
-            'failed_queries': db_stats.get('failed_queries', 0),
-            'success_rate': db_stats.get('success_rate', 100.0)
+        metrics_data["database"] = {
+            "connections_created": db_stats.get("connections_created", 0),
+            "connections_closed": db_stats.get("connections_closed", 0),
+            "total_queries": db_stats.get("total_queries", 0),
+            "failed_queries": db_stats.get("failed_queries", 0),
+            "success_rate": db_stats.get("success_rate", 100.0),
         }
-        
+
         db_healthy, _ = check_database()
-        metrics_data['database']['status'] = 'up' if db_healthy else 'down'
-    
+        metrics_data["database"]["status"] = "up" if db_healthy else "down"
+
     redis_healthy, _ = check_redis()
-    metrics_data['redis'] = {
-        'status': 'up' if redis_healthy else 'down'
-    }
-    
+    metrics_data["redis"] = {"status": "up" if redis_healthy else "down"}
+
     return jsonify(metrics_data), 200
 
 
 def register_health_routes(app, db_pool=None):
     """
     تسجيل health routes مع Flask app
-    
+
     Args:
         app: Flask application instance
         db_pool: DatabaseConnectionPool instance (optional)
     """
     if db_pool:
-        app.config['DB_POOL'] = db_pool
-    
+        app.config["DB_POOL"] = db_pool
+
     app.register_blueprint(health_bp)

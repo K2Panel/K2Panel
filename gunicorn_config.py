@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-#coding: utf-8
+# coding: utf-8
 # +-------------------------------------------------------------------
 # | K2Panel - Gunicorn Configuration with Config Factory
 # +-------------------------------------------------------------------
@@ -19,7 +19,7 @@ config = get_config()
 bind = f"0.0.0.0:{config.PORT}"
 
 # IPv6 support (optional)
-if os.path.exists('data/ipv6.pl'):
+if os.path.exists("data/ipv6.pl"):
     bind = [f"[::0]:{config.PORT}", f"0.0.0.0:{config.PORT}"]
 
 # ============================================================================
@@ -27,13 +27,13 @@ if os.path.exists('data/ipv6.pl'):
 # ============================================================================
 # حساب عدد العمال بناءً على CPU cores
 # القاعدة العامة: (2 × CPU cores) + 1
-workers = int(os.getenv('WORKERS', (2 * multiprocessing.cpu_count()) + 1))
+workers = int(os.getenv("WORKERS", (2 * multiprocessing.cpu_count()) + 1))
 
 # عدد الخيوط لكل عامل
-threads = int(os.getenv('THREADS', 3))
+threads = int(os.getenv("THREADS", 3))
 
 # Worker class - دعم WebSocket
-worker_class = 'geventwebsocket.gunicorn.workers.GeventWebSocketWorker'
+worker_class = "geventwebsocket.gunicorn.workers.GeventWebSocketWorker"
 
 # ============================================================================
 # Server Mechanics
@@ -46,19 +46,19 @@ chdir = BASE_DIR
 daemon = False
 
 # PID file
-pidfile = os.path.join(BASE_DIR, 'logs', 'panel.pid')
+pidfile = os.path.join(BASE_DIR, "logs", "panel.pid")
 
 # ============================================================================
 # Logging
 # ============================================================================
 # Log level (من config)
-loglevel = 'debug' if config.DEBUG else 'info'
+loglevel = "debug" if config.DEBUG else "info"
 
 # Access log
-accesslog = os.path.join(BASE_DIR, 'logs', 'access.log')
+accesslog = os.path.join(BASE_DIR, "logs", "access.log")
 
 # Error log
-errorlog = os.path.join(BASE_DIR, 'logs', 'error.log')
+errorlog = os.path.join(BASE_DIR, "logs", "error.log")
 
 # Capture output
 capture_output = True
@@ -72,7 +72,7 @@ access_log_format = '%(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
 # ============================================================================
 # Process Naming
 # ============================================================================
-proc_name = 'k2panel'
+proc_name = "k2panel"
 
 # ============================================================================
 # Server Performance
@@ -84,8 +84,8 @@ timeout = 7200
 keepalive = 60
 
 # Maximum requests per worker (لمنع memory leak)
-max_requests = int(os.getenv('MAX_REQUESTS', 1000))
-max_requests_jitter = int(os.getenv('MAX_REQUESTS_JITTER', 50))
+max_requests = int(os.getenv("MAX_REQUESTS", 1000))
+max_requests_jitter = int(os.getenv("MAX_REQUESTS_JITTER", 50))
 
 # Graceful timeout
 graceful_timeout = 30
@@ -96,11 +96,11 @@ backlog = 512
 # ============================================================================
 # SSL/TLS (optional)
 # ============================================================================
-if os.path.exists('data/ssl.pl'):
-    certfile = 'ssl/certificate.pem'
-    keyfile = 'ssl/privateKey.pem'
+if os.path.exists("data/ssl.pl"):
+    certfile = "ssl/certificate.pem"
+    keyfile = "ssl/privateKey.pem"
     ssl_version = 2  # TLSv1.2+
-    ciphers = 'TLSv1.2 TLSv1.3'
+    ciphers = "TLSv1.2 TLSv1.3"
 
 # ============================================================================
 # Application Loading
@@ -112,11 +112,12 @@ preload_app = not config.DEBUG
 reload = config.DEBUG
 
 # Reload engine
-reload_engine = 'auto'
+reload_engine = "auto"
 
 # ============================================================================
 # Worker Lifecycle Hooks
 # ============================================================================
+
 
 def on_starting(server):
     """يُستدعى عند بدء Gunicorn master"""
@@ -130,57 +131,66 @@ def on_starting(server):
     print(f"وضع التصحيح: {config.DEBUG}")
     print(f"=" * 70)
 
+
 def on_reload(server):
     """يُستدعى عند إعادة التحميل"""
     print("♻️  إعادة تحميل Gunicorn...")
+
 
 def when_ready(server):
     """يُستدعى عندما يكون الخادم جاهزاً"""
     print("✅ Gunicorn جاهز لاستقبال الطلبات")
 
+
 def worker_int(worker):
     """يُستدعى عند مقاطعة عامل"""
     worker.log.info(f"Worker {worker.pid}: تلقى إشارة مقاطعة")
+
 
 def worker_abort(worker):
     """يُستدعى عند إيقاف عامل"""
     worker.log.warning(f"Worker {worker.pid}: تم إيقافه بشكل غير متوقع")
 
+
 def pre_fork(server, worker):
     """يُستدعى قبل fork عامل جديد"""
     pass
+
 
 def post_fork(server, worker):
     """يُستدعى بعد fork عامل جديد"""
     worker.log.info(f"Worker {worker.pid}: بدء العمل")
 
+
 def worker_exit(server, worker):
     """يُستدعى عند خروج عامل"""
     worker.log.info(f"Worker {worker.pid}: انتهى العمل")
+
 
 def on_exit(server):
     """يُستدعى عند إيقاف Gunicorn"""
     print("👋 إيقاف K2Panel - Gunicorn")
 
+
 # ============================================================================
 # Security (Production)
 # ============================================================================
-if config.ENVIRONMENT == 'production':
+if config.ENVIRONMENT == "production":
     # Limit request line size (against DoS)
     limit_request_line = 4094
-    
+
     # Limit request header size
     limit_request_fields = 100
     limit_request_field_size = 8190
-    
+
     # Forward headers (للـ reverse proxy)
-    forwarded_allow_ips = '*'
-    
+    forwarded_allow_ips = "*"
+
     # Secure scheme headers (للـ HTTPS via reverse proxy)
     secure_scheme_headers = {
-        'X-FORWARDED-PROTOCOL': 'ssl',
-        'X-FORWARDED-PROTO': 'https',
-        'X-FORWARDED-SSL': 'on'
+        "X-FORWARDED-PROTOCOL": "ssl",
+        "X-FORWARDED-PROTO": "https",
+        "X-FORWARDED-SSL": "on",
     }
 
 # ============================================================================
@@ -190,14 +200,14 @@ if config.DEBUG:
     # Reload on code changes
     reload = True
     reload_extra_files = [
-        'BTPanel/__init__.py',
-        'config_factory.py',
-        'environment_detector.py'
+        "BTPanel/__init__.py",
+        "config_factory.py",
+        "environment_detector.py",
     ]
-    
+
     # Debug logging
-    loglevel = 'debug'
-    
+    loglevel = "debug"
+
     # Single worker for debugging
     workers = 1
     threads = 1

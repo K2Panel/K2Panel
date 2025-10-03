@@ -47,7 +47,7 @@ jobs:
       continue-on-error: true
       run: |
         black --check --diff --color . \
-          --extend-exclude="/(pyenv|BTPanel|\.pythonlibs|\.cache|\.local|\.git|\.github|class_v2|data|install|logs|mod|plugin|migrations|backups|image|docs|tests|attached_assets|restore_temp|webserver|script|vhost|ssl|ssl_init|rewrite|config|فحص)/"
+          --extend-exclude="/(pyenv|BTPanel|\.pythonlibs|\.cache|\.local|\.git|\.github|class|class_v2|data|install|logs|mod|plugin|migrations|backups|image|docs|tests|attached_assets|restore_temp|webserver|script|vhost|ssl|ssl_init|rewrite|config|فحص)/"
 
     - name: Check import sorting with isort
       continue-on-error: true
@@ -100,7 +100,7 @@ jobs:
     - name: Auto-format with Black
       run: |
         black . \
-          --extend-exclude="/(pyenv|BTPanel|\.pythonlibs|\.cache|\.local|\.git|\.github|class_v2|data|install|logs|mod|plugin|migrations|backups|image|docs|tests|attached_assets|restore_temp|webserver|script|vhost|ssl|ssl_init|rewrite|config|فحص)/"
+          --extend-exclude="/(pyenv|BTPanel|\.pythonlibs|\.cache|\.local|\.git|\.github|class|class_v2|data|install|logs|mod|plugin|migrations|backups|image|docs|tests|attached_assets|restore_temp|webserver|script|vhost|ssl|ssl_init|rewrite|config|فحص)/"
 
     - name: Auto-sort imports with isort
       run: |

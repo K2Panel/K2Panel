@@ -1,4 +1,4 @@
-#coding: utf-8
+# coding: utf-8
 # +-------------------------------------------------------------------
 # | K2Panel
 # +-------------------------------------------------------------------
@@ -14,25 +14,26 @@ from os import environ
 current_dir = os.path.dirname(os.path.abspath(__file__))
 if current_dir not in sys.path:
     sys.path.insert(0, current_dir)
-if os.path.join(current_dir, 'class') not in sys.path:
-    sys.path.insert(0, os.path.join(current_dir, 'class'))
-if os.path.join(current_dir, 'class_v2') not in sys.path:
-    sys.path.insert(0, os.path.join(current_dir, 'class_v2'))
+if os.path.join(current_dir, "class") not in sys.path:
+    sys.path.insert(0, os.path.join(current_dir, "class"))
+if os.path.join(current_dir, "class_v2") not in sys.path:
+    sys.path.insert(0, os.path.join(current_dir, "class_v2"))
 
 from BTPanel import app
 from config_factory import get_config
 from environment_detector import detect_environment
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # كشف البيئة وتحميل الإعدادات المناسبة
     from environment_detector import get_environment_info
+
     env_info = get_environment_info()
     config = get_config()
-    
+
     # استخدام HOST و PORT من الإعدادات
     HOST = config.HOST
     PORT = config.PORT
-    
+
     # طباعة معلومات التشغيل
     print(f"=" * 60)
     print(f"🚀 بدء تشغيل K2Panel")
@@ -43,20 +44,26 @@ if __name__ == '__main__':
     print(f"المنفذ: {PORT}")
     print(f"مصدر المنفذ: متغير البيئة PORT أو ملف data/port.pl")
     print(f"وضع التصحيح: {config.DEBUG if hasattr(config, 'DEBUG') else False}")
-    
-    if env_info['is_replit']:
+
+    if env_info["is_replit"]:
         print(f"✅ تشغيل على Replit")
-        print(f"   URL: https://{os.getenv('REPL_SLUG', 'app')}.{os.getenv('REPL_OWNER', 'user')}.repl.co")
-    elif env_info['is_production']:
+        print(
+            f"   URL: https://{os.getenv('REPL_SLUG', 'app')}.{os.getenv('REPL_OWNER', 'user')}.repl.co"
+        )
+    elif env_info["is_production"]:
         print(f"✅ تشغيل على VPS")
-        if config.ENVIRONMENT == 'production':
+        if config.ENVIRONMENT == "production":
             print(f"   ⚠️  تذكير: استخدم Nginx كـ reverse proxy في الإنتاج")
-    
+
     print(f"=" * 60)
-    
+
     # تشغيل التطبيق
     try:
-        app.run(host=HOST, port=PORT, debug=config.DEBUG if hasattr(config, 'DEBUG') else False)
+        app.run(
+            host=HOST,
+            port=PORT,
+            debug=config.DEBUG if hasattr(config, "DEBUG") else False,
+        )
     except Exception as e:
         print(f"❌ فشل تشغيل التطبيق: {e}")
         sys.exit(1)
