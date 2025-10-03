@@ -5191,8 +5191,6 @@ def tips_v2():
 def login_v2():
     # 面板登录接口
     global admin_check_auth, admin_path, route_path
-    print(f"🔍 DEBUG: login_v2 called with path={request.path}, method={request.method}")
-    print(f"🔍 DEBUG: route_v2={route_v2}, route_path={route_path}")
     if os.path.exists('install.pl'): return redirect('/install')
     is_auth_path = False
     if admin_path != '/bt' and os.path.exists(
@@ -5239,6 +5237,7 @@ def login_v2():
 
     get = get_input()
     import user_login_v2
+    import userlogin
     if hasattr(get, 'tmp_token'):
         result = user_login_v2.userlogin().request_tmp(get)
         return is_login(result)
@@ -5313,11 +5312,16 @@ def login_v2():
 
     if request.method == method_get[0]:
         print(f"🔍 DEBUG: Processing GET request")
-        result = userlogin.userlogin().request_get(get)
-        print(f"🔍 DEBUG: userlogin.request_get result={result}")
-        if result:
-            print(f"🔍 DEBUG: Returning result from userlogin.request_get")
-            return result
+        try:
+            result = userlogin.userlogin().request_get(get)
+            print(f"🔍 DEBUG: userlogin.request_get result={result}")
+            if result:
+                print(f"🔍 DEBUG: Returning result from userlogin.request_get")
+                return result
+        except Exception as e:
+            print(f"🔍 DEBUG: ERROR in userlogin.request_get: {e}")
+            import traceback
+            print(f"🔍 DEBUG: Traceback: {traceback.format_exc()}")
         data = {}
         data['lan'] = public.GetLan('login')
         data['hosts'] = '[]'
