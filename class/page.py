@@ -2,9 +2,9 @@
 # +-------------------------------------------------------------------
 # | K2Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2016 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
+# | Copyright (c) 2015-2025 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: hwliang <hwl@binarjoinanalyticnl.nl>
+# | Author: K2Panel Development Team <support@binarjoinanalyticnl.nl>
 # +-------------------------------------------------------------------
 import math, string, public, re
 

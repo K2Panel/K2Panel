@@ -2,9 +2,9 @@
 # -------------------------------------------------------------------
 # K2Panel
 # -------------------------------------------------------------------
-# Copyright (c) 2015-2099 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
+# Copyright (c) 2015-2025 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
 # -------------------------------------------------------------------
-# Author: cjxin <cjxin@binarjoinanalyticnl.nl>
+# Author: K2Panel Development Team <support@binarjoinanalyticnl.nl>
 # -------------------------------------------------------------------
 
 # 面板其他模型新增功能
