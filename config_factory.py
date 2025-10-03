@@ -79,27 +79,37 @@ class BaseConfig:
         """
         الحصول على رقم المنفذ من المتغيرات أو الملف
         
+        الأولوية:
+        1. متغير البيئة PORT (أعلى أولوية)
+        2. ملف data/port.pl
+        3. القيمة الافتراضية 5000
+        
         Returns:
             int: رقم المنفذ
         """
-        # أولاً: فحص متغير البيئة PORT
+        # أولاً: فحص متغير البيئة PORT (أعلى أولوية)
         port_env = os.environ.get('PORT')
         if port_env:
             try:
-                return int(port_env)
-            except (ValueError, TypeError):
-                pass
+                port = int(port_env)
+                print(f"✓ تم قراءة المنفذ من المتغيرات البيئية: {port}")
+                return port
+            except (ValueError, TypeError) as e:
+                print(f"⚠️ قيمة PORT غير صحيحة في المتغيرات البيئية: {port_env}, الخطأ: {e}")
         
         # ثانياً: قراءة من ملف data/port.pl إن وجد
         port_file = 'data/port.pl'
         if os.path.exists(port_file):
             try:
                 with open(port_file, 'r') as f:
-                    return int(f.read().strip())
-            except (ValueError, TypeError, IOError):
-                pass
+                    port = int(f.read().strip())
+                    print(f"✓ تم قراءة المنفذ من الملف {port_file}: {port}")
+                    return port
+            except (ValueError, TypeError, IOError) as e:
+                print(f"⚠️ خطأ في قراءة المنفذ من الملف {port_file}: {e}")
         
         # افتراضياً: المنفذ 5000
+        print(f"ℹ️ استخدام المنفذ الافتراضي: 5000")
         return 5000
     
     def get_config_dict(self, include_sensitive=False):

@@ -41,6 +41,7 @@ if __name__ == '__main__':
     print(f"البيئة المعدة: {config.ENVIRONMENT}")
     print(f"المضيف: {HOST}")
     print(f"المنفذ: {PORT}")
+    print(f"مصدر المنفذ: متغير البيئة PORT أو ملف data/port.pl")
     print(f"وضع التصحيح: {config.DEBUG if hasattr(config, 'DEBUG') else False}")
     
     if env_info['is_replit']:
