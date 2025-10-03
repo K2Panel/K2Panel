@@ -10,7 +10,13 @@
 import sqlite3
 import os, time, sys
 
-os.chdir("/www/server/panel")
+# تحديد المسار الصحيح حسب البيئة
+panel_path = "/www/server/panel"
+if not os.path.exists(panel_path):
+    # في بيئة Replit أو التطوير، استخدم المسار الحالي
+    panel_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+os.chdir(panel_path)
 if not "class/" in sys.path:
     sys.path.insert(0, "class/")
 import public
