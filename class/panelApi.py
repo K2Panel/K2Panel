@@ -1,10 +1,15 @@
 # coding: utf-8
 # +-------------------------------------------------------------------
-# | K2Panel
+# | K2Panel - Server Management Panel
 # +-------------------------------------------------------------------
-# | Copyright (c) 2015-2025 K2Panel(binarjoinanalyticnl.nl) All rights reserved.
+# | Copyright (c) 2015-2025 K2Panel Corporation
+# | Website: https://k2panel.com
+# | All rights reserved.
 # +-------------------------------------------------------------------
-# | Author: K2Panel Development Team <support@binarjoinanalyticnl.nl>
+# | Author: K2Panel Development Team <support@k2panel.com>
+# +-------------------------------------------------------------------
+# | This file is part of K2Panel proprietary software.
+# | Unauthorized copying, modification, or distribution is prohibited.
 # +-------------------------------------------------------------------
 import public, os, json, time
 
