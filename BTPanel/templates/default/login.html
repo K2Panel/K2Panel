@@ -423,6 +423,29 @@
         .hide {
             display: none !important;
         }
+
+        .dev-login-button {
+            width: 100%;
+            padding: 16px;
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px -1px rgba(0, 0, 0, 0.3);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .dev-login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .dev-login-button:active {
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
@@ -497,13 +520,13 @@
                     </div>
                     {% endif %}
 
-                    <button type="submit" class="login-button" id="loginBtn">
-                        تسجيل الدخول
+                    <button type="submit" class="login-button">
+                        <span>تسجيل الدخول</span>
                     </button>
 
-                    <!-- زر التجاوز للتطوير فقط -->
-                    <button type="button" class="login-button" id="devLoginBtn" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); margin-top: 10px; display: none;">
-                        🔓 تسجيل دخول التطوير (تجاوز الفحص)
+                    <!-- زر تسجيل الدخول للتطوير -->
+                    <button type="button" class="dev-login-button" onclick="devLogin()" style="margin-top: 15px; background: linear-gradient(135deg, #10B981 0%, #059669 100%);">
+                        <span>🚀 تسجيل دخول التطوير</span>
                     </button>
                 </form>
             </div>
@@ -525,22 +548,55 @@
         let isQrMode = false;
 
         function toggleLoginMethod() {
-            isQrMode = !isQrMode;
             const loginForm = document.getElementById('loginForm');
             const qrSection = document.getElementById('qrSection');
 
-            if (isQrMode) {
-                loginForm.classList.remove('active');
-                loginForm.style.display = 'none';
-                qrSection.classList.add('active');
-                qrSection.style.display = 'block'; // Ensure it's visible
-                initQRCode();
-            } else {
-                qrSection.classList.remove('active');
-                qrSection.style.display = 'none';
+            if (loginForm.style.display === 'none') {
                 loginForm.style.display = 'block';
-                loginForm.classList.add('active');
+                qrSection.style.display = 'none';
+            } else {
+                loginForm.style.display = 'none';
+                qrSection.style.display = 'block';
+                generateQRCode();
             }
+        }
+
+        // دالة تسجيل الدخول للتطوير
+        function devLogin() {
+            const username = document.querySelector('input[name="username"]').value;
+            const password = document.querySelector('input[name="password"]').value;
+
+            if (!username || !password) {
+                alert('الرجاء إدخال اسم المستخدم وكلمة المرور');
+                return;
+            }
+
+            console.log('Dev login attempt:', { username });
+
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password,
+                    dev_mode: true
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Dev login response:', data);
+                if (data.status) {
+                    window.location.href = data.msg || '/';
+                } else {
+                    alert(data.msg || 'فشل تسجيل الدخول');
+                }
+            })
+            .catch(error => {
+                console.error('Dev login error:', error);
+                alert('حدث خطأ أثناء تسجيل الدخول');
+            });
         }
 
         function initQRCode() {
@@ -616,50 +672,12 @@
 
         // زر تسجيل الدخول للتطوير
         const devLoginBtn = document.getElementById('devLoginBtn');
-        const isDevMode = window.location.hostname.includes('repl.co') || 
+        const isDevMode = window.location.hostname.includes('repl.co') ||
                          window.location.hostname.includes('localhost') ||
                          window.location.hostname === '0.0.0.0';
 
         if (isDevMode) {
-            devLoginBtn.style.display = 'block';
-
-            devLoginBtn.addEventListener('click', async function() {
-                const username = document.querySelector('input[name="username"]').value;
-                const password = document.querySelector('input[name="password"]').value;
-
-                if (!username || !password) {
-                    showMessage('يرجى إدخال اسم المستخدم وكلمة المرور', 'error');
-                    return;
-                }
-
-                try {
-                    const response = await fetch('/dev_login', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            username: username,
-                            password: password,
-                            dev_bypass: true
-                        })
-                    });
-
-                    const result = await response.json();
-
-                    if (result.status === true || result.status === 0) {
-                        showMessage('تم تسجيل الدخول بنجاح!', 'success');
-                        setTimeout(() => {
-                            window.location.href = '/';
-                        }, 1000);
-                    } else {
-                        showMessage(result.msg || 'فشل تسجيل الدخول', 'error');
-                    }
-                } catch (error) {
-                    console.error('Dev login error:', error);
-                    showMessage('حدث خطأ أثناء تسجيل الدخول', 'error');
-                }
-            });
+            // This button is now handled by the devLogin() function called from the HTML button
         }
 
         function showMessage(message, type) {
