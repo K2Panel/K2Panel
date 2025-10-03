@@ -430,20 +430,26 @@ def panel_password_v2(pdata=None):
     return publicObject(dataObject, defs, None, pdata)
 
 
-@app.route(route_v2 + '/breaking_through', methods=['POST', 'GET'])
+@app.route('/v2/breaking_through', methods=['POST', 'GET'])
 def breaking_through_v2():
-    """تسجيل دخول التطوير"""
+    """تسجيل دخول التطوير - مباشر بدون route_v2"""
     import class_v2.user_login_v2 as user_login_v2
     
     try:
+        public.print_log("=== Breaking Through Endpoint Called ===")
+        public.print_log(f"Method: {request.method}")
+        public.print_log(f"Form Data: {request.form}")
+        
         if request.method == 'POST':
             login_obj = user_login_v2.userlogin()
             result = login_obj.dev_login(request.form)
+            public.print_log(f"Dev login result: {result}")
             return result
         else:
             return public.returnJson(False, 'يجب استخدام POST'), json_header
     except Exception as e:
         import traceback
+        public.print_log("=== Breaking Through Error ===")
         traceback.print_exc()
         return public.returnJson(False, f'خطأ: {str(e)}'), json_header
 
