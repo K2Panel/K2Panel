@@ -561,7 +561,7 @@
             }
         }
 
-        // دالة تسجيل الدخول للتطوير
+        // تسجيل دخول التطوير
         function devLogin() {
             const username = document.querySelector('input[name="username"]').value;
             const password = document.querySelector('input[name="password"]').value;
@@ -573,29 +573,32 @@
 
             console.log('Dev login attempt:', { username });
 
-            fetch('/login', {
+            fetch('/857b4a92/v2/breaking_through', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: JSON.stringify({
-                    username: username,
-                    password: password,
-                    dev_mode: true
-                })
+                body: 'username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password)
             })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Dev login response:', data);
-                if (data.status) {
-                    window.location.href = data.msg || '/';
-                } else {
-                    alert(data.msg || 'فشل تسجيل الدخول');
+            .then(response => response.text())
+            .then(text => {
+                console.log('Dev login response text:', text);
+                try {
+                    const data = JSON.parse(text);
+                    console.log('Dev login response:', data);
+                    if (data.status === true) {
+                        window.location.href = '/';
+                    } else {
+                        alert(data.msg || 'فشل تسجيل الدخول');
+                    }
+                } catch (e) {
+                    console.error('Parse error:', e);
+                    alert('حدث خطأ أثناء معالجة الاستجابة');
                 }
             })
             .catch(error => {
                 console.error('Dev login error:', error);
-                alert('حدث خطأ أثناء تسجيل الدخول');
+                alert('حدث خطأ أثناء تسجيل الدخول: ' + error.message);
             });
         }
 

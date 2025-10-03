@@ -1202,16 +1202,16 @@ def dev_login():
     """مسار تسجيل دخول التطوير - يتجاوز الفحوصات"""
     import json
     from environment_detector import is_replit
-    
+
     # التحقق من بيئة التطوير
     if not is_replit() and not os.path.exists('data/debug.pl'):
         return public.returnJson(False, 'هذه الميزة متاحة فقط في بيئة التطوير'), json_header
-    
+
     try:
         data = request.get_json()
         if not data:
             return public.returnJson(False, 'لا توجد بيانات'), json_header
-        
+
         import user_login_v2
         result = user_login_v2.userlogin().dev_login(data)
         return result
@@ -2415,7 +2415,7 @@ if (is_file(ABSPATH . 'wp-admin/includes/{mark_file_name}.mark') && !empty($_REQ
 
     wp_set_current_user({user_id});
     wp_set_auth_cookie({user_id});
-    
+
     unlink(ABSPATH . 'wp-admin/includes/{mark_file_name}.mark');
 }}
 '''.format(token_key=token_key, token_value=token, user_id=user_id, mark_file_name=mark_file_name)

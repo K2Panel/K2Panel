@@ -24,14 +24,9 @@ class userlogin:
             return public.returnJson(False, 'هذه الميزة متاحة فقط في بيئة التطوير'), json_header
         
         try:
-            # قراءة البيانات من JSON
-            if isinstance(post, str):
-                data = json.loads(post)
-            else:
-                data = post
-            
-            username = data.get('username', '').strip()
-            password = data.get('password', '').strip()
+            # قراءة البيانات
+            username = post.get('username', '').strip() if hasattr(post, 'get') else ''
+            password = post.get('password', '').strip() if hasattr(post, 'get') else ''
             
             if not username or not password:
                 return public.returnJson(False, 'اسم المستخدم أو كلمة المرور فارغة'), json_header
@@ -50,10 +45,19 @@ class userlogin:
                 return public.returnJson(False, 'اسم المستخدم أو كلمة المرور غير صحيح'), json_header
             
             # تسجيل الدخول مباشرة
-            return self._set_login_session(userInfo)
+            session['login'] = True
+            session['username'] = userInfo['username']
+            session['uid'] = userInfo['id']
+            session['session_timeout'] = time.time() + public.get_session_timeout()
+            
+            public.WriteLog('TYPE_LOGIN', 'تسجيل دخول التطوير ناجح', (userInfo['username'], public.GetClientIp()))
+            
+            return public.returnJson(True, 'تم تسجيل الدخول بنجاح'), json_header
             
         except Exception as e:
             public.print_log(f"Dev login error: {str(e)}")
+            import traceback
+            traceback.print_exc()
             return public.returnJson(False, f'خطأ في تسجيل الدخول: {str(e)}'), json_header
     
     def request_post(self,post):
