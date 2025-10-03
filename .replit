@@ -19,3 +19,7 @@ args = "python3 runserver.py"
 [deployment]
 run = ["python3", "runserver.py"]
 deploymentTarget = "cloudrun"
+
+[[ports]]
+localPort = 39417
+externalPort = 80
