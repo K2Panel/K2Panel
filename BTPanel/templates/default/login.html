@@ -542,14 +542,68 @@
       }
 
       .login-images img {
-        height: 85px;
+        height: 120px;
+        max-width: 100%;
+        object-fit: contain;
       }
 
       .login-images {
         width: 440px;
         display: flex;
-        margin-bottom: 25px;
+        margin-bottom: 30px;
         justify-content: center;
+        align-items: center;
+      }
+      
+      /* K2Panel Brand Colors - Gradient */
+      :root {
+        --k2-gradient: linear-gradient(135deg, #e91e63 0%, #ff6b35 35%, #f9a825 70%, #fbc02d 100%);
+        --k2-pink: #e91e63;
+        --k2-orange: #ff6b35;
+        --k2-yellow: #fbc02d;
+      }
+      
+      /* Enhanced login button with K2Panel gradient */
+      .login_btn {
+        background: var(--k2-gradient);
+        border: none;
+        box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
+      }
+      
+      .login_btn:hover {
+        background: linear-gradient(135deg, #c2185b 0%, #e64a19 35%, #f57f17 70%, #f9a825 100%);
+        box-shadow: 0 6px 20px rgba(233, 30, 99, 0.4);
+        transform: translateY(-2px);
+      }
+      
+      /* Accent colors using K2Panel palette */
+      .bt_link,
+      .account .forget_pwd {
+        background: var(--k2-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 500;
+      }
+      
+      .validform_checktip.validform_right {
+        background-image: none;
+        background: var(--k2-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        padding: 0 6px;
+      }
+      
+      .validform_checktip.validform_right::after {
+        content: "✓";
+        color: var(--k2-yellow);
+        margin-left: 4px;
+      }
+      
+      .form_input:focus {
+        border-color: var(--k2-pink);
+        box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
       }
 
       .login_lang {
@@ -634,6 +688,8 @@
       @media screen and (max-width: 1024px) {
         .login { width: 340px; padding: 70px 30px 80px; }
         .entrance .tips { max-width: 300px; font-size: 12px; }
+        .login-images { width: 380px; }
+        .login-images img { height: 100px; }
       }
 
       /* Tablets Portrait */
@@ -655,10 +711,10 @@
         .entrance .bg_img:hover { background-position: -50px 0; }
         .entrance .bg_img.pc { background-position: 0 -50px; }
         .entrance .bg_img.pc:hover { background-position: -50px -50px; }
-        .login-images { width: 90%; max-width: 350px; }
-        .login-images img { height: 70px; }
+        .login-images { width: 90%; max-width: 350px; margin-bottom: 25px; }
+        .login-images img { height: 80px; }
         .scan_code .qrcode { width: 180px; height: 180px; }
-        .static_cdn { position: relative; text-align: center; margin-top: 20px; }
+        .static_cdn { position: relative; text-align: center; margin-top: 20px; opacity: 1; }
         .static_cdn .cont { margin-left: 0; justify-content: center; }
         .login_lang { position: relative; left: 0; bottom: 0; margin-top: 20px; }
         .account .forget_pwd {
@@ -671,39 +727,96 @@
         }
       }
 
-      /* Mobile Phones */
+      /* Mobile Phones Landscape & Portrait */
+      @media screen and (max-width: 640px) {
+        .main { padding: 15px 10px; }
+        .login {
+          width: 95%;
+          max-width: 100%;
+          padding: 45px 20px 55px;
+          margin: 10px auto;
+          border-radius: 12px;
+        }
+        .login.code { min-height: auto; }
+        .login-images { width: 100%; margin-bottom: 20px; }
+        .login-images img { height: 70px; }
+        .account .form_title { font-size: 20px; margin-bottom: 16px; }
+        .account .form_item { margin-bottom: 16px; }
+        .form_input { height: 48px; font-size: 16px; }
+        .login_btn { height: 50px; font-size: 17px; }
+        .entrance { top: 8px; right: 8px; }
+        .entrance .tips { display: none; }
+      }
+
+      /* Mobile Phones Portrait */
       @media screen and (max-width: 480px) {
-        .main { padding: 10px; }
         .login {
           width: 100%;
-          max-width: 100%;
-          padding: 50px 20px 60px;
-          margin: 10px;
-          border-radius: 8px;
+          padding: 40px 18px 50px;
+          margin: 8px auto;
+          border-radius: 10px;
         }
-        .account .form_title { font-size: 20px; margin-bottom: 18px; }
-        .account .form_item { margin-bottom: 18px; }
-        .form_input { height: 50px; font-size: 16px; }
-        .login_btn { height: 52px; font-size: 17px; }
+        .login-images img { height: 65px; }
+        .account .form_title { font-size: 19px; margin-bottom: 14px; }
+        .account .form_item { margin-bottom: 14px; }
+        .form_input { height: 46px; font-size: 16px; }
+        .login_btn { height: 48px; font-size: 16px; }
         .form_item.check_code {
           -webkit-flex-direction: column;
           flex-direction: column;
         }
         .form_item.check_code .form_input { width: 100%; margin-bottom: 10px; }
-        .form_item.check_code .check_img { width: 100%; height: 50px; margin-left: 0; }
-        .form_item.check_code .validform_checktip { right: 10px; top: 18px; }
-        .entrance .tips { display: none; }
-        .login-images img { height: 60px; }
-        .scan_code .scan_title { font-size: 20px; }
-        .scan_code .qrcode { width: 200px; height: 200px; }
+        .form_item.check_code .check_img { width: 100%; height: 48px; margin-left: 0; }
+        .form_item.check_code .validform_checktip { right: 10px; top: 16px; }
+        .scan_code .scan_title { font-size: 19px; margin-bottom: 18px; }
+        .scan_code .qrcode { width: 170px; height: 170px; }
         .scan_tip .desc .text { font-size: 16px; }
         .verification_view { padding: 25px 20px; }
         .verification_view .v_title { font-size: 19px; }
-        .layui-layer { width: 90% !important; max-width: 400px !important; }
-        .layui-layer-msg { min-width: 250px; }
       }
 
-      /* Small Mobile */
+      /* Very Small Devices */
+      @media screen and (max-width: 360px) {
+        .login { padding: 35px 15px 45px; }
+        .login-images img { height: 55px; }
+        .account .form_title { font-size: 18px; }
+        .form_input, .login_btn { font-size: 15px; }
+        .scan_code .qrcode { width: 150px; height: 150px; }
+      }
+
+      /* Landscape Mode for Phones */
+      @media screen and (max-height: 500px) and (orientation: landscape) {
+        .login {
+          margin: 10px auto;
+          padding: 25px 20px 35px;
+        }
+        .login-images { margin-bottom: 15px; }
+        .login-images img { height: 50px; }
+        .account .form_title { font-size: 18px; margin-bottom: 10px; }
+        .account .form_item { margin-bottom: 10px; }
+        .form_input { height: 40px; }
+        .login_btn { height: 42px; font-size: 15px; }
+      }
+      
+      /* Touch Device Enhancements */
+      @media (hover: none) and (pointer: coarse) {
+        .form_input, .login_btn, select {
+          min-height: 44px;
+        }
+        .login_btn:active {
+          opacity: 0.9;
+          transform: scale(0.98);
+        }
+      }
+
+      /* Reduced Motion */
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
       @media screen and (max-width: 360px) {
         .login { padding: 40px 15px 50px; margin: 5px; }
         .account .form_title { font-size: 18px; }
@@ -847,7 +960,9 @@
             data="{{data['public_key']}}"
           ></div>
           <form class="login_form" onsubmit="return false;">
-            <div class="form_title">{{g.title}}</div>
+            <div class="login-images">
+              <img src="/static/k2panel-logo.png" alt="K2Panel Logo" />
+            </div>
             <div class="form_item">
               <input
                 type="text"
