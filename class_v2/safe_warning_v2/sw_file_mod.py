@@ -16,14 +16,15 @@ os.chdir('/www/server/panel')
 sys.path.append("class/")
 import os, sys, re, public
 
-_title = 'Critical file permission checks'
-_version = 1.0  # 版本
-_ps = "Critical file permission checks"  # 描述
+_title = 'Critical file permission checks + IPR monitoring'
+_version = 1.1  # 版本
+_ps = "Critical file permission checks and IPR protection monitoring"  # 描述
 _level = 0  # 风险级别： 1.提示(低)  2.警告(中)  3.危险(高)
-_date = '2022-08-10'  # 最后更新时间
+_date = '2025-10-03'  # 最后更新时间
 _ignore = os.path.exists("data/warning/ignore/sw_file_mod.pl")
 _tips = [
     "On the [File] page, set the correct permissions and owner for the specified directory or file",
+    "Monitor license files and plugin files for unauthorized modifications",
 ]
 _help = ''
 
