@@ -1,1 +1,7 @@
-[]
+
+{
+  "qq_mail": "your-email@gmail.com",
+  "qq_stmp_pwd": "your-app-password",
+  "hosts": "smtp.gmail.com",
+  "port": 465
+}
