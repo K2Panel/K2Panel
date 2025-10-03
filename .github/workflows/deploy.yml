@@ -40,8 +40,24 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # ==================== الخطوة 1.5: التحقق من وجود Secrets ====================
+      - name: Check deployment secrets
+        id: check_secrets
+        run: |
+          echo "🔍 Checking if deployment secrets are configured..."
+          
+          if [ -z "${{ secrets.VPS_HOST }}" ] || [ -z "${{ secrets.VPS_SSH_KEY }}" ] || [ -z "${{ secrets.VPS_USER }}" ]; then
+            echo "⚠️  Deployment secrets not configured - skipping deployment"
+            echo "📝 Required secrets: VPS_HOST, VPS_SSH_KEY, VPS_USER, VPS_DOMAIN"
+            echo "secrets_configured=false" >> $GITHUB_OUTPUT
+          else
+            echo "✅ Deployment secrets found"
+            echo "secrets_configured=true" >> $GITHUB_OUTPUT
+          fi
+
       # ==================== الخطوة 2: تجهيز SSH Key ====================
       - name: Setup SSH key
+        if: steps.check_secrets.outputs.secrets_configured == 'true'
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
@@ -75,6 +91,7 @@ jobs:
 
       # ==================== الخطوة 2.5: التحقق من المتغيرات الحرجة ====================
       - name: Validate critical environment variables
+        if: steps.check_secrets.outputs.secrets_configured == 'true'
         run: |
           echo "🔍 Validating critical environment variables..."
           VALIDATION_FAILED=0
@@ -196,6 +213,7 @@ jobs:
 
       # ==================== الخطوة 3: حفظ التكوين الحالي ====================
       - name: Backup current configuration
+        if: steps.check_secrets.outputs.secrets_configured == 'true'
         run: |
           ssh -i ~/.ssh/deploy_key \
             -o StrictHostKeyChecking=yes \
@@ -213,6 +231,7 @@ jobs:
       
       # ==================== الخطوة 4: نسخ ملفات النشر ====================
       - name: Copy deployment files to VPS
+        if: steps.check_secrets.outputs.secrets_configured == 'true'
         run: |
           scp -i ~/.ssh/deploy_key \
             -o StrictHostKeyChecking=yes \
@@ -228,6 +247,7 @@ jobs:
 
       # ==================== الخطوة 5: نسخ سكريبت النشر ====================
       - name: Copy deploy script
+        if: steps.check_secrets.outputs.secrets_configured == 'true'
         run: |
           scp -i ~/.ssh/deploy_key \
             -o StrictHostKeyChecking=yes \
@@ -241,6 +261,7 @@ jobs:
 
       # ==================== الخطوة 6: تنفيذ النشر ====================
       - name: Execute deployment
+        if: steps.check_secrets.outputs.secrets_configured == 'true'
         id: deploy
         run: |
           ssh -i ~/.ssh/deploy_key \
@@ -262,6 +283,7 @@ jobs:
 
       # ==================== الخطوة 7: Health Check ====================
       - name: Health check
+        if: steps.check_secrets.outputs.secrets_configured == 'true'
         run: |
           echo "Waiting for application to start..."
           sleep 15
@@ -287,7 +309,7 @@ jobs:
 
       # ==================== الخطوة 8: Rollback عند الفشل ====================
       - name: Rollback on failure
-        if: failure()
+        if: failure() && steps.check_secrets.outputs.secrets_configured == 'true'
         continue-on-error: true
         run: |
           echo "⚠️  Deployment failed, initiating rollback..."
@@ -324,7 +346,7 @@ jobs:
 
       # ==================== الخطوة 9: إشعار بالنجاح ====================
       - name: Deployment success notification
-        if: success()
+        if: success() && steps.check_secrets.outputs.secrets_configured == 'true'
         run: |
           echo "### 🚀 Deployment Successful! ###"
           echo ""
