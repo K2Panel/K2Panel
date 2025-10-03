@@ -14,49 +14,39 @@ jobs:
   lint:
     name: Code Quality Check
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    
+
     - name: Set up Python 3.11
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
         cache: 'pip'
-    
+
     - name: Install linting tools
       run: |
         python -m pip install --upgrade pip
         pip install flake8 black isort pylint
-    
+
     - name: Run Flake8 lint
       continue-on-error: true
       run: |
-        echo "Running Flake8 critical errors check..."
-        flake8 class/ backups/ \
-          --count \
-          --select=E9,F63,F7,F82 \
-          --show-source \
-          --statistics \
-          --exclude=*/filesModel/*,*/logsModel/ftpModel.py,*/monitorModel/process_managementModel.py,acme_v2.py \
-          --exit-zero || true
-        
-        echo "Running Flake8 general quality check..."
-        flake8 class/ backups/ \
+        echo "Running Flake8 check..."
+        flake8 . \
           --count \
           --exit-zero \
           --max-complexity=15 \
           --max-line-length=120 \
-          --statistics \
-          --exclude=*/filesModel/*,*/logsModel/ftpModel.py,*/monitorModel/process_managementModel.py,acme_v2.py || true
-    
+          --statistics || true
+
     - name: Check code formatting with Black
       continue-on-error: true
       run: |
         black --check --diff --color . \
           --extend-exclude="/(pyenv|BTPanel|\.pythonlibs|\.cache|\.local|\.git|\.github|class_v2|data|install|logs|mod|plugin|migrations|backups|image|docs|tests|attached_assets|restore_temp|webserver|script)/"
-    
+
     - name: Check import sorting with isort
       continue-on-error: true
       run: |
@@ -83,33 +73,33 @@ jobs:
           --skip-glob="restore_temp/*" \
           --skip-glob="webserver/*" \
           --skip-glob="script/*"
-  
+
   format:
     name: Auto-format (on main only)
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-    
+
     - name: Set up Python 3.11
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
-    
+
     - name: Install formatting tools
       run: |
         python -m pip install --upgrade pip
         pip install black isort
-    
+
     - name: Auto-format with Black
       run: |
         black . \
           --extend-exclude="/(pyenv|BTPanel|\.pythonlibs|\.cache|\.local|\.git|\.github|class_v2|data|install|logs|mod|plugin|migrations|backups|image|docs|tests|attached_assets|restore_temp|webserver|script)/"
-    
+
     - name: Auto-sort imports with isort
       run: |
         isort . \
@@ -135,7 +125,7 @@ jobs:
           --skip-glob="restore_temp/*" \
           --skip-glob="webserver/*" \
           --skip-glob="script/*"
-    
+
     - name: Commit changes
       run: |
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
