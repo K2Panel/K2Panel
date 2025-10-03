@@ -92,12 +92,12 @@
       }
       .login {
         position: relative;
-        width: 360px;
-        height: 270px;
-        padding: 80px 40px 90px;
+        width: 450px;
+        min-height: 500px;
+        padding: 50px 45px 60px;
         background: var(--login-bg);
-        border-radius: var(--login-box-radius);
-        box-shadow: var(--login-box-shadow);
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
       }
 
       .login.code {
@@ -202,8 +202,8 @@
 
       .account .form_item {
         position: relative;
-        margin-bottom: 20px;
-        padding: 5px 0;
+        margin-bottom: 22px;
+        padding: 0;
       }
 
       .account .error_tips {
@@ -214,14 +214,19 @@
 
       .form_input {
         width: 100%;
-        height: 42px;
-        padding: 5px 10px;
-        border: var(--login-input-border);
-        border-radius: var(--login-input-radius);
-        box-shadow: 0 3px 5px -4px rgb(0 0 0 / 40%) inset,
-          -1px 0 3px -2px rgb(0 0 0 / 10%) inset;
-        z-index: 1;
-        color: var(--login-input-color);
+        height: 50px;
+        padding: 12px 18px;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        background: #fafafa;
+        color: #333;
+      }
+      
+      .form_input::placeholder {
+        color: #999;
+        font-size: 14px;
       }
 
       .form_input.validform_error {
@@ -280,21 +285,24 @@
 
       .login_btn {
         width: 100%;
-        height: 44px;
-        background: linear-gradient(#20a53a, #189d32);
-        border: 1px solid #20a53a;
-        border-radius: var(--login-btn-radius);
+        height: 54px;
+        background: var(--k2-gradient);
+        border: none;
+        border-radius: 12px;
         cursor: pointer;
         text-align: center;
-        font-size: 16px;
+        font-size: 17px;
+        font-weight: 600;
         color: #fff;
-        box-shadow: inset 0 1px 2px #30ad42;
-        text-shadow: #00851a 0 -1px 0;
+        box-shadow: 0 8px 20px rgba(233, 30, 99, 0.35);
+        transition: all 0.3s ease;
+        margin-top: 10px;
       }
 
       .login_btn:hover {
-        background: linear-gradient(#10952a, #088d22);
-        border: 1px solid #10952a;
+        background: linear-gradient(135deg, #c2185b 0%, #e64a19 35%, #f57f17 70%, #f9a825 100%);
+        box-shadow: 0 12px 28px rgba(233, 30, 99, 0.45);
+        transform: translateY(-3px);
       }
 
       .account .forget_pwd {
@@ -542,15 +550,17 @@
       }
 
       .login-images img {
-        height: 120px;
+        height: 180px;
         max-width: 100%;
         object-fit: contain;
+        margin-bottom: 20px;
       }
 
       .login-images {
-        width: 440px;
+        width: 100%;
         display: flex;
-        margin-bottom: 30px;
+        flex-direction: column;
+        margin-bottom: 35px;
         justify-content: center;
         align-items: center;
       }
@@ -969,7 +979,7 @@
                 class="form_input"
                 id="username"
                 data-i18n="Login.index_1"
-                placeholder=""
+                placeholder="اسم المستخدم / Username"
               />
               <div class="validform_checktip"></div>
             </div>
@@ -979,7 +989,7 @@
                 class="form_input"
                 id="password"
                 data-i18n="Login.index_2"
-                placeholder=""
+                placeholder="كلمة المرور / Password"
               />
               <div class="validform_checktip"></div>
             </div>
