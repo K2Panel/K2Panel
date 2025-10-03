@@ -1253,7 +1253,9 @@ def login_v2():
         result = user_login_v2.userlogin().request_tmp(get)
         return is_login(result)
     # 过滤爬虫
-    if public.is_spider(): return abort(404)
+    if public.is_spider():
+        print(f"🔍 DEBUG: Spider detected, returning 404")
+        return abort(404)
     if hasattr(get, 'dologin'):
         login_path = '/login'
         if not 'login' in session: return redirect(login_path)
@@ -1285,13 +1287,18 @@ def login_v2():
             return redirect(public.get_admin_path())
 
     if is_auth_path:
-        if route_path != request.path and route_path + '/' != request.path:
+        login_v2_path = route_path + route_v2 + '/login'
+        print(f"🔍 DEBUG: is_auth_path=True, route_path={route_path}, request.path={request.path}, login_v2_path={login_v2_path}")
+        if route_path != request.path and route_path + '/' != request.path and login_v2_path != request.path:
+            print(f"🔍 DEBUG: Path check failed, checking referer")
             referer = request.headers.get('Referer', 'err')
             referer_tmp = referer.split('/')
             referer_path = referer_tmp[-1]
             if referer_path == '':
                 referer_path = referer_tmp[-2]
+            print(f"🔍 DEBUG: referer_path={referer_path}, route_path={route_path}")
             if route_path != '/' + referer_path:
+                print(f"🔍 DEBUG: Referer check failed, returning error_not_login")
                 g.auth_error = True
                 # return render_template('autherr.html')
                 return public.error_not_login(None)

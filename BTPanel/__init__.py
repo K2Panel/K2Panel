@@ -2087,8 +2087,11 @@ def login():
         result = userlogin.userlogin().request_tmp(get)
         return is_login(result)
 
-    # 过滤爬虫
-    if public.is_spider(): return abort(404)
+    # 过滤爬虫 - تعطيل الفحص في بيئة Replit للسماح بالوصول عبر proxy
+    from environment_detector import is_replit
+    if not is_replit():
+        if public.is_spider():
+            return abort(404)
     if hasattr(get, 'dologin'):
         login_path = '/login'
         if not 'login' in session: return redirect(login_path)
@@ -2120,7 +2123,8 @@ def login():
             return redirect(public.get_admin_path())
 
     if is_auth_path:
-        if route_path != request.path and route_path + '/' != request.path and request.path != '/v2/login':
+        login_v2_path = route_path + route_v2 + '/login'
+        if route_path != request.path and route_path + '/' != request.path and request.path != '/v2/login' and request.path != login_v2_path:
             referer = request.headers.get('Referer', 'err')
             referer_tmp = referer.split('/')
             referer_path = referer_tmp[-1]
@@ -5230,8 +5234,11 @@ def login_v2():
     if hasattr(get, 'tmp_token'):
         result = user_login_v2.userlogin().request_tmp(get)
         return is_login(result)
-    # 过滤爬虫
-    if public.is_spider(): return abort(404)
+    # 过滤爬虫 - تعطيل الفحص في بيئة Replit للسماح بالوصول عبر proxy
+    from environment_detector import is_replit
+    if not is_replit():
+        if public.is_spider():
+            return abort(404)
     if hasattr(get, 'dologin'):
         login_path = '/login'
         if not 'login' in session: return redirect(login_path)
@@ -5263,7 +5270,8 @@ def login_v2():
             return redirect(public.get_admin_path())
 
     if is_auth_path:
-        if route_path != request.path and route_path + '/' != request.path and request.path != '/v2/login':
+        login_v2_path = route_path + route_v2 + '/login'
+        if route_path != request.path and route_path + '/' != request.path and request.path != '/v2/login' and request.path != login_v2_path:
             referer = request.headers.get('Referer', 'err')
             referer_tmp = referer.split('/')
             referer_path = referer_tmp[-1]
