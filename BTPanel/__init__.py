@@ -2124,16 +2124,23 @@ def login():
 
     if is_auth_path:
         login_v2_path = route_path + route_v2 + '/login'
+        print(f"🔍 DEBUG: is_auth_path={is_auth_path}, login_v2_path={login_v2_path}")
+        print(f"🔍 DEBUG: Checking paths - route_path={route_path}, request.path={request.path}")
         if route_path != request.path and route_path + '/' != request.path and request.path != '/v2/login' and request.path != login_v2_path:
+            print(f"🔍 DEBUG: Path check failed, checking referer")
             referer = request.headers.get('Referer', 'err')
             referer_tmp = referer.split('/')
             referer_path = referer_tmp[-1]
             if referer_path == '':
                 referer_path = referer_tmp[-2]
+            print(f"🔍 DEBUG: referer_path={referer_path}")
             if route_path != '/' + referer_path:
+                print(f"🔍 DEBUG: Referer check also failed, returning error_not_login - THIS IS THE 404!")
                 g.auth_error = True
                 # return render_template('autherr.html')
                 return public.error_not_login(None)
+        else:
+            print(f"🔍 DEBUG: Path check passed!")
 
     session['admin_auth'] = True
 
@@ -5183,9 +5190,10 @@ def tips_v2():
 @app.route(route_path + route_v2 + '/login', methods=method_all)  # المسار مع admin_path للأمان
 def login_v2():
     # 面板登录接口
-    print(f"🔍 DEBUG: login_v2 called with path={request.path}, method={request.method}")
-    if os.path.exists('install.pl'): return redirect('/install')
     global admin_check_auth, admin_path, route_path
+    print(f"🔍 DEBUG: login_v2 called with path={request.path}, method={request.method}")
+    print(f"🔍 DEBUG: route_v2={route_v2}, route_path={route_path}")
+    if os.path.exists('install.pl'): return redirect('/install')
     is_auth_path = False
     if admin_path != '/bt' and os.path.exists(
             admin_path_file) and not 'admin_auth' in session:
@@ -5271,28 +5279,44 @@ def login_v2():
 
     if is_auth_path:
         login_v2_path = route_path + route_v2 + '/login'
+        print(f"🔍 DEBUG: is_auth_path={is_auth_path}, login_v2_path={login_v2_path}")
+        print(f"🔍 DEBUG: Checking paths - route_path={route_path}, request.path={request.path}")
         if route_path != request.path and route_path + '/' != request.path and request.path != '/v2/login' and request.path != login_v2_path:
+            print(f"🔍 DEBUG: Path check failed, checking referer")
             referer = request.headers.get('Referer', 'err')
             referer_tmp = referer.split('/')
             referer_path = referer_tmp[-1]
             if referer_path == '':
                 referer_path = referer_tmp[-2]
+            print(f"🔍 DEBUG: referer_path={referer_path}")
             if route_path != '/' + referer_path:
+                print(f"🔍 DEBUG: Referer check also failed, returning error_not_login - THIS IS THE 404!")
                 g.auth_error = True
                 # return render_template('autherr.html')
                 return public.error_not_login(None)
+        else:
+            print(f"🔍 DEBUG: Path check passed!")
 
     session['admin_auth'] = True
+    print(f"🔍 DEBUG: Calling common.panelSetup().init()")
     comReturn = common.panelSetup().init()
-    if comReturn: return comReturn
+    print(f"🔍 DEBUG: comReturn={comReturn}")
+    if comReturn:
+        print(f"🔍 DEBUG: Returning comReturn - THIS MIGHT BE THE 404!")
+        return comReturn
 
+    print(f"🔍 DEBUG: request.method={request.method}, method_post={method_post}, method_get={method_get}")
     if request.method == method_post[0]:
+        print(f"🔍 DEBUG: Processing POST request")
         result = userlogin.userlogin().request_post(get)
         return is_login(result)
 
     if request.method == method_get[0]:
+        print(f"🔍 DEBUG: Processing GET request")
         result = userlogin.userlogin().request_get(get)
+        print(f"🔍 DEBUG: userlogin.request_get result={result}")
         if result:
+            print(f"🔍 DEBUG: Returning result from userlogin.request_get")
             return result
         data = {}
         data['lan'] = public.GetLan('login')
