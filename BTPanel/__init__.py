@@ -320,7 +320,7 @@ admin_path_checks = [
 if admin_path in admin_path_checks: admin_path = '/bt'
 if admin_path[-1] == '/': admin_path = admin_path[:-1]
 uri_match = re.compile(
-    r"(^/static/[\w_\./\-]+\.(js|css|png|jpg|gif|ico|svg|woff|woff2|ttf|otf|eot|map)$|^/[\w_\./\-]*$)"
+    r"(^/$|^/static/[\w_\./\-]+\.(js|css|png|jpg|gif|ico|svg|woff|woff2|ttf|otf|eot|map)$|^/[\w_\./\-]*$)"
 )
 session_id_match = re.compile(r"^[\w\.\-]+$")
 route_v2 = '/v2'  # v2版本路由前缀
@@ -5316,6 +5316,33 @@ def login_v2():
         data[last_key] = session[last_key]
         data['public_key'] = public.get_rsa_public_key()
         return render_template('login.html', data=data)
+
+
+@app.route('/', methods=['GET'])
+def root_redirect():
+    # المسار الجذر - توجيه إلى صفحة تسجيل الدخول أو القائمة الافتراضية
+    if 'login' in session and session.get('login'):
+        # المستخدم مسجل دخول - توجيه إلى القائمة الافتراضية
+        if 'uid' in session and session['uid'] != 1 and not public.user_router_authority():
+            if public.M('users').where('id=?', (session['uid'],)).select():
+                import config_v2
+                menus = config_v2.config().get_menu_list()
+                if menus.get('status') == 0:
+                    show_menus = [
+                        i.get('id', '').lower() for i in menus.get('message', []) if i.get('show') is True
+                    ]
+                    if show_menus:
+                        try:
+                            path = menu_map.get(show_menus[0], '/v2/login')
+                            if path != '/login':
+                                return redirect(path.lower(), 302)
+                        except Exception:
+                            pass
+        # المستخدم العادي أو admin - توجيه إلى /v2/login (الواجهة الرئيسية)
+        return redirect('/v2/login', 302)
+    else:
+        # المستخدم غير مسجل دخول - توجيه إلى صفحة تسجيل الدخول
+        return redirect('/v2/login', 302)
 
 
 @app.route(route_v2 + '/close', methods=method_get)
