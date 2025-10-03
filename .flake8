@@ -1,3 +1,4 @@
+
 # ==================== إعدادات Flake8 ====================
 # Flake8 Configuration File
 
@@ -6,13 +7,13 @@
 max-line-length = 120
 
 # الأخطاء والتحذيرات المتجاهلة
-ignore = 
-    E203,  # whitespace before ':'
-    E501,  # line too long (handled by max-line-length)
-    W503,  # line break before binary operator
-    W504,  # line break after binary operator
-    F401,  # imported but unused (في بعض الملفات)
-    E722,  # bare except (نستخدمه أحياناً)
+# E203: whitespace before ':'
+# E501: line too long (handled by max-line-length)
+# W503: line break before binary operator
+# W504: line break after binary operator
+# F401: imported but unused (في بعض الملفات)
+# E722: bare except (نستخدمه أحياناً)
+ignore = E203,E501,W503,W504,F401,E722
 
 # الملفات والمجلدات المستثناة
 exclude = 
