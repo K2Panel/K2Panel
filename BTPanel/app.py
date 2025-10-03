@@ -17,9 +17,22 @@ import re
 import uuid
 import psutil
 
-panel_path = '/www/server/panel'
+# استخدام environment_detector لتحديد المسار الصحيح حسب البيئة
+try:
+    from environment_detector import is_replit
+    if is_replit():
+        # بيئة Replit - استخدام المسار الحالي
+        panel_path = os.getcwd()
+    else:
+        # بيئة VPS - استخدام المسار التقليدي
+        panel_path = '/www/server/panel'
+except:
+    # Fallback: إذا فشل الاستيراد، استخدم المسار الحالي
+    panel_path = os.getcwd()
+
 if not os.name in ['nt']:
-    os.chdir(panel_path)
+    if os.path.exists(panel_path):
+        os.chdir(panel_path)
 if not 'class/' in sys.path:
     sys.path.insert(0, 'class/')
 if not 'class_v2/' in sys.path:
@@ -146,6 +159,7 @@ admin_path_checks = [
     '/close',
     '/task',
     '/login',
+    '/v2/login',
     '/config',
     '/site',
     '/sites',

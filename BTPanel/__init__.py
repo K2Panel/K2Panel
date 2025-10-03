@@ -26,7 +26,7 @@ hook_import()
 # from .app import *
 # from .routes.flask_hook import *
 # from .routes.v1 import *
-# from .routes.v2 import *
+# from .routes.v2 import *  # معطل بسبب circular import مع BTPanel.app وcommon
 
 import logging
 import logging.config
@@ -320,7 +320,7 @@ admin_path_checks = [
 if admin_path in admin_path_checks: admin_path = '/bt'
 if admin_path[-1] == '/': admin_path = admin_path[:-1]
 uri_match = re.compile(
-    r"(^/$|^/static/[\w_\./\-]+\.(js|css|png|jpg|gif|ico|svg|woff|woff2|ttf|otf|eot|map)$|^/[\w_\./\-]*$)"
+    r"(^/$|^/static/[\w_\./\-]+\.(js|css|png|jpg|gif|ico|svg|woff|woff2|ttf|otf|eot|map)$|^/[\w_\./\-]*(\?[\w=&%\-]*)?$)"
 )
 session_id_match = re.compile(r"^[\w\.\-]+$")
 route_v2 = '/v2'  # v2版本路由前缀
@@ -455,7 +455,9 @@ def request_check():
         if len(request.url) > 1024: return abort(403)
 
     # URI过滤 2
-    if not uri_match.match(request.path): return abort(403)
+    if not uri_match.match(request.path):
+        print(f"🚫 DEBUG: URI rejected: {request.path}")
+        return abort(403)
 
     # POST参数过滤
     if request.path in [
@@ -822,9 +824,11 @@ REQUEST_FORM: {request_form}
 @app.route('/<path:sub_path>', methods=method_get)
 def index_new(sub_path: str = ''):
 
-    # المسار الجذر "/" - redirect إلى /v2/login (يجب أن يكون قبل أي فحوصات أخرى)
+    # المسار الجذر "/" - redirect إلى المسار الصحيح حسب admin_path
     if sub_path == '':
-        return redirect('/v2/login', 302)
+        # استخدام route_path و route_v2 للتوافق مع admin_path في كلا البيئتين (Replit/VPS)
+        login_url = f"{route_path}{route_v2}/login"
+        return redirect(login_url, 302)
     
     if sub_path == 'unsubscribe.html':
         return render_template('unsubscribe.html')
@@ -2116,7 +2120,7 @@ def login():
             return redirect(public.get_admin_path())
 
     if is_auth_path:
-        if route_path != request.path and route_path + '/' != request.path:
+        if route_path != request.path and route_path + '/' != request.path and request.path != '/v2/login':
             referer = request.headers.get('Referer', 'err')
             referer_tmp = referer.split('/')
             referer_path = referer_tmp[-1]
@@ -5171,11 +5175,11 @@ def tips_v2():
 # ======================严格排查区域start============================#
 
 
-@app.route(route_v2 + '/login', methods=method_all)
-@app.route(route_v2 + route_path, methods=method_all)
-@app.route(route_v2 + route_path + '/', methods=method_all)
+@app.route(route_v2 + '/login', methods=method_all)  # المسار القياسي للتوافق
+@app.route(route_path + route_v2 + '/login', methods=method_all)  # المسار مع admin_path للأمان
 def login_v2():
     # 面板登录接口
+    print(f"🔍 DEBUG: login_v2 called with path={request.path}, method={request.method}")
     if os.path.exists('install.pl'): return redirect('/install')
     global admin_check_auth, admin_path, route_path
     is_auth_path = False
@@ -5259,7 +5263,7 @@ def login_v2():
             return redirect(public.get_admin_path())
 
     if is_auth_path:
-        if route_path != request.path and route_path + '/' != request.path:
+        if route_path != request.path and route_path + '/' != request.path and request.path != '/v2/login':
             referer = request.headers.get('Referer', 'err')
             referer_tmp = referer.split('/')
             referer_path = referer_tmp[-1]
