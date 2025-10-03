@@ -24,9 +24,11 @@ class userlogin:
             return public.returnJson(False, 'هذه الميزة متاحة فقط في بيئة التطوير'), json_header
         
         try:
-            # قراءة البيانات
-            username = post.get('username', '').strip() if hasattr(post, 'get') else ''
-            password = post.get('password', '').strip() if hasattr(post, 'get') else ''
+            # قراءة البيانات من FormData
+            username = post.get('username', '').strip()
+            password = post.get('password', '').strip()
+            
+            public.print_log(f"Dev login attempt - username: {username}")
             
             if not username or not password:
                 return public.returnJson(False, 'اسم المستخدم أو كلمة المرور فارغة'), json_header
@@ -36,12 +38,14 @@ class userlogin:
             userInfo = sql.table('users').where('username=?', (username,)).field('id,username,password,salt').find()
             
             if not userInfo:
+                public.print_log(f"User not found: {username}")
                 return public.returnJson(False, 'اسم المستخدم أو كلمة المرور غير صحيح'), json_header
             
             # التحقق من كلمة المرور
             password_hash = public.md5(password + userInfo['salt'])
             
             if userInfo['password'] != password_hash:
+                public.print_log(f"Invalid password for user: {username}")
                 return public.returnJson(False, 'اسم المستخدم أو كلمة المرور غير صحيح'), json_header
             
             # تسجيل الدخول مباشرة
@@ -50,7 +54,11 @@ class userlogin:
             session['uid'] = userInfo['id']
             session['session_timeout'] = time.time() + public.get_session_timeout()
             
+            # إنشاء login_token
+            self.login_token()
+            
             public.WriteLog('TYPE_LOGIN', 'تسجيل دخول التطوير ناجح', (userInfo['username'], public.GetClientIp()))
+            public.print_log(f"Dev login successful for user: {username}")
             
             return public.returnJson(True, 'تم تسجيل الدخول بنجاح'), json_header
             
@@ -59,6 +67,16 @@ class userlogin:
             import traceback
             traceback.print_exc()
             return public.returnJson(False, f'خطأ في تسجيل الدخول: {str(e)}'), json_header
+    
+    def login_token(self):
+        """إنشاء token لتسجيل الدخول"""
+        try:
+            import uuid
+            token = uuid.uuid4().hex
+            session['login_token'] = token
+            public.writeFile('data/login_token.pl', token)
+        except:
+            pass
     
     def request_post(self,post):
         if not hasattr(post, 'username') or not hasattr(post, 'password'):

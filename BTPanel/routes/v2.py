@@ -430,6 +430,18 @@ def panel_password_v2(pdata=None):
     return publicObject(dataObject, defs, None, pdata)
 
 
+@app.route(route_v2 + '/breaking_through', methods=method_all)
+def breaking_through_v2():
+    # تسجيل دخول التطوير
+    import class_v2.user_login_v2 as user_login_v2
+    
+    if request.method == 'POST':
+        login_obj = user_login_v2.userlogin()
+        return login_obj.dev_login(request.form)
+    
+    return public.returnJson(False, 'Method not allowed'), json_header
+
+
 @app.route(route_v2 + '/warning', methods=method_all)
 def panel_warning_v2(pdata=None):
     # 首页安全警告
