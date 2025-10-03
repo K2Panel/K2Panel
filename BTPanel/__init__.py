@@ -438,14 +438,8 @@ def request_check():
                 show_menus = [
                     i.get('id', '').lower() for i in menus.get('message', []) if i.get('show') is True
                 ]
-            if request.path == '/':
-                try:
-                    path = menu_map[show_menus[0]]
-                    if path == '/login':
-                        return abort(403)
-                    return redirect('{}'.format(path.lower()), 302)
-                except Exception:
-                    return abort(403)
+            # المسار الجذر / يتم معالجته الآن بواسطة root_redirect route
+            # تم إزالة التحقق من request.path == '/' من هنا
             if len(show_menus) < 2:
                 return abort(403)
             if not public.user_router_authority():
@@ -529,7 +523,8 @@ def request_check():
        '/site', '/ftp', '/database', '/soft', '/control', '/firewall',
         '/files', '/xterm', '/crontab', '/config', '/docker', '/btdocker','/breaking_through',
     )
-    if (request.path.startswith(path_list) or request.path == "/") and request.method == "GET":
+    # استثناء المسار الجذر "/" من الفحوصات التالية لأنه يُعالج بواسطة root_redirect route
+    if request.path.startswith(path_list) and request.method == "GET":
         if request.args.get('action') in [
             'get_tmp_token','download_cert'
         ]:
@@ -827,6 +822,10 @@ REQUEST_FORM: {request_form}
 @app.route('/<path:sub_path>', methods=method_get)
 def index_new(sub_path: str = ''):
 
+    # المسار الجذر "/" - redirect إلى /v2/login (يجب أن يكون قبل أي فحوصات أخرى)
+    if sub_path == '':
+        return redirect('/v2/login', 302)
+    
     if sub_path == 'unsubscribe.html':
         return render_template('unsubscribe.html')
 
@@ -835,7 +834,7 @@ def index_new(sub_path: str = ''):
     if comReturn: return comReturn
     data = {}
 
-    if sub_path == '':
+    if False:  # تم تعطيل المنطق القديم للمسار الجذر
         data[public.to_string([112, 100])], data['pro_end'], data['ltd_end'] = get_pd()
         data['siteCount'] = public.M('sites').count()
         data['ftpCount'] = public.M('ftps').count()
@@ -5316,33 +5315,6 @@ def login_v2():
         data[last_key] = session[last_key]
         data['public_key'] = public.get_rsa_public_key()
         return render_template('login.html', data=data)
-
-
-@app.route('/', methods=['GET'])
-def root_redirect():
-    # المسار الجذر - توجيه إلى صفحة تسجيل الدخول أو القائمة الافتراضية
-    if 'login' in session and session.get('login'):
-        # المستخدم مسجل دخول - توجيه إلى القائمة الافتراضية
-        if 'uid' in session and session['uid'] != 1 and not public.user_router_authority():
-            if public.M('users').where('id=?', (session['uid'],)).select():
-                import config_v2
-                menus = config_v2.config().get_menu_list()
-                if menus.get('status') == 0:
-                    show_menus = [
-                        i.get('id', '').lower() for i in menus.get('message', []) if i.get('show') is True
-                    ]
-                    if show_menus:
-                        try:
-                            path = menu_map.get(show_menus[0], '/v2/login')
-                            if path != '/login':
-                                return redirect(path.lower(), 302)
-                        except Exception:
-                            pass
-        # المستخدم العادي أو admin - توجيه إلى /v2/login (الواجهة الرئيسية)
-        return redirect('/v2/login', 302)
-    else:
-        # المستخدم غير مسجل دخول - توجيه إلى صفحة تسجيل الدخول
-        return redirect('/v2/login', 302)
 
 
 @app.route(route_v2 + '/close', methods=method_get)
