@@ -13,6 +13,49 @@ from flask import request,redirect,g
 
 class userlogin:
     limit_expire_time = 0
+    
+    def dev_login(self, post):
+        """تسجيل دخول مباشر لبيئة التطوير - يتجاوز كل الفحوصات"""
+        import json
+        from environment_detector import is_replit
+        
+        # التحقق من بيئة التطوير
+        if not is_replit() and not os.path.exists('data/debug.pl'):
+            return public.returnJson(False, 'هذه الميزة متاحة فقط في بيئة التطوير'), json_header
+        
+        try:
+            # قراءة البيانات من JSON
+            if isinstance(post, str):
+                data = json.loads(post)
+            else:
+                data = post
+            
+            username = data.get('username', '').strip()
+            password = data.get('password', '').strip()
+            
+            if not username or not password:
+                return public.returnJson(False, 'اسم المستخدم أو كلمة المرور فارغة'), json_header
+            
+            # التحقق من المستخدم مباشرة بدون تشفير
+            sql = db.Sql()
+            userInfo = sql.table('users').where('username=?', (username,)).field('id,username,password,salt').find()
+            
+            if not userInfo:
+                return public.returnJson(False, 'اسم المستخدم أو كلمة المرور غير صحيح'), json_header
+            
+            # التحقق من كلمة المرور
+            password_hash = public.md5(password + userInfo['salt'])
+            
+            if userInfo['password'] != password_hash:
+                return public.returnJson(False, 'اسم المستخدم أو كلمة المرور غير صحيح'), json_header
+            
+            # تسجيل الدخول مباشرة
+            return self._set_login_session(userInfo)
+            
+        except Exception as e:
+            public.print_log(f"Dev login error: {str(e)}")
+            return public.returnJson(False, f'خطأ في تسجيل الدخول: {str(e)}'), json_header
+    
     def request_post(self,post):
         if not hasattr(post, 'username') or not hasattr(post, 'password'):
             return public.returnJson(False,'User name or password cannot be empty!'),json_header

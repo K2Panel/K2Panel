@@ -1197,6 +1197,28 @@ def tips_v2():
 # ======================严格排查区域start============================#
 
 
+@app.route('/dev_login', methods=['POST'])
+def dev_login():
+    """مسار تسجيل دخول التطوير - يتجاوز الفحوصات"""
+    import json
+    from environment_detector import is_replit
+    
+    # التحقق من بيئة التطوير
+    if not is_replit() and not os.path.exists('data/debug.pl'):
+        return public.returnJson(False, 'هذه الميزة متاحة فقط في بيئة التطوير'), json_header
+    
+    try:
+        data = request.get_json()
+        if not data:
+            return public.returnJson(False, 'لا توجد بيانات'), json_header
+        
+        import user_login_v2
+        result = user_login_v2.userlogin().dev_login(data)
+        return result
+    except Exception as e:
+        public.print_log(f"Dev login route error: {str(e)}")
+        return public.returnJson(False, f'خطأ: {str(e)}'), json_header
+
 @app.route(route_v2 + '/login', methods=method_all)
 @app.route(route_v2 + route_path, methods=method_all)
 @app.route(route_v2 + route_path + '/', methods=method_all)

@@ -180,7 +180,7 @@
             background: #FFFFFF;
             color: #111827;
         }
-        
+
         .form-input::placeholder {
             color: #6B7280;
         }
@@ -497,8 +497,13 @@
                     </div>
                     {% endif %}
 
-                    <button type="submit" class="login-button">
+                    <button type="submit" class="login-button" id="loginBtn">
                         تسجيل الدخول
+                    </button>
+
+                    <!-- زر التجاوز للتطوير فقط -->
+                    <button type="button" class="login-button" id="devLoginBtn" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); margin-top: 10px; display: none;">
+                        🔓 تسجيل دخول التطوير (تجاوز الفحص)
                     </button>
                 </form>
             </div>
@@ -608,6 +613,76 @@
             loginForm.style.display = 'block';
             qrSection.style.display = 'none';
         });
+
+        // زر تسجيل الدخول للتطوير
+        const devLoginBtn = document.getElementById('devLoginBtn');
+        const isDevMode = window.location.hostname.includes('repl.co') || 
+                         window.location.hostname.includes('localhost') ||
+                         window.location.hostname === '0.0.0.0';
+
+        if (isDevMode) {
+            devLoginBtn.style.display = 'block';
+
+            devLoginBtn.addEventListener('click', async function() {
+                const username = document.querySelector('input[name="username"]').value;
+                const password = document.querySelector('input[name="password"]').value;
+
+                if (!username || !password) {
+                    showMessage('يرجى إدخال اسم المستخدم وكلمة المرور', 'error');
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/dev_login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            username: username,
+                            password: password,
+                            dev_bypass: true
+                        })
+                    });
+
+                    const result = await response.json();
+
+                    if (result.status === true || result.status === 0) {
+                        showMessage('تم تسجيل الدخول بنجاح!', 'success');
+                        setTimeout(() => {
+                            window.location.href = '/';
+                        }, 1000);
+                    } else {
+                        showMessage(result.msg || 'فشل تسجيل الدخول', 'error');
+                    }
+                } catch (error) {
+                    console.error('Dev login error:', error);
+                    showMessage('حدث خطأ أثناء تسجيل الدخول', 'error');
+                }
+            });
+        }
+
+        function showMessage(message, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.textContent = message;
+            messageDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 25px;
+                border-radius: 8px;
+                color: white;
+                font-weight: bold;
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+                background: ${type === 'success' ? '#10B981' : '#EF4444'};
+            `;
+            document.body.appendChild(messageDiv);
+
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 3000);
+        }
     </script>
 </body>
 </html>
