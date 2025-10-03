@@ -1,21 +1,8 @@
-
-# ==================== إعدادات Flake8 ====================
-# Flake8 Configuration File
-
 [flake8]
-# الحد الأقصى لطول السطر
 max-line-length = 120
 
-# الأخطاء والتحذيرات المتجاهلة
-# E203: whitespace before ':'
-# E501: line too long (handled by max-line-length)
-# W503: line break before binary operator
-# W504: line break after binary operator
-# F401: imported but unused (في بعض الملفات)
-# E722: bare except (نستخدمه أحياناً)
 ignore = E203,E501,W503,W504,F401,E722
 
-# الملفات والمجلدات المستثناة
 exclude = 
     .git,
     __pycache__,
@@ -40,14 +27,7 @@ exclude =
     htmlcov/,
     .coverage
 
-# العدد الأقصى للتعقيد (McCabe complexity)
 max-complexity = 15
-
-# عرض الإحصائيات
 statistics = True
-
-# عرض الكود المصدري
 show-source = True
-
-# عدد الأخطاء
 count = True
