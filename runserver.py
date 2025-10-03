@@ -25,7 +25,8 @@ from environment_detector import detect_environment
 
 if __name__ == '__main__':
     # كشف البيئة وتحميل الإعدادات المناسبة
-    env_info = detect_environment()
+    from environment_detector import get_environment_info
+    env_info = get_environment_info()
     config = get_config()
     
     # استخدام HOST و PORT من الإعدادات
@@ -36,7 +37,7 @@ if __name__ == '__main__':
     print(f"=" * 60)
     print(f"🚀 بدء تشغيل K2Panel")
     print(f"=" * 60)
-    print(f"البيئة المكتشفة: {env_info['platform']}")
+    print(f"البيئة المكتشفة: {env_info['environment']}")
     print(f"البيئة المعدة: {config.ENVIRONMENT}")
     print(f"المضيف: {HOST}")
     print(f"المنفذ: {PORT}")
@@ -45,7 +46,7 @@ if __name__ == '__main__':
     if env_info['is_replit']:
         print(f"✅ تشغيل على Replit")
         print(f"   URL: https://{os.getenv('REPL_SLUG', 'app')}.{os.getenv('REPL_OWNER', 'user')}.repl.co")
-    elif env_info['is_vps']:
+    elif env_info['is_production']:
         print(f"✅ تشغيل على VPS")
         if config.ENVIRONMENT == 'production':
             print(f"   ⚠️  تذكير: استخدم Nginx كـ reverse proxy في الإنتاج")
