@@ -21,9 +21,11 @@ if os.path.join(current_dir, 'class_v2') not in sys.path:
 
 from BTPanel import app
 from config_factory import get_config
+from environment_detector import detect_environment
 
 if __name__ == '__main__':
-    # استخدام config factory للحصول على الإعدادات
+    # كشف البيئة وتحميل الإعدادات المناسبة
+    env_info = detect_environment()
     config = get_config()
     
     # استخدام HOST و PORT من الإعدادات
@@ -34,11 +36,25 @@ if __name__ == '__main__':
     print(f"=" * 60)
     print(f"🚀 بدء تشغيل K2Panel")
     print(f"=" * 60)
-    print(f"البيئة: {config.ENVIRONMENT}")
+    print(f"البيئة المكتشفة: {env_info['platform']}")
+    print(f"البيئة المعدة: {config.ENVIRONMENT}")
     print(f"المضيف: {HOST}")
     print(f"المنفذ: {PORT}")
-    print(f"وضع التصحيح: {config.DEBUG if hasattr(config, 'DEBUG') else 'غير محدد'}")
+    print(f"وضع التصحيح: {config.DEBUG if hasattr(config, 'DEBUG') else False}")
+    
+    if env_info['is_replit']:
+        print(f"✅ تشغيل على Replit")
+        print(f"   URL: https://{os.getenv('REPL_SLUG', 'app')}.{os.getenv('REPL_OWNER', 'user')}.repl.co")
+    elif env_info['is_vps']:
+        print(f"✅ تشغيل على VPS")
+        if config.ENVIRONMENT == 'production':
+            print(f"   ⚠️  تذكير: استخدم Nginx كـ reverse proxy في الإنتاج")
+    
     print(f"=" * 60)
     
     # تشغيل التطبيق
-    app.run(host=HOST, port=PORT)
+    try:
+        app.run(host=HOST, port=PORT, debug=config.DEBUG if hasattr(config, 'DEBUG') else False)
+    except Exception as e:
+        print(f"❌ فشل تشغيل التطبيق: {e}")
+        sys.exit(1)

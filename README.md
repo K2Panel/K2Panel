@@ -125,39 +125,40 @@
 
 ## 🚀 Quick Start
 
-### Prerequisites
+### على Replit (للتطوير)
+
+1. **Fork المشروع** على Replit
+2. **اضغط Run** - يبدأ تلقائياً
+3. **افتح Preview** للوصول للتطبيق
 
 ```bash
-# Required
-- Python 3.8+
-- Docker & Docker Compose
-- VPS with Ubuntu 20.04+ (for production)
-
-# Optional (for development)
-- Replit account
+# أو يدوياً
+python3 runserver.py
 ```
 
-### Local Development
+### على VPS (للإنتاج)
 
 ```bash
-# 1. Clone repository
-git clone https://github.com/YOUR_USERNAME/k2panel.git
-cd k2panel
+# 1. Clone المشروع
+git clone https://github.com/K2Panel/K2Panel.git
+cd K2Panel
 
-# 2. Setup environment
+# 2. تثبيت المتطلبات
+pip3 install -r requirements.txt
+
+# 3. إعداد البيئة
 cp .env.example .env
-nano .env
+nano .env  # عدّل المتغيرات
 
-# 3. Install dependencies
-pip install -r requirements.txt
+# 4. تشغيل
+python3 runserver.py
 
-# 4. Run application
-python run.py
+# 5. للإنتاج: استخدم systemd + Nginx
+sudo ./setup_systemd.sh
+sudo ./setup_nginx.sh
 ```
 
-### Production Deployment
-
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for comprehensive deployment guide.
+📚 **دليل شامل:** [VPS_DEPLOYMENT_GUIDE.md](./VPS_DEPLOYMENT_GUIDE.md)
 
 ---
 
