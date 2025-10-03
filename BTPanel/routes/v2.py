@@ -430,16 +430,22 @@ def panel_password_v2(pdata=None):
     return publicObject(dataObject, defs, None, pdata)
 
 
-@app.route(route_v2 + '/breaking_through', methods=method_all)
+@app.route(route_v2 + '/breaking_through', methods=['POST', 'GET'])
 def breaking_through_v2():
-    # تسجيل دخول التطوير
+    """تسجيل دخول التطوير"""
     import class_v2.user_login_v2 as user_login_v2
     
-    if request.method == 'POST':
-        login_obj = user_login_v2.userlogin()
-        return login_obj.dev_login(request.form)
-    
-    return public.returnJson(False, 'Method not allowed'), json_header
+    try:
+        if request.method == 'POST':
+            login_obj = user_login_v2.userlogin()
+            result = login_obj.dev_login(request.form)
+            return result
+        else:
+            return public.returnJson(False, 'يجب استخدام POST'), json_header
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return public.returnJson(False, f'خطأ: {str(e)}'), json_header
 
 
 @app.route(route_v2 + '/warning', methods=method_all)
