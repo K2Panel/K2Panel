@@ -2283,8 +2283,18 @@ def check_bind(pdata=None):
 
 @app.route('/code', methods=method_get)
 def code():
-    if not 'code' in session: return ''
-    if not session['code']: return ''
+    # إنشاء صورة فارغة شفافة 1x1 للحالات التي لا يوجد فيها session
+    from io import BytesIO
+    from PIL import Image
+    
+    if not 'code' in session or not session['code']:
+        # إرجاع صورة فارغة شفافة 1x1 بدلاً من خطأ
+        img = Image.new('RGBA', (1, 1), (0, 0, 0, 0))
+        out = BytesIO()
+        img.save(out, "png")
+        out.seek(0)
+        return send_file(out, mimetype='image/png', max_age=0)
+    
     # 获取图片验证码
     try:
         import vilidate
