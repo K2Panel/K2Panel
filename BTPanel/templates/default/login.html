@@ -77,18 +77,18 @@
         height: 100%;
       }
       .login-bg {
-      	width: 100%;
-      	height: 100%;
-      	background-position: center center;
-      	background-repeat: no-repeat;
-      	background-size: cover;
-      	position: absolute;
-      	top: 0;
-      	left: 0;
+        width: 100%;
+        height: 100%;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
       }
       .login-bg.active {
-      	background-image: url('{{ g['panel_asset']['login_bg_images'] }}');
-      	opacity: {{ g['panel_asset']['login_bg_images_opacity'] / 100 }};
+        background-image: url('{{ g['panel_asset']['login_bg_images'] }}');
+        opacity: {{ g['panel_asset']['login_bg_images_opacity'] / 100 }};
       }
       .login {
         position: relative;
@@ -575,6 +575,162 @@
         border-color: var(--login-input-focus-border-color);
         background-color: var(--login-input-focus-bg);
         outline: none;
+      }
+
+      /* ========= تحسينات احترافية للتصميم المتجاوب ========= */
+      
+      /* Smooth transitions */
+      .login, .form_input, .login_btn, .entrance .bg_img,
+      .layui-layer-setwin .layui-layer-close, .login-bg {
+        -webkit-transition: all 0.3s ease-in-out;
+        -moz-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
+      }
+
+      /* Fade in animation */
+      @-webkit-keyframes fadeInUp {
+        from {
+          opacity: 0;
+          -webkit-transform: translate3d(0, 40px, 0);
+          transform: translate3d(0, 40px, 0);
+        }
+        to {
+          opacity: 1;
+          -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+        }
+      }
+      
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translate3d(0, 40px, 0);
+        }
+        to {
+          opacity: 1;
+          transform: translate3d(0, 0, 0);
+        }
+      }
+
+      .login {
+        -webkit-animation: fadeInUp 0.6s ease-out;
+        animation: fadeInUp 0.6s ease-out;
+      }
+
+      /* Enhanced focus states */
+      .form_input:focus {
+        -webkit-box-shadow: 0 0 0 3px rgba(32, 165, 58, 0.1);
+        box-shadow: 0 0 0 3px rgba(32, 165, 58, 0.1);
+      }
+
+      .login_btn:active {
+        -webkit-transform: scale(0.98);
+        transform: scale(0.98);
+      }
+
+      /* ========= Media Queries للأجهزة المختلفة ========= */
+      
+      /* Tablets & Small Desktops */
+      @media screen and (max-width: 1024px) {
+        .login { width: 340px; padding: 70px 30px 80px; }
+        .entrance .tips { max-width: 300px; font-size: 12px; }
+      }
+
+      /* Tablets Portrait */
+      @media screen and (max-width: 768px) {
+        body { font-size: 14px; }
+        .login {
+          width: 90%;
+          max-width: 400px;
+          padding: 60px 25px 70px;
+          margin: 20px;
+        }
+        .login.code { height: auto; min-height: 345px; }
+        .account .form_title { font-size: 22px; margin-bottom: 20px; }
+        .form_input { height: 48px; font-size: 16px; padding: 8px 12px; }
+        .login_btn { height: 50px; font-size: 18px; }
+        .entrance { top: 10px; right: 10px; }
+        .entrance .tips { right: 50px; max-width: 250px; font-size: 11px; padding: 6px 8px; }
+        .entrance .bg_img { width: 50px; height: 50px; background-size: 100px 100px; }
+        .entrance .bg_img:hover { background-position: -50px 0; }
+        .entrance .bg_img.pc { background-position: 0 -50px; }
+        .entrance .bg_img.pc:hover { background-position: -50px -50px; }
+        .login-images { width: 90%; max-width: 350px; }
+        .login-images img { height: 70px; }
+        .scan_code .qrcode { width: 180px; height: 180px; }
+        .static_cdn { position: relative; text-align: center; margin-top: 20px; }
+        .static_cdn .cont { margin-left: 0; justify-content: center; }
+        .login_lang { position: relative; left: 0; bottom: 0; margin-top: 20px; }
+        .account .forget_pwd {
+          position: relative;
+          right: auto;
+          bottom: auto;
+          text-align: center;
+          display: block;
+          margin-top: 15px;
+        }
+      }
+
+      /* Mobile Phones */
+      @media screen and (max-width: 480px) {
+        .main { padding: 10px; }
+        .login {
+          width: 100%;
+          max-width: 100%;
+          padding: 50px 20px 60px;
+          margin: 10px;
+          border-radius: 8px;
+        }
+        .account .form_title { font-size: 20px; margin-bottom: 18px; }
+        .account .form_item { margin-bottom: 18px; }
+        .form_input { height: 50px; font-size: 16px; }
+        .login_btn { height: 52px; font-size: 17px; }
+        .form_item.check_code {
+          -webkit-flex-direction: column;
+          flex-direction: column;
+        }
+        .form_item.check_code .form_input { width: 100%; margin-bottom: 10px; }
+        .form_item.check_code .check_img { width: 100%; height: 50px; margin-left: 0; }
+        .form_item.check_code .validform_checktip { right: 10px; top: 18px; }
+        .entrance .tips { display: none; }
+        .login-images img { height: 60px; }
+        .scan_code .scan_title { font-size: 20px; }
+        .scan_code .qrcode { width: 200px; height: 200px; }
+        .scan_tip .desc .text { font-size: 16px; }
+        .verification_view { padding: 25px 20px; }
+        .verification_view .v_title { font-size: 19px; }
+        .layui-layer { width: 90% !important; max-width: 400px !important; }
+        .layui-layer-msg { min-width: 250px; }
+      }
+
+      /* Small Mobile */
+      @media screen and (max-width: 360px) {
+        .login { padding: 40px 15px 50px; margin: 5px; }
+        .account .form_title { font-size: 18px; }
+        .form_input, .login_btn { font-size: 15px; }
+        .scan_code .qrcode { width: 180px; height: 180px; }
+      }
+
+      /* Landscape Mobile */
+      @media screen and (max-height: 500px) and (orientation: landscape) {
+        .login { margin: 10px auto; padding: 30px 20px 40px; }
+        .account .form_title { margin-bottom: 15px; }
+        .account .form_item { margin-bottom: 12px; }
+        .login-images { margin-bottom: 15px; }
+      }
+
+      /* Touch devices */
+      @media (hover: none) and (pointer: coarse) {
+        .form_input, .login_btn, select, .check_img { min-height: 44px; }
+        .entrance .bg_img { min-width: 44px; min-height: 44px; }
+      }
+
+      /* High DPI */
+      @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+        .login {
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
       }
 
       /* 主题变量 */
@@ -1076,28 +1232,28 @@
                 popup.open({
                   content:
                     '\
-										<div class="verification_view">\
-												<div class="v_title">' +
+                                                                                <div class="verification_view">\
+                                                                                                <div class="v_title">' +
                     i18next.t("Login.index_16") +
                     '</div>\
-														<div class="v_input">\
-																<input type="text" class="v_code" placeholder="' +
+                                                                                                                <div class="v_input">\
+                                                                                                                                <input type="text" class="v_code" placeholder="' +
                     i18next.t("Login.index_8") +
                     '" />\
-														</div>\
-														<div class="v_btn">\
-																<button id="auth_verif_btn">' +
+                                                                                                                </div>\
+                                                                                                                <div class="v_btn">\
+                                                                                                                                <button id="auth_verif_btn">' +
                     i18next.t("Login.index_3") +
                     '</button>\
-														</div>\
-														<div class="v_tips">' +
+                                                                                                                </div>\
+                                                                                                                <div class="v_tips">' +
                     i18next.t("Login.index_17") +
                     '<br><a class="bt_link" href="https://www.k2panel.com/forum/d/357-how-to-use-google-authenticator-in-the-k2panel" target="_blank">' +
                     i18next.t("Login.index_18") +
                     "</a>\
-												</div>\
-										</div>\
-									",
+                                                                                                </div>\
+                                                                                </div>\
+                                                                        ",
                   callback: function () {
                     var btn = document.querySelector("#auth_verif_btn");
                     var codeInput = document.querySelector(".v_code");
